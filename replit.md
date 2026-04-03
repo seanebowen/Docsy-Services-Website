@@ -4,6 +4,15 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Artifacts
+
+- **docsy-website** (`artifacts/docsy-website/`) — Multi-page marketing website for Docsy Notary Services. React + Vite, frontend-only. No backend.
+  - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides)
+  - Stack: React, Vite, Tailwind CSS, framer-motion, wouter (routing), shadcn/ui components
+  - Fonts: Instrument Serif (headings), Inter (body)
+  - Color scheme: warm sand background (#f8f7f3), dark slate primary, sharp typography
+- **api-server** (`artifacts/api-server/`) — Express 5 backend API server
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces
