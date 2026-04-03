@@ -25,14 +25,19 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const mainLinks = [
+  const leftLinks = [
     { href: "/ron", label: "RON" },
     { href: "/mobile-notary", label: "Mobile Notary" },
     { href: "/loan-signing", label: "Loan Signing" },
+  ];
+
+  const rightLinks = [
     { href: "/apostille", label: "Apostille" },
     { href: "/court-reporting", label: "Court Reporting" },
     { href: "/memberships", label: "Memberships" },
   ];
+
+  const allMainLinks = [...leftLinks, ...rightLinks];
 
   const moreLinks = [
     { href: "/faq", label: "FAQ", icon: HelpCircle },
@@ -49,14 +54,27 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full" style={{ backgroundColor: DARK }}>
-      {/* Desktop layout */}
-      <div className="hidden lg:flex items-center h-20 px-8 relative">
 
-        {/* Center: logo absolutely positioned */}
-        <Link
-          href="/"
-          className="absolute left-1/2 -translate-x-1/2 flex items-center"
-        >
+      {/* Desktop: left-links | LOGO | right-links + CTA */}
+      <div className="hidden lg:flex items-center h-20 px-8">
+
+        {/* Left links — equal flex, right-aligned toward center */}
+        <nav className="flex items-center justify-end gap-7" style={{ flex: "1 0 0" }}>
+          {leftLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`text-xs font-semibold uppercase tracking-widest whitespace-nowrap transition-colors ${
+                isActive(link.href) ? "text-white" : "text-white/50 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Center: logo */}
+        <Link href="/" className="flex items-center shrink-0 px-8">
           <img
             src="/logo.png"
             alt="Docsy Notary Services"
@@ -65,13 +83,13 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Right: nav links + CTA (pushed to right) */}
-        <nav className="ml-auto flex items-center gap-6">
-          {mainLinks.map((link) => (
+        {/* Right links + More + CTA — equal flex, left-aligned from center */}
+        <nav className="flex items-center justify-start gap-7" style={{ flex: "1 0 0" }}>
+          {rightLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-xs font-semibold uppercase tracking-widest transition-colors whitespace-nowrap ${
+              className={`text-xs font-semibold uppercase tracking-widest whitespace-nowrap transition-colors ${
                 isActive(link.href) ? "text-white" : "text-white/50 hover:text-white"
               }`}
             >
@@ -93,7 +111,7 @@ export function Navbar() {
 
             {moreOpen && (
               <div
-                className="absolute right-0 top-full mt-2 w-52 z-50 py-1 border border-white/10"
+                className="absolute left-0 top-full mt-2 w-52 z-50 py-1 border border-white/10"
                 style={{ backgroundColor: "#1e1e1e" }}
               >
                 {moreLinks.map((link) => (
@@ -123,16 +141,15 @@ export function Navbar() {
 
           <Link
             href="/"
-            className="ml-2 px-5 py-2 text-xs font-bold uppercase tracking-widest text-white border border-white/20 hover:bg-white hover:text-black transition-colors"
+            className="ml-auto px-5 py-2 text-xs font-bold uppercase tracking-widest whitespace-nowrap text-white border border-white/20 hover:bg-white hover:text-black transition-colors"
           >
             Book a Service
           </Link>
         </nav>
       </div>
 
-      {/* Mobile layout */}
+      {/* Mobile: logo left, hamburger right */}
       <div className="lg:hidden flex items-center justify-between h-16 px-4">
-        {/* Logo centered on mobile */}
         <Link href="/" className="flex items-center">
           <img
             src="/logo.png"
@@ -153,7 +170,7 @@ export function Navbar() {
       {isOpen && (
         <div className="lg:hidden border-t border-white/10" style={{ backgroundColor: DARK }}>
           <nav className="container mx-auto px-4 py-6 flex flex-col gap-5">
-            {mainLinks.map((link) => (
+            {allMainLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
