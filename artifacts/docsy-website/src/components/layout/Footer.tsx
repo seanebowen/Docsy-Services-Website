@@ -9,7 +9,7 @@ export function Footer() {
       {/* Blue CTA bar */}
       <div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 sm:px-16 py-8 gap-4"
-        style={{ backgroundColor: "#3333FF" }}
+        style={{ backgroundColor: "#4A6FA8" }}
       >
         <div>
           <p className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-1 opacity-60">

@@ -1,212 +1,224 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2, XCircle, Mic, FileText, Clock, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle2, XCircle, Shield } from "lucide-react";
 
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5 },
+const BLUE = "#4A6FA8";
+const DARK = "#141414";
+const CREAM = "#f2f0e3";
+
+const HL = ({ children }: { children: React.ReactNode }) => (
+  <span className="bg-yellow-200 text-black px-0.5">{children}</span>
+);
+
+const hdStyle: React.CSSProperties = {
+  fontFamily: "'Barlow Condensed', sans-serif",
+  fontWeight: 900,
+  letterSpacing: "-0.02em",
+  lineHeight: 1.05,
 };
+
+const included = [
+  "Word index",
+  "Certified PDF",
+  "E-transcript ASCII file",
+  "Digital delivery via Docsy portal",
+  "Oath administration",
+  "Exhibit marking and logging",
+  "Pre-deposition tech check for remote sessions",
+];
+
+const agencyExtra = [
+  "Word index (10–15 pages at full rate elsewhere)",
+  "Litigation package ($40–$150 elsewhere)",
+  "E-transcript formats ($25–$75 elsewhere)",
+  "E-delivery fee",
+  "Deposition officer fee",
+];
 
 export default function CourtReporting() {
   React.useEffect(() => {
     document.title = "Digital Court Reporting | Docsy Notary Services";
   }, []);
 
-  const included = [
-    "Word index",
-    "Certified PDF",
-    "E-transcript ASCII file",
-    "Digital delivery via Docsy portal",
-    "Oath administration",
-    "Exhibit marking and logging",
-    "Pre-deposition tech check for remote sessions",
-  ];
-
-  const agencyExtra = [
-    "Word index (10–15 pages at full rate elsewhere)",
-    "Litigation package ($40–$150 elsewhere)",
-    "E-transcript formats ($25–$75 elsewhere)",
-    "E-delivery fee",
-    "Deposition officer fee",
-  ];
-
   return (
-    <div className="w-full pb-24">
-      <section className="bg-primary text-primary-foreground py-20 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Court reporting without the agency invoice that requires a decoder ring.
-            </h1>
-            <p className="text-lg text-primary-foreground/90 max-w-2xl mb-8">
-              Digital court reporting for depositions and legal proceedings. Soniclear certified. Below agency rates. Word index, certified PDF, and delivery included — always.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" variant="secondary" className="h-14 px-8 text-lg" data-testid="btn-schedule-depo">
-                Schedule a Deposition
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10" data-testid="btn-request-estimate">
-                Request Estimate
-              </Button>
-            </div>
-          </div>
+    <div className="w-full">
+
+      {/* ── HERO ─────────────────────────────────────── */}
+      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-20 lg:py-28">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
+          Court Reporting · Digital Deposition
+        </p>
+        <h1 style={{ ...hdStyle, fontSize: "clamp(2.2rem, 4.5vw, 4.5rem)" }} className="text-white mb-8 max-w-4xl">
+          Court reporting without the agency invoice<br />that requires a decoder ring.
+        </h1>
+        <p className="text-white/70 text-base leading-relaxed max-w-2xl mb-10">
+          Digital court reporting for depositions and legal proceedings. Soniclear certified. <HL>Below agency rates.</HL> Word index, certified PDF, and delivery included — always.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: BLUE }}
+            data-testid="btn-schedule-depo"
+          >
+            Schedule a Deposition <ArrowRight className="h-4 w-4" />
+          </button>
+          <button
+            className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white border border-white/20 hover:bg-white/10 transition-colors"
+            data-testid="btn-request-estimate"
+          >
+            Request Estimate
+          </button>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <motion.div {...fadeIn}>
-              <h2 className="text-2xl font-bold mb-4">What agencies don't want you to compare</h2>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Agencies charge $5–$7.50+ per page for ordinary transcripts, then add word index fees, litigation package fees, e-delivery surcharges, vault hosting, and 'administrative processing' charges on top.
-              </p>
-              <div className="bg-primary/10 border border-primary/20 rounded-xl p-6 text-center">
-                <div className="text-5xl font-bold text-primary mb-2">$4.25</div>
-                <div className="text-lg font-medium">per page — standard rate</div>
-                <p className="text-muted-foreground mt-2 text-sm">Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. That's the standard rate.</p>
-              </div>
-            </motion.div>
+      {/* ── BANNER ───────────────────────────────────── */}
+      <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">What Agencies Don't Want You to Compare</span>
+        <div className="flex-1 mx-8 h-px bg-white/30" />
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">01</span>
+      </div>
 
-            <motion.div {...fadeIn} transition={{ delay: 0.1, duration: 0.5 }}>
-              <h2 className="text-2xl font-bold mb-4">Who shows up to your deposition</h2>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                With an agency, you find out at the door. With Docsy, you already know — it's the same certified reporter who took your booking, confirmed your details, and is familiar with your case. Not whoever was available last minute.
+      {/* ── SECTION 1 ────────────────────────────────── */}
+      <section style={{ backgroundColor: CREAM }} className="flex flex-col md:flex-row">
+        <div className="hidden md:flex items-start justify-center w-28 py-16 shrink-0" style={{ backgroundColor: DARK }}>
+          <span style={{ ...hdStyle, fontSize: "3rem" }} className="text-white">1:</span>
+        </div>
+        <div className="flex-1 px-8 sm:px-16 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl">
+            <div>
+              <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="mb-6">
+                What agencies don't want you to compare
+              </h2>
+              <p className="text-base text-neutral-600 leading-relaxed mb-8">
+                Agencies charge <HL>$5–$7.50+ per page</HL> for ordinary transcripts, then add word index fees, litigation package fees, e-delivery surcharges, vault hosting, and 'administrative processing' charges on top.
               </p>
-              <div className="flex items-start gap-3 bg-muted/40 rounded-xl p-5">
-                <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                <p className="text-muted-foreground leading-relaxed">
+              <div className="border border-neutral-300 p-8 text-center">
+                <div style={{ ...hdStyle, fontSize: "4rem", color: BLUE }}>$4.25</div>
+                <div className="text-base font-semibold mb-3">per page — standard rate</div>
+                <p className="text-sm text-neutral-500 leading-relaxed">
+                  <HL>Word index, certified PDF, e-transcript, and digital delivery all included.</HL> That's not a promotional rate. That's the standard rate.
+                </p>
+              </div>
+            </div>
+            <div>
+              <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="mb-6">
+                Who shows up to your deposition
+              </h2>
+              <p className="text-base text-neutral-600 leading-relaxed mb-6">
+                With an agency, you find out at the door. <HL>With Docsy, you already know</HL> — it's the same certified reporter who took your booking, confirmed your details, and is familiar with your case. Not whoever was available last minute.
+              </p>
+              <div className="border-l-4 pl-6 py-2 border-neutral-300 flex items-start gap-3">
+                <Shield className="h-5 w-5 shrink-0 mt-0.5" style={{ color: BLUE }} />
+                <p className="text-sm text-neutral-600 leading-relaxed">
                   Soniclear certified. Every session recorded with professional-grade audio for transcript accuracy.
                 </p>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
-      <section className="py-16 bg-muted/20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-8" {...fadeIn}>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
-                    Always included
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border border-neutral-300 mt-8">
+                <div className="p-6 border-b sm:border-b-0 sm:border-r border-neutral-300">
+                  <h3 className="text-xs font-bold uppercase tracking-[0.15em] mb-4 flex items-center gap-2" style={{ color: BLUE }}>
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Always included
+                  </h3>
+                  <ul className="space-y-2">
                     {included.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span className="text-muted-foreground text-sm">{item}</span>
+                      <li key={item} className="text-xs text-neutral-600 flex items-start gap-2">
+                        <span className="text-neutral-400 mt-0.5">—</span>{item}
                       </li>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <XCircle className="h-5 w-5 text-amber-600" />
-                    What agencies charge extra for (that Docsy includes)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xs font-bold uppercase tracking-[0.15em] mb-4 flex items-center gap-2 text-amber-600">
+                    <XCircle className="h-3.5 w-3.5" /> Agencies charge extra for
+                  </h3>
+                  <ul className="space-y-2">
                     {agencyExtra.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span className="text-muted-foreground text-sm">{item}</span>
+                      <li key={item} className="text-xs text-neutral-600 flex items-start gap-2">
+                        <CheckCircle2 className="h-3 w-3 shrink-0 mt-0.5" style={{ color: BLUE }} />
+                        {item}
                       </li>
                     ))}
                   </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div className="max-w-4xl mx-auto" {...fadeIn}>
-            <h2 className="text-3xl font-bold mb-10 text-center">Pricing</h2>
+      {/* ── BANNER 2 ─────────────────────────────────── */}
+      <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">Pricing</span>
+        <div className="flex-1 mx-8 h-px bg-white/30" />
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">02</span>
+      </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Appearance Fees</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {[
-                    { label: "2-Hour Minimum", price: "$275" },
-                    { label: "Half-Day (up to 4 hrs)", price: "$325" },
-                    { label: "Full-Day (up to 8 hrs)", price: "$550" },
-                    { label: "Remote Half-Day", price: "$250" },
-                    { label: "Remote Full-Day", price: "$450" },
-                    { label: "Overtime per 30 min", price: "$45" },
-                    { label: "After-hours surcharge", price: "+$100" },
-                  ].map((item) => (
-                    <div key={item.label} className="flex justify-between items-center border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                      <span className="text-muted-foreground text-sm">{item.label}</span>
-                      <span className="font-bold text-primary">{item.price}</span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Transcript Page Rates</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {[
-                    { label: "Ordinary (30 days)", price: "$4.25/pg" },
-                    { label: "14-Day", price: "$5.00/pg" },
-                    { label: "7-Day Expedited", price: "$5.75/pg" },
-                    { label: "3-Day Rush (prepaid)", price: "$6.50/pg" },
-                    { label: "24-Hour Rush (prepaid)", price: "$7.75/pg" },
-                    { label: "Same-Day (prepaid)", price: "$9.50/pg" },
-                  ].map((item) => (
-                    <div key={item.label} className="flex justify-between items-center border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                      <span className="text-muted-foreground text-sm">{item.label}</span>
-                      <span className="font-bold text-primary">{item.price}</span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+      {/* ── SECTION 2: Pricing ───────────────────────── */}
+      <section style={{ backgroundColor: "#f8f7f0" }} className="flex flex-col md:flex-row">
+        <div className="hidden md:flex items-start justify-center w-28 py-16 shrink-0" style={{ backgroundColor: BLUE }}>
+          <span style={{ ...hdStyle, fontSize: "3rem" }} className="text-white">2:</span>
+        </div>
+        <div className="flex-1 px-8 sm:px-16 py-16">
+          <h2 style={{ ...hdStyle, fontSize: "clamp(1.8rem, 3vw, 2.8rem)" }} className="mb-8">
+            Appearance fees &amp; transcript rates.
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-neutral-300 max-w-3xl mb-6">
+            <div className="border-b md:border-b-0 md:border-r border-neutral-300">
+              <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Appearance Fees</p>
+              </div>
+              {[
+                { l: "2-Hour Minimum", p: "$275" }, { l: "Half-Day (up to 4 hrs)", p: "$325" },
+                { l: "Full-Day (up to 8 hrs)", p: "$550" }, { l: "Remote Half-Day", p: "$250" },
+                { l: "Remote Full-Day", p: "$450" }, { l: "Overtime per 30 min", p: "$45" },
+                { l: "After-hours surcharge", p: "+$100" },
+              ].map((r) => (
+                <div key={r.l} className="flex justify-between items-center px-6 py-3 border-b border-neutral-200 last:border-b-0">
+                  <span className="text-sm text-neutral-600">{r.l}</span>
+                  <span className="font-bold text-sm" style={{ color: BLUE }}>{r.p}</span>
+                </div>
+              ))}
             </div>
-
-            <div className="bg-muted/40 rounded-lg p-4 text-sm text-muted-foreground text-center">
-              50% deposit required at scheduling for all transcript orders. Appearance-only: NET 14, no deposit.
+            <div>
+              <div className="px-6 py-4 border-b border-neutral-200 bg-neutral-50">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Transcript Page Rates</p>
+              </div>
+              {[
+                { l: "Ordinary (30 days)", p: "$4.25/pg" }, { l: "14-Day", p: "$5.00/pg" },
+                { l: "7-Day Expedited", p: "$5.75/pg" }, { l: "3-Day Rush (prepaid)", p: "$6.50/pg" },
+                { l: "24-Hour Rush (prepaid)", p: "$7.75/pg" }, { l: "Same-Day (prepaid)", p: "$9.50/pg" },
+              ].map((r) => (
+                <div key={r.l} className="flex justify-between items-center px-6 py-3 border-b border-neutral-200 last:border-b-0">
+                  <span className="text-sm text-neutral-600">{r.l}</span>
+                  <span className="font-bold text-sm" style={{ color: BLUE }}>{r.p}</span>
+                </div>
+              ))}
             </div>
-          </motion.div>
+          </div>
+          <p className="text-xs text-neutral-500 max-w-xl">
+            50% deposit required at scheduling for all transcript orders. Appearance-only: NET 14, no deposit.
+          </p>
         </div>
       </section>
 
-      <section className="py-16 bg-muted/20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div {...fadeIn}>
-            <h2 className="text-3xl font-bold mb-4">Book a deposition or request a written cost estimate</h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Same certified reporter every time. All-inclusive pricing. No decoder ring required.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="h-14 px-8 text-lg" data-testid="btn-schedule-depo-cta">
-                Schedule a Deposition
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg" data-testid="btn-estimate-cta">
-                Request Estimate
-              </Button>
-            </div>
-          </motion.div>
+      {/* ── DARK CTA ─────────────────────────────────── */}
+      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <div>
+          <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
+            Book a deposition or request a written cost estimate
+          </h2>
+          <p className="text-white/50 text-sm">Same certified reporter every time. No decoder ring required.</p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 shrink-0">
+          <button
+            className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: BLUE }}
+            data-testid="btn-schedule-depo-cta"
+          >
+            Schedule a Deposition <ArrowRight className="h-4 w-4" />
+          </button>
+          <button className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white border border-white/20 hover:bg-white/10 transition-colors" data-testid="btn-estimate-cta">
+            Request Estimate
+          </button>
         </div>
       </section>
     </div>

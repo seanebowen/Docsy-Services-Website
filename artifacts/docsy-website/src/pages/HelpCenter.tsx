@@ -396,16 +396,13 @@ const guides = [
 
 function GuideCard({ guide }: { guide: typeof guides[0] }) {
   return (
-    <Link href={`/help-center/${guide.id}`}>
-      <Card className="h-full cursor-pointer hover:border-primary/40 transition-colors hover:shadow-md" data-testid={`guide-card-${guide.id}`}>
-        <CardHeader>
-          <div className="text-primary mb-2">{guide.icon}</div>
-          <CardTitle className="text-base leading-snug">{guide.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm leading-relaxed">{guide.desc}</p>
-        </CardContent>
-      </Card>
+    <Link href={`/help-center/${guide.id}`} className="block group border border-neutral-300 bg-white hover:bg-[#f2f0e3] transition-colors p-6 h-full" data-testid={`guide-card-${guide.id}`}>
+      <div className="mb-4" style={{ color: "#4A6FA8" }}>{guide.icon}</div>
+      <h3 className="font-bold text-sm leading-snug mb-3" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{guide.title}</h3>
+      <p className="text-neutral-500 text-xs leading-relaxed">{guide.desc}</p>
+      <div className="mt-4 text-xs font-bold uppercase tracking-widest flex items-center gap-1" style={{ color: "#4A6FA8" }}>
+        Read guide <span className="ml-1 group-hover:translate-x-1 transition-transform inline-block">→</span>
+      </div>
     </Link>
   );
 }
@@ -425,50 +422,38 @@ function GuideArticle({ id }: { id: string }) {
   }
 
   return (
-    <div className="w-full pb-24">
-      <section className="bg-muted/30 border-b py-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/help-center">
-            <Button variant="ghost" size="sm" className="mb-4 -ml-2 text-muted-foreground" data-testid="btn-back-help">
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Help Center
-            </Button>
-          </Link>
-          <div className="text-primary mb-3">{guide.icon}</div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">{guide.title}</h1>
-          <p className="text-muted-foreground text-lg max-w-2xl">{guide.desc}</p>
-        </div>
+    <div className="w-full">
+      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-16">
+        <Link href="/help-center" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest mb-8 transition-colors" data-testid="btn-back-help">
+          <ChevronLeft className="h-3.5 w-3.5" /> Help Center
+        </Link>
+        <div className="mb-4" style={{ color: "#4A6FA8" }}>{guide.icon}</div>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: "clamp(2rem, 4vw, 3.5rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }} className="text-white mb-4 max-w-3xl">
+          {guide.title}
+        </h1>
+        <p className="text-white/60 text-base max-w-xl leading-relaxed">{guide.desc}</p>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto space-y-8">
-            {guide.steps.map((step, i) => (
-              <motion.div
-                key={i}
-                className="flex gap-6"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
-              >
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
-                  {i + 1}
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">{step.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{step.body}</p>
-                </div>
-              </motion.div>
-            ))}
-
-            {guide.note && (
-              <div className="bg-muted/40 border border-border rounded-lg p-5 mt-8">
-                <p className="text-muted-foreground text-sm leading-relaxed">{guide.note}</p>
+      <section style={{ backgroundColor: "#f2f0e3" }} className="px-8 sm:px-16 py-16">
+        <div className="max-w-2xl space-y-0 border border-neutral-300">
+          {guide.steps.map((step, i) => (
+            <div key={i} className="flex border-b border-neutral-300 last:border-b-0">
+              <div className="flex items-start justify-center w-16 shrink-0 pt-6 pb-6 border-r border-neutral-300" style={{ backgroundColor: "#4A6FA8" }}>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: "1.5rem" }} className="text-white">{i + 1}</span>
               </div>
-            )}
-          </div>
+              <div className="flex-1 p-6">
+                <h3 className="font-semibold mb-2 text-sm" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{step.title}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{step.body}</p>
+              </div>
+            </div>
+          ))}
         </div>
+
+        {guide.note && (
+          <div className="max-w-2xl mt-8 border-l-4 border-neutral-300 pl-6 py-2">
+            <p className="text-neutral-500 text-sm leading-relaxed">{guide.note}</p>
+          </div>
+        )}
       </section>
     </div>
   );
@@ -492,46 +477,53 @@ export default function HelpCenter() {
   }
 
   return (
-    <div className="w-full pb-24">
-      <section className="bg-primary text-primary-foreground py-20 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Guides that actually explain things.
-            </h1>
-            <p className="text-lg text-primary-foreground/90 max-w-2xl">
-              We built these guides because most legal document resources are written for lawyers, not for the person who just found out they need an apostille by Friday. Straightforward, step-by-step, written in plain English.
-            </p>
-          </div>
+    <div className="w-full">
+
+      {/* ── HERO ─────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-20 lg:py-28">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
+          Help Center · Step-by-Step Guides
+        </p>
+        <h1 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: "clamp(2.5rem, 5vw, 5rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }} className="text-white mb-8 max-w-3xl">
+          Guides that actually explain things.
+        </h1>
+        <p className="text-white/60 text-base leading-relaxed max-w-2xl">
+          We built these guides because most legal document resources are written for lawyers, not for the person who just found out they need an apostille by Friday. <span className="bg-yellow-200 text-black px-0.5">Straightforward, step-by-step, written in plain English.</span>
+        </p>
+      </section>
+
+      {/* ── BANNER ───────────────────────────────────── */}
+      <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: "#4A6FA8" }}>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">12 Guides</span>
+        <div className="flex-1 mx-8 h-px bg-white/30" />
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">If something is unclear — text us →</span>
+      </div>
+
+      {/* ── GUIDE GRID ───────────────────────────────── */}
+      <section style={{ backgroundColor: "#f2f0e3" }} className="px-8 sm:px-16 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 border border-neutral-300">
+          {guides.map((guide, i) => (
+            <div key={guide.id} className={`border-b border-r border-neutral-300 ${i % 4 === 3 ? "border-r-0" : ""} last:border-b-0`}>
+              <GuideCard guide={guide} />
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.p
-            className="text-muted-foreground text-center mb-12 text-lg"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            If something is still unclear after reading — text us. We'll explain it.
-          </motion.p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {guides.map((guide, i) => (
-              <motion.div
-                key={guide.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-              >
-                <GuideCard guide={guide} />
-              </motion.div>
-            ))}
-          </div>
+      {/* ── DARK CTA ─────────────────────────────────── */}
+      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <div>
+          <h2 style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", letterSpacing: "-0.02em" }} className="text-white mb-3">
+            Didn't find what you need?
+          </h2>
+          <p className="text-white/50 text-sm">Text us directly and we'll explain it. No runaround.</p>
         </div>
+        <button
+          className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity shrink-0"
+          style={{ backgroundColor: "#4A6FA8" }}
+        >
+          Contact Us →
+        </button>
       </section>
     </div>
   );

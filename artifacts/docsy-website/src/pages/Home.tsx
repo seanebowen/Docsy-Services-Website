@@ -39,7 +39,7 @@ export default function Home() {
           style={{ backgroundColor: "#f2f0e3" }}
         >
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] mb-10" style={{ color: "#3333FF" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] mb-10" style={{ color: "#4A6FA8" }}>
               Texas Notary Services
             </p>
 
@@ -58,7 +58,7 @@ export default function Home() {
             <Link
               href="/"
               className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#3333FF" }}
+              style={{ backgroundColor: "#4A6FA8" }}
               data-testid="btn-book-hero"
             >
               Book a Service <ArrowRight className="h-4 w-4" />
@@ -114,7 +114,7 @@ export default function Home() {
       {/* ── BLUE BANNER ───────────────────────────────────────────────── */}
       <div
         className="flex items-center justify-between px-8 sm:px-16 py-5"
-        style={{ backgroundColor: "#3333FF" }}
+        style={{ backgroundColor: "#4A6FA8" }}
       >
         <span className="text-white text-sm font-bold uppercase tracking-[0.2em]">
           See All Services
@@ -141,7 +141,7 @@ export default function Home() {
 
         {/* Right content */}
         <div className="flex-1 px-8 sm:px-16 py-16 border-b border-neutral-300">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#4A6FA8" }}>
             Why Docsy
           </p>
           <h2 className="text-4xl sm:text-5xl mb-6 leading-tight">
@@ -175,7 +175,7 @@ export default function Home() {
                 key={item.title}
                 className={`p-8 ${i < 2 ? "border-b sm:border-b-0 sm:border-r border-neutral-300" : ""}`}
               >
-                <item.icon className="h-8 w-8 mb-5" style={{ color: "#3333FF" }} />
+                <item.icon className="h-8 w-8 mb-5" style={{ color: "#4A6FA8" }} />
                 <h3 className="text-xl mb-3 leading-tight">{item.title}</h3>
                 <p className="text-sm text-neutral-600 leading-relaxed">{item.desc}</p>
               </div>
@@ -189,7 +189,7 @@ export default function Home() {
 
         <div
           className="hidden md:flex items-start justify-center w-32 py-16 shrink-0"
-          style={{ backgroundColor: "#3333FF" }}
+          style={{ backgroundColor: "#4A6FA8" }}
         >
           <span
             className="text-white text-5xl font-black"
@@ -200,7 +200,7 @@ export default function Home() {
         </div>
 
         <div className="flex-1 px-8 sm:px-16 py-16">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#4A6FA8" }}>
             Services
           </p>
           <h2 className="text-4xl sm:text-5xl mb-12 leading-tight">
@@ -256,7 +256,7 @@ export default function Home() {
                 <service.icon className="h-7 w-7 mb-5 text-neutral-400 group-hover:text-black transition-colors" />
                 <h3 className="text-xl mb-2 leading-tight">{service.title}</h3>
                 <p className="text-sm text-neutral-500 leading-relaxed mb-4">{service.desc}</p>
-                <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: "#3333FF" }}>
+                <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: "#4A6FA8" }}>
                   Learn more <ArrowRight className="h-3 w-3" />
                 </span>
               </Link>
@@ -284,7 +284,7 @@ export default function Home() {
             }}
           >
             "Docsy clients don't re-explain what an apostille is every time they call. They don't wonder if the price on the phone will match the invoice.{" "}
-            <span style={{ color: "#3333FF" }}>They book. We handle it. They move on with their life.</span>{" "}
+            <span style={{ color: "#4A6FA8" }}>They book. We handle it. They move on with their life.</span>{" "}
             That's the whole thing."
           </blockquote>
         </div>
@@ -296,7 +296,7 @@ export default function Home() {
         style={{ backgroundColor: "#f2f0e3" }}
       >
         <div className="flex-1 px-8 sm:px-16 py-16">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#4A6FA8" }}>
             Memberships & Safe+
           </p>
           <h2 className="text-4xl sm:text-5xl mb-6 leading-tight">
@@ -308,7 +308,7 @@ export default function Home() {
           <Link
             href="/memberships"
             className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "#3333FF" }}
+            style={{ backgroundColor: "#4A6FA8" }}
             data-testid="btn-memberships-teaser"
           >
             See Membership Options <ArrowRight className="h-4 w-4" />
@@ -317,7 +317,7 @@ export default function Home() {
 
         <div
           className="hidden md:flex flex-col justify-center w-72 p-12 shrink-0"
-          style={{ backgroundColor: "#3333FF" }}
+          style={{ backgroundColor: "#4A6FA8" }}
         >
           <ShieldCheck className="h-16 w-16 text-white/30 mb-6" />
           <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
