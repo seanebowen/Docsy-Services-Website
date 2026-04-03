@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import logoSrc from "@assets/DOCSY_LOGO_CANVA_1775243378341.PNG";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -27,7 +26,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center" data-testid="link-logo">
-          <img src={logoSrc} alt="Docsy Notary Services" className="h-9 w-auto" />
+          <img src="/logo.png" alt="Docsy Notary Services" className="h-9 w-auto" />
         </Link>
 
         {/* Desktop Nav */}
