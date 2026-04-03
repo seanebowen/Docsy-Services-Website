@@ -14,6 +14,7 @@ import CourtReporting from "@/pages/CourtReporting";
 import Memberships from "@/pages/Memberships";
 import FAQ from "@/pages/FAQ";
 import HelpCenter from "@/pages/HelpCenter";
+import Promos from "@/pages/Promos";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/help-center" component={HelpCenter} />
       <Route path="/help-center/:id" component={HelpCenter} />
+      <Route path="/promos" component={Promos} />
       <Route component={NotFound} />
     </Switch>
   );

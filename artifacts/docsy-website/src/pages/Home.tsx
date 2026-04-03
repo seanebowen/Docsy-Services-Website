@@ -22,6 +22,13 @@ const services = [
   { icon: ShieldCheck, label: "Safe+ Document Vault",       href: "/memberships" },
 ];
 
+/* Navbar = 80px, Ticker = 36px → sticky offset = 116px */
+const STICKY_TOP = "116px";
+
+function stickyStyle(z: number): React.CSSProperties {
+  return { position: "sticky", top: STICKY_TOP, zIndex: z };
+}
+
 export default function Home() {
   React.useEffect(() => {
     document.title = "Docsy Notary Services | Texas Remote & Mobile Notary";
@@ -31,7 +38,7 @@ export default function Home() {
     <div className="w-full">
 
       {/* ── HERO: Split-panel ─────────────────────────────────────────── */}
-      <section className="flex flex-col md:flex-row min-h-[92vh]">
+      <section className="flex flex-col md:flex-row min-h-[92vh]" style={stickyStyle(1)}>
 
         {/* Left cream panel */}
         <div
@@ -114,7 +121,7 @@ export default function Home() {
       {/* ── BLUE BANNER ───────────────────────────────────────────────── */}
       <div
         className="flex items-center justify-between px-8 sm:px-16 py-5"
-        style={{ backgroundColor: "#4A6FA8" }}
+        style={{ backgroundColor: "#4A6FA8", ...stickyStyle(2) }}
       >
         <span className="text-white text-sm font-bold uppercase tracking-[0.2em]">
           See All Services
@@ -124,7 +131,7 @@ export default function Home() {
       </div>
 
       {/* ── WHY DOCSY: Numbered section ──────────────────────────────── */}
-      <section className="flex flex-col md:flex-row" style={{ backgroundColor: "#f2f0e3" }}>
+      <section className="flex flex-col md:flex-row" style={{ backgroundColor: "#f2f0e3", ...stickyStyle(3) }}>
 
         {/* Left number column */}
         <div
@@ -185,7 +192,7 @@ export default function Home() {
       </section>
 
       {/* ── SERVICES: Numbered section ───────────────────────────────── */}
-      <section id="services" className="flex flex-col md:flex-row" style={{ backgroundColor: "#f8f7f0" }}>
+      <section id="services" className="flex flex-col md:flex-row" style={{ backgroundColor: "#f8f7f0", ...stickyStyle(4) }}>
 
         <div
           className="hidden md:flex items-start justify-center w-32 py-16 shrink-0"
@@ -268,7 +275,7 @@ export default function Home() {
       {/* ── QUOTE BLOCK ──────────────────────────────────────────────── */}
       <section
         className="px-8 sm:px-16 py-20"
-        style={{ backgroundColor: "#141414" }}
+        style={{ backgroundColor: "#141414", ...stickyStyle(5) }}
       >
         <div className="max-w-4xl mx-auto">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-8">
@@ -293,7 +300,7 @@ export default function Home() {
       {/* ── MEMBERSHIPS TEASER ───────────────────────────────────────── */}
       <section
         className="flex flex-col md:flex-row items-stretch border-t border-neutral-300"
-        style={{ backgroundColor: "#f2f0e3" }}
+        style={{ backgroundColor: "#f2f0e3", ...stickyStyle(6) }}
       >
         <div className="flex-1 px-8 sm:px-16 py-16">
           <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#4A6FA8" }}>

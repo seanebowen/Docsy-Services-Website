@@ -203,3 +203,26 @@
     letter-spacing: -0.01em;
   }
 }
+
+/* ── Promotion ticker ─────────────────────────────────────── */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 28s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Sticky section stack ─────────────────────────────────── */
+.stack-section {
+  position: sticky;
+  /* top is set inline per section to account for navbar+ticker */
+  will-change: transform;
+}
