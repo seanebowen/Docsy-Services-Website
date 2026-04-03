@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronDown, User, LogOut, HelpCircle, MessageSquare } from "lucide-react";
 
-const SLATE = "#4A6FA8";
 const DARK = "#141414";
 
 export function Navbar() {
@@ -50,18 +49,29 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full" style={{ backgroundColor: DARK }}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center shrink-0 -ml-3">
-          <img src="/logo.png" alt="Docsy Notary Services" className="h-11 w-auto" />
+      {/* Desktop layout */}
+      <div className="hidden lg:flex items-center h-20 px-8 relative">
+
+        {/* Center: logo absolutely positioned */}
+        <Link
+          href="/"
+          className="absolute left-1/2 -translate-x-1/2 flex items-center"
+        >
+          <img
+            src="/logo.png"
+            alt="Docsy Notary Services"
+            className="h-14 w-auto"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-7">
+        {/* Right: nav links + CTA (pushed to right) */}
+        <nav className="ml-auto flex items-center gap-6">
           {mainLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-xs font-semibold uppercase tracking-widest transition-colors ${
+              className={`text-xs font-semibold uppercase tracking-widest transition-colors whitespace-nowrap ${
                 isActive(link.href) ? "text-white" : "text-white/50 hover:text-white"
               }`}
             >
@@ -118,10 +128,21 @@ export function Navbar() {
             Book a Service
           </Link>
         </nav>
+      </div>
 
-        {/* Mobile Nav Toggle */}
+      {/* Mobile layout */}
+      <div className="lg:hidden flex items-center justify-between h-16 px-4">
+        {/* Logo centered on mobile */}
+        <Link href="/" className="flex items-center">
+          <img
+            src="/logo.png"
+            alt="Docsy Notary Services"
+            className="h-10 w-auto"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
+        </Link>
         <button
-          className="lg:hidden p-2 -mr-2 text-white/60 hover:text-white"
+          className="p-2 -mr-2 text-white/60 hover:text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
