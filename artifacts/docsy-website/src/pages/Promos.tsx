@@ -90,13 +90,13 @@ export default function Promos() {
       {/* ── BANNER ─────────────────────────────────────────────── */}
       <div
         className="flex items-center justify-between px-8 sm:px-16 py-4"
-        style={{ backgroundColor: "#f0c040" }}
+        style={{ backgroundColor: "#4A6FA8" }}
       >
-        <Tag className="h-4 w-4 text-black shrink-0" />
-        <span className="flex-1 mx-6 text-xs font-black uppercase tracking-[0.25em] text-black text-center">
+        <Tag className="h-4 w-4 text-white shrink-0" />
+        <span className="flex-1 mx-6 text-xs font-black uppercase tracking-[0.25em] text-white text-center">
           All promos apply automatically at booking · No code required
         </span>
-        <Tag className="h-4 w-4 text-black shrink-0" />
+        <Tag className="h-4 w-4 text-white shrink-0" />
       </div>
 
       {/* ── PROMO CARDS ────────────────────────────────────────── */}
