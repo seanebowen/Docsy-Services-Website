@@ -1,26 +1,26 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { 
-  FileText, 
-  MapPin, 
-  Video, 
-  Briefcase, 
-  Globe, 
+  FileText,
+  MapPin,
+  Video,
+  Briefcase,
+  Globe,
   ShieldCheck,
+  ArrowRight,
   CheckCircle2,
   Clock,
-  LayoutDashboard
+  LayoutDashboard,
 } from "lucide-react";
+
+const services = [
+  { icon: Video,       label: "Remote Online Notarization", href: "/ron" },
+  { icon: MapPin,      label: "Mobile Notary",              href: "/mobile-notary" },
+  { icon: FileText,    label: "Loan Signing",               href: "/loan-signing" },
+  { icon: Globe,       label: "Apostille Services",         href: "/apostille" },
+  { icon: Briefcase,   label: "Court Reporting",            href: "/court-reporting" },
+  { icon: ShieldCheck, label: "Safe+ Document Vault",       href: "/memberships" },
+];
 
 export default function Home() {
   React.useEffect(() => {
@@ -29,207 +29,302 @@ export default function Home() {
 
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
+
+      {/* ── HERO: Split-panel ─────────────────────────────────────────── */}
+      <section className="flex flex-col md:flex-row min-h-[92vh]">
+
+        {/* Left cream panel */}
+        <div
+          className="flex flex-col justify-between w-full md:w-[44%] px-8 sm:px-12 py-12"
+          style={{ backgroundColor: "#f2f0e3" }}
+        >
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] mb-10" style={{ color: "#3333FF" }}>
+              Texas Notary Services
+            </p>
+
+            <h1
+              className="text-4xl sm:text-5xl leading-tight mb-6"
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, letterSpacing: "-0.02em" }}
             >
-              Hand us the documents. <br className="hidden md:block" />
+              Hand us the documents.<br />
               Walk away with your sanity.
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-xl md:text-2xl text-muted-foreground mb-8 font-medium"
-            >
-              That's not a tagline. That's literally what happens.
-            </motion.p>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-foreground mb-10 max-w-3xl mx-auto leading-relaxed"
-            >
-              Docsy is a Texas-based full-service document and notary company. We come to you, sign you online, handle your apostille, close your loan, report your deposition, and store your documents — all under one roof. Transparent pricing. Written estimate before every appointment. No hidden fees. No surprise invoices. No agency markup.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <Button size="lg" className="text-lg h-14 px-8" data-testid="btn-book-hero">
-                Book a Service
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg h-14 px-8" asChild data-testid="btn-services-hero">
-                <a href="#services">See What We Do</a>
-              </Button>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+            </h1>
 
-      {/* Why Docsy Section */}
-      <section className="py-24 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">The notary industry has a transparency problem.</h2>
-            <p className="text-xl text-primary-foreground/80 leading-relaxed">
-              Hidden fees. Vague invoices. 'Administrative processing' charges that aren't real. Agents who confirm appointments and then disappear. Agencies that mark up everything and pass the cost to you. Docsy was built to be the thing the industry pretends it already is: straightforward, accountable, and worth booking again.
+            <p className="text-sm leading-relaxed text-neutral-600 mb-8 max-w-sm">
+              Docsy is a Texas-based full-service document and notary company. Transparent pricing. Written estimate before every appointment. No hidden fees. No surprise invoices. No agency markup.
+            </p>
+
+            <Link
+              href="/"
+              className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "#3333FF" }}
+              data-testid="btn-book-hero"
+            >
+              Book a Service <ArrowRight className="h-4 w-4" />
+            </Link>
+
+            <p className="mt-6 text-xs text-neutral-500 uppercase tracking-widest font-semibold">
+              ● Available 7 days · 7 AM – Midnight
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="bg-primary-foreground/10 border-none text-primary-foreground">
-              <CardHeader>
-                <CheckCircle2 className="h-12 w-12 text-primary-foreground/80 mb-4" />
-                <CardTitle className="text-xl">The price you see is the price you pay.</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-primary-foreground/70">
-                  Written estimate before every appointment. If it wasn't in the estimate, it's not on the invoice. That's not a policy — that's just how it works.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-primary-foreground/10 border-none text-primary-foreground">
-              <CardHeader>
-                <Clock className="h-12 w-12 text-primary-foreground/80 mb-4" />
-                <CardTitle className="text-xl">Available when you actually need us.</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-primary-foreground/70">
-                  7 days a week. Early morning to midnight. Same-hour RON available. Because documents don't only need notarizing between 9 and 5.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-primary-foreground/10 border-none text-primary-foreground">
-              <CardHeader>
-                <LayoutDashboard className="h-12 w-12 text-primary-foreground/80 mb-4" />
-                <CardTitle className="text-xl">One call handles everything.</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-primary-foreground/70">
-                  Notary, apostille, loan signing, court reporting, document storage — all of it under one roof. Stop coordinating between four different vendors for one transaction.
-                </p>
-              </CardContent>
-            </Card>
+          {/* Service category list */}
+          <div className="mt-12 border-t border-neutral-300">
+            {services.map((s) => (
+              <Link
+                key={s.label}
+                href={s.href}
+                className="flex items-center gap-4 py-4 border-b border-neutral-300 group"
+              >
+                <s.icon className="h-5 w-5 text-neutral-400 group-hover:text-black transition-colors shrink-0" />
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-600 group-hover:text-black transition-colors">
+                  {s.label}
+                </span>
+                <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-black shrink-0" />
+              </Link>
+            ))}
           </div>
+        </div>
+
+        {/* Right dark panel */}
+        <div
+          className="hidden md:flex flex-col justify-end w-[56%] p-12"
+          style={{ backgroundColor: "#141414" }}
+        >
+          <h2
+            className="text-white leading-none mb-6"
+            style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(3rem, 6vw, 6rem)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            No hidden fees.<br />
+            No runaround.<br />
+            No surprises.
+          </h2>
+          <p className="text-white/40 text-sm uppercase tracking-widest font-semibold max-w-xs">
+            That's not a tagline. That's literally what happens.
+          </p>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section id="services" className="py-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Everything your documents could ever need.</h2>
-            <p className="text-xl text-muted-foreground">
-              None of the things that waste your time.
-            </p>
-          </div>
+      {/* ── BLUE BANNER ───────────────────────────────────────────────── */}
+      <div
+        className="flex items-center justify-between px-8 sm:px-16 py-5"
+        style={{ backgroundColor: "#3333FF" }}
+      >
+        <span className="text-white text-sm font-bold uppercase tracking-[0.2em]">
+          See All Services
+        </span>
+        <div className="flex-1 mx-8 h-px bg-white/30" />
+        <ArrowRight className="h-6 w-6 text-white shrink-0" />
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* ── WHY DOCSY: Numbered section ──────────────────────────────── */}
+      <section className="flex flex-col md:flex-row" style={{ backgroundColor: "#f2f0e3" }}>
+
+        {/* Left number column */}
+        <div
+          className="hidden md:flex items-start justify-center w-32 py-16 shrink-0"
+          style={{ backgroundColor: "#141414" }}
+        >
+          <span
+            className="text-white text-5xl font-black"
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.03em" }}
+          >
+            1:
+          </span>
+        </div>
+
+        {/* Right content */}
+        <div className="flex-1 px-8 sm:px-16 py-16 border-b border-neutral-300">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+            Why Docsy
+          </p>
+          <h2 className="text-4xl sm:text-5xl mb-6 leading-tight">
+            The notary industry has a transparency problem.
+          </h2>
+          <p className="text-base text-neutral-600 leading-relaxed max-w-2xl mb-10">
+            Hidden fees. Vague invoices. 'Administrative processing' charges that aren't real. Agents who confirm appointments and then disappear. Agencies that mark up everything and pass the cost to you.{" "}
+            <span className="bg-yellow-200 px-1">Docsy was built to be the thing</span> the industry pretends it already is:{" "}
+            <span className="bg-yellow-200 px-1">straightforward, accountable, and worth booking again.</span>
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 border border-neutral-300">
             {[
               {
-                icon: Video,
-                title: "Remote Online Notarization",
-                desc: "Sign from anywhere in minutes. Legally binding. Same-hour available.",
-                link: "/ron"
+                icon: CheckCircle2,
+                title: "The price you see is the price you pay.",
+                desc: "Written estimate before every appointment. If it wasn't in the estimate, it's not on the invoice.",
               },
               {
-                icon: MapPin,
-                title: "Mobile Notary",
-                desc: "We come to you. Home, office, hospital, anywhere. 7 days to midnight.",
-                link: "/mobile-notary"
+                icon: Clock,
+                title: "Available when you actually need us.",
+                desc: "7 days a week. Early morning to midnight. Same-hour RON available.",
               },
               {
-                icon: FileText,
-                title: "Loan Signing",
-                desc: "Flat rates. Scanbacks included. Texas HELOC compliant. Every time.",
-                link: "/loan-signing"
+                icon: LayoutDashboard,
+                title: "One call handles everything.",
+                desc: "Notary, apostille, loan signing, court reporting, document storage — all under one roof.",
               },
-              {
-                icon: Globe,
-                title: "Apostille Services",
-                desc: "All-inclusive. State fee in. Scan emailed. Shipping prepped. Done.",
-                link: "/apostille"
-              },
-              {
-                icon: Briefcase,
-                title: "Digital Court Reporting",
-                desc: "Below agency rates. Word index and delivery included. No surprises.",
-                link: "/court-reporting"
-              },
-              {
-                icon: ShieldCheck,
-                title: "Docsy Safe+ Vault",
-                desc: "Encrypted document storage. 90-day free trial with your first order.",
-                link: "/memberships"
-              }
-            ].map((service, i) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+            ].map((item, i) => (
+              <div
+                key={item.title}
+                className={`p-8 ${i < 2 ? "border-b sm:border-b-0 sm:border-r border-neutral-300" : ""}`}
               >
-                <Card className="h-full hover:shadow-md transition-shadow border-border/50 group">
-                  <CardHeader>
-                    <div className="h-12 w-12 rounded-lg bg-secondary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                      <service.icon className="h-6 w-6" />
-                    </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{service.desc}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="link" className="p-0 h-auto" asChild>
-                      <Link href={service.link}>Learn more &rarr;</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </motion.div>
+                <item.icon className="h-8 w-8 mb-5" style={{ color: "#3333FF" }} />
+                <h3 className="text-xl mb-3 leading-tight">{item.title}</h3>
+                <p className="text-sm text-neutral-600 leading-relaxed">{item.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust Block */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-serif italic mb-8 leading-tight">
-              "Docsy clients don't re-explain what an apostille is every time they call. They don't wonder if the price on the phone will match the invoice. They don't have to follow up three times to find out where their transcript is. They book. We handle it. They move on with their life. That's the whole thing."
-            </h2>
+      {/* ── SERVICES: Numbered section ───────────────────────────────── */}
+      <section id="services" className="flex flex-col md:flex-row" style={{ backgroundColor: "#f8f7f0" }}>
+
+        <div
+          className="hidden md:flex items-start justify-center w-32 py-16 shrink-0"
+          style={{ backgroundColor: "#3333FF" }}
+        >
+          <span
+            className="text-white text-5xl font-black"
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.03em" }}
+          >
+            2:
+          </span>
+        </div>
+
+        <div className="flex-1 px-8 sm:px-16 py-16">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+            Services
+          </p>
+          <h2 className="text-4xl sm:text-5xl mb-12 leading-tight">
+            Everything your documents could ever need.
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border border-neutral-300">
+            {[
+              {
+                icon: Video,
+                title: "Remote Online Notarization",
+                desc: "Sign from anywhere in minutes. Legally binding. Same-hour available.",
+                link: "/ron",
+              },
+              {
+                icon: MapPin,
+                title: "Mobile Notary",
+                desc: "We come to you. Home, office, hospital, anywhere. 7 days to midnight.",
+                link: "/mobile-notary",
+              },
+              {
+                icon: FileText,
+                title: "Loan Signing",
+                desc: "Flat rates. Scanbacks included. Texas HELOC compliant. Every time.",
+                link: "/loan-signing",
+              },
+              {
+                icon: Globe,
+                title: "Apostille Services",
+                desc: "All-inclusive. State fee in. Scan emailed. Shipping prepped. Done.",
+                link: "/apostille",
+              },
+              {
+                icon: Briefcase,
+                title: "Digital Court Reporting",
+                desc: "Below agency rates. Word index and delivery included. No surprises.",
+                link: "/court-reporting",
+              },
+              {
+                icon: ShieldCheck,
+                title: "Docsy Safe+ Vault",
+                desc: "Encrypted document storage. 90-day free trial with your first order.",
+                link: "/memberships",
+              },
+            ].map((service, i) => (
+              <Link
+                key={service.title}
+                href={service.link}
+                className={`group block p-8 border-neutral-300 hover:bg-white transition-colors ${
+                  i % 3 !== 2 ? "border-r" : ""
+                } ${i < 3 ? "border-b" : ""}`}
+              >
+                <service.icon className="h-7 w-7 mb-5 text-neutral-400 group-hover:text-black transition-colors" />
+                <h3 className="text-xl mb-2 leading-tight">{service.title}</h3>
+                <p className="text-sm text-neutral-500 leading-relaxed mb-4">{service.desc}</p>
+                <span className="text-xs font-bold uppercase tracking-widest flex items-center gap-2" style={{ color: "#3333FF" }}>
+                  Learn more <ArrowRight className="h-3 w-3" />
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Memberships Teaser */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center bg-card border rounded-2xl p-8 md:p-12 shadow-sm">
-            <ShieldCheck className="h-16 w-16 mx-auto mb-6 text-primary" />
-            <h2 className="text-3xl font-bold mb-4">Use Docsy more than once?</h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              There's a better way to pay for it. Docsy+ memberships start at $15/month — free notarizations, priority scheduling, and discounts across every service division. Built for clients who've realized this isn't going to be a one-time thing.
-            </p>
-            <Button size="lg" asChild data-testid="btn-memberships-teaser">
-              <Link href="/memberships">See Membership Options</Link>
-            </Button>
-          </div>
+      {/* ── QUOTE BLOCK ──────────────────────────────────────────────── */}
+      <section
+        className="px-8 sm:px-16 py-20"
+        style={{ backgroundColor: "#141414" }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-8">
+            The Docsy Promise
+          </p>
+          <blockquote
+            className="text-white leading-tight mb-6"
+            style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(1.8rem, 3.5vw, 3rem)",
+              letterSpacing: "-0.01em",
+            }}
+          >
+            "Docsy clients don't re-explain what an apostille is every time they call. They don't wonder if the price on the phone will match the invoice.{" "}
+            <span style={{ color: "#3333FF" }}>They book. We handle it. They move on with their life.</span>{" "}
+            That's the whole thing."
+          </blockquote>
+        </div>
+      </section>
+
+      {/* ── MEMBERSHIPS TEASER ───────────────────────────────────────── */}
+      <section
+        className="flex flex-col md:flex-row items-stretch border-t border-neutral-300"
+        style={{ backgroundColor: "#f2f0e3" }}
+      >
+        <div className="flex-1 px-8 sm:px-16 py-16">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] mb-4" style={{ color: "#3333FF" }}>
+            Memberships & Safe+
+          </p>
+          <h2 className="text-4xl sm:text-5xl mb-6 leading-tight">
+            Use Docsy more than once?<br />There's a better way to pay.
+          </h2>
+          <p className="text-base text-neutral-600 leading-relaxed mb-10 max-w-xl">
+            Docsy+ memberships start at $15/month — free notarizations, priority scheduling, and discounts across every service division. Built for clients who've realized this isn't going to be a one-time thing.
+          </p>
+          <Link
+            href="/memberships"
+            className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: "#3333FF" }}
+            data-testid="btn-memberships-teaser"
+          >
+            See Membership Options <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div
+          className="hidden md:flex flex-col justify-center w-72 p-12 shrink-0"
+          style={{ backgroundColor: "#3333FF" }}
+        >
+          <ShieldCheck className="h-16 w-16 text-white/30 mb-6" />
+          <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+            Starting at<br />
+            <span className="text-5xl">$15</span><br />
+            per month.
+          </p>
         </div>
       </section>
 

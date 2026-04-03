@@ -1,69 +1,98 @@
 import React from "react";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <footer style={{ backgroundColor: "#141414" }}>
+
+      {/* Blue CTA bar */}
+      <div
+        className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 sm:px-16 py-8 gap-4"
+        style={{ backgroundColor: "#3333FF" }}
+      >
+        <div>
+          <p className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-1 opacity-60">
+            Ready to get started?
+          </p>
+          <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+            Tell us what you need. We'll tell you exactly what it costs.
+          </p>
+        </div>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-3 px-6 py-3 text-xs font-bold uppercase tracking-widest bg-white text-black hover:bg-white/90 transition-colors shrink-0"
+        >
+          Book a Service <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+
+      {/* Main footer grid */}
+      <div className="container mx-auto px-8 sm:px-16 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div className="space-y-4">
-            <Link href="/" className="font-serif text-3xl font-bold tracking-tight block">
-              Docsy
+
+          <div className="space-y-5">
+            <Link href="/" className="block">
+              <img src="/logo.png" alt="Docsy Notary Services" className="h-8 w-auto brightness-0 invert" />
             </Link>
-            <p className="text-primary-foreground/70 text-sm max-w-sm">
+            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               Hand us the documents. Walk away with your sanity.
             </p>
-            <div className="pt-4">
-              <Button variant="secondary" className="gap-2">
-                <MessageCircle className="h-4 w-4" />
-                Text Us Now
-              </Button>
-            </div>
+            <button className="inline-flex items-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-widest border border-white/20 text-white hover:bg-white hover:text-black transition-colors">
+              <MessageCircle className="h-4 w-4" />
+              Text Us Now
+            </button>
           </div>
-          
+
           <div>
-            <h4 className="font-medium mb-4 text-primary-foreground/90">Services</h4>
-            <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><Link href="/ron" className="hover:text-primary-foreground transition-colors">Remote Online Notarization</Link></li>
-              <li><Link href="/mobile-notary" className="hover:text-primary-foreground transition-colors">Mobile Notary</Link></li>
-              <li><Link href="/loan-signing" className="hover:text-primary-foreground transition-colors">Loan Signing</Link></li>
-              <li><Link href="/apostille" className="hover:text-primary-foreground transition-colors">Apostille Services</Link></li>
-              <li><Link href="/court-reporting" className="hover:text-primary-foreground transition-colors">Court Reporting</Link></li>
+            <h4 className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-5">Services</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/ron" className="text-white/40 hover:text-white transition-colors">Remote Online Notarization</Link></li>
+              <li><Link href="/mobile-notary" className="text-white/40 hover:text-white transition-colors">Mobile Notary</Link></li>
+              <li><Link href="/loan-signing" className="text-white/40 hover:text-white transition-colors">Loan Signing</Link></li>
+              <li><Link href="/apostille" className="text-white/40 hover:text-white transition-colors">Apostille Services</Link></li>
+              <li><Link href="/court-reporting" className="text-white/40 hover:text-white transition-colors">Court Reporting</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-medium mb-4 text-primary-foreground/90">Company</h4>
-            <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><Link href="/memberships" className="hover:text-primary-foreground transition-colors">Memberships & Safe+</Link></li>
-              <li><Link href="/faq" className="hover:text-primary-foreground transition-colors">FAQ</Link></li>
-              <li><Link href="/help-center" className="hover:text-primary-foreground transition-colors">Help Center</Link></li>
+            <h4 className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-5">Company</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/memberships" className="text-white/40 hover:text-white transition-colors">Memberships & Safe+</Link></li>
+              <li><Link href="/faq" className="text-white/40 hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link href="/help-center" className="text-white/40 hover:text-white transition-colors">Help Center</Link></li>
             </ul>
           </div>
-          
+
           <div>
-            <h4 className="font-medium mb-4 text-primary-foreground/90">Ready to get started?</h4>
-            <p className="text-sm text-primary-foreground/70 mb-4">
-              Tell us what you need. We'll tell you exactly what it costs, when we can do it, and what you need to bring. No runaround. No waiting on hold.
-            </p>
-            <div className="flex flex-col gap-2">
-              <Button asChild variant="default" className="bg-background text-foreground hover:bg-background/90 w-full justify-start">
-                <Link href="/">Book a Service</Link>
-              </Button>
-              <Button asChild variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 w-full justify-start">
-                <Link href="/">See All Services</Link>
-              </Button>
-            </div>
+            <h4 className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-5">See All Services</h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+                  <ArrowRight className="h-3 w-3" /> Book a Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/help-center" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+                  <ArrowRight className="h-3 w-3" /> Help Center Guides
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+                  <ArrowRight className="h-3 w-3" /> FAQ
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
-        
-        <div className="mt-16 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/50">
-          <p>
-            <strong>Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only. For questions about what a document means, whether it's legally sufficient, or whether it meets a specific requirement — consult a licensed attorney.
+
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <p className="text-white/25 text-xs leading-relaxed max-w-2xl">
+            <strong className="text-white/40">Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only. For questions about what a document means or whether it's legally sufficient — consult a licensed attorney.
           </p>
-          <p className="whitespace-nowrap">&copy; {new Date().getFullYear()} Docsy Notary Services. All rights reserved.</p>
+          <p className="text-white/25 text-xs whitespace-nowrap">
+            &copy; {new Date().getFullYear()} Docsy Notary Services
+          </p>
         </div>
       </div>
     </footer>
