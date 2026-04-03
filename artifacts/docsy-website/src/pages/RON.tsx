@@ -7,11 +7,11 @@ const DARK = "#141414";
 const CREAM = "#f2f0e3";
 
 const HL = ({ children }: { children: React.ReactNode }) => (
-  <span className="bg-yellow-200 text-black px-0.5">{children}</span>
+  <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
 );
 
 const hdStyle: React.CSSProperties = {
-  fontFamily: "'Barlow Condensed', sans-serif",
+  fontFamily: "'Outfit', sans-serif",
   fontWeight: 900,
   letterSpacing: "-0.02em",
   lineHeight: 1.05,
@@ -30,7 +30,7 @@ export default function RON() {
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
           RON · Remote Online Notarization
         </p>
-        <h1 style={{ ...hdStyle, fontSize: "clamp(2.8rem, 5.5vw, 5.5rem)" }} className="text-white mb-6">
+        <h1 style={{ ...hdStyle, fontSize: "clamp(2rem, 4vw, 3.6rem)" }} className="text-white mb-6">
           Get notarized without<br />leaving the couch.
         </h1>
         <p className="text-white/50 text-xl italic mb-6 max-w-lg">

@@ -12,11 +12,11 @@ const DARK = "#141414";
 const CREAM = "#f2f0e3";
 
 const HL = ({ children }: { children: React.ReactNode }) => (
-  <span className="bg-yellow-200 text-black px-0.5">{children}</span>
+  <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
 );
 
 const hdStyle: React.CSSProperties = {
-  fontFamily: "'Barlow Condensed', sans-serif",
+  fontFamily: "'Outfit', sans-serif",
   fontWeight: 900,
   letterSpacing: "-0.02em",
   lineHeight: 1.05,
@@ -107,7 +107,7 @@ export default function FAQ() {
                   >
                     <AccordionTrigger
                       className="text-left font-semibold hover:no-underline py-5 text-base leading-snug"
-                      style={{ fontFamily: "'Barlow', sans-serif" }}
+                      style={{ fontFamily: "'Outfit', sans-serif" }}
                       data-testid={`faq-trigger-${section.category}-${i}`}
                     >
                       {item.q}

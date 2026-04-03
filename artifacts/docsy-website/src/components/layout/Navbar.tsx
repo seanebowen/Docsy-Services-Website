@@ -51,8 +51,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full" style={{ backgroundColor: DARK }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center shrink-0">
-          <img src="/logo.png" alt="Docsy Notary Services" className="h-8 w-auto" />
+        <Link href="/" className="flex items-center shrink-0 -ml-3">
+          <img src="/logo.png" alt="Docsy Notary Services" className="h-11 w-auto" />
         </Link>
 
         {/* Desktop Nav */}

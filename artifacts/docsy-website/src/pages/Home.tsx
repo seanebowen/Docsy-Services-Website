@@ -45,7 +45,7 @@ export default function Home() {
 
             <h1
               className="text-4xl sm:text-5xl leading-tight mb-6"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 900, letterSpacing: "-0.02em" }}
+              style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, letterSpacing: "-0.02em" }}
             >
               Hand us the documents.<br />
               Walk away with your sanity.
@@ -95,7 +95,7 @@ export default function Home() {
           <h2
             className="text-white leading-none mb-6"
             style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
+              fontFamily: "'Outfit', sans-serif",
               fontWeight: 900,
               fontSize: "clamp(3rem, 6vw, 6rem)",
               letterSpacing: "-0.02em",
@@ -133,7 +133,7 @@ export default function Home() {
         >
           <span
             className="text-white text-5xl font-black"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "-0.03em" }}
           >
             1:
           </span>
@@ -193,7 +193,7 @@ export default function Home() {
         >
           <span
             className="text-white text-5xl font-black"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "-0.03em" }}
           >
             2:
           </span>
@@ -277,7 +277,7 @@ export default function Home() {
           <blockquote
             className="text-white leading-tight mb-6"
             style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
+              fontFamily: "'Outfit', sans-serif",
               fontWeight: 800,
               fontSize: "clamp(1.8rem, 3.5vw, 3rem)",
               letterSpacing: "-0.01em",
@@ -320,7 +320,7 @@ export default function Home() {
           style={{ backgroundColor: "#4A6FA8" }}
         >
           <ShieldCheck className="h-16 w-16 text-white/30 mb-6" />
-          <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+          <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
             Starting at<br />
             <span className="text-5xl">$15</span><br />
             per month.

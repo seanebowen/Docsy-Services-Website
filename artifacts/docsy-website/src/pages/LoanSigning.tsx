@@ -6,11 +6,11 @@ const DARK = "#141414";
 const CREAM = "#f2f0e3";
 
 const HL = ({ children }: { children: React.ReactNode }) => (
-  <span className="bg-yellow-200 text-black px-0.5">{children}</span>
+  <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
 );
 
 const hdStyle: React.CSSProperties = {
-  fontFamily: "'Barlow Condensed', sans-serif",
+  fontFamily: "'Outfit', sans-serif",
   fontWeight: 900,
   letterSpacing: "-0.02em",
   lineHeight: 1.05,
