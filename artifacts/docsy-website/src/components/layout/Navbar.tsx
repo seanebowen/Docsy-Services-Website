@@ -16,7 +16,7 @@ const allLinks = [
 ];
 
 const moreLinks = [
-  { href: "/estimate",    label: "Job Estimator", icon: Calculator },
+  { href: "/estimate",    label: "Estimate Your Cost", icon: Calculator },
   { href: "/faq",         label: "FAQ",           icon: HelpCircle },
   { href: "/help-center", label: "Help Center",   icon: MessageSquare },
   { href: "/promos",      label: "Promotions",    icon: Tag },

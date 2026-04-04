@@ -115,7 +115,7 @@ interface CourtState {
 }
 
 function calcRON(s: RONState): number {
-  return 25 + Math.max(0, s.docs - 1) * 10;
+  return 25 + Math.max(0, s.docs - 1) * 5;
 }
 
 function calcMobile(s: MobileState): number {
@@ -130,12 +130,9 @@ function calcLoan(s: LoanState): number {
 }
 
 function calcApostille(s: ApostilleState): number {
-  const basePrices: Record<ApostilleType, Record<ApostilleTurnaround, number>> = {
-    personal:  { standard: 150, nextday: 190, sameday: 225 },
-    business:  { standard: 175, nextday: 215, sameday: 255 },
-    federal:   { standard: 275, nextday: 275, sameday: 275 },
-  };
-  const base = basePrices[s.type][s.turnaround];
+  const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
+  const turnaroundBase: Record<ApostilleTurnaround, number | null> = { standard: null, nextday: 190, sameday: 225 };
+  const base = turnaroundBase[s.turnaround] ?? standardBase[s.type];
   if (s.docs <= 1) return base;
   if (s.docs >= 5) return base + (s.docs - 1) * 90;
   return base + (s.docs - 1) * 100;
@@ -279,7 +276,7 @@ export default function Estimator() {
             <br />
             <span className="font-light text-black/45">before you</span>
             <br />
-            <span className="font-black"><H>book anything.</H></span>
+            <span className="font-black"><H>book.</H></span>
           </h1>
           <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
             Select the services you need. Configure the details. We'll calculate your estimate on the spot — down to the dollar.
@@ -313,7 +310,7 @@ export default function Estimator() {
                     <div className="flex items-center gap-4">
                       <Stepper value={ron.docs} onChange={v => setRon({ docs: v })} />
                       <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                        {ron.docs === 1 ? "$25 flat" : `$25 + ${ron.docs - 1} × $10 additional`}
+                        {ron.docs === 1 ? "$25 flat" : `$25 + ${ron.docs - 1} × $5 additional`}
                       </span>
                     </div>
                   </div>
@@ -428,13 +425,13 @@ export default function Estimator() {
                         />
                         <RadioRow
                           label="Next-Day"
-                          price={apost.type === "personal" ? "$190" : "$215"}
+                          price="$190"
                           selected={apost.turnaround === "nextday"}
                           onClick={() => upA({ turnaround: "nextday" })}
                         />
                         <RadioRow
                           label="Same-Day Rush (order before 10 AM)"
-                          price={apost.type === "personal" ? "$225" : "$255"}
+                          price="$225"
                           selected={apost.turnaround === "sameday"}
                           onClick={() => upA({ turnaround: "sameday" })}
                         />
@@ -599,7 +596,7 @@ export default function Estimator() {
                   <div className="border-t pt-5" style={{ borderColor: DIV }}>
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Estimate Disclaimer</p>
                     <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      This estimate is for planning purposes only and is not a binding quote. Final pricing may vary based on actual document count, travel conditions, session duration, or additional services requested during the appointment — such as extra signers, a late arrival surcharge, or unexpected add-ons. Docsy provides a written estimate before every appointment confirming your final price. No surprises at the door.
+                      This estimate is for planning purposes only and is not a binding quote. Final pricing may vary based on actual document count, travel conditions, session duration, or any additional services requested during the appointment (e.g., extra signers, late arrival surcharges, or add-ons). Docsy provides a written estimate before every appointment confirming your final price — no surprises at the door.
                     </p>
                   </div>
 
