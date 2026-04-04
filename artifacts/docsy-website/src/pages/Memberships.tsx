@@ -1,19 +1,20 @@
 import React from "react";
 import { ArrowRight, CheckCircle2, Shield, Lock, Star, Zap, Building2, BadgeCheck } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 
 const BLUE = "#4A6FA8";
-const DARK = "#141414";
-const CREAM = "#f2f0e3";
+const BG = "#0a0a0a";
+const SURFACE = "#111";
 
 const HL = ({ children }: { children: React.ReactNode }) => (
   <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
 );
 
 const hdStyle: React.CSSProperties = {
-  fontFamily: "'Outfit', sans-serif",
-  fontWeight: 900,
-  letterSpacing: "-0.02em",
-  lineHeight: 1.05,
+  fontFamily: "'Inter', sans-serif",
+  fontWeight: 700,
+  letterSpacing: "-0.03em",
+  lineHeight: 1.1,
 };
 
 export default function Memberships() {
@@ -54,108 +55,112 @@ export default function Memberships() {
     <div className="w-full">
 
       {/* ── HERO ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-20 lg:py-28">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6 flex items-center gap-2">
-          <Lock className="h-4 w-4" /> Docsy Safe+ · Memberships
-        </p>
-        <h1 style={{ ...hdStyle, fontSize: "clamp(2.5rem, 5vw, 5rem)" }} className="text-white mb-8 max-w-4xl">
-          Your documents, stored securely.<br />
-          Accessible whenever you need them.<br />
-          For the rest of your life.
-        </h1>
-        <p className="text-white/70 text-base leading-relaxed max-w-2xl">
-          Encrypted document storage built for notarized and legally signed documents. <HL>Every Docsy appointment uploads automatically.</HL>
-        </p>
+      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-20 lg:py-28">
+        <Reveal>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6 flex items-center gap-2">
+            <Lock className="h-4 w-4" /> Docsy Safe+ · Memberships
+          </p>
+          <h1 style={{ ...hdStyle, fontSize: "clamp(2.5rem, 5vw, 5rem)" }} className="text-white mb-8 max-w-4xl">
+            Your documents, stored securely.<br />
+            Accessible whenever you need them.<br />
+            For the rest of your life.
+          </h1>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="text-white/70 text-base leading-relaxed max-w-2xl">
+            Encrypted document storage built for notarized and legally signed documents. <HL>Every Docsy appointment uploads automatically.</HL>
+          </p>
+        </Reveal>
       </section>
 
       {/* ── BANNER ───────────────────────────────────── */}
       <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
         <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">Docsy Safe+</span>
         <div className="flex-1 mx-8 h-px bg-white/30" />
-        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">01</span>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">[01]</span>
       </div>
 
       {/* ── SECTION 1: Safe+ ─────────────────────────── */}
-      <section style={{ backgroundColor: CREAM }} className="flex flex-col md:flex-row">
-        <div className="hidden md:flex items-start justify-center w-28 py-16 shrink-0" style={{ backgroundColor: DARK }}>
-          <span style={{ ...hdStyle, fontSize: "3rem" }} className="text-white">1:</span>
-        </div>
-        <div className="flex-1 px-8 sm:px-16 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mb-12">
-            <div>
-              <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="mb-4">
-                What is Docsy Safe+?
-              </h2>
-              <p className="text-base text-neutral-600 leading-relaxed mb-4">
-                Docsy Safe+ is an <HL>encrypted, secure document vault</HL> built specifically for notarized, apostilled, and legally signed documents. Every document from every Docsy appointment is uploaded automatically. You can access it from any device, any time, forever.
-              </p>
-              <p className="text-base text-neutral-600 leading-relaxed">
-                <HL>No more "where is that power of attorney we did two years ago."</HL> No more "I know I had a certified copy of that birth certificate somewhere." It's in your vault. It's always in your vault.
-              </p>
-            </div>
-            <div className="border border-neutral-300 p-8">
+      <section style={{ backgroundColor: SURFACE }} className="px-8 sm:px-16 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mb-12">
+          <Reveal>
+            <span className="font-mono text-xs text-[#555] tracking-wider">[01]</span>
+            <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-4 mt-2">
+              What is Docsy Safe+?
+            </h2>
+            <p className="text-base text-[#999] leading-relaxed mb-4">
+              Docsy Safe+ is an <HL>encrypted, secure document vault</HL> built specifically for notarized, apostilled, and legally signed documents. Every document from every Docsy appointment is uploaded automatically. You can access it from any device, any time, forever.
+            </p>
+            <p className="text-base text-[#999] leading-relaxed">
+              <HL>No more "where is that power of attorney we did two years ago."</HL> No more "I know I had a certified copy of that birth certificate somewhere." It's in your vault. It's always in your vault.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="border border-[#222] p-8">
               <div className="flex items-center gap-3 mb-4">
                 <Shield className="h-6 w-6" style={{ color: BLUE }} />
-                <h3 style={{ ...hdStyle, fontSize: "1.4rem" }}>Free 90-day trial — automatically</h3>
+                <h3 style={{ ...hdStyle, fontSize: "1.4rem" }} className="text-white">Free 90-day trial — automatically</h3>
               </div>
-              <p className="text-base text-neutral-600 leading-relaxed mb-4">
+              <p className="text-base text-[#999] leading-relaxed mb-4">
                 Every first apostille or loan signing order comes with a free 90-day Docsy Safe+ trial. <HL>No signup required. No credit card.</HL> It activates automatically.
               </p>
-              <p className="text-sm text-neutral-500">After 90 days, continue for $7/month — or don't. No automatic charge.</p>
+              <p className="text-sm text-[#777]">After 90 days, continue for $7/month — or don't. No automatic charge.</p>
             </div>
-          </div>
+          </Reveal>
+        </div>
 
-          <h3 style={{ ...hdStyle, fontSize: "1.4rem" }} className="mb-5">Safe+ Plans</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-0 border border-neutral-300 max-w-3xl">
+        <Reveal delay={150}>
+          <h3 style={{ ...hdStyle, fontSize: "1.4rem" }} className="text-white mb-5">Safe+ Plans</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-0 border border-[#222] max-w-3xl">
             {safePlans.map((plan, i) => (
-              <div key={plan.label} className={`p-6 text-center ${i < 4 ? "border-r border-neutral-300" : ""}`}>
+              <div key={plan.label} className={`p-6 text-center ${i < 4 ? "border-r border-[#222]" : ""}`}>
                 <div style={{ ...hdStyle, fontSize: "1.5rem", color: BLUE }}>{plan.price}</div>
-                <div className="text-xs font-semibold text-neutral-700 mt-1 mb-1">{plan.label}</div>
-                <div className="text-xs text-neutral-400">{plan.detail}</div>
+                <div className="text-xs font-semibold text-[#ccc] mt-1 mb-1">{plan.label}</div>
+                <div className="text-xs text-[#555]">{plan.detail}</div>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── BANNER 2 ─────────────────────────────────── */}
       <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
         <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">Membership Plans</span>
         <div className="flex-1 mx-8 h-px bg-white/30" />
-        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">02</span>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">[02]</span>
       </div>
 
       {/* ── SECTION 2: Memberships ───────────────────── */}
-      <section style={{ backgroundColor: "#f8f7f0" }} className="flex flex-col md:flex-row">
-        <div className="hidden md:flex items-start justify-center w-28 py-16 shrink-0" style={{ backgroundColor: BLUE }}>
-          <span style={{ ...hdStyle, fontSize: "3rem" }} className="text-white">2:</span>
-        </div>
-        <div className="flex-1 px-8 sm:px-16 py-16">
-          <h2 style={{ ...hdStyle, fontSize: "clamp(1.8rem, 3vw, 2.8rem)" }} className="mb-4">
+      <section style={{ backgroundColor: "#0e0e0e" }} className="px-8 sm:px-16 py-20">
+        <Reveal>
+          <span className="font-mono text-xs text-[#555] tracking-wider">[02]</span>
+          <h2 style={{ ...hdStyle, fontSize: "clamp(1.8rem, 3vw, 2.8rem)" }} className="text-white mb-4 mt-2">
             Use Docsy more than once? There's a tier for that.
           </h2>
-          <p className="text-base text-neutral-600 mb-10 max-w-2xl">
+          <p className="text-base text-[#999] mb-10 max-w-2xl">
             <HL>Membership plans built for clients who've realized this isn't going to be a one-time thing.</HL>
           </p>
+        </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-neutral-300 max-w-4xl mb-12">
+        <Reveal delay={100}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-[#222] max-w-4xl mb-12">
             {membershipTiers.map((tier, i) => (
               <div
                 key={tier.name}
-                className={`p-8 ${i < 2 ? "border-b md:border-b-0 md:border-r border-neutral-300" : ""} ${tier.highlight ? "bg-white relative" : ""}`}
+                className={`p-8 ${i < 2 ? "border-b md:border-b-0 md:border-r border-[#222]" : ""} ${tier.highlight ? "bg-[#1a1a1a] relative" : ""}`}
               >
                 {tier.highlight && (
                   <div className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: BLUE }} />
                 )}
                 <tier.icon className="h-5 w-5 mb-4" style={{ color: BLUE }} />
-                <div style={{ ...hdStyle, fontSize: "1.5rem" }} className="mb-1">{tier.name}</div>
+                <div style={{ ...hdStyle, fontSize: "1.5rem" }} className="text-white mb-1">{tier.name}</div>
                 <div className="flex items-baseline gap-1 mb-6">
                   <span style={{ ...hdStyle, fontSize: "2.5rem", color: BLUE }}>{tier.price}</span>
-                  <span className="text-neutral-500 text-sm">{tier.period}</span>
+                  <span className="text-[#777] text-sm">{tier.period}</span>
                 </div>
                 <ul className="space-y-3">
                   {tier.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-neutral-600">
+                    <li key={f} className="flex items-start gap-2 text-sm text-[#999]">
                       <CheckCircle2 className="h-3.5 w-3.5 shrink-0 mt-0.5" style={{ color: BLUE }} />
                       {f}
                     </li>
@@ -164,36 +169,40 @@ export default function Memberships() {
               </div>
             ))}
           </div>
+        </Reveal>
 
-          <h3 style={{ ...hdStyle, fontSize: "1.5rem" }} className="mb-6">Other membership programs</h3>
-          <div className="space-y-0 border border-neutral-300 max-w-4xl">
+        <Reveal delay={150}>
+          <h3 style={{ ...hdStyle, fontSize: "1.5rem" }} className="text-white mb-6">Other membership programs</h3>
+          <div className="space-y-0 border border-[#222] max-w-4xl">
             {otherTiers.map((tier, i) => (
               <div
                 key={tier.name}
-                className={`flex items-start gap-4 p-6 ${i < 2 ? "border-b border-neutral-300" : ""}`}
+                className={`flex items-start gap-4 p-6 ${i < 2 ? "border-b border-[#222]" : ""}`}
               >
                 <tier.icon className="h-5 w-5 shrink-0 mt-0.5" style={{ color: BLUE }} />
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
-                    <span style={{ ...hdStyle, fontSize: "1.1rem" }}>{tier.name}</span>
+                    <span style={{ ...hdStyle, fontSize: "1.1rem" }} className="text-white">{tier.name}</span>
                     <span className="text-sm font-semibold" style={{ color: BLUE }}>{tier.price}</span>
                   </div>
-                  <p className="text-sm text-neutral-500">{tier.desc}</p>
+                  <p className="text-sm text-[#777]">{tier.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ── DARK CTA ─────────────────────────────────── */}
-      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-        <div>
-          <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
-            Start with a free 90-day Safe+ trial today.
-          </h2>
-          <p className="text-white/50 text-sm">No credit card. No signup. Activates on your first apostille or loan signing.</p>
-        </div>
+      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <Reveal>
+          <div>
+            <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
+              Start with a free 90-day Safe+ trial today.
+            </h2>
+            <p className="text-white/50 text-sm">No credit card. No signup. Activates on your first apostille or loan signing.</p>
+          </div>
+        </Reveal>
         <button
           className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity shrink-0"
           style={{ backgroundColor: BLUE }}

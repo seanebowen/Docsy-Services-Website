@@ -15,6 +15,8 @@ import Memberships from "@/pages/Memberships";
 import FAQ from "@/pages/FAQ";
 import HelpCenter from "@/pages/HelpCenter";
 import Promos from "@/pages/Promos";
+import Login from "@/pages/Login";
+import Verify from "@/pages/Verify";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ function Router() {
       <Route path="/help-center" component={HelpCenter} />
       <Route path="/help-center/:id" component={HelpCenter} />
       <Route path="/promos" component={Promos} />
+      <Route path="/login" component={Login} />
+      <Route path="/verify" component={Verify} />
       <Route component={NotFound} />
     </Switch>
   );

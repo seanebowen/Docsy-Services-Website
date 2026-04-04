@@ -4,9 +4,8 @@ import { ArrowRight, MessageCircle } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: "#141414" }}>
+    <footer style={{ backgroundColor: "#0a0a0a" }}>
 
-      {/* Blue CTA bar */}
       <div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 sm:px-16 py-8 gap-4"
         style={{ backgroundColor: "#4A6FA8" }}
@@ -15,7 +14,7 @@ export function Footer() {
           <p className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-1 opacity-60">
             Ready to get started?
           </p>
-          <p className="text-white text-2xl font-black leading-tight" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+          <p className="text-white text-2xl font-bold leading-tight" style={{ fontFamily: "'Inter', sans-serif", letterSpacing: "-0.02em" }}>
             Tell us what you need. We'll tell you exactly what it costs.
           </p>
         </div>
@@ -27,7 +26,6 @@ export function Footer() {
         </Link>
       </div>
 
-      {/* Main footer grid */}
       <div className="container mx-auto px-8 sm:px-16 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
@@ -61,6 +59,7 @@ export function Footer() {
               <li><Link href="/memberships" className="text-white/40 hover:text-white transition-colors">Memberships & Safe+</Link></li>
               <li><Link href="/faq" className="text-white/40 hover:text-white transition-colors">FAQ</Link></li>
               <li><Link href="/help-center" className="text-white/40 hover:text-white transition-colors">Help Center</Link></li>
+              <li><Link href="/promos" className="text-white/40 hover:text-white transition-colors">Promotions</Link></li>
             </ul>
           </div>
 

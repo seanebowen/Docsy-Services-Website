@@ -396,10 +396,10 @@ const guides = [
 
 function GuideCard({ guide }: { guide: typeof guides[0] }) {
   return (
-    <Link href={`/help-center/${guide.id}`} className="block group border border-neutral-300 bg-white hover:bg-[#f2f0e3] transition-colors p-6 h-full" data-testid={`guide-card-${guide.id}`}>
+    <Link href={`/help-center/${guide.id}`} className="block group border border-[#222] bg-[#111] hover:bg-[#1a1a1a] transition-colors p-6 h-full" data-testid={`guide-card-${guide.id}`}>
       <div className="mb-4" style={{ color: "#4A6FA8" }}>{guide.icon}</div>
-      <h3 className="font-bold text-sm leading-snug mb-3" style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{guide.title}</h3>
-      <p className="text-neutral-500 text-xs leading-relaxed">{guide.desc}</p>
+      <h3 className="font-bold text-sm leading-snug mb-3 text-white" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{guide.title}</h3>
+      <p className="text-[#777] text-xs leading-relaxed">{guide.desc}</p>
       <div className="mt-4 text-xs font-bold uppercase tracking-widest flex items-center gap-1" style={{ color: "#4A6FA8" }}>
         Read guide <span className="ml-1 group-hover:translate-x-1 transition-transform inline-block">→</span>
       </div>
@@ -423,35 +423,35 @@ function GuideArticle({ id }: { id: string }) {
 
   return (
     <div className="w-full">
-      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-16">
+      <section style={{ backgroundColor: "#0a0a0a" }} className="px-8 sm:px-16 py-16">
         <Link href="/help-center" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest mb-8 transition-colors" data-testid="btn-back-help">
           <ChevronLeft className="h-3.5 w-3.5" /> Help Center
         </Link>
         <div className="mb-4" style={{ color: "#4A6FA8" }}>{guide.icon}</div>
-        <h1 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem, 3vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }} className="text-white mb-4 max-w-3xl">
+        <h1 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "clamp(1.6rem, 3vw, 3rem)", letterSpacing: "-0.03em", lineHeight: 1.1 }} className="text-white mb-4 max-w-3xl">
           {guide.title}
         </h1>
         <p className="text-white/60 text-base max-w-xl leading-relaxed">{guide.desc}</p>
       </section>
 
-      <section style={{ backgroundColor: "#f2f0e3" }} className="px-8 sm:px-16 py-16">
-        <div className="max-w-2xl space-y-0 border border-neutral-300">
+      <section style={{ backgroundColor: "#111" }} className="px-8 sm:px-16 py-16">
+        <div className="max-w-2xl space-y-0 border border-[#222]">
           {guide.steps.map((step, i) => (
-            <div key={i} className="flex border-b border-neutral-300 last:border-b-0">
-              <div className="flex items-start justify-center w-16 shrink-0 pt-6 pb-6 border-r border-neutral-300" style={{ backgroundColor: "#4A6FA8" }}>
-                <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: "1.5rem" }} className="text-white">{i + 1}</span>
+            <div key={i} className="flex border-b border-[#222] last:border-b-0">
+              <div className="flex items-start justify-center w-16 shrink-0 pt-6 pb-6 border-r border-[#222]" style={{ backgroundColor: "#4A6FA8" }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1.5rem" }} className="text-white">{i + 1}</span>
               </div>
               <div className="flex-1 p-6">
-                <h3 className="font-semibold mb-2 text-sm" style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{step.title}</h3>
-                <p className="text-neutral-600 text-sm leading-relaxed">{step.body}</p>
+                <h3 className="font-semibold mb-2 text-sm text-white" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem" }}>{step.title}</h3>
+                <p className="text-[#999] text-sm leading-relaxed">{step.body}</p>
               </div>
             </div>
           ))}
         </div>
 
         {guide.note && (
-          <div className="max-w-2xl mt-8 border-l-4 border-neutral-300 pl-6 py-2">
-            <p className="text-neutral-500 text-sm leading-relaxed">{guide.note}</p>
+          <div className="max-w-2xl mt-8 border-l-4 border-[#333] pl-6 py-2">
+            <p className="text-[#777] text-sm leading-relaxed">{guide.note}</p>
           </div>
         )}
       </section>
@@ -480,11 +480,11 @@ export default function HelpCenter() {
     <div className="w-full">
 
       {/* ── HERO ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-20 lg:py-28">
+      <section style={{ backgroundColor: "#0a0a0a" }} className="px-8 sm:px-16 py-20 lg:py-28">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
           Help Center · Step-by-Step Guides
         </p>
-        <h1 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: "clamp(2.5rem, 5vw, 5rem)", letterSpacing: "-0.02em", lineHeight: 1.05 }} className="text-white mb-8 max-w-3xl">
+        <h1 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "clamp(2.5rem, 5vw, 5rem)", letterSpacing: "-0.03em", lineHeight: 1.1 }} className="text-white mb-8 max-w-3xl">
           Guides that actually explain things.
         </h1>
         <p className="text-white/60 text-base leading-relaxed max-w-2xl">
@@ -500,10 +500,10 @@ export default function HelpCenter() {
       </div>
 
       {/* ── GUIDE GRID ───────────────────────────────── */}
-      <section style={{ backgroundColor: "#f2f0e3" }} className="px-8 sm:px-16 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 border border-neutral-300">
+      <section style={{ backgroundColor: "#111" }} className="px-8 sm:px-16 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 border border-[#222]">
           {guides.map((guide, i) => (
-            <div key={guide.id} className={`border-b border-r border-neutral-300 ${i % 4 === 3 ? "border-r-0" : ""} last:border-b-0`}>
+            <div key={guide.id} className={`border-b border-r border-[#222] ${i % 4 === 3 ? "border-r-0" : ""} last:border-b-0`}>
               <GuideCard guide={guide} />
             </div>
           ))}
@@ -511,9 +511,9 @@ export default function HelpCenter() {
       </section>
 
       {/* ── DARK CTA ─────────────────────────────────── */}
-      <section style={{ backgroundColor: "#141414" }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+      <section style={{ backgroundColor: "#0a0a0a" }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
         <div>
-          <h2 style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 900, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", letterSpacing: "-0.02em" }} className="text-white mb-3">
+          <h2 style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", letterSpacing: "-0.03em" }} className="text-white mb-3">
             Didn't find what you need?
           </h2>
           <p className="text-white/50 text-sm">Text us directly and we'll explain it. No runaround.</p>

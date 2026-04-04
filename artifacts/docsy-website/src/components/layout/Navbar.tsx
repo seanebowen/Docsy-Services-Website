@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronDown, User, LogOut, HelpCircle, MessageSquare } from "lucide-react";
 
-const DARK = "#141414";
+const DARK = "#0a0a0a";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);

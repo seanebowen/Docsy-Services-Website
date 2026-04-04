@@ -6,20 +6,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowRight } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 
 const BLUE = "#4A6FA8";
-const DARK = "#141414";
-const CREAM = "#f2f0e3";
+const BG = "#0a0a0a";
+const SURFACE = "#111";
 
 const HL = ({ children }: { children: React.ReactNode }) => (
   <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
 );
 
 const hdStyle: React.CSSProperties = {
-  fontFamily: "'Outfit', sans-serif",
-  fontWeight: 900,
-  letterSpacing: "-0.02em",
-  lineHeight: 1.05,
+  fontFamily: "'Inter', sans-serif",
+  fontWeight: 700,
+  letterSpacing: "-0.03em",
+  lineHeight: 1.1,
 };
 
 const faqs = [
@@ -68,69 +69,77 @@ export default function FAQ() {
     <div className="w-full">
 
       {/* ── HERO ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-20 lg:py-28">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
-          FAQ · Frequently Asked Questions
-        </p>
-        <h1 style={{ ...hdStyle, fontSize: "clamp(2.5rem, 5vw, 5rem)" }} className="text-white mb-8 max-w-3xl">
-          The questions we get asked every day.<br />Answered honestly.
-        </h1>
-        <p className="text-white/60 text-base leading-relaxed max-w-xl">
-          <HL>Real questions. Real answers.</HL> No "please consult a professional for more information" non-answers.
-        </p>
+      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-20 lg:py-28">
+        <Reveal>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
+            FAQ · Frequently Asked Questions
+          </p>
+          <h1 style={{ ...hdStyle, fontSize: "clamp(2.5rem, 5vw, 5rem)" }} className="text-white mb-8 max-w-3xl">
+            The questions we get asked every day.<br />Answered honestly.
+          </h1>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="text-white/60 text-base leading-relaxed max-w-xl">
+            <HL>Real questions. Real answers.</HL> No "please consult a professional for more information" non-answers.
+          </p>
+        </Reveal>
       </section>
 
       {/* ── BANNER ───────────────────────────────────── */}
       <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
         <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">Common Questions</span>
         <div className="flex-1 mx-8 h-px bg-white/30" />
-        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">If your question isn't here, text us →</span>
+        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">If your question isn't here, text us</span>
       </div>
 
       {/* ── FAQ SECTIONS ─────────────────────────────── */}
-      <section style={{ backgroundColor: CREAM }}>
+      <section style={{ backgroundColor: SURFACE }}>
         <div className="max-w-4xl mx-auto px-8 sm:px-16 py-16">
-          {faqs.map((section) => (
-            <div key={section.category} className="mb-14">
-              <h2
-                className="text-xs font-bold uppercase tracking-[0.25em] mb-6 pb-4 border-b border-neutral-300"
-                style={{ color: BLUE }}
-              >
-                {section.category}
-              </h2>
-              <Accordion type="single" collapsible className="space-y-0">
-                {section.items.map((item, i) => (
-                  <AccordionItem
-                    key={i}
-                    value={`${section.category}-${i}`}
-                    className="border-b border-neutral-300 last:border-b-0"
-                  >
-                    <AccordionTrigger
-                      className="text-left font-semibold hover:no-underline py-5 text-base leading-snug"
-                      style={{ fontFamily: "'Outfit', sans-serif" }}
-                      data-testid={`faq-trigger-${section.category}-${i}`}
+          {faqs.map((section, si) => (
+            <Reveal key={section.category} delay={si * 80}>
+              <div className="mb-14">
+                <h2
+                  className="text-xs font-bold uppercase tracking-[0.25em] mb-6 pb-4 border-b border-[#222]"
+                  style={{ color: BLUE }}
+                >
+                  {section.category}
+                </h2>
+                <Accordion type="single" collapsible className="space-y-0">
+                  {section.items.map((item, i) => (
+                    <AccordionItem
+                      key={i}
+                      value={`${section.category}-${i}`}
+                      className="border-b border-[#222] last:border-b-0"
                     >
-                      {item.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-neutral-600 leading-relaxed pb-5 text-sm">
-                      {item.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
+                      <AccordionTrigger
+                        className="text-left font-semibold hover:no-underline py-5 text-base leading-snug text-white"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                        data-testid={`faq-trigger-${section.category}-${i}`}
+                      >
+                        {item.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-[#999] leading-relaxed pb-5 text-sm">
+                        {item.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* ── DARK CTA ─────────────────────────────────── */}
-      <section style={{ backgroundColor: DARK }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-        <div>
-          <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
-            Still have a question?
-          </h2>
-          <p className="text-white/50 text-sm">Text us. We'll tell you straight — no runaround.</p>
-        </div>
+      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <Reveal>
+          <div>
+            <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
+              Still have a question?
+            </h2>
+            <p className="text-white/50 text-sm">Text us. We'll tell you straight — no runaround.</p>
+          </div>
+        </Reveal>
         <button
           className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity shrink-0"
           style={{ backgroundColor: BLUE }}

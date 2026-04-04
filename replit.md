@@ -7,13 +7,15 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 ## Artifacts
 
 - **docsy-website** (`artifacts/docsy-website/`) — Multi-page marketing website for Docsy Notary Services. React + Vite, frontend-only. No backend.
-  - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides)
-  - Stack: React, Vite, Tailwind CSS, framer-motion, wouter (routing), shadcn/ui components
-  - Fonts: Barlow Condensed 900 (headings, all-caps editorial), Barlow 400/600 (body)
-  - Color scheme: cream background (#f2f0e3), near-black (#141414) dark sections, slate blue (#4A6FA8) primary/CTAs, yellow-highlight (#fef08a) for key phrases
-  - Design: BlueNotary-inspired editorial aesthetic — zero border-radius, dark hero sections, numbered sidebar columns, slate-blue banner bars
-  - Navbar: 6 main service tabs + "More ▾" dropdown (FAQ, Help Center, My Account, Sign Out) + "Book a Service" CTA
-  - Logo: `/public/logo.png` (Docsy logo, white via CSS filter on dark backgrounds)
+  - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides), Promos, Login, Verify
+  - Stack: React, Vite, Tailwind CSS, wouter (routing), shadcn/ui components, lucide-react icons
+  - Fonts: Inter (weights 300–900, headings use weight 700 with -0.03em tracking) + JetBrains Mono (bracket numbering)
+  - Color scheme: `#0a0a0a` background, `#111` surface, `#222` borders, `#4A6FA8` primary/CTAs, `#999`/`#777`/`#555` text hierarchy, yellow-highlight for key phrases (`bg-yellow-200 text-black px-1`)
+  - Design: rig.ai-inspired dark tech aesthetic — zero border-radius, Reveal scroll animations, bracket `[01]`/`[02]` section numbering, slate-blue banner dividers, bordered dark cards/tables
+  - Navbar: 3-col flex — left (RON, Mobile Notary, Loan Signing) | center logo (h-14) | right (Apostille, Court Reporting, Memberships, More dropdown, Book a Service); bg `#0a0a0a`
+  - Logo: `/public/logo.png` (Docsy logo, white via CSS filter `brightness(0) invert(1)`)
+  - Custom component: `Reveal.tsx` — IntersectionObserver-based scroll reveal with delay prop
+  - Routes: `/`, `/ron`, `/mobile-notary`, `/apostille`, `/loan-signing`, `/court-reporting`, `/memberships`, `/faq`, `/help-center`, `/help-center/:id`, `/promos`, `/login`, `/verify`
 - **api-server** (`artifacts/api-server/`) — Express 5 backend API server
 
 ## Stack
