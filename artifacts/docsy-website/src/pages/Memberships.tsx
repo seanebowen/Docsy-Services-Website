@@ -13,11 +13,11 @@ const Label = ({ icon, text }: { icon: string; text: string }) => (
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Memberships() {

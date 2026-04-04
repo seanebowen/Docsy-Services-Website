@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -13,11 +14,11 @@ const Label = ({ icon, text }: { icon: string; text: string }) => (
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Apostille() {
@@ -30,27 +31,33 @@ export default function Apostille() {
 
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            <span className="font-black">Your document needs</span>
-            <br />
-            <span className="font-light text-black/45">to work in</span>
-            <br />
-            <span className="font-black"><H>another country.</H></span>
-          </h1>
-          <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-            All-inclusive Texas apostille services. State filing fee, digital scan, and shipping prep included. Personal documents starting at $150.
-          </p>
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-            <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
-              Order Apostille
-            </button>
-            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-apostille">
-              Estimate Your Job →
-            </Link>
-            <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
-              Free Pre-Check
-            </button>
-          </div>
+          <FadeIn delay={0}>
+            <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+              <span className="font-black">Your document needs</span>
+              <br />
+              <span className="font-light text-black/45">to work in</span>
+              <br />
+              <span className="font-black"><H>another country.</H></span>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
+              All-inclusive Texas apostille services. State filing fee, digital scan, and shipping prep included. Personal documents starting at $150.
+            </p>
+          </FadeIn>
+          <FadeIn delay={300}>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+              <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
+                Order Apostille
+              </button>
+              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-apostille">
+                Estimate Your Job →
+              </Link>
+              <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
+                Free Pre-Check
+              </button>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

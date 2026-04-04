@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -13,11 +14,11 @@ const Label = ({ icon, text }: { icon: string; text: string }) => (
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 export default function CourtReporting() {
@@ -30,22 +31,28 @@ export default function CourtReporting() {
 
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            Court reporting without
-            <br />
-            the <HI>decoder ring invoice.</HI>
-          </h1>
-          <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-            Digital court reporting for depositions and legal proceedings. Soniclear certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo">
-              Schedule a Deposition
-            </button>
-            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-request-estimate">
-              Request Estimate
-            </Link>
-          </div>
+          <FadeIn delay={0}>
+            <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+              Court reporting without
+              <br />
+              the <HI>decoder ring invoice.</HI>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
+              Digital court reporting for depositions and legal proceedings. Soniclear certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
+            </p>
+          </FadeIn>
+          <FadeIn delay={300}>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo">
+                Schedule a Deposition
+              </button>
+              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-request-estimate">
+                Request Estimate
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

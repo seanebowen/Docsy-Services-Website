@@ -13,7 +13,7 @@ const Label = ({ icon, text }: { icon: string; text: string }) => (
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 const promos = [

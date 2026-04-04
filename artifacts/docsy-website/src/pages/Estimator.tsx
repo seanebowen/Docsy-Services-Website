@@ -7,7 +7,7 @@ const AMBER = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 /* ─── tiny label pill ─── */
@@ -666,7 +666,7 @@ export default function Estimator() {
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Like what you see?
             <br />
-            <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>Let's make it official.</span>
+            <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>Let's make it official.</span>
           </h2>
           <p className="text-lg text-black/60 mb-8">Written estimate before every appointment. All fees disclosed before you start.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
