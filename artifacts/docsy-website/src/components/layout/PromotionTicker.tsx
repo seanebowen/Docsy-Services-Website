@@ -12,7 +12,7 @@ const items = [
   "·",
   "LUNCH BREAK SEAL — $10 OFF · 11AM–1PM",
   "·",
-  "NIGHT SHIFT SEAL — $10 OFF · 7PM–9PM",
+  "NIGHT SHIFT SEAL — $10 OFF · 9PM–MIDNIGHT",
   "·",
   "SAME-HOUR RON AVAILABLE",
   "·",

@@ -53,9 +53,6 @@ export default function LoanSigning() {
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-loan">
                 Estimate Your Job →
               </Link>
-              <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-brokerlink">
-                BrokerLink™ Info
-              </Link>
             </div>
           </FadeIn>
         </div>
