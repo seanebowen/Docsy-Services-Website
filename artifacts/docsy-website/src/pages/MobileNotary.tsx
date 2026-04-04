@@ -105,7 +105,7 @@ export default function MobileNotary() {
           <div className="text-center mb-14">
             <Label icon="⊞" text="PRICING" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
-              <H>All-in.</H> Written up front.
+              <H>All-in.</H> Know it before you book.
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1e2a3a]">
@@ -127,9 +127,6 @@ export default function MobileNotary() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-white/30 text-center mt-6">
-            <H>Early Route™ (8–10 AM)</H> or <H>Midday Miles™ (1–3 PM)</H>: $10 off your travel fee. Applied automatically at booking.
-          </p>
         </div>
       </section>
 
@@ -140,10 +137,10 @@ export default function MobileNotary() {
             <br />
             <HI>We'll be there.</HI>
           </h2>
-          <p className="text-lg text-black/60 mb-8">7 days · 7 AM to midnight · Written estimate before we start.</p>
-          <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile-cta">
+          <p className="text-lg text-black/60 mb-8">7 days · 7 AM to midnight · Know your price before you book.</p>
+          <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile-cta">
             Book Mobile Visit
-          </button>
+          </Link>
         </div>
       </section>
 

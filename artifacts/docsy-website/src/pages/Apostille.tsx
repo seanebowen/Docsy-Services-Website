@@ -125,7 +125,7 @@ export default function Apostille() {
                 { l: "Bundle (5+ documents)", p: "$90 each" },
                 { l: "State SOS filing fee", p: "Included" },
                 { l: "Digital certified scan", p: "Included" },
-                { l: "90-day Safe+ vault trial", p: "Included" },
+                { l: "30-day Safe+ vault trial", p: "Included" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>

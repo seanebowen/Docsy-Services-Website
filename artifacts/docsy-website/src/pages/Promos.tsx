@@ -51,9 +51,9 @@ const promos = [
   },
   {
     name: "Docsy Safe+ Trial",
-    tag: "FREE 90 DAYS",
-    desc: "With every apostille or loan signing",
-    rule: "No card required. No auto-charge. Activates on first apostille or loan signing order.",
+    tag: "FREE 30 DAYS",
+    desc: "Auto-starts with your first Docsy service",
+    rule: "No card. No signup. Auto-setup when your first service with Docsy completes — unless you opt out. Activates on any service. Cancel anytime.",
   },
 ];
 
@@ -123,7 +123,7 @@ export default function Promos() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>Book with a discount applied.</h2>
-            <p className="text-lg text-black/60 mb-8">Mention the promotion at booking. It'll be in your written estimate.</p>
+            <p className="text-lg text-black/60 mb-8">Mention the promotion at booking. You'll know your exact price before you confirm.</p>
             <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>Get an Estimate</Link>
           </FadeIn>
         </div>

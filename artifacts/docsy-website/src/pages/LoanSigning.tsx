@@ -119,7 +119,7 @@ export default function LoanSigning() {
               { l: "Reverse Mortgage", p: "$225" },
               { l: "Loan Modification", p: "$100" },
               { l: "Scanbacks (refinance + buyer)", p: "Included" },
-              { l: "Docsy Safe+ 90-day trial", p: "Included" },
+              { l: "Docsy Safe+ 30-day trial", p: "Included" },
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
                 <span className="text-sm text-white/60">{row.l}</span>
@@ -127,20 +127,18 @@ export default function LoanSigning() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-white/30 text-center">BrokerLink™ preferred pricing for real estate agents and title companies — $35/month. Flat-rate assignments, fast-track scheduling.</p>
         </div>
       </section>
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Book a signing or ask about BrokerLink™
+            Book a signing.
+            <br />
+            Know your price first.
           </h2>
-          <p className="text-lg text-black/60 mb-8">Written estimate before every appointment. All fees disclosed before you start.</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing-cta">Book a Signing</button>
-            <button className="px-10 py-4 text-base font-bold text-black border-2 border-black" data-testid="btn-brokerlink-cta">BrokerLink™ Info</button>
-          </div>
+          <p className="text-lg text-black/60 mb-8">All fees disclosed before you confirm. No surprises when we hand you the invoice.</p>
+          <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing-cta">Book a Signing</Link>
         </div>
       </section>
 

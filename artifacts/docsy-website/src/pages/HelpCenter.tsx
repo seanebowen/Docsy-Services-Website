@@ -17,7 +17,7 @@ const guides = [
     summary: "Step-by-step guide to booking and completing your first RON appointment.",
     content: [
       { heading: "Step 1 — Check your equipment", body: "You need: a device with a working front-facing camera and microphone (laptop, phone, or tablet), a stable internet connection, a valid unexpired government-issued photo ID, and your document accessible as a file or ready to share on screen." },
-      { heading: "Step 2 — Book your appointment", body: "Text or call Docsy directly. Tell us: what document you need notarized, whether you're available now (same-hour) or need a specific time. You'll get a written estimate before confirming. RON is $25 for the first notarization, $10 for each additional signature in the same session." },
+      { heading: "Step 2 — Book your appointment", body: "Contact Docsy directly. Tell us: what document you need notarized, whether you're available now (same-hour) or need a specific time. You'll know your price before you confirm — always. RON is $25 for the first notarization, $10 for each additional signature in the same session." },
       { heading: "Step 3 — Join the session", body: "Docsy will send a secure video link to your email or phone. Click it at your appointment time. You don't need to install anything — it works in your browser." },
       { heading: "Step 4 — Complete the notarization", body: "The notary will verify your ID on camera. Do NOT sign your document before the session — your signature must happen live in front of the notary. Follow the notary's instructions for signing and dating. The notary will apply the digital seal during the session." },
       { heading: "Step 5 — Receive your documents", body: "You'll receive a certified digital copy via email immediately. If you have Docsy Safe+, the document uploads automatically to your vault." },
@@ -32,7 +32,7 @@ const guides = [
       { heading: "Step 1 — Know your location", body: "Tell us the address where you need the notary to come. This can be your home, office, hospital, nursing home, or any other location in our service area. Travel fees are calculated by distance tier (0–10 mi, 11–25 mi, 26–40 mi, 40+ mi)." },
       { heading: "Step 2 — Have your ID ready", body: "Valid, unexpired, government-issued photo ID. No expired IDs. If your name has changed since the ID was issued, bring proof of the name change too." },
       { heading: "Step 3 — Do NOT pre-sign", body: "This is the most common mistake. Do not sign your document before the notary arrives. Your signature must happen in front of the notary. Don't fill in dates early either — the notary will tell you when and where to sign." },
-      { heading: "Step 4 — Confirm your appointment", body: "You'll receive a written estimate before the appointment is confirmed. Review it. Make sure you understand all fees. Reply to confirm, and we'll be there." },
+      { heading: "Step 4 — Confirm your appointment", body: "You'll know your full price before the appointment is confirmed. Review it. Make sure you understand all fees. Reply to confirm, and we'll be there." },
       { heading: "Step 5 — Complete and pay", body: "The notary will guide you through signing. You'll receive an itemized invoice after. Payment methods: check, ACH/wire (no fee), card (3% fee), Zelle." },
     ],
   },
@@ -69,9 +69,9 @@ const guides = [
     content: [
       { heading: "Statutory Notary Fee", body: "This is the state-regulated notary fee: $10 for the first notarized signature, $1 for each additional signature on the same document. These are set by Texas law and cannot be waived." },
       { heading: "Service Fee", body: "Docsy's fee for the service type: RON session fee, mobile visit coordination, apostille processing, loan signing fee, court reporting appearance fee, etc. This is what varies by service and is itemized separately from the statutory notary fee, as required by law." },
-      { heading: "Travel Fee (mobile only)", body: "Based on your distance tier from the notary. Listed at booking in the written estimate." },
+      { heading: "Travel Fee (mobile only)", body: "Based on your distance tier from the notary. Listed at booking before you confirm." },
       { heading: "Timing Add-Ons", body: "Rush, after-hours, and late-night surcharges — only if applicable. Always disclosed at booking. Never added after the fact." },
-      { heading: "Discounts Applied", body: "If you booked with a promotion (Early Bird, HonorPass, etc.), it appears as a line item discount. The final total matches the written estimate." },
+      { heading: "Discounts Applied", body: "If you booked with a promotion (Early Bird, HonorPass, etc.), it appears as a line item discount. The final total matches the price you saw before booking." },
     ],
   },
   {
@@ -106,7 +106,7 @@ const guides = [
     summary: "Encrypted document storage built for legal documents.",
     content: [
       { heading: "What it is", body: "Docsy Safe+ is an encrypted document vault that automatically stores every document from every Docsy appointment. No uploading required. Every RON notarization, every apostille, every loan signing — stored automatically." },
-      { heading: "Free trial", body: "Every first apostille or loan signing order comes with a free 90-day trial. No credit card. No signup. Activates automatically on order completion. After 90 days, continue for $7/month or stop — no automatic charge." },
+      { heading: "Free trial", body: "Docsy Safe+ starts automatically with your first service — no signup, no credit card required, unless you opt out. 30 days free. After 30 days, continue for $7/month or stop — no automatic charge." },
       { heading: "Access", body: "Access your vault from any device, any time. Share documents directly from your vault. Grant family members access (Family plan). Export any document as a certified PDF." },
       { heading: "Plans", body: "Free (up to 5 docs), Personal $7/month (up to 50 docs), Family $18/month (up to 150 docs, 4 users), Professional $29/month (up to 500 docs), Business/Enterprise (custom pricing, contact Docsy)." },
     ],
@@ -119,7 +119,7 @@ const guides = [
     content: [
       { heading: "Booking", body: "Contact Docsy at least 48 hours before the deposition when possible. Provide: case name, deposition date and time, location or video platform (Zoom, Teams, etc.), names of witnesses, estimated duration, and whether you need a transcript." },
       { heading: "Appearance", body: "The certified digital reporter arrives at least 10 minutes before the scheduled start. For remote depositions, a tech check is included at no charge. The reporter administers the oath, marks exhibits, and manages the transcript record." },
-      { heading: "Transcript delivery", body: "Ordinary (30-day) transcripts are $4.25/page. Rush options available. Word index, certified PDF, and e-transcript are always included. No separate line items for these. Transcripts are delivered via secure portal." },
+      { heading: "Transcript delivery", body: "Ordinary (30-day) transcripts are $4.75/page. Rush options available. Word index, certified PDF, and e-transcript are always included. No separate line items for these. Transcripts are delivered via secure portal." },
       { heading: "Payment", body: "Appearance-only: NET 14, no deposit required. Transcript orders: 50% deposit at scheduling, balance on delivery. Corporate accounts: NET 30 available, contact Docsy." },
     ],
   },
@@ -140,11 +140,11 @@ const guides = [
     id: "safe-plus-trial-faq",
     icon: Package,
     title: "Docsy Safe+ Trial — What You Need to Know",
-    summary: "Exactly how the 90-day trial works.",
+    summary: "Exactly how the 30-day trial works.",
     content: [
-      { heading: "How do I get the trial?", body: "Complete your first apostille or loan signing order with Docsy. The trial activates automatically — no signup, no credit card required." },
-      { heading: "What's included in the trial?", body: "Full Personal plan access (up to 50 documents, 4 users) for 90 days. All documents from your Docsy appointment upload automatically. You can also upload other documents manually." },
-      { heading: "What happens after 90 days?", body: "Nothing automatic. There is no auto-charge. You'll receive a reminder before the trial ends. If you want to continue, choose a plan and subscribe. If you don't, your documents remain accessible in read-only mode for 30 more days, then require a subscription to access." },
+      { heading: "How do I get the trial?", body: "Complete your first service with Docsy. Safe+ activates automatically — no signup, no credit card required. You can opt out before your appointment if you prefer." },
+      { heading: "What's included in the trial?", body: "Full Personal plan access (up to 50 documents, 4 users) for 30 days. All documents from your Docsy appointment upload automatically. You can also upload other documents manually." },
+      { heading: "What happens after 30 days?", body: "Nothing automatic. There is no auto-charge. You'll receive a reminder before the trial ends. If you want to continue, choose a plan and subscribe. If you don't, your documents remain accessible in read-only mode for 30 more days, then require a subscription to access." },
       { heading: "Can I use the trial more than once?", body: "The free trial applies to your first apostille or loan signing order. Repeat orders don't trigger another trial. If you need a trial extension for any reason, contact Docsy." },
     ],
   },
@@ -155,7 +155,7 @@ const guides = [
     summary: "Every payment option and when it applies.",
     content: [
       { heading: "Payment methods", body: "Check (personal or business), ACH/wire transfer (preferred — no processing fee), credit or debit card (3% processing fee, disclosed before charging), and Zelle (no fee)." },
-      { heading: "Written estimates", body: "Every appointment gets a written estimate before the work starts. The invoice total will match the estimate. If it doesn't, call us." },
+      { heading: "Know your price before you book", body: "Every appointment is priced before you confirm. The invoice total will match what you saw at booking. If it doesn't, call us." },
       { heading: "Deposit policy", body: "Court reporting transcript orders: 50% deposit at scheduling. All other services: no deposit required unless specified." },
       { heading: "When is payment due?", body: "For most services: at or immediately after completion. Court reporting appearances: NET 14. Corporate accounts: NET 30 available upon request." },
       { heading: "Itemized invoices", body: "Every invoice separates the statutory notary fee from the service fee, as required by Texas law. All other charges (travel, rush, timing) are listed separately. No bundled mystery fees." },

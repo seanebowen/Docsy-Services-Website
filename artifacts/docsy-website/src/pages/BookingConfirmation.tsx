@@ -105,7 +105,7 @@ export default function BookingConfirmation() {
                   isRON
                     ? "You'll receive an email with your secure RON video session link to join your appointment."
                     : "You'll receive a confirmation email with appointment details and any prep instructions.",
-                  "A written estimate confirming your final price is sent before the appointment — no surprises.",
+                  "Your price is confirmed before the appointment starts. You know what you owe before anyone shows up.",
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="text-xs font-black shrink-0 mt-0.5" style={{ color: BLUE }}>0{i + 1}</span>

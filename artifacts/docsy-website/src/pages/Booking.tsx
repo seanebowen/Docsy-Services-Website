@@ -247,7 +247,7 @@ export default function Booking() {
               </button>
 
               <p className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.22)" }}>
-                Booking is not confirmed until you receive an email from Docsy. Written estimate confirming final price will be sent before your appointment.
+                Booking is not confirmed until you receive an email from Docsy. You know your price before you book — always. Final price confirmed before your appointment starts.
               </p>
             </div>
 

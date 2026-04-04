@@ -33,9 +33,11 @@ export default function CourtReporting() {
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-              Court reporting without
+              We record it.
               <br />
-              the <HI>decoder ring invoice.</HI>
+              You get a bill
+              <br />
+              <HI>you can actually read.</HI>
             </h1>
           </FadeIn>
           <FadeIn delay={160}>
@@ -74,7 +76,7 @@ export default function CourtReporting() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="DOCSY RATE" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
-            <H>$4.25</H>
+            <H>$4.75</H>
           </h2>
           <p className="text-xl font-bold text-white/50 mb-6">per page — standard rate</p>
           <p className="text-lg text-white/40">
@@ -120,7 +122,7 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Appearance Fees</p>
               </div>
               {[
-                { l: "2-Hour Minimum", p: "$275" }, { l: "Half-Day (up to 4 hrs)", p: "$325" },
+                { l: "2-Hour Minimum", p: "$225" }, { l: "Half-Day (up to 4 hrs)", p: "$325" },
                 { l: "Full-Day (up to 8 hrs)", p: "$550" }, { l: "Remote Half-Day", p: "$250" },
                 { l: "Remote Full-Day", p: "$450" }, { l: "Overtime per 30 min", p: "$45" },
               ].map((r) => (
@@ -135,7 +137,7 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Transcript Rates (per page)</p>
               </div>
               {[
-                { l: "Ordinary (30 days)", p: "$4.25" }, { l: "14-Day", p: "$5.00" },
+                { l: "Ordinary (30 days)", p: "$4.75" }, { l: "14-Day", p: "$5.50" },
                 { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.50" },
                 { l: "24-Hour Rush", p: "$7.75" }, { l: "Same-Day", p: "$9.50" },
               ].map((r) => (
@@ -153,11 +155,11 @@ export default function CourtReporting() {
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Book a deposition or request
+            Book a deposition.
             <br />
-            <HI>a written cost estimate.</HI>
+            <HI>Know your price first.</HI>
           </h2>
-          <p className="text-lg text-black/60 mb-8">Same certified reporter every time. No decoder ring required.</p>
+          <p className="text-lg text-black/60 mb-8">Same certified reporter every time. The price you see is the price you pay.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/estimate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo-cta">Schedule a Deposition</Link>
             <Link href="/estimate" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center" data-testid="btn-estimate-cta">Request Estimate</Link>

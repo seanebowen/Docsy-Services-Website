@@ -196,8 +196,8 @@ export default function Memberships() {
 
           <FadeIn delay={0} threshold={0.05}>
             <div className="mt-10 max-w-xl mx-auto border px-6 py-5" style={{ borderColor: DIV }}>
-              <p className="text-sm font-bold text-white mb-1">Free 90-day trial</p>
-              <p className="text-sm text-white/40">Included with every apostille or loan signing order. No credit card. No auto-charge. Activates automatically when your order is complete.</p>
+              <p className="text-sm font-bold text-white mb-1">Free 30-day trial — auto-starts with your first service</p>
+              <p className="text-sm text-white/40">No signup. No credit card. Docsy Safe+ activates automatically when your first service completes — unless you opt out. 30 days free, then $7/month if you choose to continue.</p>
             </div>
           </FadeIn>
         </div>
@@ -208,9 +208,9 @@ export default function Memberships() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-              Start with a free<br />90-day Safe+ trial.
+              Start with a free<br />30-day Safe+ trial.
             </h2>
-            <p className="text-lg text-black/60 mb-8">No credit card. No signup. Activates on your first apostille or loan signing.</p>
+            <p className="text-lg text-black/60 mb-8">No signup ever needed. Auto-starts with your first service with Docsy — unless you opt out.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/estimate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
                 Get an Estimate

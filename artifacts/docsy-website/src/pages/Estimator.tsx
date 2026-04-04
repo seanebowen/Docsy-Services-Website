@@ -150,13 +150,13 @@ function calcApostille(s: ApostilleState): number {
 
 function calcCourt(s: CourtState): number {
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
-    inperson: { "2hr": 275, halfday: 325, fullday: 550 },
-    remote:   { "2hr": 275, halfday: 250, fullday: 450 },
+    inperson: { "2hr": 225, halfday: 325, fullday: 550 },
+    remote:   { "2hr": 225, halfday: 250, fullday: 450 },
   };
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    ordinary: 4.25, "14day": 5.00, "7day": 5.75, "3day": 6.50, "24hr": 7.75, sameday: 9.50,
+    ordinary: 4.75, "14day": 5.50, "7day": 6.00, "3day": 6.75, "24hr": 8.00, sameday: 9.75,
   };
   return appear + s.pages * ratePerPage[s.speed];
 }
@@ -328,12 +328,12 @@ export default function Estimator() {
   };
 
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
-    ["ordinary", "Ordinary (30 days)", "$4.25/pg"],
-    ["14day",    "14-Day",             "$5.00/pg"],
-    ["7day",     "7-Day Expedited",    "$5.75/pg"],
-    ["3day",     "3-Day Rush",         "$6.50/pg"],
-    ["24hr",     "24-Hour Rush",       "$7.75/pg"],
-    ["sameday",  "Same-Day",           "$9.50/pg"],
+    ["ordinary", "Ordinary (30 days)", "$4.75/pg"],
+    ["14day",    "14-Day",             "$5.50/pg"],
+    ["7day",     "7-Day Expedited",    "$6.00/pg"],
+    ["3day",     "3-Day Rush",         "$6.75/pg"],
+    ["24hr",     "24-Hour Rush",       "$8.00/pg"],
+    ["sameday",  "Same-Day",           "$9.75/pg"],
   ];
 
   return (
@@ -388,7 +388,7 @@ export default function Estimator() {
                     </div>
                   </div>
                   <div className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
-                    Same-hour availability, digital certified copy, and 90-day Safe+ trial included at no extra charge.
+                    Same-hour availability, digital certified copy, and 30-day Safe+ trial included at no extra charge.
                   </div>
                 </div>
               </ServiceCard>
@@ -482,7 +482,7 @@ export default function Estimator() {
                     ))}
                   </div>
                   <p className="text-xs font-light mt-3" style={{ color: "rgba(255,255,255,0.2)" }}>
-                    Scanbacks included with Refinance and Buyer Purchase packages. Docsy Safe+ 90-day trial included with all packages.
+                    Scanbacks included with Refinance and Buyer Purchase packages. Docsy Safe+ 30-day trial included with all packages.
                   </p>
                 </div>
               </ServiceCard>
@@ -552,8 +552,8 @@ export default function Estimator() {
               {/* ── Court Reporting ── */}
               <ServiceCard
                 num="05" title="Court Reporting"
-                desc="Soniclear-certified digital court reporter. $4.25/page standard — below agency rates."
-                startingAt="$275"
+                desc="Soniclear-certified digital court reporter. $4.75/page standard — below agency rates."
+                startingAt="$225"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
                 <div className="space-y-6">
@@ -571,7 +571,7 @@ export default function Estimator() {
                     <div className="border" style={{ borderColor: DIV }}>
                       <RadioRow
                         label="2-Hour Minimum"
-                        price="$275"
+                        price="$225"
                         selected={court.duration === "2hr"}
                         onClick={() => upC({ duration: "2hr" })}
                       />
@@ -677,21 +677,13 @@ export default function Estimator() {
                     >
                       Book This Job
                     </button>
-                    <Link
-                      href="/help-center"
-                      className="w-full py-4 text-base font-bold text-center border-2"
-                      style={{ borderColor: "#fff", color: "#fff" }}
-                      data-testid="btn-text-estimate"
-                    >
-                      Text to Schedule
-                    </Link>
                   </div>
 
                   {/* disclaimer */}
                   <div className="border-t pt-5" style={{ borderColor: DIV }}>
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Estimate Disclaimer</p>
                     <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      This estimate is for planning purposes only and is not a binding quote. Final pricing may vary based on actual document count, travel conditions, session duration, or any additional services requested during the appointment (e.g., extra signers, late arrival surcharges, or add-ons). Docsy provides a written estimate before every appointment confirming your final price — no surprises at the door.
+                      This estimate is for planning purposes only. You know your price before you book — always. Final pricing is confirmed before your appointment. Any differences (extra signers, rush changes, travel adjustments) are disclosed before you confirm.
                     </p>
                   </div>
 
@@ -712,15 +704,7 @@ export default function Estimator() {
             <br />
             <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>Let's make it official.</span>
           </h2>
-          <p className="text-lg text-black/60 mb-8">Written estimate before every appointment. All fees disclosed before you start.</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/memberships" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-cta">
-              Book a Service
-            </Link>
-            <Link href="/faq" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center">
-              Still have questions?
-            </Link>
-          </div>
+          <p className="text-lg text-black/60">Know your price before you book. Always.</p>
         </div>
       </section>
 

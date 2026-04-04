@@ -53,9 +53,6 @@ export default function RON() {
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-ron">
                 Estimate Your Job →
               </Link>
-              <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-text-ron">
-                Text to Schedule
-              </Link>
             </div>
           </FadeIn>
         </div>
@@ -111,7 +108,7 @@ export default function RON() {
               { l: "First notarization", p: "$25" },
               { l: "Each additional signature (same session)", p: "$10" },
               { l: "Same-hour availability", p: "Included" },
-              { l: "Docsy Safe+ 90-day trial", p: "Included" },
+              { l: "Docsy Safe+ 30-day trial", p: "Included" },
               { l: "Digital certified copy", p: "Included" },
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
