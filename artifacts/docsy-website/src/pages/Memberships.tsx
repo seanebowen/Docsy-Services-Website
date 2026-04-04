@@ -1,23 +1,23 @@
 import React from "react";
 import { Link } from "wouter";
 
-const BEIGE = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(34, 197, 94, 0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(239, 68, 68, 0.4)", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Memberships() {
@@ -28,7 +28,7 @@ export default function Memberships() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Your documents,
@@ -68,7 +68,7 @@ export default function Memberships() {
           body: "Docsy+ memberships start at $15/month. Free notarizations, priority scheduling, and discounts across every service division. The Docsy Express Pass™ gives you unlimited RON for $49/month. BrokerLink™ is built for real estate agents who need preferred rates without negotiating every assignment.",
         },
       ].map((feat, i) => (
-        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
+        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
           <div className="max-w-2xl mx-auto">
             <Label icon={feat.icon} text={feat.label} />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
@@ -79,13 +79,13 @@ export default function Memberships() {
         </section>
       ))}
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040]">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊞" text="PLANS" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>Safe+ Storage Plans</h2>
           </div>
-          <div className="border border-[#162040] divide-y divide-[#162040] max-w-xl mx-auto mb-16">
+          <div className="border border-[#1e2a3a] divide-y divide-[#1e2a3a] max-w-xl mx-auto mb-16">
             {[
               { l: "Free Tier", p: "Free", note: "Up to 5 documents" },
               { l: "Personal", p: "$7/mo", note: "Up to 50 documents" },
@@ -98,7 +98,7 @@ export default function Memberships() {
                   <p className="text-sm font-semibold text-white">{row.l}</p>
                   <p className="text-xs text-white/30">{row.note}</p>
                 </div>
-                <span className="text-sm font-bold" style={{ color: BEIGE }}>{row.p}</span>
+                <span className="text-sm font-bold" style={{ color: IVORY }}>{row.p}</span>
               </div>
             ))}
           </div>
@@ -107,16 +107,16 @@ export default function Memberships() {
             <Label icon="⊟" text="MEMBERSHIP PLANS" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-4" style={{ letterSpacing: "-0.02em" }}>Docsy+ Tiers</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#162040] max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1e2a3a] max-w-4xl mx-auto">
             {[
               { name: "Docsy+ Starter", price: "$15/mo", features: ["1 free notarization/month (RON or mobile)", "10% off all additional services", "Priority booking queue", "30-day rollover on unused notarization", "20% off Docsy Safe+"] },
               { name: "Docsy+ Pro", price: "$30/mo", features: ["2 free notarizations/month", "15% off all services", "50% off travel fees", "Priority everything — all divisions", "Transcript deposit waived", "35% off Safe+"] },
               { name: "Docsy Express Pass™", price: "$49/mo", features: ["Unlimited RON (fair use)", "Priority queue", "1 free mobile travel/month", "Best value for frequent signers"] },
             ].map((tier) => (
               <div key={tier.name} style={{ backgroundColor: BG }}>
-                <div className="px-8 py-6 border-b border-[#162040]">
+                <div className="px-8 py-6 border-b border-[#1e2a3a]">
                   <p className="text-base font-black text-white mb-1">{tier.name}</p>
-                  <p className="text-2xl font-black" style={{ color: BEIGE }}>{tier.price}</p>
+                  <p className="text-2xl font-black" style={{ color: IVORY }}>{tier.price}</p>
                 </div>
                 <ul className="px-8 py-6 space-y-3">
                   {tier.features.map((f) => (
@@ -128,7 +128,7 @@ export default function Memberships() {
               </div>
             ))}
           </div>
-          <div className="mt-px bg-[#162040]">
+          <div className="mt-px bg-[#1e2a3a]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px">
               {[
                 { name: "BrokerLink™", price: "$35/month", desc: "For real estate agents and brokers. Preferred flat rates, fast-track scheduling." },
@@ -137,7 +137,7 @@ export default function Memberships() {
                 <div key={tier.name} className="px-8 py-6" style={{ backgroundColor: BG }}>
                   <div className="flex justify-between items-baseline mb-2">
                     <p className="text-base font-black text-white">{tier.name}</p>
-                    <p className="text-sm font-bold" style={{ color: BEIGE }}>{tier.price}</p>
+                    <p className="text-sm font-bold" style={{ color: IVORY }}>{tier.price}</p>
                   </div>
                   <p className="text-sm text-white/40">{tier.desc}</p>
                 </div>
@@ -147,7 +147,7 @@ export default function Memberships() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Start with a free 90-day Safe+ trial today.

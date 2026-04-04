@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#D4B896";
+const AMBER = "#C8960A";
 
 const items = [
   "TRANSPARENT PRICING",
@@ -22,7 +22,7 @@ const items = [
 
 export function PromotionTicker() {
   return (
-    <Link href="/promos" className="block w-full overflow-hidden border-b border-[#162040] cursor-pointer group" style={{ backgroundColor: "#0d1b3e" }}>
+    <Link href="/promos" className="block w-full overflow-hidden border-b border-[#1e2a3a] cursor-pointer group" style={{ backgroundColor: "#131929" }}>
       <div className="ticker-overflow h-9 flex items-center">
         <div className="ticker-track flex items-center">
           {[0, 1].map((copy) => (
@@ -31,7 +31,7 @@ export function PromotionTicker() {
                 <span
                   key={j}
                   className="text-xs font-bold uppercase tracking-widest px-4 whitespace-nowrap"
-                  style={{ color: item === "·" ? "rgba(255,255,255,0.2)" : CAROLINA }}
+                  style={{ color: item === "·" ? "rgba(255,255,255,0.15)" : AMBER }}
                 >
                   {item}
                 </span>

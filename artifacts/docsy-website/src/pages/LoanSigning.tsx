@@ -1,22 +1,22 @@
 import React from "react";
 
-const BEIGE = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(34, 197, 94, 0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(239, 68, 68, 0.4)", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 export default function LoanSigning() {
@@ -27,7 +27,7 @@ export default function LoanSigning() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Loan signings done right.
@@ -50,10 +50,10 @@ export default function LoanSigning() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
           <div className="flex justify-center mb-8">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest bg-amber-400 text-black">
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border bg-amber-400 text-black">
               ⚠ TEXAS HELOC
             </span>
           </div>
@@ -62,7 +62,7 @@ export default function LoanSigning() {
             <br />
             warns you about.
           </h2>
-          <p className="text-lg text-white/50 leading-relaxed">
+          <p className="text-lg font-light text-white/50 leading-relaxed">
             Texas law prohibits home equity loan signings at the borrower's residence. Docsy flags every HELOC assignment and confirms a compliant signing location before accepting it. If your signing agent doesn't know this, your closing is at risk.
           </p>
         </div>
@@ -85,24 +85,24 @@ export default function LoanSigning() {
           body: "Scanbacks are included with refinance and buyer packages and returned immediately after the signing is complete. Not in 2 hours. Not end of day. Immediately. Your title team will have them before the borrowers have left the table.",
         },
       ].map((feat, i) => (
-        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
+        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
           <div className="max-w-2xl mx-auto">
             <Label icon={feat.icon} text={feat.label} />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
               {feat.heading}
             </h2>
-            <p className="text-lg text-white/50 leading-relaxed">{feat.body}</p>
+            <p className="text-lg font-light text-white/50 leading-relaxed">{feat.body}</p>
           </div>
         </section>
       ))}
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040]">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊞" text="PRICING" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>Flat rates. Published.</h2>
           </div>
-          <div className="border border-[#162040] divide-y divide-[#162040] max-w-xl mx-auto mb-8">
+          <div className="border border-[#1e2a3a] divide-y divide-[#1e2a3a] max-w-xl mx-auto mb-8">
             {[
               { l: "Refinance Package", p: "$175" },
               { l: "Buyer Purchase Package", p: "$200" },
@@ -115,7 +115,7 @@ export default function LoanSigning() {
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
                 <span className="text-sm text-white/60">{row.l}</span>
-                <span className="text-sm font-bold" style={{ color: BEIGE }}>{row.p}</span>
+                <span className="text-sm font-bold" style={{ color: IVORY }}>{row.p}</span>
               </div>
             ))}
           </div>
@@ -123,7 +123,7 @@ export default function LoanSigning() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Book a signing or ask about BrokerLink™

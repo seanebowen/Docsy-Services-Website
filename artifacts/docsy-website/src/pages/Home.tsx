@@ -1,62 +1,102 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck } from "lucide-react";
 
-const BEIGE = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY  = "#F5EFE6";
+const SLATE  = "#131929";
+const DIV    = "#1e2a3a";
+const AMBER  = "#C8960A";
 
-const Label = ({ icon, text }: { icon: string; text: string }) => (
+const H = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 4px" }}>{children}</span>
+);
+
+const Pill = ({ text, dark }: { text: string; dark?: boolean }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
-      {icon} {text}
+    <span
+      className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border"
+      style={dark
+        ? { borderColor: AMBER, color: AMBER }
+        : { borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.40)" }
+      }
+    >
+      {text}
     </span>
   </div>
 );
 
-const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(34, 197, 94, 0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
-);
+function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone]           = useState(false);
+  const ref                       = useRef<ReturnType<typeof setInterval> | null>(null);
 
-const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(239, 68, 68, 0.4)", color: "#fff", padding: "0 5px" }}>{children}</span>
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    ref.current = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) { clearInterval(ref.current!); setDone(true); }
+    }, speed);
+    return () => { if (ref.current) clearInterval(ref.current); };
+  }, [text, speed]);
+
+  return (
+    <span>
+      {displayed}
+      {!done && <span className="animate-pulse opacity-50">█</span>}
+    </span>
+  );
+}
+
+const NumCard = ({ num, title, body }: { num: string; title: string; body: string }) => (
+  <div
+    className="p-7 border transition-colors hover:bg-white/[0.025]"
+    style={{ borderColor: DIV, backgroundColor: "rgba(255,255,255,0.015)" }}
+  >
+    <p className="font-mono text-xs mb-4 tracking-widest" style={{ color: AMBER }}>[ {num} ]</p>
+    <h3 className="text-xl font-black text-white mb-3 leading-snug" style={{ letterSpacing: "-0.01em" }}>{title}</h3>
+    <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{body}</p>
+  </div>
 );
 
 export default function Home() {
-  React.useEffect(() => {
-    document.title = "Docsy Notary Services | Texas Remote & Mobile Notary";
-  }, []);
+  useEffect(() => { document.title = "Docsy Notary Services | Texas Remote & Mobile Notary"; }, []);
 
   return (
-    <div className="w-full" style={{ backgroundColor: BG }}>
+    <div className="w-full" style={{ backgroundColor: SLATE }}>
 
       {/* ── HERO ───────────────────────────────────────────── */}
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
+          <Pill text="⊙ Texas Notary Services" />
           <h1
-            className="text-[3.2rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[8rem] font-black leading-none text-black mb-8"
+            className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none mb-8"
             style={{ letterSpacing: "-0.03em" }}
           >
-            Hand us the documents.
+            <span className="font-black text-black">Hand us the documents.</span>
             <br />
-            Walk away with
+            <span className="font-light text-black/40">Walk away with</span>
             <br />
-            <HI>your sanity.</HI>
+            <span className="font-black text-black"><H>your sanity.</H></span>
           </h1>
-          <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-            Docsy is a Texas-based full-service notary company. <strong className="text-black">Transparent pricing.</strong> Written estimate before every appointment. No hidden fees. No agency markup.
+          <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
+            Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Written estimate before every appointment.</strong> No hidden fees. No agency markup.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/"
-              className="px-8 py-4 text-base font-bold text-white text-center"
-              style={{ backgroundColor: "#000" }}
+              className="px-8 py-4 text-sm font-bold text-white text-center"
+              style={{ backgroundColor: SLATE }}
               data-testid="btn-book-hero"
             >
               Book a Service
             </Link>
             <Link
               href="#services"
-              className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black"
+              className="px-8 py-4 text-sm font-bold text-center border"
+              style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
             >
               Our Services
             </Link>
@@ -64,110 +104,66 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PROBLEM ────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
-        <div className="max-w-2xl mx-auto">
-          <Label icon="✕" text="THE PROBLEM" />
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            You don't own your notary experience.
-            <br />
-            And you're being <H>charged for it.</H>
-          </h2>
-          <p className="text-lg text-white/50 leading-relaxed">
-            Hidden fees. Vague invoices. Agents who confirm and disappear. Agencies that mark up everything and explain nothing. The notary industry runs on <H>information asymmetry</H> — and it charges you accordingly.
-          </p>
+      {/* ── TYPEWRITER STRIP ────────────────────────────────── */}
+      <div className="px-5 py-3 border-b" style={{ backgroundColor: "#0b1220", borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto flex items-center gap-3 font-mono text-xs" style={{ color: "rgba(255,255,255,0.30)" }}>
+          <span style={{ color: AMBER }}>→</span>
+          <TypewriterLine
+            text="Transparent pricing · Same-hour RON available · Written estimate before every appointment · 7 days a week"
+            speed={36}
+          />
         </div>
-      </section>
+      </div>
 
-      {/* ── OUR APPROACH ──────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
-        <div className="max-w-2xl mx-auto">
-          <Label icon="◎" text="OUR APPROACH" />
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            Purpose beats
-            <br />
-            <H>scale.</H>
-          </h2>
-          <p className="text-lg text-white/50 leading-relaxed">
-            Docsy is not trying to be the biggest notary company. We're trying to be the one you actually <H>trust</H> — because every quote is written up front, every invoice matches the quote, and the person who picks up the phone knows your case.
-          </p>
+      {/* ── NUMBERED FEATURES ───────────────────────────────── */}
+      <section className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-14 text-center">
+            <Pill text="⊙ How Docsy Works" dark />
+            <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
+              The notary service it should<br />
+              <span className="font-light text-white/40">have always been.</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px" style={{ backgroundColor: DIV }}>
+            <NumCard num="01" title="Written estimate before we start." body="You see the full price before anything is signed. Not a range — the exact number. If it wasn't in the estimate, it's not on the invoice." />
+            <NumCard num="02" title="Same-hour RON, same-day mobile." body="Remote Online Notarization available same-hour. Mobile visits same-day. 7 days a week, early morning to midnight. Surcharges disclosed at booking." />
+            <NumCard num="03" title="Six service divisions, one call." body="RON, mobile notary, loan signing, apostille, court reporting, and encrypted vault storage — all under one roof. One contact handles everything." />
+            <NumCard num="04" title="No agency markup. No runaround." body="Docsy is direct-to-client. No middlemen. The statutory notary fee is always separated on your invoice, as required by Texas law." />
+            <NumCard num="05" title="Itemized invoices, always." body="Every charge listed separately — service fee, travel tier, timing surcharge. No bundled mystery fees. No administrative processing line items." />
+            <NumCard num="06" title="Encrypted document storage." body="Every notarized document uploads automatically to your Docsy Safe+ vault. 90-day free trial with your first apostille or loan signing." />
+          </div>
         </div>
-      </section>
-
-      {/* ── FEATURES ─────────────────────────────────────── */}
-      <section id="features" className="border-t border-[#162040]" style={{ backgroundColor: BG }}>
-
-        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
-          <div className="max-w-2xl mx-auto">
-            <Label icon="⊙" text="TRANSPARENT PRICING" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-              Know the price
-              <br />
-              <H>before we start.</H>
-            </h2>
-            <p className="text-lg text-white/50 leading-relaxed">
-              Every appointment gets a <H>written estimate.</H> If it wasn't in the estimate, it's not on the invoice. That's not a policy — that's just how it works. No surprise line items. No 'administrative processing' charges. Ever.
-            </p>
-          </div>
-        </section>
-
-        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
-          <div className="max-w-2xl mx-auto">
-            <Label icon="⏱" text="AVAILABILITY" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-              Remove the
-              <br />
-              <H>waiting.</H>
-            </h2>
-            <p className="text-lg text-white/50 leading-relaxed">
-              <H>Same-hour RON available.</H> Mobile notary visits same-day. 7 days a week, early morning to midnight. After-hours and late-night surcharges are disclosed at booking — not discovered on the invoice.
-            </p>
-          </div>
-        </section>
-
-        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
-          <div className="max-w-2xl mx-auto">
-            <Label icon="⊞" text="ONE STOP" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-              Everything your
-              <br />
-              <H>documents need.</H>
-            </h2>
-            <p className="text-lg text-white/50 leading-relaxed">
-              Remote online notarization. Mobile notary. Loan signing. Apostille. Court reporting. Encrypted vault storage. <H>Six service divisions</H> under one roof. One call handles everything.
-            </p>
-          </div>
-        </section>
       </section>
 
       {/* ── SERVICES GRID ─────────────────────────────────── */}
-      <section id="services" className="py-20 sm:py-24 px-5 border-t border-[#162040]" style={{ backgroundColor: BG }}>
+      <section id="services" className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <Label icon="⊟" text="SERVICES" />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
+            <Pill text="⊟ Services" dark />
+            <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
               Six divisions. <H>One call.</H>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#162040]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
             {[
-              { icon: Video, label: "Remote Online Notarization", desc: "Legally binding. Same-hour available. Anywhere in the US.", href: "/ron" },
-              { icon: MapPin, label: "Mobile Notary", desc: "Home, office, hospital — we come to you. 7 days to midnight.", href: "/mobile-notary" },
-              { icon: FileText, label: "Loan Signing", desc: "Flat rates. Scanbacks included. Texas HELOC compliant.", href: "/loan-signing" },
-              { icon: Globe, label: "Apostille Services", desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
-              { icon: Briefcase, label: "Court Reporting", desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
-              { icon: ShieldCheck, label: "Docsy Safe+ Vault", desc: "Encrypted document storage. 90-day free trial.", href: "/memberships" },
+              { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding. Same-hour available. Anywhere in the US.", href: "/ron" },
+              { icon: MapPin,      label: "Mobile Notary",              desc: "Home, office, hospital — we come to you. 7 days to midnight.", href: "/mobile-notary" },
+              { icon: FileText,    label: "Loan Signing",               desc: "Flat rates. Scanbacks included. Texas HELOC compliant.", href: "/loan-signing" },
+              { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
+              { icon: Briefcase,   label: "Court Reporting",            desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
+              { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted document storage. 90-day free trial.", href: "/memberships" },
             ].map((svc) => (
               <Link
                 key={svc.label}
                 href={svc.href}
-                className="group block p-8 hover:bg-white/[0.03] transition-colors"
-                style={{ backgroundColor: BG }}
+                className="group block p-8 hover:bg-white/[0.04] transition-colors"
+                style={{ backgroundColor: SLATE }}
               >
-                <svc.icon className="h-7 w-7 mb-5 text-white/30 group-hover:text-white/60 transition-colors" />
-                <h3 className="text-lg font-black text-white mb-2 leading-tight">{svc.label}</h3>
-                <p className="text-sm text-white/40 leading-relaxed">{svc.desc}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: BEIGE }}>
+                <svc.icon className="h-5 w-5 mb-5 transition-colors" style={{ color: "rgba(255,255,255,0.22)" }} />
+                <h3 className="text-sm font-black text-white mb-2 uppercase tracking-wide">{svc.label}</h3>
+                <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.40)" }}>{svc.desc}</p>
+                <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.15em]" style={{ color: AMBER }}>
                   Learn more →
                 </p>
               </Link>
@@ -176,17 +172,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MEMBERSHIPS ─────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
+      {/* ── CTA ───────────────────────────────────────────── */}
+      <section className="py-20 sm:py-24 px-5 text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
-          <Label icon="⊛" text="MEMBERSHIPS" />
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            Remove the <H>meter.</H>
+          <Pill text="⊛ Memberships" />
+          <h2 className="text-4xl sm:text-5xl font-black text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+            Remove the meter.
           </h2>
-          <p className="text-lg text-white/50 leading-relaxed mb-10">
-            Docsy+ memberships start at <H>$15/month.</H> Free notarizations, priority scheduling, and discounts across every service division. Use Docsy more than once? There's a tier for that.
+          <p className="text-base font-light mb-10 max-w-lg mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
+            Docsy+ memberships from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month.</strong> Free notarizations, priority scheduling, and discounts across every service division.
           </p>
-          <Link href="/memberships" className="inline-block px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: BEIGE }}>
+          <Link
+            href="/memberships"
+            className="inline-block px-8 py-4 text-sm font-bold text-white"
+            style={{ backgroundColor: SLATE }}
+          >
             See Membership Plans
           </Link>
         </div>

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 export default function Verify() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
@@ -41,7 +41,7 @@ export default function Verify() {
         {!verified ? (
           <>
             <div className="flex justify-center mb-6">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
                 ⊙ VERIFY EMAIL
               </span>
             </div>
@@ -61,7 +61,7 @@ export default function Verify() {
                     onChange={(e) => handleChange(i, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(i, e)}
                     className="w-12 h-14 text-center text-xl font-bold text-white border outline-none transition-colors"
-                    style={{ backgroundColor: "#111", borderColor: error ? "#ef4444" : digit ? CAROLINA : "#222" }}
+                    style={{ backgroundColor: "#111", borderColor: error ? "#ef4444" : digit ? IVORY : "#222" }}
                     data-testid={`code-input-${i}`}
                   />
                 ))}
@@ -70,7 +70,7 @@ export default function Verify() {
               <button
                 type="submit"
                 className="w-full px-5 py-4 text-base font-bold text-black mb-4"
-                style={{ backgroundColor: CAROLINA }}
+                style={{ backgroundColor: IVORY }}
                 data-testid="btn-verify"
               >
                 Verify & Sign In
@@ -84,13 +84,13 @@ export default function Verify() {
         ) : (
           <>
             <div className="flex justify-center mb-6">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
                 ✓ VERIFIED
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>You're in.</h1>
             <p className="text-white/40 text-base mb-10">Your Docsy Safe+ vault is ready.</p>
-            <Link href="/" className="inline-block px-10 py-4 text-base font-bold text-black" style={{ backgroundColor: CAROLINA }}>
+            <Link href="/" className="inline-block px-10 py-4 text-base font-bold text-black" style={{ backgroundColor: IVORY }}>
               Go to Dashboard
             </Link>
           </>

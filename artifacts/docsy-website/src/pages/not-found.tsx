@@ -1,12 +1,12 @@
 import { Link } from "wouter";
 
-const CAROLINA = "#D4B896";
+const IVORY = "#F5EFE6";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center px-5 py-20 text-center" style={{ backgroundColor: "#0d1b3e" }}>
+    <div className="min-h-[80vh] flex flex-col items-center justify-center px-5 py-20 text-center" style={{ backgroundColor: "#131929" }}>
       <div className="flex justify-center mb-8">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+        <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
           ✕ 404
         </span>
       </div>
@@ -17,7 +17,7 @@ export default function NotFound() {
         This page doesn't exist. But your notary does.
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/" className="px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: CAROLINA }}>
+        <Link href="/" className="px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: IVORY }}>
           Back to Home
         </Link>
         <Link href="/help-center" className="px-8 py-4 text-sm font-bold text-white border border-[#222]">

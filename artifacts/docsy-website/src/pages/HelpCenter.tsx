@@ -2,11 +2,11 @@ import React from "react";
 import { Link, useParams } from "wouter";
 import { ChevronLeft, Upload, ScanLine, FileCheck, Video, MapPin, Package, Globe, FileText, Receipt, HelpCircle, FileSignature } from "lucide-react";
 
-const BEIGE = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(239, 68, 68, 0.4)", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 const guides = [
@@ -166,13 +166,13 @@ const guides = [
 function GuideDetail({ guide }: { guide: typeof guides[0] }) {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
-      <div className="border-b border-[#162040] px-5 py-4">
+      <div className="border-b border-[#1e2a3a] px-5 py-4">
         <Link href="/help-center" className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
           <ChevronLeft className="h-4 w-4" /> Back to Help Center
         </Link>
       </div>
 
-      <section className="px-5 pt-14 pb-12 border-b border-[#162040]" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-14 pb-12 border-b border-[#1e2a3a]" style={{ backgroundColor: IVORY }}>
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             {guide.title}
@@ -184,8 +184,8 @@ function GuideDetail({ guide }: { guide: typeof guides[0] }) {
       <section className="px-5 py-16">
         <div className="max-w-3xl mx-auto">
           {guide.content.map((section, i) => (
-            <div key={i} className="border-b border-[#162040] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: BEIGE }}>STEP {String(i + 1).padStart(2, "0")}</p>
+            <div key={i} className="border-b border-[#1e2a3a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: IVORY }}>STEP {String(i + 1).padStart(2, "0")}</p>
               <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
               <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
             </div>
@@ -206,7 +206,7 @@ export default function HelpCenter() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             <HI>Help Center.</HI>
@@ -217,9 +217,9 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      <section className="py-16 px-5 border-t border-[#162040]">
+      <section className="py-16 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#162040]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e2a3a]">
             {guides.map((guide) => (
               <Link
                 key={guide.id}
@@ -231,7 +231,7 @@ export default function HelpCenter() {
                 <guide.icon className="h-6 w-6 mb-5 text-white/25 group-hover:text-white/50 transition-colors" />
                 <h3 className="text-base font-black text-white mb-2 leading-tight group-hover:text-white transition-colors">{guide.title}</h3>
                 <p className="text-sm text-white/35 leading-relaxed">{guide.summary}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: BEIGE }}>
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: IVORY }}>
                   Read guide →
                 </p>
               </Link>
@@ -240,7 +240,7 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Still have a question?

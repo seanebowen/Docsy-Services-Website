@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "wouter";
 
-const BEIGE = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "rgba(239, 68, 68, 0.4)", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
 const promos = [
@@ -35,7 +35,7 @@ export default function Promos() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             <HI>Real discounts.</HI><br />Not gimmicks.
@@ -46,20 +46,20 @@ export default function Promos() {
         </div>
       </section>
 
-      <section className="py-16 px-5 border-t border-[#162040]">
+      <section className="py-16 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊙" text="CURRENT PROMOS" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>All active promotions.</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a]">
             {promos.map((promo) => (
               <div key={promo.name} className="p-8" style={{ backgroundColor: BG }}>
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-black text-white leading-tight">{promo.name}</h3>
-                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ backgroundColor: BEIGE, color: "#000" }}>{promo.tag}</span>
+                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ borderColor: "#C8960A", color: "#C8960A" }}>{promo.tag}</span>
                 </div>
-                <p className="text-sm font-semibold mb-4" style={{ color: BEIGE }}>{promo.desc}</p>
+                <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>{promo.desc}</p>
                 <p className="text-sm text-white/40 leading-relaxed">{promo.rule}</p>
               </div>
             ))}
@@ -67,19 +67,19 @@ export default function Promos() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊟" text="STACKING RULES" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             One time discount at a time.<br />HonorPass™ stacks.
           </h2>
-          <p className="text-lg text-white/50 leading-relaxed">
+          <p className="text-lg font-light text-white/50 leading-relaxed">
             Time-window discounts are mutually exclusive — apply one per appointment. HonorPass™ stacks with any time-window discount. All rules are plainly listed above and applied exactly as written.
           </p>
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>Book with a discount applied.</h2>
           <p className="text-lg text-black/60 mb-8">Mention the promotion at booking. It'll be in your written estimate.</p>

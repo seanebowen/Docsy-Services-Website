@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#D4B896";
-const BG = "#0d1b3e";
+const IVORY = "#F5EFE6";
+const BG = "#131929";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
               ◎ DOCSY SAFE+
             </span>
           </div>
@@ -47,14 +47,14 @@ export default function Login() {
             <button
               type="submit"
               className="w-full px-5 py-4 text-base font-bold text-black transition-opacity hover:opacity-90"
-              style={{ backgroundColor: CAROLINA }}
+              style={{ backgroundColor: IVORY }}
               data-testid="btn-send-link"
             >
               Send Sign-In Link
             </button>
           </form>
         ) : (
-          <div className="text-center border border-[#162040] px-8 py-12" style={{ backgroundColor: "#111" }}>
+          <div className="text-center border border-[#1e2a3a] px-8 py-12" style={{ backgroundColor: "#111" }}>
             <p className="text-4xl font-black text-white mb-2" style={{ letterSpacing: "-0.02em" }}>Check your email.</p>
             <p className="text-white/40 text-sm mt-4">
               We sent a link to <strong className="text-white/60">{email}</strong>. Click it to sign in. The link expires in 15 minutes.
