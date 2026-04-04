@@ -17,6 +17,7 @@ import HelpCenter from "@/pages/HelpCenter";
 import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
+import Estimator from "@/pages/Estimator";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/estimate" component={Estimator} />
       <Route path="/ron" component={RON} />
       <Route path="/mobile-notary" component={MobileNotary} />
       <Route path="/apostille" component={Apostille} />

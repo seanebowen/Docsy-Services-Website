@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -41,9 +42,9 @@ export default function CourtReporting() {
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo">
               Schedule a Deposition
             </button>
-            <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-request-estimate">
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-request-estimate">
               Request Estimate
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -152,7 +153,7 @@ export default function CourtReporting() {
           <p className="text-lg text-black/60 mb-8">Same certified reporter every time. No decoder ring required.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo-cta">Schedule a Deposition</button>
-            <button className="px-10 py-4 text-base font-bold text-black border-2 border-black" data-testid="btn-estimate-cta">Request Estimate</button>
+            <Link href="/estimate" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center" data-testid="btn-estimate-cta">Request Estimate</Link>
           </div>
         </div>
       </section>

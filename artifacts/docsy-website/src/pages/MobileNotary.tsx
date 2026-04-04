@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -43,9 +44,9 @@ export default function MobileNotary() {
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile">
               Book Mobile Visit
             </button>
-            <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-estimate-mobile">
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-estimate-mobile">
               Get an Estimate
-            </button>
+            </Link>
           </div>
         </div>
       </section>
