@@ -33,8 +33,13 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b" style={{ backgroundColor: SLATE, borderColor: DIV }}>
       <div className="flex items-center justify-between h-14 px-5 max-w-7xl mx-auto">
 
-        <Link href="/" className="flex items-center shrink-0">
-          <img src="/logo.png" alt="Docsy" className="h-7 w-auto brightness-0 invert" />
+        <Link href="/" className="flex items-center shrink-0 select-none">
+          <span
+            className="text-[1.6rem] font-black leading-none"
+            style={{ letterSpacing: "-0.04em", color: "#ffffff" }}
+          >
+            docsy<span style={{ color: AMBER }}>.</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-7">
