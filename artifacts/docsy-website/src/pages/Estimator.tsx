@@ -670,9 +670,9 @@ export default function Estimator() {
           </h2>
           <p className="text-lg text-black/60 mb-8">Written estimate before every appointment. All fees disclosed before you start.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-book-cta">
+            <Link href="/memberships" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-cta">
               Book a Service
-            </button>
+            </Link>
             <Link href="/faq" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center">
               Still have questions?
             </Link>

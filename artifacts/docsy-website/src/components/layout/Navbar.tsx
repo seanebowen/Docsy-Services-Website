@@ -38,7 +38,7 @@ export function Navbar() {
             className="text-[1.6rem] font-black leading-none"
             style={{ letterSpacing: "-0.04em", color: "#ffffff" }}
           >
-            docsy<span style={{ color: AMBER, fontWeight: 300, letterSpacing: "-0.02em" }}> services</span>
+            docsy<span style={{ color: AMBER }}>.</span><span style={{ color: AMBER, fontWeight: 300, letterSpacing: "-0.02em" }}> services</span>
           </span>
         </Link>
 
@@ -86,7 +86,7 @@ export function Navbar() {
             Sign In
           </Link>
           <Link
-            href="/"
+            href="/estimate"
             className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] border transition-colors hover:bg-white/10"
             style={{ borderColor: AMBER, color: AMBER }}
             data-testid="btn-book-nav"
@@ -125,7 +125,7 @@ export function Navbar() {
             ))}
             <div className="pt-4">
               <Link
-                href="/"
+                href="/estimate"
                 className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center border"
                 style={{ borderColor: AMBER, color: AMBER }}
               >

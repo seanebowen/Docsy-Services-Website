@@ -47,15 +47,15 @@ export default function Apostille() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
+              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
                 Order Apostille
-              </button>
+              </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-apostille">
                 Estimate Your Job →
               </Link>
-              <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
+              <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
-              </button>
+              </Link>
             </div>
           </FadeIn>
         </div>

@@ -47,9 +47,9 @@ export default function MobileNotary() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile">
+              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile">
                 Book Mobile Visit
-              </button>
+              </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-estimate-mobile">
                 Get an Estimate
               </Link>

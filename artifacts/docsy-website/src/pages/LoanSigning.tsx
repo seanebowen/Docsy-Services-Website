@@ -47,15 +47,15 @@ export default function LoanSigning() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing">
+              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing">
                 Book a Signing
-              </button>
+              </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-loan">
                 Estimate Your Job →
               </Link>
-              <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-brokerlink">
+              <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-brokerlink">
                 BrokerLink™ Info
-              </button>
+              </Link>
             </div>
           </FadeIn>
         </div>

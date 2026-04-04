@@ -101,7 +101,7 @@ export default function Home() {
           <FadeIn delay={320}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <Link
-                href="/"
+                href="/estimate"
                 className="px-8 py-4 text-sm font-bold text-white text-center"
                 style={{ backgroundColor: SLATE }}
                 data-testid="btn-book-hero"
