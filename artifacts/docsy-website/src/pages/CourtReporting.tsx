@@ -1,14 +1,22 @@
 import React from "react";
 
-const CAROLINA = "#4B9CD3";
+const MUSTARD = "#E5A020";
 const BG = "#0a0a0a";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
+);
+
+const H = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+);
+
+const HI = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function CourtReporting() {
@@ -19,17 +27,15 @@ export default function CourtReporting() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Court reporting without
             <br />
-            the decoder ring
-            <br />
-            invoice.
+            the <HI>decoder ring invoice.</HI>
           </h1>
           <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-            Digital court reporting for depositions and legal proceedings. Soniclear certified. Below agency rates. Word index, certified PDF, and delivery always included.
+            Digital court reporting for depositions and legal proceedings. Soniclear certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo">
@@ -46,10 +52,12 @@ export default function CourtReporting() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="THE PROBLEM" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            What agencies don't want you to compare.
+            What agencies don't want
+            <br />
+            you to <H>compare.</H>
           </h2>
           <p className="text-lg text-white/50 leading-relaxed">
-            Agencies charge $5–$7.50+ per page for ordinary transcripts, then add word index fees, litigation package fees, e-delivery surcharges, vault hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying 2–3× the advertised page rate.
+            Agencies charge $5–$7.50+ per page for ordinary transcripts, then add <H>word index fees</H>, litigation package fees, e-delivery surcharges, vault hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying <H>2–3× the advertised page rate.</H>
           </p>
         </div>
       </section>
@@ -58,11 +66,11 @@ export default function CourtReporting() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="DOCSY RATE" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
-            $4.25
+            <H>$4.25</H>
           </h2>
           <p className="text-xl font-bold text-white/50 mb-6">per page — standard rate</p>
           <p className="text-lg text-white/40">
-            Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. That's the standard rate.
+            Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. <H>That's the standard rate.</H>
           </p>
         </div>
       </section>
@@ -71,7 +79,7 @@ export default function CourtReporting() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
             <div className="p-10" style={{ backgroundColor: BG }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: CAROLINA }}>✓ Always included at Docsy</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: MUSTARD }}>✓ Always included at Docsy</p>
               <ul className="space-y-3 text-sm text-white/60">
                 {["Word index", "Certified PDF", "E-transcript ASCII file", "Digital delivery via portal", "Oath administration", "Exhibit marking and logging", "Pre-deposition tech check (remote)"].map((item) => (
                   <li key={item} className="flex items-start gap-2"><span className="text-white/20">—</span> {item}</li>
@@ -94,7 +102,9 @@ export default function CourtReporting() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊟" text="RATES" />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>Appearance & transcript rates.</h2>
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
+              Appearance & <H>transcript rates.</H>
+            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a] max-w-3xl mx-auto">
             <div style={{ backgroundColor: BG }}>
@@ -108,7 +118,7 @@ export default function CourtReporting() {
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: CAROLINA }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
                 </div>
               ))}
             </div>
@@ -123,7 +133,7 @@ export default function CourtReporting() {
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: CAROLINA }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
                 </div>
               ))}
             </div>
@@ -132,10 +142,12 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Book a deposition or request a written cost estimate.
+            Book a deposition or request
+            <br />
+            <HI>a written cost estimate.</HI>
           </h2>
           <p className="text-lg text-black/60 mb-8">Same certified reporter every time. No decoder ring required.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

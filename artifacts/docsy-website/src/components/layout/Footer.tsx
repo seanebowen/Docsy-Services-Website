@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const CAROLINA = "#E5A020";
 
 export function Footer() {
   return (

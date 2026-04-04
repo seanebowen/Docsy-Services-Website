@@ -1,15 +1,23 @@
 import React from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const MUSTARD = "#E5A020";
 const BG = "#0a0a0a";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
+);
+
+const H = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+);
+
+const HI = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Memberships() {
@@ -20,12 +28,12 @@ export default function Memberships() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Your documents,
             <br />
-            stored securely.
+            <HI>stored securely.</HI>
             <br />
             For the rest of your life.
           </h1>
@@ -90,7 +98,7 @@ export default function Memberships() {
                   <p className="text-sm font-semibold text-white">{row.l}</p>
                   <p className="text-xs text-white/30">{row.note}</p>
                 </div>
-                <span className="text-sm font-bold" style={{ color: CAROLINA }}>{row.p}</span>
+                <span className="text-sm font-bold" style={{ color: MUSTARD }}>{row.p}</span>
               </div>
             ))}
           </div>
@@ -108,7 +116,7 @@ export default function Memberships() {
               <div key={tier.name} style={{ backgroundColor: BG }}>
                 <div className="px-8 py-6 border-b border-[#1a1a1a]">
                   <p className="text-base font-black text-white mb-1">{tier.name}</p>
-                  <p className="text-2xl font-black" style={{ color: CAROLINA }}>{tier.price}</p>
+                  <p className="text-2xl font-black" style={{ color: MUSTARD }}>{tier.price}</p>
                 </div>
                 <ul className="px-8 py-6 space-y-3">
                   {tier.features.map((f) => (
@@ -129,7 +137,7 @@ export default function Memberships() {
                 <div key={tier.name} className="px-8 py-6" style={{ backgroundColor: BG }}>
                   <div className="flex justify-between items-baseline mb-2">
                     <p className="text-base font-black text-white">{tier.name}</p>
-                    <p className="text-sm font-bold" style={{ color: CAROLINA }}>{tier.price}</p>
+                    <p className="text-sm font-bold" style={{ color: MUSTARD }}>{tier.price}</p>
                   </div>
                   <p className="text-sm text-white/40">{tier.desc}</p>
                 </div>
@@ -139,7 +147,7 @@ export default function Memberships() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Start with a free 90-day Safe+ trial today.

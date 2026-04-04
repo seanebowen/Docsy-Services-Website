@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, HelpCircle, MessageSquare, Tag, ChevronDown } from "lucide-react";
 
 const BG = "#0a0a0a";
-const CAROLINA = "#4B9CD3";
+const CAROLINA = "#E5A020";
 
 const allLinks = [
   { href: "/ron", label: "RON" },

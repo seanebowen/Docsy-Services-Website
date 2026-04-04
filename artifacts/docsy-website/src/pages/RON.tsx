@@ -1,15 +1,23 @@
 import React from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const MUSTARD = "#E5A020";
 const BG = "#0a0a0a";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
+);
+
+const H = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+);
+
+const HI = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function RON() {
@@ -20,17 +28,17 @@ export default function RON() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Get notarized
             <br />
             without leaving
             <br />
-            the couch.
+            <HI>the couch.</HI>
           </h1>
           <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-            Remote Online Notarization — legally binding, secure, done in under 15 minutes. Available same-hour, 7 days a week, anywhere in the US.
+            Remote Online Notarization — legally binding, secure, done in <strong className="text-black">under 15 minutes.</strong> Available same-hour, 7 days a week, anywhere in the US.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-ron">
@@ -47,10 +55,10 @@ export default function RON() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="RON EXPLAINED" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            What is RON — and when can you use it?
+            What is RON — and <H>when can you use it?</H>
           </h2>
           <p className="text-lg text-white/50 leading-relaxed">
-            You get notarized online, via live video, without being in the same room as the notary. Fully legal in Texas and about 45 other US states. You sign, we witness, your document is notarized — all without leaving wherever you are.
+            You get notarized online, via <H>live video</H>, without being in the same room as the notary. Fully legal in Texas and about 45 other US states. You sign, we witness, your document is notarized — all without leaving wherever you are.
           </p>
         </div>
       </section>
@@ -59,7 +67,7 @@ export default function RON() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
             <div className="p-10" style={{ backgroundColor: BG }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: CAROLINA }}>✓ Works great for RON</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: MUSTARD }}>✓ Works great for RON</p>
               <ul className="space-y-3 text-sm text-white/60">
                 {["Powers of attorney", "Affidavits and sworn statements", "Real estate documents (most types)", "Business agreements", "Medical authorizations", "Vehicle titles (many types)"].map((item) => (
                   <li key={item} className="flex items-start gap-2">
@@ -86,7 +94,7 @@ export default function RON() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="PRICING" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-10" style={{ letterSpacing: "-0.02em" }}>
-            All in. No surprises.
+            <H>All in.</H> No surprises.
           </h2>
           <div className="text-left border border-[#1a1a1a] divide-y divide-[#1a1a1a] mb-8">
             {[
@@ -98,35 +106,46 @@ export default function RON() {
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
                 <span className="text-sm text-white/60">{row.l}</span>
-                <span className="text-sm font-bold" style={{ color: CAROLINA }}>{row.p}</span>
+                <span className="text-sm font-bold" style={{ color: MUSTARD }}>{row.p}</span>
               </div>
             ))}
           </div>
           <p className="text-sm text-white/30 leading-relaxed">
-            Written estimate before every appointment. If it wasn't in the estimate, it's not on the invoice.
+            <H>Written estimate before every appointment.</H> If it wasn't in the estimate, it's not on the invoice.
           </p>
         </div>
       </section>
 
-      {[
-        { icon: "⊙", label: "TECH REQUIREMENTS", heading: "What you need.", body: "A device with a working front-facing camera and microphone. A stable internet connection. A valid, unexpired government-issued photo ID. Your document accessible as a file or ready to share on screen. That's it." },
-        { icon: "⏱", label: "AVAILABILITY", heading: "Same-hour.\nEvery day.", body: "RON is available same-hour, 7 days a week. Midnight appointments are a real thing. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard." },
-      ].map((feat, i) => (
-        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
-          <div className="max-w-2xl mx-auto">
-            <Label icon={feat.icon} text={feat.label} />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
-              {feat.heading}
-            </h2>
-            <p className="text-lg text-white/50 leading-relaxed">{feat.body}</p>
-          </div>
-        </section>
-      ))}
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+        <div className="max-w-2xl mx-auto">
+          <Label icon="⊙" text="TECH REQUIREMENTS" />
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
+            What you <H>need.</H>
+          </h2>
+          <p className="text-lg text-white/50 leading-relaxed">
+            A device with a working front-facing camera and microphone. A stable internet connection. A <H>valid, unexpired government-issued photo ID.</H> Your document accessible as a file or ready to share on screen. That's it.
+          </p>
+        </div>
+      </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+        <div className="max-w-2xl mx-auto">
+          <Label icon="⏱" text="AVAILABILITY" />
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
+            Same-hour.
+            <br />
+            <H>Every day.</H>
+          </h2>
+          <p className="text-lg text-white/50 leading-relaxed">
+            RON is available same-hour, <H>7 days a week.</H> Midnight appointments are a real thing. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Ready to get notarized right now?
+            Ready to get notarized <HI>right now?</HI>
           </h2>
           <p className="text-lg text-black/60 mb-8">Same-hour available. You'll be done before lunch.</p>
           <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-book-ron-cta">

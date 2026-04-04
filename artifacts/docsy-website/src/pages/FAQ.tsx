@@ -2,15 +2,19 @@ import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const MUSTARD = "#E5A020";
 const BG = "#0a0a0a";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
+);
+
+const HI = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 const faqs = [
@@ -58,14 +62,14 @@ export default function FAQ() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             The questions we
             <br />
             get asked every day.
             <br />
-            Answered honestly.
+            <HI>Answered honestly.</HI>
           </h1>
           <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
             Real questions. Real answers. No "please consult a professional for more information" non-answers.
@@ -77,7 +81,7 @@ export default function FAQ() {
         <div className="max-w-3xl mx-auto">
           {faqs.map((section, si) => (
             <div key={section.category} className="mb-16">
-              <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#1a1a1a]" style={{ color: CAROLINA }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#1a1a1a]" style={{ color: MUSTARD }}>
                 {section.category}
               </p>
               <Accordion type="single" collapsible>
@@ -104,7 +108,7 @@ export default function FAQ() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Still have a question?

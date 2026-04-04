@@ -2,8 +2,12 @@ import React from "react";
 import { Link, useParams } from "wouter";
 import { ChevronLeft, Upload, ScanLine, FileCheck, Video, MapPin, Package, Globe, FileText, Receipt, HelpCircle, FileSignature } from "lucide-react";
 
-const CAROLINA = "#4B9CD3";
+const MUSTARD = "#E5A020";
 const BG = "#0a0a0a";
+
+const HI = ({ children }: { children: React.ReactNode }) => (
+  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+);
 
 const guides = [
   {
@@ -168,7 +172,7 @@ function GuideDetail({ guide }: { guide: typeof guides[0] }) {
         </Link>
       </div>
 
-      <section className="px-5 pt-14 pb-12 border-b border-[#1a1a1a]" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-14 pb-12 border-b border-[#1a1a1a]" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             {guide.title}
@@ -181,7 +185,7 @@ function GuideDetail({ guide }: { guide: typeof guides[0] }) {
         <div className="max-w-3xl mx-auto">
           {guide.content.map((section, i) => (
             <div key={i} className="border-b border-[#1a1a1a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: CAROLINA }}>STEP {String(i + 1).padStart(2, "0")}</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: MUSTARD }}>STEP {String(i + 1).padStart(2, "0")}</p>
               <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
               <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
             </div>
@@ -202,10 +206,10 @@ export default function HelpCenter() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            Help Center.
+            <HI>Help Center.</HI>
           </h1>
           <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
             Step-by-step guides for every Docsy service. Plain language. No runaround.
@@ -227,7 +231,7 @@ export default function HelpCenter() {
                 <guide.icon className="h-6 w-6 mb-5 text-white/25 group-hover:text-white/50 transition-colors" />
                 <h3 className="text-base font-black text-white mb-2 leading-tight group-hover:text-white transition-colors">{guide.title}</h3>
                 <p className="text-sm text-white/35 leading-relaxed">{guide.summary}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: CAROLINA }}>
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: MUSTARD }}>
                   Read guide →
                 </p>
               </Link>
@@ -236,7 +240,7 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Still have a question?

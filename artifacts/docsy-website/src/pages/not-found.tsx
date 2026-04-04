@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const CAROLINA = "#E5A020";
 
 export default function NotFound() {
   return (

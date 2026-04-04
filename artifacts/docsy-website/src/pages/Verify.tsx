@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#4B9CD3";
+const CAROLINA = "#E5A020";
 const BG = "#0a0a0a";
 
 export default function Verify() {
