@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, HelpCircle, MessageSquare, Tag, ChevronDown } from "lucide-react";
 
-const BG = "#0a0a0a";
-const CAROLINA = "#E5A020";
+const BG = "#0d1b3e";
+const CAROLINA = "#D4B896";
 
 const allLinks = [
   { href: "/ron", label: "RON" },
@@ -31,7 +31,7 @@ export function Navbar() {
   }, [location]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+    <header className="sticky top-0 z-50 w-full border-b border-[#162040]" style={{ backgroundColor: BG }}>
       <div className="flex items-center justify-between h-14 px-5 max-w-7xl mx-auto">
 
         <Link href="/" className="flex items-center shrink-0">
@@ -66,7 +66,7 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-3 px-4 py-3 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors border-b border-[#1a1a1a] last:border-b-0"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors border-b border-[#162040] last:border-b-0"
                   >
                     <link.icon className="h-3.5 w-3.5" /> {link.label}
                   </Link>
@@ -103,13 +103,13 @@ export function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden border-t border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+        <div className="md:hidden border-t border-[#162040]" style={{ backgroundColor: BG }}>
           <nav className="px-5 py-4 flex flex-col">
             {allLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="py-3 text-sm font-medium border-b border-[#1a1a1a] last:border-b-0"
+                className="py-3 text-sm font-medium border-b border-[#162040] last:border-b-0"
                 style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.50)" }}
               >
                 {link.label}
@@ -119,7 +119,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="py-3 text-sm font-medium border-b border-[#1a1a1a] last:border-b-0"
+                className="py-3 text-sm font-medium border-b border-[#162040] last:border-b-0"
                 style={{ color: "rgba(255,255,255,0.40)" }}
               >
                 {link.label}

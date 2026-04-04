@@ -57,7 +57,7 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --color-carolina: #E5A020;
+  --color-carolina: #D4B896;
 
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-serif: 'DM Sans', system-ui, sans-serif;
@@ -147,7 +147,7 @@
   }
   body {
     @apply font-sans antialiased;
-    background-color: #0a0a0a;
+    background-color: #0d1b3e;
     color: #ffffff;
   }
   h1, h2, h3, h4, h5, h6 {

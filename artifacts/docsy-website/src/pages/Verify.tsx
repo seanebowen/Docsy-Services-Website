@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#E5A020";
-const BG = "#0a0a0a";
+const CAROLINA = "#D4B896";
+const BG = "#0d1b3e";
 
 export default function Verify() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);

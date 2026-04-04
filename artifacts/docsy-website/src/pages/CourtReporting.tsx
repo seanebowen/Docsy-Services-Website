@@ -1,22 +1,22 @@
 import React from "react";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#22c55e", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function CourtReporting() {
@@ -27,7 +27,7 @@ export default function CourtReporting() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Court reporting without
@@ -48,7 +48,7 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="THE PROBLEM" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -62,7 +62,7 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="DOCSY RATE" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
@@ -75,11 +75,11 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="border-t border-[#1a1a1a]">
+      <section className="border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040]">
             <div className="p-10" style={{ backgroundColor: BG }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: MUSTARD }}>✓ Always included at Docsy</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: BEIGE }}>✓ Always included at Docsy</p>
               <ul className="space-y-3 text-sm text-white/60">
                 {["Word index", "Certified PDF", "E-transcript ASCII file", "Digital delivery via portal", "Oath administration", "Exhibit marking and logging", "Pre-deposition tech check (remote)"].map((item) => (
                   <li key={item} className="flex items-start gap-2"><span className="text-white/20">—</span> {item}</li>
@@ -98,7 +98,7 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a]">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊟" text="RATES" />
@@ -106,9 +106,9 @@ export default function CourtReporting() {
               Appearance & <H>transcript rates.</H>
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a] max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040] max-w-3xl mx-auto">
             <div style={{ backgroundColor: BG }}>
-              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+              <div className="px-8 py-5 border-b border-[#162040]">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Appearance Fees</p>
               </div>
               {[
@@ -116,14 +116,14 @@ export default function CourtReporting() {
                 { l: "Full-Day (up to 8 hrs)", p: "$550" }, { l: "Remote Half-Day", p: "$250" },
                 { l: "Remote Full-Day", p: "$450" }, { l: "Overtime per 30 min", p: "$45" },
               ].map((r) => (
-                <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#162040] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: BEIGE }}>{r.p}</span>
                 </div>
               ))}
             </div>
             <div style={{ backgroundColor: BG }}>
-              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+              <div className="px-8 py-5 border-b border-[#162040]">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Transcript Rates (per page)</p>
               </div>
               {[
@@ -131,9 +131,9 @@ export default function CourtReporting() {
                 { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.50" },
                 { l: "24-Hour Rush", p: "$7.75" }, { l: "Same-Day", p: "$9.50" },
               ].map((r) => (
-                <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#162040] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: BEIGE }}>{r.p}</span>
                 </div>
               ))}
             </div>
@@ -142,7 +142,7 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Book a deposition or request

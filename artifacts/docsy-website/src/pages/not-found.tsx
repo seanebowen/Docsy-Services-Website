@@ -1,10 +1,10 @@
 import { Link } from "wouter";
 
-const CAROLINA = "#E5A020";
+const CAROLINA = "#D4B896";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center px-5 py-20 text-center" style={{ backgroundColor: "#0a0a0a" }}>
+    <div className="min-h-[80vh] flex flex-col items-center justify-center px-5 py-20 text-center" style={{ backgroundColor: "#0d1b3e" }}>
       <div className="flex justify-center mb-8">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
           ✕ 404

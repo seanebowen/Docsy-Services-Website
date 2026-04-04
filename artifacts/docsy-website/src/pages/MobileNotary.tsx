@@ -1,22 +1,22 @@
 import React from "react";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#22c55e", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function MobileNotary() {
@@ -27,7 +27,7 @@ export default function MobileNotary() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             We come to you.
@@ -48,7 +48,7 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="WHERE WE GO" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -62,7 +62,7 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="✕" text="WHAT NOT TO DO" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -76,7 +76,7 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⏱" text="AVAILABILITY" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -90,7 +90,7 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a]">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊞" text="PRICING" />
@@ -98,20 +98,20 @@ export default function MobileNotary() {
               <H>All-in.</H> Written up front.
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1a1a1a]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#162040]">
             {[
               { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
               { title: "Timing Add-Ons", items: [{ l: "Rush within 2 hours", p: "+$35" }, { l: "After-hours (after 6 PM)", p: "+$20" }, { l: "Late night (10 PM–midnight)", p: "+$35" }, { l: "Weekend / holiday", p: "+$25" }] },
             ].map((col) => (
               <div key={col.title} style={{ backgroundColor: BG }}>
-                <div className="px-8 py-5 border-b border-[#1a1a1a]">
+                <div className="px-8 py-5 border-b border-[#162040]">
                   <p className="text-xs font-bold uppercase tracking-widest text-white/30">{col.title}</p>
                 </div>
                 {col.items.map((r) => (
-                  <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                  <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#162040] last:border-b-0">
                     <span className="text-sm text-white/60">{r.l}</span>
-                    <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
+                    <span className="text-sm font-bold" style={{ color: BEIGE }}>{r.p}</span>
                   </div>
                 ))}
               </div>
@@ -123,7 +123,7 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Tell us where you are.

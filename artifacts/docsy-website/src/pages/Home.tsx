@@ -2,23 +2,23 @@ import React from "react";
 import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck } from "lucide-react";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#22c55e", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Home() {
@@ -30,7 +30,7 @@ export default function Home() {
     <div className="w-full" style={{ backgroundColor: BG }}>
 
       {/* ── HERO ───────────────────────────────────────────── */}
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1
             className="text-[3.2rem] sm:text-[5rem] md:text-[6.5rem] lg:text-[8rem] font-black leading-none text-black mb-8"
@@ -65,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* ── PROBLEM ────────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
         <div className="max-w-2xl mx-auto">
           <Label icon="✕" text="THE PROBLEM" />
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -80,7 +80,7 @@ export default function Home() {
       </section>
 
       {/* ── OUR APPROACH ──────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
         <div className="max-w-2xl mx-auto">
           <Label icon="◎" text="OUR APPROACH" />
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -95,9 +95,9 @@ export default function Home() {
       </section>
 
       {/* ── FEATURES ─────────────────────────────────────── */}
-      <section id="features" className="border-t border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+      <section id="features" className="border-t border-[#162040]" style={{ backgroundColor: BG }}>
 
-        <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
           <div className="max-w-2xl mx-auto">
             <Label icon="⊙" text="TRANSPARENT PRICING" />
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -111,7 +111,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
           <div className="max-w-2xl mx-auto">
             <Label icon="⏱" text="AVAILABILITY" />
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -125,7 +125,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+        <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
           <div className="max-w-2xl mx-auto">
             <Label icon="⊞" text="ONE STOP" />
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -141,7 +141,7 @@ export default function Home() {
       </section>
 
       {/* ── SERVICES GRID ─────────────────────────────────── */}
-      <section id="services" className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+      <section id="services" className="py-20 sm:py-24 px-5 border-t border-[#162040]" style={{ backgroundColor: BG }}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊟" text="SERVICES" />
@@ -149,7 +149,7 @@ export default function Home() {
               Six divisions. <H>One call.</H>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1a1a1a]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#162040]">
             {[
               { icon: Video, label: "Remote Online Notarization", desc: "Legally binding. Same-hour available. Anywhere in the US.", href: "/ron" },
               { icon: MapPin, label: "Mobile Notary", desc: "Home, office, hospital — we come to you. 7 days to midnight.", href: "/mobile-notary" },
@@ -167,7 +167,7 @@ export default function Home() {
                 <svc.icon className="h-7 w-7 mb-5 text-white/30 group-hover:text-white/60 transition-colors" />
                 <h3 className="text-lg font-black text-white mb-2 leading-tight">{svc.label}</h3>
                 <p className="text-sm text-white/40 leading-relaxed">{svc.desc}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: MUSTARD }}>
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: BEIGE }}>
                   Learn more →
                 </p>
               </Link>
@@ -177,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* ── MEMBERSHIPS ─────────────────────────────────────── */}
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: BG }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BG }}>
         <div className="max-w-2xl mx-auto">
           <Label icon="⊛" text="MEMBERSHIPS" />
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -186,7 +186,7 @@ export default function Home() {
           <p className="text-lg text-white/50 leading-relaxed mb-10">
             Docsy+ memberships start at <H>$15/month.</H> Free notarizations, priority scheduling, and discounts across every service division. Use Docsy more than once? There's a tier for that.
           </p>
-          <Link href="/memberships" className="inline-block px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: MUSTARD }}>
+          <Link href="/memberships" className="inline-block px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: BEIGE }}>
             See Membership Plans
           </Link>
         </div>

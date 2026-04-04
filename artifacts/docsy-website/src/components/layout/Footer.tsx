@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#E5A020";
+const CAROLINA = "#D4B896";
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#1a1a1a]" style={{ backgroundColor: "#0a0a0a" }}>
+    <footer className="border-t border-[#162040]" style={{ backgroundColor: "#0d1b3e" }}>
 
-      <div className="py-16 px-5 border-b border-[#1a1a1a] text-center">
+      <div className="py-16 px-5 border-b border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <div className="flex justify-center mb-8">
             <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
@@ -85,7 +85,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#1a1a1a] pt-8 flex flex-col md:flex-row justify-between items-start gap-4">
+        <div className="border-t border-[#162040] pt-8 flex flex-col md:flex-row justify-between items-start gap-4">
           <p className="text-xs text-white/20 leading-relaxed max-w-2xl">
             <strong className="text-white/30">Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
           </p>

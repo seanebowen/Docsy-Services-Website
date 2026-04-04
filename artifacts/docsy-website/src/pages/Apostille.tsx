@@ -1,22 +1,22 @@
 import React from "react";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#22c55e", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function Apostille() {
@@ -27,7 +27,7 @@ export default function Apostille() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Your document needs
@@ -67,7 +67,7 @@ export default function Apostille() {
           body: "Texas apostilles can only be placed on Texas-origin documents or documents notarized by a Texas notary. Originals only — photocopies, scans, and laminated documents cannot be apostilled. If you're not sure what qualifies, use the free Pre-Check before sending anything.",
         },
       ].map((feat, i) => (
-        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
           <div className="max-w-2xl mx-auto">
             <Label icon={feat.icon} text={feat.label} />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
@@ -78,7 +78,7 @@ export default function Apostille() {
         </section>
       ))}
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a]">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊞" text="PRICING" />
@@ -86,9 +86,9 @@ export default function Apostille() {
               All-inclusive. No agency markup.
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a] max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040] max-w-3xl mx-auto">
             <div style={{ backgroundColor: BG }}>
-              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+              <div className="px-8 py-5 border-b border-[#162040]">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Texas Apostille</p>
               </div>
               {[
@@ -98,14 +98,14 @@ export default function Apostille() {
                 { l: "Next-Day", p: "$190" },
                 { l: "Same-Day Rush (before 10 AM)", p: "$225" },
               ].map((r) => (
-                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#162040] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: BEIGE }}>{r.p}</span>
                 </div>
               ))}
             </div>
             <div style={{ backgroundColor: BG }}>
-              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+              <div className="px-8 py-5 border-b border-[#162040]">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Federal / Multi-Document</p>
               </div>
               {[
@@ -116,9 +116,9 @@ export default function Apostille() {
                 { l: "Digital certified scan", p: "Included" },
                 { l: "90-day Safe+ vault trial", p: "Included" },
               ].map((r) => (
-                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#162040] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
-                  <span className="text-sm font-bold" style={{ color: MUSTARD }}>{r.p}</span>
+                  <span className="text-sm font-bold" style={{ color: BEIGE }}>{r.p}</span>
                 </div>
               ))}
             </div>
@@ -126,7 +126,7 @@ export default function Apostille() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Not sure if your document qualifies?

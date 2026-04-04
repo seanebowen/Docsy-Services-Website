@@ -1,23 +1,23 @@
 import React from "react";
 import { Link } from "wouter";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const H = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: MUSTARD, color: "#000", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#22c55e", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 export default function RON() {
@@ -28,7 +28,7 @@ export default function RON() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             Get notarized
@@ -51,7 +51,7 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="RON EXPLAINED" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -63,11 +63,11 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="border-t border-[#1a1a1a]">
+      <section className="border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040]">
             <div className="p-10" style={{ backgroundColor: BG }}>
-              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: MUSTARD }}>✓ Works great for RON</p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: BEIGE }}>✓ Works great for RON</p>
               <ul className="space-y-3 text-sm text-white/60">
                 {["Powers of attorney", "Affidavits and sworn statements", "Real estate documents (most types)", "Business agreements", "Medical authorizations", "Vehicle titles (many types)"].map((item) => (
                   <li key={item} className="flex items-start gap-2">
@@ -90,13 +90,13 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="PRICING" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-10" style={{ letterSpacing: "-0.02em" }}>
             <H>All in.</H> No surprises.
           </h2>
-          <div className="text-left border border-[#1a1a1a] divide-y divide-[#1a1a1a] mb-8">
+          <div className="text-left border border-[#162040] divide-y divide-[#162040] mb-8">
             {[
               { l: "First notarization", p: "$25" },
               { l: "Each additional signature (same session)", p: "$10" },
@@ -106,7 +106,7 @@ export default function RON() {
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
                 <span className="text-sm text-white/60">{row.l}</span>
-                <span className="text-sm font-bold" style={{ color: MUSTARD }}>{row.p}</span>
+                <span className="text-sm font-bold" style={{ color: BEIGE }}>{row.p}</span>
               </div>
             ))}
           </div>
@@ -116,7 +116,7 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="TECH REQUIREMENTS" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -128,7 +128,7 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⏱" text="AVAILABILITY" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
@@ -142,7 +142,7 @@ export default function RON() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Ready to get notarized <HI>right now?</HI>

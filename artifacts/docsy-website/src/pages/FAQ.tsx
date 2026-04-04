@@ -2,19 +2,19 @@ import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Link } from "wouter";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 const faqs = [
@@ -62,7 +62,7 @@ export default function FAQ() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             The questions we
@@ -77,11 +77,11 @@ export default function FAQ() {
         </div>
       </section>
 
-      <section className="py-16 px-5 border-t border-[#1a1a1a]">
+      <section className="py-16 px-5 border-t border-[#162040]">
         <div className="max-w-3xl mx-auto">
           {faqs.map((section, si) => (
             <div key={section.category} className="mb-16">
-              <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#1a1a1a]" style={{ color: MUSTARD }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#162040]" style={{ color: BEIGE }}>
                 {section.category}
               </p>
               <Accordion type="single" collapsible>
@@ -89,7 +89,7 @@ export default function FAQ() {
                   <AccordionItem
                     key={i}
                     value={`${section.category}-${i}`}
-                    className="border-b border-[#1a1a1a] last:border-b-0"
+                    className="border-b border-[#162040] last:border-b-0"
                   >
                     <AccordionTrigger
                       className="text-left text-base sm:text-lg font-bold py-5 text-white hover:no-underline hover:text-white"
@@ -108,7 +108,7 @@ export default function FAQ() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             Still have a question?

@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "wouter";
 
-const MUSTARD = "#E5A020";
-const BG = "#0a0a0a";
+const BEIGE = "#D4B896";
+const BG = "#0d1b3e";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: MUSTARD, color: "#000" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: BEIGE, color: "#000" }}>
       {icon} {text}
     </span>
   </div>
 );
 
 const HI = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ backgroundColor: "#000", color: "#fff", padding: "0 5px" }}>{children}</span>
+  <span style={{ backgroundColor: "#ef4444", color: "#fff", padding: "0 5px" }}>{children}</span>
 );
 
 const promos = [
@@ -35,7 +35,7 @@ export default function Promos() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: MUSTARD }}>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
             <HI>Real discounts.</HI><br />Not gimmicks.
@@ -46,20 +46,20 @@ export default function Promos() {
         </div>
       </section>
 
-      <section className="py-16 px-5 border-t border-[#1a1a1a]">
+      <section className="py-16 px-5 border-t border-[#162040]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Label icon="⊙" text="CURRENT PROMOS" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>All active promotions.</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#162040]">
             {promos.map((promo) => (
               <div key={promo.name} className="p-8" style={{ backgroundColor: BG }}>
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-black text-white leading-tight">{promo.name}</h3>
-                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ backgroundColor: MUSTARD, color: "#000" }}>{promo.tag}</span>
+                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ backgroundColor: BEIGE, color: "#000" }}>{promo.tag}</span>
                 </div>
-                <p className="text-sm font-semibold mb-4" style={{ color: MUSTARD }}>{promo.desc}</p>
+                <p className="text-sm font-semibold mb-4" style={{ color: BEIGE }}>{promo.desc}</p>
                 <p className="text-sm text-white/40 leading-relaxed">{promo.rule}</p>
               </div>
             ))}
@@ -67,7 +67,7 @@ export default function Promos() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center">
         <div className="max-w-2xl mx-auto">
           <Label icon="⊟" text="STACKING RULES" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
@@ -79,7 +79,7 @@ export default function Promos() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: MUSTARD }}>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#162040] text-center" style={{ backgroundColor: BEIGE }}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>Book with a discount applied.</h2>
           <p className="text-lg text-black/60 mb-8">Mention the promotion at booking. It'll be in your written estimate.</p>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
 
-const CAROLINA = "#E5A020";
-const BG = "#0a0a0a";
+const CAROLINA = "#D4B896";
+const BG = "#0d1b3e";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -54,7 +54,7 @@ export default function Login() {
             </button>
           </form>
         ) : (
-          <div className="text-center border border-[#1a1a1a] px-8 py-12" style={{ backgroundColor: "#111" }}>
+          <div className="text-center border border-[#162040] px-8 py-12" style={{ backgroundColor: "#111" }}>
             <p className="text-4xl font-black text-white mb-2" style={{ letterSpacing: "-0.02em" }}>Check your email.</p>
             <p className="text-white/40 text-sm mt-4">
               We sent a link to <strong className="text-white/60">{email}</strong>. Click it to sign in. The link expires in 15 minutes.
