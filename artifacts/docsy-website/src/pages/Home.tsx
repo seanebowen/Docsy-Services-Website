@@ -5,7 +5,7 @@ import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck } from "lucide-r
 const IVORY  = "#F5EFE6";
 const SLATE  = "#131929";
 const DIV    = "#1e2a3a";
-const AMBER  = "#C8960A";
+const AMBER  = "#4D9FDB";
 
 const H = ({ children }: { children: React.ReactNode }) => (
   <span style={{ backgroundColor: "rgba(240,185,20,0.35)", color: "inherit", padding: "0 4px" }}>{children}</span>

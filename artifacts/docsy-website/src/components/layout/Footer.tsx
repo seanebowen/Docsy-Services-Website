@@ -3,7 +3,7 @@ import { Link } from "wouter";
 
 const SLATE = "#131929";
 const DIV   = "#1e2a3a";
-const AMBER = "#C8960A";
+const AMBER = "#4D9FDB";
 
 export function Footer() {
   return (

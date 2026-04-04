@@ -6,7 +6,7 @@ const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }}>
       {icon} {text}
     </span>
   </div>
@@ -44,7 +44,7 @@ export default function RON() {
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-ron">
               Book RON
             </button>
-            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#C8960A", color: "#C8960A" }} data-testid="btn-estimate-ron">
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-ron">
               Estimate Your Job →
             </Link>
             <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-text-ron">

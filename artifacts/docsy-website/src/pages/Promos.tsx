@@ -6,7 +6,7 @@ const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }}>
       {icon} {text}
     </span>
   </div>
@@ -57,7 +57,7 @@ export default function Promos() {
               <div key={promo.name} className="p-8" style={{ backgroundColor: BG }}>
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-black text-white leading-tight">{promo.name}</h3>
-                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ borderColor: "#C8960A", color: "#C8960A" }}>{promo.tag}</span>
+                  <span className="ml-4 px-2 py-1 text-xs font-bold tracking-wider shrink-0" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }}>{promo.tag}</span>
                 </div>
                 <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>{promo.desc}</p>
                 <p className="text-sm text-white/40 leading-relaxed">{promo.rule}</p>

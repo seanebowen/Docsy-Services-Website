@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 
-const AMBER = "#C8960A";
+const AMBER = "#4D9FDB";
 
 const items = [
   "TRANSPARENT PRICING",

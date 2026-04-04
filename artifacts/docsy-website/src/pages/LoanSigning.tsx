@@ -6,7 +6,7 @@ const BG = "#131929";
 
 const Label = ({ icon, text }: { icon: string; text: string }) => (
   <div className="flex justify-center mb-8">
-    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
+    <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }}>
       {icon} {text}
     </span>
   </div>
@@ -44,7 +44,7 @@ export default function LoanSigning() {
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing">
               Book a Signing
             </button>
-            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#C8960A", color: "#C8960A" }} data-testid="btn-estimate-loan">
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-loan">
               Estimate Your Job →
             </Link>
             <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-brokerlink">
@@ -57,7 +57,7 @@ export default function LoanSigning() {
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
           <div className="flex justify-center mb-8">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border bg-amber-400 text-black">
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border bg-[#4D9FDB] text-black">
               ⚠ TEXAS HELOC
             </span>
           </div>

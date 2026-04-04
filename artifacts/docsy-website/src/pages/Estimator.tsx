@@ -3,7 +3,7 @@ import { Link } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
-const AMBER = "#C8960A";
+const AMBER = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 const H = ({ children }: { children: React.ReactNode }) => (
@@ -43,7 +43,7 @@ function RadioRow({ label, price, selected, onClick }: { label: string; price: s
     <button
       onClick={onClick}
       className="w-full flex items-center justify-between px-4 py-3 border-b text-left transition-colors hover:bg-white/5"
-      style={{ borderColor: DIV, backgroundColor: selected ? "rgba(200,150,10,0.08)" : "transparent" }}
+      style={{ borderColor: DIV, backgroundColor: selected ? "rgba(77,159,219,0.08)" : "transparent" }}
     >
       <span className="flex items-center gap-3">
         <span className="w-4 h-4 border flex items-center justify-center shrink-0" style={{ borderColor: selected ? AMBER : "rgba(255,255,255,0.2)" }}>
@@ -61,7 +61,7 @@ function CheckRow({ label, price, checked, onChange }: { label: string; price: s
     <button
       onClick={() => onChange(!checked)}
       className="w-full flex items-center justify-between px-4 py-3 border-b text-left transition-colors hover:bg-white/5"
-      style={{ borderColor: DIV, backgroundColor: checked ? "rgba(200,150,10,0.08)" : "transparent" }}
+      style={{ borderColor: DIV, backgroundColor: checked ? "rgba(77,159,219,0.08)" : "transparent" }}
     >
       <span className="flex items-center gap-3">
         <span className="w-4 h-4 border flex items-center justify-center shrink-0 text-[10px]" style={{ borderColor: checked ? AMBER : "rgba(255,255,255,0.2)", color: AMBER }}>
@@ -170,7 +170,7 @@ function ServiceCard({
       <button
         onClick={onToggle}
         className="w-full flex items-start gap-5 px-6 py-6 text-left transition-colors hover:bg-white/5"
-        style={{ backgroundColor: active ? "rgba(200,150,10,0.04)" : "transparent" }}
+        style={{ backgroundColor: active ? "rgba(77,159,219,0.04)" : "transparent" }}
       >
         {/* checkbox-style indicator */}
         <span
@@ -178,7 +178,7 @@ function ServiceCard({
           style={{
             borderColor: active ? AMBER : "rgba(255,255,255,0.18)",
             color: AMBER,
-            backgroundColor: active ? "rgba(200,150,10,0.15)" : "transparent",
+            backgroundColor: active ? "rgba(77,159,219,0.15)" : "transparent",
           }}
         >
           {active ? "✓" : ""}
@@ -188,7 +188,7 @@ function ServiceCard({
             <span className="text-[10px] font-bold font-mono" style={{ color: active ? AMBER : "rgba(255,255,255,0.2)" }}>[{num}]</span>
             <p className="text-base font-black text-white leading-tight">{title}</p>
             {active && (
-              <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(200,150,10,0.2)", color: AMBER }}>
+              <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>
                 In estimate
               </span>
             )}

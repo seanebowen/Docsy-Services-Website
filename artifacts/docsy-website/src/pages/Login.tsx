@@ -17,7 +17,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#C8960A", color: "#C8960A" }}>
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }}>
               ◎ DOCSY SAFE+
             </span>
           </div>

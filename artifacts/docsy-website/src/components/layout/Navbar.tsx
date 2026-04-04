@@ -4,7 +4,7 @@ import { Menu, X, HelpCircle, MessageSquare, Tag, Calculator, ChevronDown } from
 
 const SLATE = "#131929";
 const DIV   = "#1e2a3a";
-const AMBER = "#C8960A";
+const AMBER = "#4D9FDB";
 
 const allLinks = [
   { href: "/ron",            label: "RON" },
