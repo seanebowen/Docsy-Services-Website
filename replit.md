@@ -9,11 +9,24 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **docsy-website** (`artifacts/docsy-website/`) — Multi-page marketing website for Docsy Notary Services. React + Vite, frontend-only. No backend.
   - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides), Promos, Login, Verify
   - Stack: React, Vite, Tailwind CSS, wouter (routing), shadcn/ui components, lucide-react icons
-  - Fonts: Inter (weights 300–900, headings use weight 700 with -0.03em tracking) + JetBrains Mono (bracket numbering)
-  - Color scheme: `#0a0a0a` background, `#111` surface, `#222` borders, `#4A6FA8` primary/CTAs, `#999`/`#777`/`#555` text hierarchy, yellow-highlight for key phrases (`bg-yellow-200 text-black px-1`)
-  - Design: rig.ai-inspired dark tech aesthetic — zero border-radius, Reveal scroll animations, bracket `[01]`/`[02]` section numbering, slate-blue banner dividers, bordered dark cards/tables
-  - Navbar: 3-col flex — left (RON, Mobile Notary, Loan Signing) | center logo (h-14) | right (Apostille, Court Reporting, Memberships, More dropdown, Book a Service); bg `#0a0a0a`
-  - Logo: `/public/logo.png` (Docsy logo, white via CSS filter `brightness(0) invert(1)`)
+  - Fonts: DM Sans (400/500/700) + JetBrains Mono (terminal mockup)
+  - Design system: rig.rs-inspired — exact replication of rig.rs layout/aesthetic with Carolina blue replacing orange
+  - Color palette:
+    - `#00251b` (terminal-green) — page backgrounds
+    - `#4B9CD3` (Carolina blue) — primary accent, buttons, links
+    - `#f4ffff` (cloud-white) — text
+    - `#047521` (emerald) — card borders
+    - `#40ff7d` (signal-green) — section labels, highlights
+    - `#000F0A` — darker surface for pricing tables/code blocks
+  - Component patterns:
+    - Cards: `rounded-xl` with `border border-emerald` or `border border-cloud/10`, hover lift
+    - Buttons: filled (`bg-carolina rounded-md shadow-lg`) + outline (`border border-cloud/30 rounded-md`)
+    - CTA sections: `rounded-3xl` with `bg-gradient-to-br from-emerald to-terminal`, radial overlay
+    - Hero sections: centered text, radial glow blur overlay, signal-green section label
+    - Terminal mockup: macOS dot buttons, monospace pre block
+  - Navbar: centered logo, backdrop-blur sticky header, 3-col flex layout
+  - PromotionTicker: scrolling promo bar below nav, Carolina blue background with terminal-green label
+  - Logo: `/public/logo.png` (Docsy logo, white via CSS brightness/invert filter)
   - Custom component: `Reveal.tsx` — IntersectionObserver-based scroll reveal with delay prop
   - Routes: `/`, `/ron`, `/mobile-notary`, `/apostille`, `/loan-signing`, `/court-reporting`, `/memberships`, `/faq`, `/help-center`, `/help-center/:id`, `/promos`, `/login`, `/verify`
 - **api-server** (`artifacts/api-server/`) — Express 5 backend API server

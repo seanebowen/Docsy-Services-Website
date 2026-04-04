@@ -2,6 +2,11 @@ import React from "react";
 import { Link } from "wouter";
 import { Tag } from "lucide-react";
 
+const CAROLINA = "#4B9CD3";
+const TERMINAL = "#00251b";
+const EMERALD = "#047521";
+const CLOUD = "#f4ffff";
+
 const promoItems = [
   "CURRENT PROMOS",
   "·",
@@ -15,21 +20,19 @@ const promoItems = [
 
 export function PromotionTicker() {
   return (
-    <Link href="/promos" className="block w-full overflow-hidden cursor-pointer group" style={{ backgroundColor: "#4A6FA8" }}>
+    <Link href="/promos" className="block w-full overflow-hidden cursor-pointer group" style={{ backgroundColor: CAROLINA }}>
       <div className="flex items-center h-9 overflow-hidden">
 
-        {/* Static label */}
         <div
           className="flex items-center gap-2 shrink-0 px-4 h-full z-10"
-          style={{ backgroundColor: "#141414" }}
+          style={{ backgroundColor: TERMINAL }}
         >
-          <Tag className="h-3 w-3 text-white" />
-          <span className="text-xs font-black uppercase tracking-widest text-white whitespace-nowrap">
+          <Tag className="h-3 w-3" style={{ color: CLOUD }} />
+          <span className="text-xs font-black uppercase tracking-widest whitespace-nowrap" style={{ color: CLOUD }}>
             Current Promos
           </span>
         </div>
 
-        {/* Scrolling track */}
         <div className="ticker-overflow flex-1 overflow-hidden">
           <div className="ticker-track flex items-center gap-0">
             {[0, 1].map((i) => (
@@ -39,11 +42,12 @@ export function PromotionTicker() {
                     key={j}
                     className={`text-xs uppercase tracking-widest px-5 ${
                       item === "·"
-                        ? "text-white/30 font-bold"
+                        ? "font-bold"
                         : item === "CURRENT PROMOS"
-                        ? "font-black text-white"
-                        : "font-semibold text-white"
+                        ? "font-black"
+                        : "font-semibold"
                     }`}
+                    style={{ color: item === "·" ? `${CLOUD}4d` : CLOUD }}
                   >
                     {item}
                   </span>
@@ -53,10 +57,9 @@ export function PromotionTicker() {
           </div>
         </div>
 
-        {/* Right arrow nudge on hover */}
         <div
-          className="shrink-0 px-4 h-full flex items-center text-xs font-black uppercase tracking-widest text-white/40 group-hover:text-white transition-colors"
-          style={{ backgroundColor: "#3d5d8f" }}
+          className="shrink-0 px-4 h-full flex items-center text-xs font-black uppercase tracking-widest transition-colors"
+          style={{ backgroundColor: EMERALD, color: `${CLOUD}66` }}
         >
           →
         </div>

@@ -1,27 +1,16 @@
 import React from "react";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 import { Reveal } from "@/components/Reveal";
 
-const BLUE = "#4A6FA8";
-const BG = "#0a0a0a";
-const SURFACE = "#111";
-
-const HL = ({ children }: { children: React.ReactNode }) => (
-  <span className="bg-yellow-200 text-black px-1 whitespace-nowrap">{children}</span>
-);
-
-const hdStyle: React.CSSProperties = {
-  fontFamily: "'Inter', sans-serif",
-  fontWeight: 700,
-  letterSpacing: "-0.03em",
-  lineHeight: 1.1,
-};
+const CAROLINA = "#4B9CD3";
+const TERMINAL = "#00251b";
+const EMERALD = "#047521";
+const SIGNAL = "#40ff7d";
+const CLOUD = "#f4ffff";
 
 const faqs = [
   {
@@ -66,59 +55,53 @@ export default function FAQ() {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ backgroundColor: TERMINAL }}>
 
-      {/* ── HERO ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-20 lg:py-28">
-        <Reveal>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/40 mb-6">
-            FAQ · Frequently Asked Questions
-          </p>
-          <h1 style={{ ...hdStyle, fontSize: "clamp(2.5rem, 5vw, 5rem)" }} className="text-white mb-8 max-w-3xl">
-            The questions we get asked every day.<br />Answered honestly.
-          </h1>
-        </Reveal>
-        <Reveal delay={100}>
-          <p className="text-white/60 text-base leading-relaxed max-w-xl">
-            <HL>Real questions. Real answers.</HL> No "please consult a professional for more information" non-answers.
-          </p>
-        </Reveal>
+      <section className="relative pt-24 md:pt-32 pb-24 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: `${CAROLINA}0d` }} />
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <Reveal>
+              <p className="text-sm font-medium mb-6" style={{ color: SIGNAL }}>FAQ · Frequently Asked Questions</p>
+            </Reveal>
+            <Reveal delay={100}>
+              <h1 className="text-[2rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6" style={{ color: CLOUD }}>
+                The questions we get asked every day.{" "}<span style={{ color: CAROLINA }}>Answered honestly.</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={200}>
+              <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: `${CLOUD}b3` }}>
+                Real questions. Real answers. No "please consult a professional for more information" non-answers.
+              </p>
+            </Reveal>
+          </div>
+        </div>
       </section>
 
-      {/* ── BANNER ───────────────────────────────────── */}
-      <div className="flex items-center justify-between px-8 sm:px-16 py-4" style={{ backgroundColor: BLUE }}>
-        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">Common Questions</span>
-        <div className="flex-1 mx-8 h-px bg-white/30" />
-        <span className="text-white text-xs font-bold uppercase tracking-[0.2em]">If your question isn't here, text us</span>
-      </div>
-
-      {/* ── FAQ SECTIONS ─────────────────────────────── */}
-      <section style={{ backgroundColor: SURFACE }}>
-        <div className="max-w-4xl mx-auto px-8 sm:px-16 py-16">
+      <section className="relative pb-24">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {faqs.map((section, si) => (
             <Reveal key={section.category} delay={si * 80}>
               <div className="mb-14">
-                <h2
-                  className="text-xs font-bold uppercase tracking-[0.25em] mb-6 pb-4 border-b border-[#222]"
-                  style={{ color: BLUE }}
-                >
+                <h2 className="text-sm font-bold uppercase tracking-wider mb-6 pb-4" style={{ color: CAROLINA, borderBottom: `1px solid ${EMERALD}66` }}>
                   {section.category}
                 </h2>
-                <Accordion type="single" collapsible className="space-y-0">
+                <Accordion type="single" collapsible className="space-y-3">
                   {section.items.map((item, i) => (
                     <AccordionItem
                       key={i}
                       value={`${section.category}-${i}`}
-                      className="border-b border-[#222] last:border-b-0"
+                      className="rounded-xl px-5 md:px-6 overflow-hidden transition-colors duration-200"
+                      style={{ border: `1px solid ${EMERALD}66` }}
                     >
                       <AccordionTrigger
-                        className="text-left font-semibold hover:no-underline py-5 text-base leading-snug text-white"
-                        style={{ fontFamily: "'Inter', sans-serif" }}
+                        className="hover:no-underline text-base md:text-lg font-semibold py-5"
+                        style={{ color: CLOUD }}
                         data-testid={`faq-trigger-${section.category}-${i}`}
                       >
                         {item.q}
                       </AccordionTrigger>
-                      <AccordionContent className="text-[#999] leading-relaxed pb-5 text-sm">
+                      <AccordionContent className="text-sm md:text-base leading-relaxed pb-5" style={{ color: `${CLOUD}b3` }}>
                         {item.a}
                       </AccordionContent>
                     </AccordionItem>
@@ -130,23 +113,19 @@ export default function FAQ() {
         </div>
       </section>
 
-      {/* ── DARK CTA ─────────────────────────────────── */}
-      <section style={{ backgroundColor: BG }} className="px-8 sm:px-16 py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-        <Reveal>
-          <div>
-            <h2 style={{ ...hdStyle, fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)" }} className="text-white mb-3">
-              Still have a question?
-            </h2>
-            <p className="text-white/50 text-sm">Text us. We'll tell you straight — no runaround.</p>
+      <section className="py-16 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden px-6 py-20 md:py-24 text-center shadow-2xl" style={{ background: `linear-gradient(135deg, ${EMERALD}, ${TERMINAL})` }}>
+          <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${CAROLINA}15, transparent 60%)` }} />
+          <div className="relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ color: CLOUD }}>Still have a question?</h2>
+            <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: `${CLOUD}b3` }}>Text us. We'll tell you straight — no runaround.</p>
+            <Link href="/help-center" className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg" style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }}>
+              Help Center <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
           </div>
-        </Reveal>
-        <button
-          className="inline-flex items-center gap-3 px-7 py-4 text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity shrink-0"
-          style={{ backgroundColor: BLUE }}
-        >
-          Help Center <ArrowRight className="h-4 w-4" />
-        </button>
+        </div>
       </section>
+
     </div>
   );
 }
