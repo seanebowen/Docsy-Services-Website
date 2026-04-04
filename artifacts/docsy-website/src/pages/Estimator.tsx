@@ -100,10 +100,10 @@ interface MobileState {
   weekend: boolean;
 }
 interface LoanState {
-  package: LoanPackage;
+  packages: LoanPackage[];
 }
 interface ApostilleState {
-  type: ApostilleType;
+  types: ApostilleType[];
   docs: number;
   turnaround: ApostilleTurnaround;
 }
@@ -127,16 +127,25 @@ function calcMobile(s: MobileState): number {
 }
 
 function calcLoan(s: LoanState): number {
-  return { refi: 175, buyer: 200, seller: 125, heloc: 175, reverse: 225, mod: 100 }[s.package];
+  const prices: Record<LoanPackage, number> = { refi: 175, buyer: 200, seller: 125, heloc: 175, reverse: 225, mod: 100 };
+  return s.packages.reduce((sum, pkg) => sum + prices[pkg], 0);
 }
 
 function calcApostille(s: ApostilleState): number {
+  if (s.types.length === 0) return 0;
   const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
-  const turnaroundBase: Record<ApostilleTurnaround, number | null> = { standard: null, nextday: 190, sameday: 225 };
-  const base = turnaroundBase[s.turnaround] ?? standardBase[s.type];
+  const turnaroundFlat: Record<ApostilleTurnaround, number | null> = { standard: null, nextday: 190, sameday: 225 };
+  const hasFederal = s.types.includes("federal");
+  const nonFederal = s.types.filter(t => t !== "federal");
+  let base = hasFederal ? 275 : 0;
+  if (nonFederal.length > 0) {
+    const override = turnaroundFlat[s.turnaround];
+    base += override
+      ? override * nonFederal.length
+      : nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
+  }
   if (s.docs <= 1) return base;
-  if (s.docs >= 5) return base + (s.docs - 1) * 90;
-  return base + (s.docs - 1) * 100;
+  return base + (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
 }
 
 function calcCourt(s: CourtState): number {
@@ -250,11 +259,11 @@ export default function Estimator() {
   });
 
   /* Loan state */
-  const [loan, setLoan] = useState<LoanState>({ package: "refi" });
+  const [loan, setLoan] = useState<LoanState>({ packages: ["refi"] });
 
   /* Apostille state */
   const [apost, setApost] = useState<ApostilleState>({
-    type: "personal", docs: 1, turnaround: "standard",
+    types: ["personal"], docs: 1, turnaround: "standard",
   });
 
   /* Court state */
@@ -276,6 +285,23 @@ export default function Estimator() {
   const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);
   const upA = useCallback((patch: Partial<ApostilleState>) => setApost(p => ({ ...p, ...patch })), []);
   const upC = useCallback((patch: Partial<CourtState>) => setCourt(p => ({ ...p, ...patch })), []);
+
+  const toggleLoanPkg = useCallback((key: LoanPackage) => {
+    setLoan(prev => ({
+      packages: prev.packages.includes(key)
+        ? prev.packages.filter(k => k !== key)
+        : [...prev.packages, key],
+    }));
+  }, []);
+
+  const toggleApostType = useCallback((t: ApostilleType) => {
+    setApost(prev => ({
+      ...prev,
+      types: prev.types.includes(t)
+        ? prev.types.filter(x => x !== t)
+        : [...prev.types, t],
+    }));
+  }, []);
 
   const loanLabels: Record<LoanPackage, [string, string]> = {
     refi:    ["Refinance Package", "$175"],
@@ -428,15 +454,15 @@ export default function Estimator() {
                 active={loanOn} onToggle={() => setLoanOn(o => !o)}
               >
                 <div>
-                  <RowLabel>Select your package</RowLabel>
+                  <RowLabel>Select all packages needed</RowLabel>
                   <div className="border" style={{ borderColor: DIV }}>
                     {(Object.keys(loanLabels) as LoanPackage[]).map(key => (
-                      <RadioRow
+                      <CheckRow
                         key={key}
                         label={loanLabels[key][0]}
                         price={loanLabels[key][1]}
-                        selected={loan.package === key}
-                        onClick={() => setLoan({ package: key })}
+                        checked={loan.packages.includes(key)}
+                        onChange={() => toggleLoanPkg(key)}
                       />
                     ))}
                   </div>
@@ -456,33 +482,34 @@ export default function Estimator() {
                 <div className="space-y-6">
 
                   <div>
-                    <RowLabel>Document type</RowLabel>
+                    <RowLabel>Document types (select all that apply)</RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
-                      <RadioRow label="Personal document" price="from $150" selected={apost.type === "personal"} onClick={() => upA({ type: "personal", turnaround: apost.turnaround === "sameday" ? "sameday" : apost.turnaround })} />
-                      <RadioRow label="Business document" price="from $175" selected={apost.type === "business"} onClick={() => upA({ type: "business" })} />
-                      <RadioRow label="Federal / USDOS" price="$275" selected={apost.type === "federal"} onClick={() => upA({ type: "federal", turnaround: "standard" })} />
+                      <CheckRow label="Personal document" price="from $150" checked={apost.types.includes("personal")} onChange={() => toggleApostType("personal")} />
+                      <CheckRow label="Business document" price="from $175" checked={apost.types.includes("business")} onChange={() => toggleApostType("business")} />
+                      <CheckRow label="Federal / USDOS" price="$275 flat" checked={apost.types.includes("federal")} onChange={() => toggleApostType("federal")} />
                     </div>
+                    <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>Federal documents are always standard turnaround at $275 flat.</p>
                   </div>
 
-                  {apost.type !== "federal" && (
+                  {apost.types.some(t => t !== "federal") && (
                     <div>
-                      <RowLabel>Turnaround</RowLabel>
+                      <RowLabel>Turnaround <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(applies to personal / business docs)</span></RowLabel>
                       <div className="border" style={{ borderColor: DIV }}>
                         <RadioRow
                           label="Standard (30 days)"
-                          price={apost.type === "personal" ? "$150" : "$175"}
+                          price="base rate"
                           selected={apost.turnaround === "standard"}
                           onClick={() => upA({ turnaround: "standard" })}
                         />
                         <RadioRow
                           label="Next-Day"
-                          price="$190"
+                          price="$190/type"
                           selected={apost.turnaround === "nextday"}
                           onClick={() => upA({ turnaround: "nextday" })}
                         />
                         <RadioRow
                           label="Same-Day Rush (order before 10 AM)"
-                          price="$225"
+                          price="$225/type"
                           selected={apost.turnaround === "sameday"}
                           onClick={() => upA({ turnaround: "sameday" })}
                         />
@@ -612,8 +639,8 @@ export default function Estimator() {
                   <div className="mb-6">
                     {ronOn    && <SummaryLine label="Remote Online Notarization" amount={ronTotal} />}
                     {mobileOn && <SummaryLine label="Mobile Notary" amount={mobileTotal} />}
-                    {loanOn   && <SummaryLine label={`Loan Signing — ${loanLabels[loan.package][0]}`} amount={loanTotal} />}
-                    {apostOn  && <SummaryLine label={`Apostille (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostTotal} />}
+                    {loanOn   && <SummaryLine label={`Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`} amount={loanTotal} />}
+                    {apostOn  && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostTotal} />}
                     {courtOn  && <SummaryLine label="Court Reporting" amount={courtTotal} />}
                   </div>
 
@@ -627,20 +654,22 @@ export default function Estimator() {
 
                   {/* CTA buttons */}
                   <div className="flex flex-col gap-3 mb-8">
-                    <button
+                    <Link
+                      href="/help-center"
                       className="w-full py-4 text-base font-bold text-white text-center"
                       style={{ backgroundColor: "#000" }}
                       data-testid="btn-book-estimate"
                     >
                       Book This Job
-                    </button>
-                    <button
+                    </Link>
+                    <Link
+                      href="/help-center"
                       className="w-full py-4 text-base font-bold text-center border-2"
                       style={{ borderColor: "#fff", color: "#fff" }}
                       data-testid="btn-text-estimate"
                     >
                       Text to Schedule
-                    </button>
+                    </Link>
                   </div>
 
                   {/* disclaimer */}

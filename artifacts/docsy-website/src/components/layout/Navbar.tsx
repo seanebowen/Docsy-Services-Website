@@ -38,7 +38,7 @@ export function Navbar() {
             className="text-[1.6rem] font-black leading-none"
             style={{ letterSpacing: "-0.04em", color: "#ffffff" }}
           >
-            docsy<span style={{ color: AMBER }}>.</span><span style={{ color: AMBER, fontWeight: 300, letterSpacing: "-0.02em" }}> services</span>
+            docsy<span style={{ color: AMBER }}>.</span>
           </span>
         </Link>
 
