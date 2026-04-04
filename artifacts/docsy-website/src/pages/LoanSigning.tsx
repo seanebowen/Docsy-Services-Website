@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -39,10 +40,13 @@ export default function LoanSigning() {
           <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
             Certified loan signing agent for refinance, buyer, seller, HELOC, reverse mortgage, and commercial packages. Texas-compliant. Reliable.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing">
               Book a Signing
             </button>
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#C8960A", color: "#C8960A" }} data-testid="btn-estimate-loan">
+              Estimate Your Job →
+            </Link>
             <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-brokerlink">
               BrokerLink™ Info
             </button>

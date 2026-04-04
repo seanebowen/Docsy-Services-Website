@@ -92,6 +92,7 @@ interface RONState {
 }
 interface MobileState {
   seals: number;
+  address: string;
   tier: 1 | 2 | 3 | 4;
   afterHours: boolean;
   lateNight: boolean;
@@ -159,24 +160,54 @@ function ServiceCard({
   active: boolean; onToggle: () => void; children: React.ReactNode;
 }) {
   return (
-    <div className="border-b" style={{ borderColor: DIV }}>
+    <div
+      className="border-b transition-colors"
+      style={{
+        borderColor: DIV,
+        borderLeft: active ? `3px solid ${AMBER}` : "3px solid transparent",
+      }}
+    >
       <button
         onClick={onToggle}
-        className="w-full flex items-start gap-6 px-6 py-6 text-left transition-colors hover:bg-white/5"
-        style={{ backgroundColor: active ? "rgba(200,150,10,0.05)" : "transparent" }}
+        className="w-full flex items-start gap-5 px-6 py-6 text-left transition-colors hover:bg-white/5"
+        style={{ backgroundColor: active ? "rgba(200,150,10,0.04)" : "transparent" }}
       >
-        <span className="text-xs font-bold font-mono shrink-0 mt-0.5" style={{ color: active ? AMBER : "rgba(255,255,255,0.2)" }}>[{num}]</span>
+        {/* checkbox-style indicator */}
+        <span
+          className="shrink-0 w-5 h-5 border flex items-center justify-center mt-0.5 text-[11px] font-bold transition-colors"
+          style={{
+            borderColor: active ? AMBER : "rgba(255,255,255,0.18)",
+            color: AMBER,
+            backgroundColor: active ? "rgba(200,150,10,0.15)" : "transparent",
+          }}
+        >
+          {active ? "✓" : ""}
+        </span>
         <div className="flex-1 min-w-0">
-          <p className="text-base font-black text-white leading-tight mb-1">{title}</p>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-bold font-mono" style={{ color: active ? AMBER : "rgba(255,255,255,0.2)" }}>[{num}]</span>
+            <p className="text-base font-black text-white leading-tight">{title}</p>
+            {active && (
+              <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(200,150,10,0.2)", color: AMBER }}>
+                In estimate
+              </span>
+            )}
+          </div>
           <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>{desc}</p>
         </div>
-        <div className="shrink-0 text-right">
-          <p className="text-xs font-light" style={{ color: "rgba(255,255,255,0.3)" }}>starting at</p>
-          <p className="text-base font-bold" style={{ color: active ? AMBER : "rgba(255,255,255,0.3)" }}>{startingAt}</p>
+        <div className="shrink-0 text-right ml-4">
+          {!active && (
+            <>
+              <p className="text-xs font-light" style={{ color: "rgba(255,255,255,0.25)" }}>from</p>
+              <p className="text-base font-bold" style={{ color: "rgba(255,255,255,0.3)" }}>{startingAt}</p>
+            </>
+          )}
+          {active && (
+            <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.25)" }}>
+              collapse ↑
+            </p>
+          )}
         </div>
-        <span className="shrink-0 mt-1 text-lg leading-none" style={{ color: active ? AMBER : "rgba(255,255,255,0.2)" }}>
-          {active ? "−" : "+"}
-        </span>
       </button>
 
       {active && (
@@ -214,7 +245,7 @@ export default function Estimator() {
 
   /* Mobile state */
   const [mobile, setMobile] = useState<MobileState>({
-    seals: 1, tier: 1,
+    seals: 1, address: "", tier: 1,
     afterHours: false, lateNight: false, rush: false, weekend: false,
   });
 
@@ -293,8 +324,9 @@ export default function Estimator() {
             <div className="lg:border-r" style={{ borderColor: DIV }}>
 
               {/* header row */}
-              <div className="px-6 py-4 border-b flex items-center gap-4" style={{ borderColor: DIV }}>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Select services below — mix and match</span>
+              <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: DIV }}>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Check any service to add it to your estimate</span>
+                <span className="text-[10px] font-light" style={{ color: "rgba(255,255,255,0.2)" }}>Multiple selections allowed</span>
               </div>
 
               {/* ── RON ── */}
@@ -340,7 +372,26 @@ export default function Estimator() {
                   </div>
 
                   <div>
-                    <RowLabel>Travel distance</RowLabel>
+                    <RowLabel>Meeting point address</RowLabel>
+                    <input
+                      type="text"
+                      value={mobile.address}
+                      onChange={e => upM({ address: e.target.value })}
+                      placeholder="123 Main St, Austin TX — or hospital, office, etc."
+                      className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
+                      style={{
+                        borderColor: DIV,
+                        color: IVORY,
+                        caretColor: AMBER,
+                      }}
+                    />
+                    <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
+                      Actual travel fee confirmed at booking from this address.
+                    </p>
+                  </div>
+
+                  <div>
+                    <RowLabel>Estimated distance <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(for budgeting — confirmed from your address at booking)</span></RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
                       {([
                         [1, "Tier 1 — 0 to 10 miles", "$30"],

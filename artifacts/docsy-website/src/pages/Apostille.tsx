@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -39,10 +40,13 @@ export default function Apostille() {
           <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
             All-inclusive Texas apostille services. State filing fee, digital scan, and shipping prep included. Personal documents starting at $150.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
               Order Apostille
             </button>
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#C8960A", color: "#C8960A" }} data-testid="btn-estimate-apostille">
+              Estimate Your Job →
+            </Link>
             <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
               Free Pre-Check
             </button>

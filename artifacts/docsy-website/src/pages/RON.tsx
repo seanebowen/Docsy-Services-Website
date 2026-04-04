@@ -40,10 +40,13 @@ export default function RON() {
           <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
             Remote Online Notarization — legally binding, secure, done in <strong className="text-black">under 15 minutes.</strong> Available same-hour, 7 days a week, anywhere in the US.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-ron">
               Book RON
             </button>
+            <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#C8960A", color: "#C8960A" }} data-testid="btn-estimate-ron">
+              Estimate Your Job →
+            </Link>
             <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-text-ron">
               Text to Schedule
             </button>

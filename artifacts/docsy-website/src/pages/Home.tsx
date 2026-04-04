@@ -84,7 +84,7 @@ export default function Home() {
           <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
             Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Written estimate before every appointment.</strong> No hidden fees. No agency markup.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3">
             <Link
               href="/"
               className="px-8 py-4 text-sm font-bold text-white text-center"
@@ -92,6 +92,14 @@ export default function Home() {
               data-testid="btn-book-hero"
             >
               Book a Service
+            </Link>
+            <Link
+              href="/estimate"
+              className="px-8 py-4 text-sm font-bold text-center border"
+              style={{ borderColor: AMBER, color: AMBER }}
+              data-testid="btn-estimate-hero"
+            >
+              Estimate Your Job →
             </Link>
             <Link
               href="#services"
