@@ -18,6 +18,8 @@ import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
 import Estimator from "@/pages/Estimator";
+import Booking from "@/pages/Booking";
+import BookingConfirmation from "@/pages/BookingConfirmation";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/estimate" component={Estimator} />
+      <Route path="/booking/confirmation" component={BookingConfirmation} />
+      <Route path="/booking" component={Booking} />
       <Route path="/ron" component={RON} />
       <Route path="/mobile-notary" component={MobileNotary} />
       <Route path="/apostille" component={Apostille} />

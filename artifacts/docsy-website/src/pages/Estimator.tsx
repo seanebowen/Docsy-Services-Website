@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -280,6 +280,21 @@ export default function Estimator() {
   const courtTotal  = courtOn  ? calcCourt(court)   : 0;
   const grandTotal  = ronTotal + mobileTotal + loanTotal + apostTotal + courtTotal;
   const anySelected = ronOn || mobileOn || loanOn || apostOn || courtOn;
+
+  const [, setLocation] = useLocation();
+
+  /* save estimate → navigate to booking */
+  const handleBookJob = useCallback(() => {
+    const services = [
+      ronOn    && { name: "Remote Online Notarization",                                           amount: ronTotal },
+      mobileOn && { name: "Mobile Notary",                                                        amount: mobileTotal },
+      loanOn   && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`, amount: loanTotal },
+      apostOn  && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`, amount: apostTotal },
+      courtOn  && { name: "Court Reporting",                                                      amount: courtTotal },
+    ].filter(Boolean) as { name: string; amount: number }[];
+    sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, hasRON: ronOn }));
+    setLocation("/booking");
+  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, loan.packages, apost.types, apost.docs]);
 
   /* helpers */
   const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);
@@ -654,14 +669,14 @@ export default function Estimator() {
 
                   {/* CTA buttons */}
                   <div className="flex flex-col gap-3 mb-8">
-                    <Link
-                      href="/help-center"
+                    <button
+                      onClick={handleBookJob}
                       className="w-full py-4 text-base font-bold text-white text-center"
                       style={{ backgroundColor: "#000" }}
                       data-testid="btn-book-estimate"
                     >
                       Book This Job
-                    </Link>
+                    </button>
                     <Link
                       href="/help-center"
                       className="w-full py-4 text-base font-bold text-center border-2"
