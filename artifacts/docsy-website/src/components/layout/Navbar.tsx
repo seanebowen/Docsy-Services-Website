@@ -1,198 +1,139 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronDown, HelpCircle, MessageSquare, Tag } from "lucide-react";
+import { Menu, X, HelpCircle, MessageSquare, Tag, ChevronDown } from "lucide-react";
 
-const BG = "#00251b";
+const BG = "#0a0a0a";
 const CAROLINA = "#4B9CD3";
-const CLOUD = "#f4ffff";
-const EMERALD = "#047521";
+
+const allLinks = [
+  { href: "/ron", label: "RON" },
+  { href: "/mobile-notary", label: "Mobile Notary" },
+  { href: "/loan-signing", label: "Loan Signing" },
+  { href: "/apostille", label: "Apostille" },
+  { href: "/court-reporting", label: "Court Reporting" },
+  { href: "/memberships", label: "Memberships" },
+];
+
+const moreLinks = [
+  { href: "/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/help-center", label: "Help Center", icon: MessageSquare },
+  { href: "/promos", label: "Promotions", icon: Tag },
+];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [moreOpen, setMoreOpen] = React.useState(false);
   const [location] = useLocation();
-  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsOpen(false);
     setMoreOpen(false);
   }, [location]);
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
-        setMoreOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const leftLinks = [
-    { href: "/ron", label: "RON" },
-    { href: "/mobile-notary", label: "Mobile Notary" },
-    { href: "/loan-signing", label: "Loan Signing" },
-  ];
-
-  const rightLinks = [
-    { href: "/apostille", label: "Apostille" },
-    { href: "/court-reporting", label: "Court Reporting" },
-    { href: "/memberships", label: "Memberships" },
-  ];
-
-  const allMainLinks = [...leftLinks, ...rightLinks];
-
-  const moreLinks = [
-    { href: "/faq", label: "FAQ", icon: HelpCircle },
-    { href: "/help-center", label: "Help Center", icon: MessageSquare },
-    { href: "/promos", label: "Promotions", icon: Tag },
-  ];
-
-  const isActive = (href: string) => location === href;
-  const isMoreActive = moreLinks.some((l) => isActive(l.href));
-
   return (
-    <header
-      className="sticky top-0 z-50 w-full border-b border-emerald/30 backdrop-blur-xl"
-      style={{ backgroundColor: `${BG}ee` }}
-    >
-      <div className="hidden lg:flex items-center h-16 px-6 max-w-7xl mx-auto">
-        <nav className="flex items-center justify-end gap-6" style={{ flex: "1 0 0" }}>
-          {leftLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors duration-200 ${
-                isActive(link.href)
-                  ? "text-[#f4ffff]"
-                  : "text-[#f4ffff]/60 hover:text-[#f4ffff]"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+    <header className="sticky top-0 z-50 w-full border-b border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+      <div className="flex items-center justify-between h-14 px-5 max-w-7xl mx-auto">
 
-        <Link href="/" className="flex items-center shrink-0 px-8">
-          <img
-            src="/logo.png"
-            alt="Docsy Notary Services"
-            className="h-10 w-auto"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
+        <Link href="/" className="flex items-center shrink-0">
+          <img src="/logo.png" alt="Docsy" className="h-7 w-auto brightness-0 invert" />
         </Link>
 
-        <nav className="flex items-center justify-start gap-6" style={{ flex: "1 0 0" }}>
-          {rightLinks.map((link) => (
+        <nav className="hidden md:flex items-center gap-7">
+          {allLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors duration-200 ${
-                isActive(link.href)
-                  ? "text-[#f4ffff]"
-                  : "text-[#f4ffff]/60 hover:text-[#f4ffff]"
-              }`}
+              className="text-sm font-medium transition-colors"
+              style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.45)" }}
             >
               {link.label}
             </Link>
           ))}
-
-          <div ref={moreRef} className="relative">
+          <div className="relative">
             <button
               onClick={() => setMoreOpen((o) => !o)}
-              className={`flex items-center gap-1 text-sm font-medium transition-colors duration-200 ${
-                isMoreActive || moreOpen
-                  ? "text-[#f4ffff]"
-                  : "text-[#f4ffff]/60 hover:text-[#f4ffff]"
-              }`}
+              className="flex items-center gap-1 text-sm font-medium transition-colors"
+              style={{ color: moreLinks.some(l => location === l.href) || moreOpen ? "#fff" : "rgba(255,255,255,0.45)" }}
             >
-              More
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
+              More <ChevronDown className={`h-3 w-3 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
             </button>
-
             {moreOpen && (
               <div
-                className="absolute left-0 top-full mt-2 w-52 z-50 py-2 border rounded-xl overflow-hidden"
-                style={{ backgroundColor: "#000F0A", borderColor: `${CLOUD}1a` }}
+                className="absolute right-0 top-full mt-2 w-48 z-50 border border-[#222] overflow-hidden"
+                style={{ backgroundColor: "#111" }}
               >
                 {moreLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#f4ffff]/60 hover:text-[#f4ffff] hover:bg-[#f4ffff]/5 transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors border-b border-[#1a1a1a] last:border-b-0"
                   >
-                    <link.icon className="h-4 w-4" />
-                    {link.label}
+                    <link.icon className="h-3.5 w-3.5" /> {link.label}
                   </Link>
                 ))}
               </div>
             )}
           </div>
+        </nav>
 
+        <div className="hidden md:flex items-center gap-3">
+          <Link
+            href="/login"
+            className="text-sm font-medium transition-colors"
+            style={{ color: "rgba(255,255,255,0.45)" }}
+          >
+            Sign In
+          </Link>
           <Link
             href="/"
-            className="ml-auto inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 shadow-lg"
-            style={{
-              backgroundColor: CAROLINA,
-              color: CLOUD,
-              boxShadow: `0 4px 14px ${CAROLINA}33`,
-            }}
+            className="px-4 py-2 text-sm font-bold text-black"
+            style={{ backgroundColor: CAROLINA }}
+            data-testid="btn-book-nav"
           >
             Book a Service
           </Link>
-        </nav>
-      </div>
+        </div>
 
-      <div className="lg:hidden flex items-center justify-between h-14 px-4">
-        <Link href="/" className="flex items-center">
-          <img
-            src="/logo.png"
-            alt="Docsy Notary Services"
-            className="h-8 w-auto"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
-        </Link>
         <button
-          className="p-2 -mr-2 text-[#f4ffff]/60 hover:text-[#f4ffff]"
+          className="md:hidden p-1 text-white/50 hover:text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {isOpen && (
-        <div className="lg:hidden border-t" style={{ backgroundColor: BG, borderColor: `${EMERALD}66` }}>
-          <nav className="px-4 py-6 flex flex-col gap-4">
-            {allMainLinks.map((link) => (
+        <div className="md:hidden border-t border-[#1a1a1a]" style={{ backgroundColor: BG }}>
+          <nav className="px-5 py-4 flex flex-col">
+            {allLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(link.href) ? "text-[#f4ffff]" : "text-[#f4ffff]/60 hover:text-[#f4ffff]"
-                }`}
+                className="py-3 text-sm font-medium border-b border-[#1a1a1a] last:border-b-0"
+                style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.50)" }}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="border-t pt-4 mt-1 flex flex-col gap-3" style={{ borderColor: `${EMERALD}66` }}>
-              {moreLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center gap-3 text-sm font-medium text-[#f4ffff]/60 hover:text-[#f4ffff] transition-colors"
-                >
-                  <link.icon className="h-4 w-4" />
-                  {link.label}
-                </Link>
-              ))}
+            {moreLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="py-3 text-sm font-medium border-b border-[#1a1a1a] last:border-b-0"
+                style={{ color: "rgba(255,255,255,0.40)" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="pt-4">
+              <Link
+                href="/"
+                className="block px-5 py-3 text-sm font-bold text-black text-center"
+                style={{ backgroundColor: CAROLINA }}
+              >
+                Book a Service
+              </Link>
             </div>
-            <Link
-              href="/"
-              className="mt-2 px-6 py-3 text-sm font-medium text-center rounded-md transition-all duration-200"
-              style={{ backgroundColor: CAROLINA, color: CLOUD }}
-            >
-              Book a Service
-            </Link>
           </nav>
         </div>
       )}

@@ -1,16 +1,17 @@
 import React from "react";
-import {
-  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ArrowRight } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Link } from "wouter";
-import { Reveal } from "@/components/Reveal";
 
 const CAROLINA = "#4B9CD3";
-const TERMINAL = "#00251b";
-const EMERALD = "#047521";
-const SIGNAL = "#40ff7d";
-const CLOUD = "#f4ffff";
+const BG = "#0a0a0a";
+
+const Label = ({ icon, text }: { icon: string; text: string }) => (
+  <div className="flex justify-center mb-8">
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+      {icon} {text}
+    </span>
+  </div>
+);
 
 const faqs = [
   {
@@ -55,74 +56,63 @@ export default function FAQ() {
   }, []);
 
   return (
-    <div className="w-full" style={{ backgroundColor: TERMINAL }}>
+    <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="relative pt-24 md:pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: `${CAROLINA}0d` }} />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <Reveal>
-              <p className="text-sm font-medium mb-6" style={{ color: SIGNAL }}>FAQ · Frequently Asked Questions</p>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 className="text-[2rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6" style={{ color: CLOUD }}>
-                The questions we get asked every day.{" "}<span style={{ color: CAROLINA }}>Answered honestly.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={200}>
-              <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: `${CLOUD}b3` }}>
-                Real questions. Real answers. No "please consult a professional for more information" non-answers.
-              </p>
-            </Reveal>
-          </div>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+            The questions we
+            <br />
+            get asked every day.
+            <br />
+            Answered honestly.
+          </h1>
+          <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
+            Real questions. Real answers. No "please consult a professional for more information" non-answers.
+          </p>
         </div>
       </section>
 
-      <section className="relative pb-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <section className="py-16 px-5 border-t border-[#1a1a1a]">
+        <div className="max-w-3xl mx-auto">
           {faqs.map((section, si) => (
-            <Reveal key={section.category} delay={si * 80}>
-              <div className="mb-14">
-                <h2 className="text-sm font-bold uppercase tracking-wider mb-6 pb-4" style={{ color: CAROLINA, borderBottom: `1px solid ${EMERALD}66` }}>
-                  {section.category}
-                </h2>
-                <Accordion type="single" collapsible className="space-y-3">
-                  {section.items.map((item, i) => (
-                    <AccordionItem
-                      key={i}
-                      value={`${section.category}-${i}`}
-                      className="rounded-xl px-5 md:px-6 overflow-hidden transition-colors duration-200"
-                      style={{ border: `1px solid ${EMERALD}66` }}
+            <div key={section.category} className="mb-16">
+              <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#1a1a1a]" style={{ color: CAROLINA }}>
+                {section.category}
+              </p>
+              <Accordion type="single" collapsible>
+                {section.items.map((item, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`${section.category}-${i}`}
+                    className="border-b border-[#1a1a1a] last:border-b-0"
+                  >
+                    <AccordionTrigger
+                      className="text-left text-base sm:text-lg font-bold py-5 text-white hover:no-underline hover:text-white"
+                      data-testid={`faq-trigger-${section.category}-${i}`}
                     >
-                      <AccordionTrigger
-                        className="hover:no-underline text-base md:text-lg font-semibold py-5"
-                        style={{ color: CLOUD }}
-                        data-testid={`faq-trigger-${section.category}-${i}`}
-                      >
-                        {item.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-sm md:text-base leading-relaxed pb-5" style={{ color: `${CLOUD}b3` }}>
-                        {item.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </Reveal>
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm sm:text-base text-white/50 leading-relaxed pb-6">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden px-6 py-20 md:py-24 text-center shadow-2xl" style={{ background: `linear-gradient(135deg, ${EMERALD}, ${TERMINAL})` }}>
-          <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${CAROLINA}15, transparent 60%)` }} />
-          <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ color: CLOUD }}>Still have a question?</h2>
-            <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: `${CLOUD}b3` }}>Text us. We'll tell you straight — no runaround.</p>
-            <Link href="/help-center" className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg" style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }}>
-              Help Center <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </div>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+            Still have a question?
+          </h2>
+          <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight — no runaround.</p>
+          <Link href="/help-center" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
+            Help Center
+          </Link>
         </div>
       </section>
 

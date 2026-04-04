@@ -7,27 +7,27 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 ## Artifacts
 
 - **docsy-website** (`artifacts/docsy-website/`) — Multi-page marketing website for Docsy Notary Services. React + Vite, frontend-only. No backend.
-  - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides), Promos, Login, Verify
-  - Stack: React, Vite, Tailwind CSS, wouter (routing), shadcn/ui components, lucide-react icons
-  - Fonts: DM Sans (400/500/700) + JetBrains Mono (terminal mockup)
-  - Design system: rig.rs-inspired — exact replication of rig.rs layout/aesthetic with Carolina blue replacing orange
+  - Pages: Home, RON, Mobile Notary, Apostille, Loan Signing, Court Reporting, Memberships (Safe+), FAQ, Help Center (12 guides), Promos, Login, Verify, 404
+  - Stack: React, Vite, Tailwind CSS, wouter (routing), shadcn/ui (accordion only in FAQ), lucide-react icons
+  - Fonts: DM Sans (400/700/900) via Google Fonts
+  - **Design system: Exact rig.ai replication with Carolina blue replacing orange**
   - Color palette:
-    - `#00251b` (terminal-green) — page backgrounds
-    - `#4B9CD3` (Carolina blue) — primary accent, buttons, links
-    - `#f4ffff` (cloud-white) — text
-    - `#047521` (emerald) — card borders
-    - `#40ff7d` (signal-green) — section labels, highlights
-    - `#000F0A` — darker surface for pricing tables/code blocks
-  - Component patterns:
-    - Cards: `rounded-xl` with `border border-emerald` or `border border-cloud/10`, hover lift
-    - Buttons: filled (`bg-carolina rounded-md shadow-lg`) + outline (`border border-cloud/30 rounded-md`)
-    - CTA sections: `rounded-3xl` with `bg-gradient-to-br from-emerald to-terminal`, radial overlay
-    - Hero sections: centered text, radial glow blur overlay, signal-green section label
-    - Terminal mockup: macOS dot buttons, monospace pre block
-  - Navbar: centered logo, backdrop-blur sticky header, 3-col flex layout
-  - PromotionTicker: scrolling promo bar below nav, Carolina blue background with terminal-green label
-  - Logo: `/public/logo.png` (Docsy logo, white via CSS brightness/invert filter)
-  - Custom component: `Reveal.tsx` — IntersectionObserver-based scroll reveal with delay prop
+    - `#0a0a0a` — page background (pure black)
+    - `#111` — surface (card areas, dropdowns)
+    - `#1a1a1a` — dividers (thin horizontal lines between sections)
+    - `#4B9CD3` — Carolina blue: hero backgrounds, section label pills, CTA buttons
+    - `#ffffff` — primary text
+    - `rgba(255,255,255,0.40–0.60)` — secondary/muted text
+  - Layout patterns:
+    - Hero: full-bleed Carolina blue background, black text, massive font, two CTA buttons
+    - Sections: stacked, each separated by `border-t border-[#1a1a1a]`, centered content
+    - Section label pill: `inline-flex px-3 py-1.5 bg-[CAROLINA] text-black text-xs font-bold uppercase tracking-widest`
+    - No rounded corners anywhere — sharp/square everything
+    - No cards with decorative borders — only thin divider lines
+    - Headings: `font-black` (900 weight), very large, `letterSpacing: "-0.02em"`
+  - Navbar: left logo, center nav links, right "Sign In" + "Book a Service" button (Carolina blue, sharp)
+  - PromotionTicker: scrolling promo bar below nav, black background, Carolina blue text items
+  - Logo: `/public/logo.png` (Docsy logo, white via CSS `brightness-0 invert`)
   - Routes: `/`, `/ron`, `/mobile-notary`, `/apostille`, `/loan-signing`, `/court-reporting`, `/memberships`, `/faq`, `/help-center`, `/help-center/:id`, `/promos`, `/login`, `/verify`
 - **api-server** (`artifacts/api-server/`) — Express 5 backend API server
 

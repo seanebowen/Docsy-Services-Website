@@ -1,142 +1,95 @@
 import React from "react";
 import { Link } from "wouter";
-import { ArrowRight, MessageCircle } from "lucide-react";
 
 const CAROLINA = "#4B9CD3";
-const CLOUD = "#f4ffff";
-const EMERALD = "#047521";
-const TERMINAL = "#00251b";
 
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: TERMINAL }}>
-      <div className="py-16 px-4 sm:px-6">
-        <div
-          className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden px-6 py-20 md:py-24 text-center shadow-2xl"
-          style={{
-            background: `linear-gradient(135deg, ${EMERALD}, ${TERMINAL})`,
-          }}
-        >
-          <div
-            className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none"
-            style={{
-              background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${CAROLINA}15, transparent 60%)`,
-            }}
-          />
-          <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ color: CLOUD }}>
-              Ready to get started?
-            </h2>
-            <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: `${CLOUD}b3` }}>
-              Tell us what you need. We'll tell you exactly what it costs. No hidden fees, no surprises.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/"
-                className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg"
-                style={{
-                  backgroundColor: CAROLINA,
-                  color: CLOUD,
-                  boxShadow: `0 4px 14px ${CAROLINA}33`,
-                }}
-              >
-                Book a Service <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
-              <button
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5"
-                style={{
-                  backgroundColor: "transparent",
-                  color: `${CLOUD}cc`,
-                  border: `1px solid ${CLOUD}33`,
-                }}
-              >
-                <MessageCircle className="h-4 w-4" /> Text Us Now
-              </button>
-            </div>
+    <footer className="border-t border-[#1a1a1a]" style={{ backgroundColor: "#0a0a0a" }}>
+
+      <div className="py-16 px-5 border-b border-[#1a1a1a] text-center">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex justify-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+              ◎ GET STARTED
+            </span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-4">
+            Ready to get started?
+          </h2>
+          <p className="text-base text-white/50 mb-8 max-w-md mx-auto">
+            Tell us what you need. We'll tell you exactly what it costs. No hidden fees, no surprises.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/" className="px-8 py-4 text-sm font-bold text-white text-center" style={{ backgroundColor: "#000", border: "1px solid #fff" }} data-testid="btn-book-footer">
+              Book a Service
+            </Link>
+            <button className="px-8 py-4 text-sm font-bold text-black text-center" style={{ backgroundColor: CAROLINA }}>
+              Text Us Now
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          <div className="space-y-4">
-            <Link href="/" className="block">
-              <img src="/logo.png" alt="Docsy Notary Services" className="h-8 w-auto brightness-0 invert" />
+      <div className="px-5 py-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/">
+              <img src="/logo.png" alt="Docsy" className="h-6 w-auto brightness-0 invert mb-4" />
             </Link>
-            <p className="text-sm leading-relaxed" style={{ color: `${CLOUD}66` }}>
-              Hand us the documents. Walk away with your sanity.
-            </p>
+            <p className="text-xs text-white/30 leading-relaxed">Hand us the documents. Walk away with your sanity.</p>
           </div>
-
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: `${CLOUD}99` }}>
-              Services
-            </h4>
-            <ul className="space-y-2.5 text-sm">
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">Services</p>
+            <ul className="space-y-2">
               {[
-                { href: "/ron", label: "Remote Online Notarization" },
-                { href: "/mobile-notary", label: "Mobile Notary" },
-                { href: "/loan-signing", label: "Loan Signing" },
-                { href: "/apostille", label: "Apostille Services" },
-                { href: "/court-reporting", label: "Court Reporting" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="transition-colors duration-200" style={{ color: `${CLOUD}4d` }}>
-                    {l.label}
-                  </Link>
+                ["/ron", "RON"],
+                ["/mobile-notary", "Mobile Notary"],
+                ["/loan-signing", "Loan Signing"],
+                ["/apostille", "Apostille"],
+                ["/court-reporting", "Court Reporting"],
+              ].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm text-white/40 hover:text-white transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
-
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: `${CLOUD}99` }}>
-              Company
-            </h4>
-            <ul className="space-y-2.5 text-sm">
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">Company</p>
+            <ul className="space-y-2">
               {[
-                { href: "/memberships", label: "Memberships & Safe+" },
-                { href: "/faq", label: "FAQ" },
-                { href: "/help-center", label: "Help Center" },
-                { href: "/promos", label: "Promotions" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="transition-colors duration-200" style={{ color: `${CLOUD}4d` }}>
-                    {l.label}
-                  </Link>
+                ["/memberships", "Memberships"],
+                ["/faq", "FAQ"],
+                ["/help-center", "Help Center"],
+                ["/promos", "Promotions"],
+              ].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm text-white/40 hover:text-white transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
-
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: `${CLOUD}99` }}>
-              Quick Links
-            </h4>
-            <ul className="space-y-2.5 text-sm">
+            <p className="text-xs font-bold uppercase tracking-widest text-white/30 mb-4">Account</p>
+            <ul className="space-y-2">
               {[
-                { href: "/", label: "Book a Service" },
-                { href: "/help-center", label: "Help Center Guides" },
-                { href: "/faq", label: "FAQ" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="inline-flex items-center gap-1.5 transition-colors duration-200" style={{ color: `${CLOUD}4d` }}>
-                    <ArrowRight className="h-3 w-3" /> {l.label}
-                  </Link>
+                ["/login", "Sign In"],
+                ["/help-center", "Help Center Guides"],
+              ].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm text-white/40 hover:text-white transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div
-          className="mt-12 pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
-          style={{ borderTop: `1px solid ${EMERALD}40` }}
-        >
-          <p className="text-xs leading-relaxed max-w-2xl" style={{ color: `${CLOUD}33` }}>
-            <strong style={{ color: `${CLOUD}4d` }}>Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
+        <div className="border-t border-[#1a1a1a] pt-8 flex flex-col md:flex-row justify-between items-start gap-4">
+          <p className="text-xs text-white/20 leading-relaxed max-w-2xl">
+            <strong className="text-white/30">Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
           </p>
-          <p className="text-xs whitespace-nowrap" style={{ color: `${CLOUD}33` }}>
+          <p className="text-xs text-white/20 whitespace-nowrap">
             &copy; {new Date().getFullYear()} Docsy Notary Services
           </p>
         </div>

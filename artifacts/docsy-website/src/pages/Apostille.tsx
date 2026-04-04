@@ -1,12 +1,15 @@
 import React from "react";
-import { ArrowRight, Globe, CheckCircle2, AlertTriangle } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
 
 const CAROLINA = "#4B9CD3";
-const TERMINAL = "#00251b";
-const EMERALD = "#047521";
-const SIGNAL = "#40ff7d";
-const CLOUD = "#f4ffff";
+const BG = "#0a0a0a";
+
+const Label = ({ icon, text }: { icon: string; text: string }) => (
+  <div className="flex justify-center mb-8">
+    <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+      {icon} {text}
+    </span>
+  </div>
+);
 
 export default function Apostille() {
   React.useEffect(() => {
@@ -14,129 +17,116 @@ export default function Apostille() {
   }, []);
 
   return (
-    <div className="w-full" style={{ backgroundColor: TERMINAL }}>
+    <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="relative pt-24 md:pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: `${CAROLINA}0d` }} />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <Reveal>
-              <p className="text-sm font-medium mb-6" style={{ color: SIGNAL }}>Apostille · International Document Authentication</p>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 className="text-[2rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6" style={{ color: CLOUD }}>
-                Your document needs to work in another country.{" "}<span style={{ color: CAROLINA }}>We make that happen.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={200}>
-              <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10" style={{ color: `${CLOUD}b3` }}>
-                All-inclusive Texas apostille services — state filing fee, digital scan, and shipping prep included. Personal documents starting at $150. No hidden fees.
-              </p>
-            </Reveal>
-            <Reveal delay={300}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg" style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }} data-testid="btn-order-apostille">
-                  Order Apostille <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </button>
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-transparent rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5" style={{ color: `${CLOUD}cc`, border: `1px solid ${CLOUD}33` }} data-testid="btn-precheck-apostille">
-                  Free Pre-Check
-                </button>
-              </div>
-            </Reveal>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+            Your document needs
+            <br />
+            to work in another
+            <br />
+            country.
+          </h1>
+          <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
+            All-inclusive Texas apostille services. State filing fee, digital scan, and shipping prep included. Personal documents starting at $150.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-order-apostille">
+              Order Apostille
+            </button>
+            <button className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
+              Free Pre-Check
+            </button>
           </div>
         </div>
       </section>
 
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${EMERALD}33, transparent 60%)` }} />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-6">
-              <Reveal>
-                <div className="rounded-xl p-6 md:p-8" style={{ backgroundColor: TERMINAL, border: `1px solid ${EMERALD}` }}>
-                  <h2 className="text-xl font-bold mb-4" style={{ color: CLOUD }}>What is an apostille?</h2>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: `${CLOUD}b3` }}>
-                    An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). It's essentially the government saying: 'Yes, this document is real, and the signature and seal on it are legitimate.'
-                  </p>
-                  <p className="text-sm leading-relaxed" style={{ color: `${CLOUD}b3` }}>
-                    If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille.
-                  </p>
-                </div>
-              </Reveal>
-              <Reveal delay={100}>
-                <div className="rounded-xl p-6 md:p-8" style={{ backgroundColor: TERMINAL, border: `1px solid ${EMERALD}` }}>
-                  <h2 className="text-xl font-bold mb-4" style={{ color: CLOUD }}>What Docsy handles</h2>
-                  <p className="text-sm leading-relaxed" style={{ color: `${CLOUD}b3` }}>
-                    Everything. You send us the original certified document, we review it before filing (our free Pre-Check makes sure it qualifies before we submit anything), file it at the Texas Secretary of State, email you a digital certified scan the moment it's done, and send the original back to you.
-                  </p>
-                </div>
-              </Reveal>
-              <Reveal delay={150}>
-                <div className="rounded-xl p-6 md:p-8 flex items-start gap-4" style={{ backgroundColor: "#1a1500", border: `1px solid rgba(245,158,11,0.3)` }}>
-                  <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">Important</p>
-                    <p className="text-sm text-amber-300 leading-relaxed">
-                      Texas apostilles can only be placed on Texas-origin documents or documents notarized by a Texas notary. Originals only — photocopies, scans, and laminated documents cannot be apostilled.
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            </div>
+      {[
+        {
+          icon: "⊙", label: "WHAT IS AN APOSTILLE",
+          heading: "The certificate that\nmakes your document\nwork abroad.",
+          body: "An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille.",
+        },
+        {
+          icon: "⊟", label: "WHAT DOCSY HANDLES",
+          heading: "Everything.",
+          body: "You send us the original certified document. We review it before filing (our free Pre-Check makes sure it qualifies before we submit anything), file it at the Texas Secretary of State, email you a digital certified scan the moment it's done, and send the original back to you. All fees are included in the flat rate — state filing fee, scan, and return shipping prep.",
+        },
+        {
+          icon: "✕", label: "CRITICAL LIMITATION",
+          heading: "Originals only.\nNo photocopies.",
+          body: "Texas apostilles can only be placed on Texas-origin documents or documents notarized by a Texas notary. Originals only — photocopies, scans, and laminated documents cannot be apostilled. If you're not sure what qualifies, use the free Pre-Check before sending anything.",
+        },
+      ].map((feat, i) => (
+        <section key={i} className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center">
+          <div className="max-w-2xl mx-auto">
+            <Label icon={feat.icon} text={feat.label} />
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6 whitespace-pre-line" style={{ letterSpacing: "-0.02em" }}>
+              {feat.heading}
+            </h2>
+            <p className="text-lg text-white/50 leading-relaxed">{feat.body}</p>
+          </div>
+        </section>
+      ))}
 
-            <Reveal delay={200} className="lg:col-span-1">
-              <div className="rounded-xl overflow-hidden sticky top-24" style={{ backgroundColor: "#000F0A", border: `1px solid ${CLOUD}1a` }}>
-                <div className="px-6 py-4" style={{ backgroundColor: CAROLINA }}>
-                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: CLOUD }}>Pricing</p>
-                  <p className="text-xs mt-1" style={{ color: `${CLOUD}99` }}>All-inclusive. No surprise agency fees.</p>
-                </div>
-                {[
-                  { l: "Apostille Pre-Check", p: "$25", note: "Free for retainer clients" },
-                  { l: "Standard Personal Documents", p: "$150" },
-                  { l: "Standard Business Documents", p: "$175" },
-                  { l: "Next-Day", p: "$190" },
-                  { l: "Same-Day Rush (before 10 AM)", p: "$225" },
-                  { l: "Federal / USDOS", p: "$275" },
-                  { l: "Each additional (same order)", p: "$100" },
-                  { l: "Bundle of 5 or more", p: "$90 each" },
-                ].map((row) => (
-                  <div key={row.l} className="flex flex-col px-6 py-3" style={{ borderBottom: `1px solid ${CLOUD}0d` }}>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs" style={{ color: `${CLOUD}cc` }}>{row.l}</span>
-                      <span className="font-bold text-xs" style={{ color: CAROLINA }}>{row.p}</span>
-                    </div>
-                    {row.note && <span className="text-xs mt-0.5" style={{ color: `${CLOUD}4d` }}>{row.note}</span>}
-                  </div>
-                ))}
-                <div className="px-6 py-4" style={{ borderTop: `1px solid ${CLOUD}1a`, backgroundColor: "rgba(0,0,0,0.2)" }}>
-                  <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: `${CLOUD}66` }}>Included in every order</p>
-                  {["Texas SOS state filing fee", "Digital certified scan", "Return shipping prep", "Free Pre-Check", "90-day Safe+ vault trial"].map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-xs mb-2" style={{ color: `${CLOUD}b3` }}>
-                      <CheckCircle2 className="h-3 w-3 shrink-0" style={{ color: CAROLINA }} />
-                      {item}
-                    </div>
-                  ))}
-                </div>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <Label icon="⊞" text="PRICING" />
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
+              All-inclusive. No agency markup.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a] max-w-3xl mx-auto">
+            <div style={{ backgroundColor: BG }}>
+              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+                <p className="text-xs font-bold uppercase tracking-widest text-white/30">Texas Apostille</p>
               </div>
-            </Reveal>
+              {[
+                { l: "Pre-Check (waived for retainer clients)", p: "$25" },
+                { l: "Standard Personal Documents", p: "$150" },
+                { l: "Standard Business Documents", p: "$175" },
+                { l: "Next-Day", p: "$190" },
+                { l: "Same-Day Rush (before 10 AM)", p: "$225" },
+              ].map((r) => (
+                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                  <span className="text-sm text-white/60">{r.l}</span>
+                  <span className="text-sm font-bold" style={{ color: CAROLINA }}>{r.p}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ backgroundColor: BG }}>
+              <div className="px-8 py-5 border-b border-[#1a1a1a]">
+                <p className="text-xs font-bold uppercase tracking-widest text-white/30">Federal / Multi-Document</p>
+              </div>
+              {[
+                { l: "Federal / USDOS Apostille", p: "$275" },
+                { l: "Each additional (same order)", p: "$100" },
+                { l: "Bundle (5+ documents)", p: "$90 each" },
+                { l: "State SOS filing fee", p: "Included" },
+                { l: "Digital certified scan", p: "Included" },
+                { l: "90-day Safe+ vault trial", p: "Included" },
+              ].map((r) => (
+                <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1a1a1a] last:border-b-0">
+                  <span className="text-sm text-white/60">{r.l}</span>
+                  <span className="text-sm font-bold" style={{ color: CAROLINA }}>{r.p}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden px-6 py-20 md:py-24 text-center shadow-2xl" style={{ background: `linear-gradient(135deg, ${EMERALD}, ${TERMINAL})` }}>
-          <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${CAROLINA}15, transparent 60%)` }} />
-          <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ color: CLOUD }}>Not sure if your document qualifies?</h2>
-            <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: `${CLOUD}b3` }}>Free Pre-Check before we file anything. No guessing.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg" style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }} data-testid="btn-ask-apostille">
-                Free Pre-Check <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-              </button>
-              <button className="inline-flex items-center gap-2 px-8 py-4 bg-transparent rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5" style={{ color: `${CLOUD}cc`, border: `1px solid ${CLOUD}33` }}>
-                Ask a Question
-              </button>
-            </div>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+            Not sure if your document qualifies?
+          </h2>
+          <p className="text-lg text-black/60 mb-8">Free Pre-Check before we file anything. No guessing. No surprises.</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-ask-apostille">Free Pre-Check</button>
+            <button className="px-10 py-4 text-base font-bold text-black border-2 border-black">Ask a Question</button>
           </div>
         </div>
       </section>

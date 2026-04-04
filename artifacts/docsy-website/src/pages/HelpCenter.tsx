@@ -1,257 +1,191 @@
 import React from "react";
 import { Link, useParams } from "wouter";
-import { ChevronLeft, Upload, ScanLine, FileCheck, Video, MapPin, Package, Globe, FileText, Receipt, HelpCircle, FileSignature, AlertCircle, ArrowRight } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
+import { ChevronLeft, Upload, ScanLine, FileCheck, Video, MapPin, Package, Globe, FileText, Receipt, HelpCircle, FileSignature } from "lucide-react";
 
 const CAROLINA = "#4B9CD3";
-const TERMINAL = "#00251b";
-const EMERALD = "#047521";
-const SIGNAL = "#40ff7d";
-const CLOUD = "#f4ffff";
+const BG = "#0a0a0a";
 
 const guides = [
   {
-    id: "upload-document-ron",
-    icon: <Upload className="h-6 w-6" />,
-    title: "How to Upload a Document for a RON Session",
-    desc: "Getting your document ready for a RON session takes about two minutes.",
-    steps: [
-      { title: "Have your document as a PDF or image file", body: "Before your session, your document needs to be in a format you can share on screen or upload. PDFs work best. If you only have a paper copy, scan it first (see Guide 02: How to Scan a Document)." },
-      { title: "Find your session link in your booking confirmation", body: "Docsy sends you a session link when your RON appointment is confirmed. Check your email or text messages for a message from Docsy Notary Services. The link will look something like a Zoom or Teams invite." },
-      { title: "Option A — Screen share your document", body: "If your document is already open on your device (phone, laptop, or tablet), you can share your screen during the RON session. When the session starts, the notary will ask you to share your screen. On most devices: look for a 'Share Screen' button in the video call controls." },
-      { title: "Option B — Upload through the session link", body: "Some RON platforms allow document uploads before the session. If the session link has an upload option, you'll see a prompt to attach your document. Click it, find your PDF or image file, and upload it. The notary will review it with you during the session." },
-      { title: "During the session — sign where the notary directs you", body: "The notary will walk you through exactly where to sign. Do not sign anything before they direct you to. That's the whole reason the session exists." },
-      { title: "Get your completed document", body: "After the session, your notarized document will be uploaded to your Docsy portal — usually within minutes. You'll get an email when it's ready. Download it, save it, or let Docsy Safe+ store it for you." },
-    ],
-    note: "Can't find your document? Check your Downloads folder, your email attachments, or your Google Drive/iCloud depending on where it was created. Document won't upload? Make sure it's a PDF, JPG, or PNG. Files over 25MB may need to be compressed first.",
-  },
-  {
-    id: "scan-document",
-    icon: <ScanLine className="h-6 w-6" />,
-    title: "How to Scan a Document",
-    desc: "You have a paper document. You need a digital version. Here are the fastest ways to do it — no scanner required.",
-    steps: [
-      { title: "The easiest option: use your phone", body: "Your phone camera is a scanner. Both iPhone and Android have built-in scanning tools that turn a photo of a document into a clean, flat PDF." },
-      { title: "iPhone — Notes app scanner", body: "Open the Notes app. Create a new note. Tap the camera icon at the bottom. Select 'Scan Documents.' Hold your phone over the document — it auto-detects the edges and captures it. Tap Save. The scan saves to that note as a PDF." },
-      { title: "Android — Google Drive scanner", body: "Open the Google Drive app. Tap the '+' button at the bottom right. Select 'Scan.' Point your camera at the document. Tap the shutter button. Adjust the crop if needed, then tap the checkmark. It saves as a PDF in your Google Drive." },
-      { title: "Third option — Adobe Scan (free app)", body: "Adobe Scan is a free app for iPhone and Android that does one thing extremely well: scan documents. Download it, open it, point it at the document, and it automatically captures and flattens it into a high-quality PDF. Best option for multi-page documents." },
-      { title: "Make sure the scan is readable", body: "Hold your phone steady. Good lighting makes a big difference — natural light or a well-lit room works better than a dim corner. The text should be clear and legible. If it's blurry, scan it again." },
-      { title: "Send or share the PDF", body: "Once scanned, you can email it to yourself, upload it to Google Drive or iCloud, or share it directly from the app. For a RON session, you'll either share your screen or upload it to the session portal." },
-    ],
-    note: "For apostille orders: if you only have a personal copy of a vital record (birth certificate, marriage license, etc.), a scan is NOT sufficient. Those documents require a certified copy issued by the county or state. Contact us before ordering if you're not sure.",
-  },
-  {
-    id: "certified-copy",
-    icon: <FileCheck className="h-6 w-6" />,
-    title: "How to Get a Certified Copy of a Vital Record",
-    desc: "A certified copy is an officially issued copy of a document that comes directly from the government agency that issued the original.",
-    steps: [
-      { title: "Birth certificate", body: "Order from the vital statistics office of the state where you were born. In Texas: Texas DSHS Vital Statistics Unit at dshs.texas.gov. You'll need to provide ID and pay a fee (usually $22 in Texas). Processing takes 2–4 weeks by mail; same-day in person at Austin." },
-      { title: "Marriage certificate", body: "Order from the county clerk's office in the county where the marriage took place. In Texas, search '[county name] county clerk Texas' and look for their vital records section. Fees and timelines vary by county." },
-      { title: "Divorce decree", body: "Order from the district clerk's office in the county where the divorce was finalized. Search '[county name] district clerk Texas.' You may need the case number." },
-      { title: "Death certificate", body: "Order from the Texas DSHS Vital Statistics Unit or from the county clerk in the county where the death occurred." },
-      { title: "Diploma or transcript", body: "Contact the registrar's office at the school directly. Ask for a 'certified copy' or an 'official certified transcript.' It usually needs to come in a sealed envelope or with the registrar's original signature and seal." },
-      { title: "How long does it take?", body: "Plan for at least 2–4 weeks for mail orders. If you have a hard deadline, ask about expedited options when you order. For apostille orders with tight timelines, contact Docsy first — we can often advise on the fastest path." },
+    id: "how-to-book-ron",
+    icon: Video,
+    title: "How to Book a Remote Online Notarization (RON)",
+    summary: "Step-by-step guide to booking and completing your first RON appointment.",
+    content: [
+      { heading: "Step 1 — Check your equipment", body: "You need: a device with a working front-facing camera and microphone (laptop, phone, or tablet), a stable internet connection, a valid unexpired government-issued photo ID, and your document accessible as a file or ready to share on screen." },
+      { heading: "Step 2 — Book your appointment", body: "Text or call Docsy directly. Tell us: what document you need notarized, whether you're available now (same-hour) or need a specific time. You'll get a written estimate before confirming. RON is $25 for the first notarization, $10 for each additional signature in the same session." },
+      { heading: "Step 3 — Join the session", body: "Docsy will send a secure video link to your email or phone. Click it at your appointment time. You don't need to install anything — it works in your browser." },
+      { heading: "Step 4 — Complete the notarization", body: "The notary will verify your ID on camera. Do NOT sign your document before the session — your signature must happen live in front of the notary. Follow the notary's instructions for signing and dating. The notary will apply the digital seal during the session." },
+      { heading: "Step 5 — Receive your documents", body: "You'll receive a certified digital copy via email immediately. If you have Docsy Safe+, the document uploads automatically to your vault." },
     ],
   },
   {
-    id: "ron-prep",
-    icon: <Video className="h-6 w-6" />,
-    title: "How to Prepare for Your RON Session",
-    desc: "First time doing a Remote Online Notarization? Here's everything you need to do before you click that link.",
-    steps: [
-      { title: "Check your ID", body: "Your ID must be valid and not expired. Government-issued, with your photo on it. Driver's license, passport, state ID, or military ID all work. If your name on the document is different from your ID, have documentation of the name change ready." },
-      { title: "Have your document ready", body: "Your document needs to be accessible — either as a file on your device or accessible to share on screen. If it's a paper document, scan it first (see Guide 02). Do NOT sign it yet." },
-      { title: "Get your tech ready", body: "You need: a device with a working front-facing camera and microphone (phone, tablet, or laptop), a stable internet connection (WiFi preferred over cellular), and the session link from your Docsy confirmation. Test your camera and mic before the session if you can." },
-      { title: "Find a private, quiet space", body: "RON sessions are legal proceedings. You need to be alone (or only with co-signers who are supposed to be there), in a quiet space, where you can speak and be heard clearly. The coffee shop is not the move here." },
-      { title: "Turn off your VPN", body: "If you use a VPN, turn it off before the session. VPNs can interfere with the identity verification step and cause the session to fail. You can turn it back on after." },
-      { title: "Wait for the notary to direct you", body: "When the session starts, the notary will walk you through every step. Do not sign anything, fill in any dates, or make any changes to the document until directed to do so." },
+    id: "how-to-book-mobile",
+    icon: MapPin,
+    title: "How to Book a Mobile Notary Visit",
+    summary: "What to do before, during, and after your mobile notary appointment.",
+    content: [
+      { heading: "Step 1 — Know your location", body: "Tell us the address where you need the notary to come. This can be your home, office, hospital, nursing home, or any other location in our service area. Travel fees are calculated by distance tier (0–10 mi, 11–25 mi, 26–40 mi, 40+ mi)." },
+      { heading: "Step 2 — Have your ID ready", body: "Valid, unexpired, government-issued photo ID. No expired IDs. If your name has changed since the ID was issued, bring proof of the name change too." },
+      { heading: "Step 3 — Do NOT pre-sign", body: "This is the most common mistake. Do not sign your document before the notary arrives. Your signature must happen in front of the notary. Don't fill in dates early either — the notary will tell you when and where to sign." },
+      { heading: "Step 4 — Confirm your appointment", body: "You'll receive a written estimate before the appointment is confirmed. Review it. Make sure you understand all fees. Reply to confirm, and we'll be there." },
+      { heading: "Step 5 — Complete and pay", body: "The notary will guide you through signing. You'll receive an itemized invoice after. Payment methods: check, ACH/wire (no fee), card (3% fee), Zelle." },
     ],
   },
   {
-    id: "mobile-notary-prep",
-    icon: <MapPin className="h-6 w-6" />,
-    title: "How to Prepare for a Mobile Notary Visit",
-    desc: "A mobile notary visit takes 15–30 minutes when everything is ready. Here's how to make sure it goes that smoothly.",
-    steps: [
-      { title: "Check your ID — before the day of the appointment", body: "Not the day of. The day before. If your ID is expired, there is nothing a notary can do to help you until you get a valid one. Check it now." },
-      { title: "Have the original document", body: "Not a copy. Not a scan. The original. If you're not sure whether what you have counts as an 'original,' ask us before the appointment — not when we're standing at your door." },
-      { title: "Make sure all signers are present", body: "If more than one person needs to sign, everyone needs to be there at the same time with their own valid ID. There's no 'she'll sign it later' — the signature has to happen in front of the notary." },
-      { title: "Review the document but don't sign it", body: "Read through it. Make sure you understand what you're signing. Ask questions before the appointment if you have them. But don't sign anything — your signature needs to happen while the notary watches." },
-      { title: "Have payment ready", body: "Cash, card, or Zelle as confirmed at booking. The estimated total was provided in your confirmation message." },
-      { title: "The day of — be ready when we arrive", body: "The appointment time is when we show up, not when we start looking for a parking spot. If you need a few minutes to gather documents, that's fine — but know that wait time after the grace period is billed." },
+    id: "what-id-is-accepted",
+    icon: FileCheck,
+    title: "What ID Is Accepted for Notarization?",
+    summary: "Exactly what qualifies. No guessing.",
+    content: [
+      { heading: "Accepted IDs", body: "Valid, unexpired, government-issued photo ID only. Specifically: U.S. driver's license, U.S. state-issued ID card, U.S. passport or passport card, U.S. military ID (active or retired), Permanent Resident Card (Green Card), and some tribal IDs." },
+      { heading: "Expired ID", body: "Cannot be accepted. No exceptions. If your ID is expired, the notarization cannot proceed until you have valid ID." },
+      { heading: "Foreign passports", body: "Generally accepted for RON with additional identity verification steps. Contact Docsy before booking if you only have a foreign passport." },
+      { heading: "Name discrepancies", body: "If the name on your document doesn't match your ID exactly — due to a name change, marriage, divorce, or clerical error — bring documentation proving the name change (marriage certificate, court order, divorce decree). Without it, notarization may not be possible." },
+      { heading: "Photographed or scanned IDs", body: "For in-person notarizations, only physical IDs are accepted. For RON, the ID is shown on camera and must be legible, unexpired, and authentic." },
     ],
   },
   {
-    id: "apostille-submission",
-    icon: <Package className="h-6 w-6" />,
+    id: "how-to-send-apostille",
+    icon: Upload,
     title: "How to Send Documents for Apostille",
-    desc: "Sending original documents through the mail is nerve-wracking — we know. Here's how to do it safely.",
-    steps: [
-      { title: "Use the free Pre-Check before you send anything", body: "Text or email us a photo of your document first. We'll confirm it qualifies for apostille before you mail the original. This takes a few minutes and saves you from sending the wrong thing." },
-      { title: "Make a copy for your records", body: "Before mailing anything, scan or photograph the document. Store it somewhere safe. You don't want to be in a situation where your only copy is in transit." },
-      { title: "Package the document carefully", body: "Place it flat in a rigid envelope or between cardboard backing. Do not fold the document. Do not laminate it (laminated originals cannot be apostilled — ever). Use a rigid mailer or 9x12 envelope with cardboard stiffener." },
-      { title: "Ship with tracking — always", body: "Use FedEx, UPS, or USPS Priority Mail with tracking and signature confirmation. Keep the tracking number. 'I sent it' is not useful if it doesn't show up." },
-      { title: "Email us your tracking number", body: "Once shipped, email or text your tracking number to Docsy. This allows us to anticipate arrival, confirm receipt, and begin processing immediately." },
-      { title: "Your document comes back the same way", body: "Docsy ships your apostilled original back to you via your preferred carrier. Shipping cost is billed at actual carrier rate. A pre-paid return label option is available — ask when ordering." },
+    summary: "Original documents only. Here's exactly what to do.",
+    content: [
+      { heading: "Step 1 — Use the Free Pre-Check", body: "Before sending anything, use Docsy's free Pre-Check service. Text or email us a photo or scan of your document. We'll tell you whether it qualifies, what kind of apostille it needs, and the total cost. This prevents costly mistakes." },
+      { heading: "Step 2 — Get the right copy", body: "For vital records (birth certificates, marriage licenses, death certificates, divorce decrees): you need a certified copy issued by the county or state. Not a personal photocopy. Not a scan. A certified copy with a raised seal or official stamp. For notarized documents: the original signed and notarized document." },
+      { heading: "Step 3 — Ship safely", body: "Do not laminate documents. Use a padded mailer or document sleeve. Use a trackable shipping method — we recommend USPS Priority Mail with tracking, or FedEx. Keep your tracking number." },
+      { heading: "Step 4 — What happens next", body: "Docsy reviews the document on receipt. If anything is off, we'll contact you immediately. Otherwise we file it at the Texas Secretary of State. You'll receive a digital certified scan the moment it's complete. The original is returned to you via trackable mail." },
     ],
   },
   {
-    id: "client-portal",
-    icon: <Globe className="h-6 w-6" />,
-    title: "How to Access Your Docsy Client Portal",
-    desc: "Your Docsy portal is where everything lives — your completed documents, invoices, appointment history, referral credits, and vault storage.",
-    steps: [
-      { title: "Check your confirmation email", body: "When you booked your first Docsy appointment, a portal access link was sent to the email you provided. Search your inbox for 'Docsy Notary Services' if you can't find it." },
-      { title: "Click the activation link", body: "The first time you access your portal, you'll need to click the activation link and create a password. This only happens once." },
-      { title: "Your documents are already there", body: "After every completed appointment, your documents are uploaded automatically. You don't have to request them — they're just there. Click the document to download or view." },
-      { title: "Check your Safe+ vault", body: "If you received a free 90-day Safe+ trial (included with every apostille and loan signing order), your vault is already active. You can upload additional documents directly through the portal." },
-      { title: "Find your referral code", body: "Your unique referral code is in your portal dashboard. Share it with anyone who needs Docsy services — when they book and complete an appointment, you get $10 off your next service." },
-      { title: "Can't log in?", body: "Use the 'Forgot Password' option on the login page. If you're still stuck, text us and we'll get you sorted." },
-    ],
-  },
-  {
-    id: "after-notarization",
-    icon: <FileText className="h-6 w-6" />,
-    title: "What Happens After Your Document Is Notarized?",
-    desc: "The notarization is done. Now what? Here's what to do with your document depending on what you needed it for.",
-    steps: [
-      { title: "For standard personal use (affidavits, POA, etc.)", body: "Keep the original in a safe place. A certified copy or scan stored in your Docsy Safe+ vault gives you access to it forever. Share or use the document as required by whoever requested it." },
-      { title: "For real estate transactions", body: "The notarized document goes to your title company or lender as directed. Docsy returns scanbacks immediately after a loan signing — your title team will have them fast." },
-      { title: "For apostille (next steps after notarization)", body: "If your notarized document also needs an apostille, the notarization is the first step — not the final one. Docsy can handle both in sequence. If you need to get an apostille on a document that was just notarized, let us know and we'll proceed directly." },
-      { title: "For court reporting / deposition transcripts", body: "Your transcript will be delivered via your Docsy portal on the delivery schedule you selected at booking. New clients: access activates when the invoice balance is paid. Established clients: access on delivery, NET 30 on the balance." },
-      { title: "Store it — don't lose it", body: "Original notarized documents are a pain to replace. Your Docsy portal automatically stores a copy of every completed document. If you also want long-term storage, activate or upgrade your Docsy Safe+ vault." },
-      { title: "Share your experience", body: "If everything went the way it was supposed to — which is the goal every time — a Google review goes a long way. It takes 60 seconds. Leave one and get $5 off your next service." },
-    ],
-  },
-  {
-    id: "read-invoice",
-    icon: <Receipt className="h-6 w-6" />,
+    id: "how-to-read-your-invoice",
+    icon: Receipt,
     title: "How to Read Your Docsy Invoice",
-    desc: "Docsy invoices are itemized. Every line has a reason. Here's how to read them — and what to do if something doesn't look right.",
-    steps: [
-      { title: "Statutory notary fees are listed first and separately", body: "Texas law (Gov. Code §406.024) requires that notary fees be listed separately from all other service fees. The first section of your invoice will show the statutory notary fee: $10 for the first signature, $1 for each additional signature on the same document. These are legally capped amounts." },
-      { title: "Travel fees are listed separately too", body: "Travel fees are non-statutory — they're not regulated by Texas law. They'll appear as a separate line item with the travel tier or distance. This is also required by Texas law when charging both notary fees and travel fees." },
-      { title: "Service fees are everything else", body: "RON platform time, loan signing package, apostille processing, court reporting appearance, add-ons — these all appear as individual line items with the rate that was disclosed at booking." },
-      { title: "Discounts show up as negative lines", body: "Membership discounts, promo codes (Night Shift Seal™, Early Route™, etc.), and referral credits all appear as negative line items so you can see exactly what was applied." },
-      { title: "If something doesn't match your estimate", body: "All disputes must be submitted in writing within 7 calendar days of invoice receipt. Email or text us with the specific line item in question. Good faith disputes are resolved within 10 business days. Undisputed portions remain due regardless of any open dispute." },
-      { title: "How to pay", body: "Check (payable to Docsy Notary Services), ACH/wire transfer (preferred, no fee), credit or debit card (3% processing fee), or Zelle. Payment details are on every invoice." },
+    summary: "Every line item explained.",
+    content: [
+      { heading: "Statutory Notary Fee", body: "This is the state-regulated notary fee: $10 for the first notarized signature, $1 for each additional signature on the same document. These are set by Texas law and cannot be waived." },
+      { heading: "Service Fee", body: "Docsy's fee for the service type: RON session fee, mobile visit coordination, apostille processing, loan signing fee, court reporting appearance fee, etc. This is what varies by service and is itemized separately from the statutory notary fee, as required by law." },
+      { heading: "Travel Fee (mobile only)", body: "Based on your distance tier from the notary. Listed at booking in the written estimate." },
+      { heading: "Timing Add-Ons", body: "Rush, after-hours, and late-night surcharges — only if applicable. Always disclosed at booking. Never added after the fact." },
+      { heading: "Discounts Applied", body: "If you booked with a promotion (Early Bird, HonorPass, etc.), it appears as a line item discount. The final total matches the written estimate." },
     ],
   },
   {
-    id: "need-apostille",
-    icon: <HelpCircle className="h-6 w-6" />,
-    title: "Does My Document Need an Apostille?",
-    desc: "If you're using a US document in another country for anything official, probably yes. Here's the longer answer.",
-    steps: [
-      { title: "Is the country you're sending the document to a Hague Convention member?", body: "The apostille system only works between countries in the 1961 Hague Convention — which covers 125+ countries including most of Europe, Latin America, and many others. If the destination country is NOT a Hague member (like China, UAE, or several others), an apostille won't work — you'll need a different authentication process. Google the country name + 'Hague Convention member' to check." },
-      { title: "What are you using the document for?", body: "Immigration, visa, or citizenship application: almost certainly yes. Employment abroad: usually yes. Education (foreign university): usually yes. Business registration in another country: yes. Personal family matters (marriage, adoption): yes. Just traveling: probably no." },
-      { title: "Who issued the document?", body: "Texas-origin documents (issued by a Texas government office) can be apostilled by the Texas Secretary of State. Documents from other US states need to be apostilled by that state's Secretary of State. Federal documents (FBI background checks, State Department docs) go through the US Department of State." },
-      { title: "Does your document have a notarization on it?", body: "Non-recordable documents (diplomas, transcripts, powers of attorney, affidavits) need an original Texas notarization before they can be apostilled. If your document doesn't have a Texas notary seal, we can handle the notarization first and then proceed to apostille." },
-      { title: "Still not sure? Use the free Pre-Check", body: "Send Docsy a photo of your document and tell us what country it's going to. We'll tell you exactly what it needs — whether that's an apostille, a different authentication process, or nothing. Free. No commitment." },
-      { title: "What if you need multiple documents apostilled?", body: "Bundle pricing is available for 5 or more documents at $90 each. Each additional document added to the same order is $100. Contact us to start the process." },
+    id: "apostille-what-qualifies",
+    icon: Globe,
+    title: "What Documents Can Be Apostilled?",
+    summary: "A plain-language guide to apostille eligibility.",
+    content: [
+      { heading: "Texas-origin documents", body: "Any document issued by a Texas authority — birth certificates, marriage licenses, death certificates, divorce decrees, court orders, school transcripts, diplomas, business filings — is eligible for a Texas apostille." },
+      { heading: "Documents notarized by a Texas notary", body: "Powers of attorney, affidavits, agreements, or any other document that was signed in front of a Texas notary public can receive a Texas apostille." },
+      { heading: "Federal documents", body: "FBI background checks, Social Security documents, federal agency documents — these require a USDOS apostille (not a Texas apostille). Docsy handles federal apostilles at $275." },
+      { heading: "What cannot be apostilled", body: "Photocopies, scans, laminated documents, documents from other states (need to apostille in the issuing state), or documents for countries not in the Hague Convention." },
     ],
   },
   {
-    id: "power-of-attorney",
-    icon: <FileSignature className="h-6 w-6" />,
-    title: "What Is a Power of Attorney and When Do I Need One?",
-    desc: "We notarize a lot of powers of attorney. Here's the plain-language version — note that this is educational information, not legal advice.",
-    steps: [
-      { title: "What it is", body: "A Power of Attorney (POA) is a legal document that gives one person (the agent) the authority to act on behalf of another person (the principal) for specific purposes. It can be broad (general POA) or limited to specific transactions (limited POA)." },
-      { title: "Common types", body: "General POA: broad authority over financial and legal matters. Limited/Special POA: authority for a specific transaction or time period. Durable POA: remains effective if the principal becomes incapacitated. Healthcare POA: authority to make medical decisions." },
-      { title: "When you might need one", body: "You're traveling and need someone to handle a transaction for you. You're buying or selling real estate remotely. You're aging and want a family member to manage your affairs. You're deployed or otherwise unavailable. A family member needs medical decisions made if they're incapacitated." },
-      { title: "What the notary does", body: "A notary's role is to verify your identity and witness your signature — not to evaluate the document's content or legality. We confirm you are who you say you are and that you're signing voluntarily. Whether the POA is legally sufficient for your specific purpose is a legal question for an attorney." },
-      { title: "What to have ready for the notarization", body: "The completed document (drafted by you or an attorney — Docsy cannot draft legal documents). All parties who need to sign present with valid ID. Witnesses if required by your state." },
-      { title: "Docsy's role", body: "We provide the notarization — the official witness and seal. We don't advise on whether the document is legally sufficient for your situation. If you're not sure, consult an attorney before your appointment." },
+    id: "loan-signing-what-to-expect",
+    icon: FileSignature,
+    title: "What to Expect at a Loan Signing",
+    summary: "For borrowers — what to bring and what not to do.",
+    content: [
+      { heading: "Bring valid ID", body: "Both signers (if applicable) must have valid, unexpired, government-issued photo ID. Check the name on your ID against the loan documents — they should match. If they don't, notify your lender or title company before the appointment." },
+      { heading: "Do NOT pre-sign", body: "Do not sign anything before the signing agent arrives. The agent must witness every signature on the loan documents. Pre-signing voids the document and will require a re-signing." },
+      { heading: "Clear 60–90 minutes", body: "A typical loan package has 80–150+ pages. Most signings take 45–75 minutes depending on the package size and how many questions come up. HELOC and reverse mortgage signings sometimes take longer." },
+      { heading: "The notary can't give legal advice", body: "The signing agent is there to facilitate the signing, not to explain what the loan terms mean. If you have questions about the loan itself, contact your lender before the appointment — not during." },
+      { heading: "Scanbacks (title companies)", body: "Docsy returns scanbacks immediately on completion of refinance and buyer packages. You'll have them before the borrowers have left the table." },
     ],
   },
   {
-    id: "appointment-issues",
-    icon: <AlertCircle className="h-6 w-6" />,
-    title: "What to Do If Your Appointment Didn't Go as Planned",
-    desc: "Sometimes things happen. ID is expired. Document is incomplete. Wrong type of copy. Here's what to do in each scenario.",
-    steps: [
-      { title: "Expired or missing ID", body: "You'll need to get a valid ID before we can complete the notarization. In Texas, a new driver's license or state ID takes 2–3 weeks to arrive by mail; same-day at a DPS office if you can get an appointment. A passport can be expedited. Text us when you have valid ID — we'll rebook at no additional cancellation fee if this was the reason for the original failed appointment." },
-      { title: "You already signed the document", body: "If you signed before the notary arrived or the RON session began, we generally cannot notarize it. The signature must be witnessed. You'll need a new copy of the document to sign in front of us. Check with whoever provided the document about getting a fresh copy." },
-      { title: "Wrong type of document (copy instead of original)", body: "For apostilles and many notarizations, a personal copy or scan isn't enough. You need the original or a certified copy issued by the relevant government agency. See Guide 03 for how to get a certified copy of a vital record." },
-      { title: "Document has blank fields or is incomplete", body: "A document with blank required fields generally can't be notarized. Fill in all required fields before the appointment. If you're not sure what goes in a field, consult whoever gave you the document — or an attorney." },
-      { title: "Missing co-signer or witness", body: "All signers must be present at the same time. If a required co-signer couldn't make it, we'll need to reschedule for when everyone can be there. For RON, co-signers can join remotely from a different location." },
-      { title: "Contact Docsy directly", body: "Whatever happened — text or email us. We'll tell you exactly what needs to happen before we can rebook, what the fees are (cancellation and travel fees may apply per the rate schedule), and what the fastest path forward looks like." },
+    id: "docsy-safe-plus",
+    icon: ScanLine,
+    title: "How Docsy Safe+ Works",
+    summary: "Encrypted document storage built for legal documents.",
+    content: [
+      { heading: "What it is", body: "Docsy Safe+ is an encrypted document vault that automatically stores every document from every Docsy appointment. No uploading required. Every RON notarization, every apostille, every loan signing — stored automatically." },
+      { heading: "Free trial", body: "Every first apostille or loan signing order comes with a free 90-day trial. No credit card. No signup. Activates automatically on order completion. After 90 days, continue for $7/month or stop — no automatic charge." },
+      { heading: "Access", body: "Access your vault from any device, any time. Share documents directly from your vault. Grant family members access (Family plan). Export any document as a certified PDF." },
+      { heading: "Plans", body: "Free (up to 5 docs), Personal $7/month (up to 50 docs), Family $18/month (up to 150 docs, 4 users), Professional $29/month (up to 500 docs), Business/Enterprise (custom pricing, contact Docsy)." },
+    ],
+  },
+  {
+    id: "court-reporting-how-it-works",
+    icon: FileText,
+    title: "How Docsy Court Reporting Works",
+    summary: "For attorneys and legal teams — from booking to transcript delivery.",
+    content: [
+      { heading: "Booking", body: "Contact Docsy at least 48 hours before the deposition when possible. Provide: case name, deposition date and time, location or video platform (Zoom, Teams, etc.), names of witnesses, estimated duration, and whether you need a transcript." },
+      { heading: "Appearance", body: "The certified digital reporter arrives at least 10 minutes before the scheduled start. For remote depositions, a tech check is included at no charge. The reporter administers the oath, marks exhibits, and manages the transcript record." },
+      { heading: "Transcript delivery", body: "Ordinary (30-day) transcripts are $4.25/page. Rush options available. Word index, certified PDF, and e-transcript are always included. No separate line items for these. Transcripts are delivered via secure portal." },
+      { heading: "Payment", body: "Appearance-only: NET 14, no deposit required. Transcript orders: 50% deposit at scheduling, balance on delivery. Corporate accounts: NET 30 available, contact Docsy." },
+    ],
+  },
+  {
+    id: "what-notaries-cant-do",
+    icon: HelpCircle,
+    title: "What Notaries Can't Do",
+    summary: "Important limitations to know before your appointment.",
+    content: [
+      { heading: "Notaries can't provide legal advice", body: "A notary's role is ministerial — we verify identity, witness signatures, and apply a seal. We can't tell you whether a document is legally sufficient, whether it meets a specific legal requirement, or what it means. For those questions, consult a licensed attorney." },
+      { heading: "Notaries can't notarize documents they have a financial interest in", body: "A notary cannot notarize a document in which they are a named beneficiary, party, or have a financial stake." },
+      { heading: "Notaries can't notarize without the signer present", body: "The signer must be physically present (or on camera for RON). No exceptions. We cannot notarize a signature that was already applied, or for someone who isn't there." },
+      { heading: "Notaries can't accept expired ID", body: "No matter the circumstances. If your ID is expired, the notarization cannot proceed." },
+      { heading: "Notaries can't notarize incomplete documents", body: "Documents with blank spaces that are intended to be filled in cannot be notarized. Every blank space must either be filled in or crossed out and initialed." },
+    ],
+  },
+  {
+    id: "safe-plus-trial-faq",
+    icon: Package,
+    title: "Docsy Safe+ Trial — What You Need to Know",
+    summary: "Exactly how the 90-day trial works.",
+    content: [
+      { heading: "How do I get the trial?", body: "Complete your first apostille or loan signing order with Docsy. The trial activates automatically — no signup, no credit card required." },
+      { heading: "What's included in the trial?", body: "Full Personal plan access (up to 50 documents, 4 users) for 90 days. All documents from your Docsy appointment upload automatically. You can also upload other documents manually." },
+      { heading: "What happens after 90 days?", body: "Nothing automatic. There is no auto-charge. You'll receive a reminder before the trial ends. If you want to continue, choose a plan and subscribe. If you don't, your documents remain accessible in read-only mode for 30 more days, then require a subscription to access." },
+      { heading: "Can I use the trial more than once?", body: "The free trial applies to your first apostille or loan signing order. Repeat orders don't trigger another trial. If you need a trial extension for any reason, contact Docsy." },
+    ],
+  },
+  {
+    id: "billing-and-payments",
+    icon: Receipt,
+    title: "Billing & Payment Methods",
+    summary: "Every payment option and when it applies.",
+    content: [
+      { heading: "Payment methods", body: "Check (personal or business), ACH/wire transfer (preferred — no processing fee), credit or debit card (3% processing fee, disclosed before charging), and Zelle (no fee)." },
+      { heading: "Written estimates", body: "Every appointment gets a written estimate before the work starts. The invoice total will match the estimate. If it doesn't, call us." },
+      { heading: "Deposit policy", body: "Court reporting transcript orders: 50% deposit at scheduling. All other services: no deposit required unless specified." },
+      { heading: "When is payment due?", body: "For most services: at or immediately after completion. Court reporting appearances: NET 14. Corporate accounts: NET 30 available upon request." },
+      { heading: "Itemized invoices", body: "Every invoice separates the statutory notary fee from the service fee, as required by Texas law. All other charges (travel, rush, timing) are listed separately. No bundled mystery fees." },
     ],
   },
 ];
 
-function GuideCard({ guide }: { guide: typeof guides[0] }) {
+function GuideDetail({ guide }: { guide: typeof guides[0] }) {
   return (
-    <Link
-      href={`/help-center/${guide.id}`}
-      className="group flex flex-col rounded-xl p-6 md:p-8 h-full transition-all duration-200 hover:-translate-y-1"
-      style={{ backgroundColor: TERMINAL, border: `1px solid ${EMERALD}` }}
-      data-testid={`guide-card-${guide.id}`}
-    >
-      <div className="mb-4" style={{ color: `${CLOUD}99` }}>{guide.icon}</div>
-      <h3 className="font-bold text-base leading-snug mb-3" style={{ color: CLOUD }}>{guide.title}</h3>
-      <p className="text-xs leading-relaxed flex-1" style={{ color: `${CLOUD}66` }}>{guide.desc}</p>
-      <div className="mt-5 flex items-center gap-1 text-sm font-medium group-hover:gap-2 transition-all duration-200" style={{ color: SIGNAL }}>
-        Read guide <ArrowRight className="w-4 h-4" />
+    <div className="w-full" style={{ backgroundColor: BG }}>
+      <div className="border-b border-[#1a1a1a] px-5 py-4">
+        <Link href="/help-center" className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors">
+          <ChevronLeft className="h-4 w-4" /> Back to Help Center
+        </Link>
       </div>
-    </Link>
-  );
-}
 
-function GuideArticle({ id }: { id: string }) {
-  const guide = guides.find((g) => g.id === id);
-
-  if (!guide) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: TERMINAL }}>
-        <div className="text-center">
-          <p className="mb-4" style={{ color: `${CLOUD}66` }}>Guide not found.</p>
-          <Link href="/help-center" className="inline-flex items-center gap-2 px-6 py-3 rounded-md font-medium" style={{ backgroundColor: CAROLINA, color: CLOUD }}>
-            Back to Help Center
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-full" style={{ backgroundColor: TERMINAL }}>
-      <section className="relative pt-24 md:pt-32 pb-12 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: `${CAROLINA}0d` }} />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6">
-          <Link href="/help-center" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-8 transition-colors" style={{ color: `${CLOUD}4d` }} data-testid="btn-back-help">
-            <ChevronLeft className="h-3.5 w-3.5" /> Help Center
-          </Link>
-          <div className="mb-4" style={{ color: CAROLINA }}>{guide.icon}</div>
-          <h1 className="text-[1.8rem] leading-[1.15] sm:text-3xl md:text-4xl font-bold mb-4" style={{ color: CLOUD }}>
+      <section className="px-5 pt-14 pb-12 border-b border-[#1a1a1a]" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-3xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
             {guide.title}
           </h1>
-          <p className="text-base leading-relaxed" style={{ color: `${CLOUD}b3` }}>{guide.desc}</p>
+          <p className="text-lg text-black/60 font-medium">{guide.summary}</p>
         </div>
       </section>
 
-      <section className="pb-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-4">
-          {guide.steps.map((step, i) => (
-            <div key={i} className="flex rounded-xl overflow-hidden" style={{ border: `1px solid ${EMERALD}66` }}>
-              <div className="flex items-start justify-center w-16 shrink-0 pt-6 pb-6" style={{ backgroundColor: CAROLINA }}>
-                <span className="text-xl font-bold" style={{ color: CLOUD }}>{i + 1}</span>
-              </div>
-              <div className="flex-1 p-6">
-                <h3 className="font-bold text-base mb-2" style={{ color: CLOUD }}>{step.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: `${CLOUD}b3` }}>{step.body}</p>
-              </div>
+      <section className="px-5 py-16">
+        <div className="max-w-3xl mx-auto">
+          {guide.content.map((section, i) => (
+            <div key={i} className="border-b border-[#1a1a1a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: CAROLINA }}>STEP {String(i + 1).padStart(2, "0")}</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
+              <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
             </div>
           ))}
-
-          {guide.note && (
-            <div className="rounded-xl p-6 mt-8 flex items-start gap-4" style={{ backgroundColor: "#000F0A", border: `1px solid ${CLOUD}1a` }}>
-              <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: CAROLINA }} />
-              <p className="text-sm leading-relaxed" style={{ color: `${CLOUD}b3` }}>{guide.note}</p>
-            </div>
-          )}
         </div>
       </section>
     </div>
@@ -262,63 +196,55 @@ export default function HelpCenter() {
   const params = useParams<{ id?: string }>();
   const id = params?.id;
 
-  React.useEffect(() => {
-    if (id) {
-      const guide = guides.find((g) => g.id === id);
-      document.title = guide ? `${guide.title} | Docsy Help Center` : "Help Center | Docsy Notary Services";
-    } else {
-      document.title = "Help Center | Docsy Notary Services";
-    }
-  }, [id]);
-
-  if (id) return <GuideArticle id={id} />;
+  const guide = id ? guides.find((g) => g.id === id) : null;
+  if (guide) return <GuideDetail guide={guide} />;
 
   return (
-    <div className="w-full" style={{ backgroundColor: TERMINAL }}>
+    <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="relative pt-24 md:pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: `${CAROLINA}0d` }} />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <Reveal>
-              <p className="text-sm font-medium mb-6" style={{ color: SIGNAL }}>Help Center · Step-by-Step Guides</p>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 className="text-[2rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6" style={{ color: CLOUD }}>
-                Guides that actually{" "}<span style={{ color: CAROLINA }}>explain things.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={200}>
-              <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: `${CLOUD}b3` }}>
-                We built these guides because most legal document resources are written for lawyers, not for the person who just found out they need an apostille by Friday.
-              </p>
-            </Reveal>
-          </div>
+      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+            Help Center.
+          </h1>
+          <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
+            Step-by-step guides for every Docsy service. Plain language. No runaround.
+          </p>
         </div>
       </section>
 
-      <section className="pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {guides.map((guide, i) => (
-              <Reveal key={guide.id} delay={i * 60}>
-                <GuideCard guide={guide} />
-              </Reveal>
+      <section className="py-16 px-5 border-t border-[#1a1a1a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1a1a1a]">
+            {guides.map((guide) => (
+              <Link
+                key={guide.id}
+                href={`/help-center/${guide.id}`}
+                className="group block p-8 hover:bg-white/[0.03] transition-colors"
+                style={{ backgroundColor: BG }}
+                data-testid={`guide-link-${guide.id}`}
+              >
+                <guide.icon className="h-6 w-6 mb-5 text-white/25 group-hover:text-white/50 transition-colors" />
+                <h3 className="text-base font-black text-white mb-2 leading-tight group-hover:text-white transition-colors">{guide.title}</h3>
+                <p className="text-sm text-white/35 leading-relaxed">{guide.summary}</p>
+                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: CAROLINA }}>
+                  Read guide →
+                </p>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto relative rounded-3xl overflow-hidden px-6 py-20 md:py-24 text-center shadow-2xl" style={{ background: `linear-gradient(135deg, ${EMERALD}, ${TERMINAL})` }}>
-          <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${CAROLINA}15, transparent 60%)` }} />
-          <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4" style={{ color: CLOUD }}>Didn't find what you need?</h2>
-            <p className="text-base sm:text-lg mb-8 max-w-xl mx-auto" style={{ color: `${CLOUD}b3` }}>Text us directly and we'll explain it. No runaround.</p>
-            <button className="group inline-flex items-center gap-2 px-8 py-4 rounded-md font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg" style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }}>
-              Contact Us <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1a1a1a] text-center" style={{ backgroundColor: CAROLINA }}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+            Still have a question?
+          </h2>
+          <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight.</p>
+          <Link href="/faq" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
+            Browse FAQ
+          </Link>
         </div>
       </section>
 

@@ -1,87 +1,101 @@
 import React, { useState, useRef } from "react";
 import { Link } from "wouter";
-import { ArrowRight, ArrowLeft } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
 
 const CAROLINA = "#4B9CD3";
-const TERMINAL = "#00251b";
-const CLOUD = "#f4ffff";
-const EMERALD = "#047521";
+const BG = "#0a0a0a";
 
 export default function Verify() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [verified, setVerified] = useState(false);
+  const [error, setError] = useState(false);
+  const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
   React.useEffect(() => {
-    document.title = "Verify Code | Docsy Notary Services";
+    document.title = "Verify | Docsy Notary Services";
   }, []);
 
-  const handleChange = (index: number, value: string) => {
-    if (value.length > 1) return;
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
-    if (value && index < 5) inputRefs.current[index + 1]?.focus();
+  const handleChange = (i: number, value: string) => {
+    if (!/^[0-9]?$/.test(value)) return;
+    const next = [...code];
+    next[i] = value;
+    setCode(next);
+    setError(false);
+    if (value && i < 5) inputs.current[i + 1]?.focus();
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) inputRefs.current[index - 1]?.focus();
+  const handleKeyDown = (i: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !code[i] && i > 0) inputs.current[i - 1]?.focus();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const full = code.join("");
+    if (full.length === 6) setVerified(true);
+    else setError(true);
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center px-6" style={{ backgroundColor: TERMINAL }}>
-      <Reveal>
-        <div className="w-full max-w-md">
-          <Link href="/" className="block mb-12">
-            <img src="/logo.png" alt="Docsy Notary Services" className="h-10 w-auto mx-auto brightness-0 invert" />
-          </Link>
+    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-5 py-20" style={{ backgroundColor: BG }}>
+      <div className="w-full max-w-md text-center">
 
-          <h1 className="text-2xl font-bold text-center mb-3" style={{ color: CLOUD }}>Check your email</h1>
-          <p className="text-sm text-center mb-2" style={{ color: `${CLOUD}66` }}>We sent a 6-digit code to</p>
-          <p className="text-sm text-center mb-10 font-semibold" style={{ color: CLOUD }}>you@example.com</p>
-
-          <div className="flex justify-center gap-3 mb-8">
-            {code.map((digit, i) => (
-              <input
-                key={i}
-                ref={(el) => { inputRefs.current[i] = el; }}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(i, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(i, e)}
-                className="w-12 h-14 text-center text-xl font-bold rounded-md focus:outline-none transition-colors"
-                style={{ backgroundColor: "#000F0A", border: `1px solid ${EMERALD}66`, color: CLOUD }}
-                data-testid={`code-input-${i}`}
-              />
-            ))}
-          </div>
-
-          <button
-            className="flex items-center justify-center gap-3 w-full px-7 py-4 text-sm font-medium rounded-md transition-all duration-200 hover:-translate-y-0.5 mb-6 shadow-lg"
-            style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }}
-            data-testid="btn-verify"
-          >
-            Verify Code <ArrowRight className="h-4 w-4" />
-          </button>
-
-          <div className="text-center space-y-4">
-            <button className="text-xs uppercase tracking-wider font-semibold transition-colors" style={{ color: `${CLOUD}66` }}>
-              Resend Code
-            </button>
-            <div>
-              <Link href="/login" className="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold transition-colors" style={{ color: `${CLOUD}4d` }}>
-                <ArrowLeft className="h-3 w-3" /> Use a different email
-              </Link>
+        {!verified ? (
+          <>
+            <div className="flex justify-center mb-6">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+                ⊙ VERIFY EMAIL
+              </span>
             </div>
-          </div>
+            <h1 className="text-4xl sm:text-5xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>Enter your code.</h1>
+            <p className="text-white/40 text-base mb-10">Check your inbox. We sent a 6-digit code.</p>
 
-          <p className="text-xs text-center mt-10 leading-relaxed" style={{ color: `${CLOUD}4d` }}>
-            Didn't receive it? Check your spam folder or try resending.
-          </p>
-        </div>
-      </Reveal>
+            <form onSubmit={handleSubmit}>
+              <div className="flex justify-center gap-3 mb-8">
+                {code.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={(el) => { inputs.current[i] = el; }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleChange(i, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(i, e)}
+                    className="w-12 h-14 text-center text-xl font-bold text-white border outline-none transition-colors"
+                    style={{ backgroundColor: "#111", borderColor: error ? "#ef4444" : digit ? CAROLINA : "#222" }}
+                    data-testid={`code-input-${i}`}
+                  />
+                ))}
+              </div>
+              {error && <p className="text-sm text-red-400 mb-4">Please enter the full 6-digit code.</p>}
+              <button
+                type="submit"
+                className="w-full px-5 py-4 text-base font-bold text-black mb-4"
+                style={{ backgroundColor: CAROLINA }}
+                data-testid="btn-verify"
+              >
+                Verify & Sign In
+              </button>
+            </form>
+
+            <Link href="/login" className="text-sm text-white/30 hover:text-white/60 underline transition-colors">
+              Back to sign in
+            </Link>
+          </>
+        ) : (
+          <>
+            <div className="flex justify-center mb-6">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+                ✓ VERIFIED
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>You're in.</h1>
+            <p className="text-white/40 text-base mb-10">Your Docsy Safe+ vault is ready.</p>
+            <Link href="/" className="inline-block px-10 py-4 text-base font-bold text-black" style={{ backgroundColor: CAROLINA }}>
+              Go to Dashboard
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 }

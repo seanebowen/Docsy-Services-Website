@@ -1,76 +1,81 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Mail } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
 
 const CAROLINA = "#4B9CD3";
-const TERMINAL = "#00251b";
-const CLOUD = "#f4ffff";
-const EMERALD = "#047521";
+const BG = "#0a0a0a";
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   React.useEffect(() => {
     document.title = "Sign In | Docsy Notary Services";
   }, []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center px-6" style={{ backgroundColor: TERMINAL }}>
-      <Reveal>
-        <div className="w-full max-w-md">
-          <Link href="/" className="block mb-12">
-            <img src="/logo.png" alt="Docsy Notary Services" className="h-10 w-auto mx-auto brightness-0 invert" />
-          </Link>
-
-          <h1 className="text-2xl font-bold text-center mb-3" style={{ color: CLOUD }}>Sign in to Docsy</h1>
-          <p className="text-sm text-center mb-10" style={{ color: `${CLOUD}66` }}>Access your documents, appointments, and Safe+ vault.</p>
-
-          <div className="space-y-4 mb-8">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: `${CLOUD}4d` }}>Email address</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: `${CLOUD}4d` }} />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-4 rounded-md text-sm focus:outline-none transition-colors"
-                  style={{ backgroundColor: "#000F0A", border: `1px solid ${EMERALD}66`, color: CLOUD }}
-                  data-testid="input-email"
-                />
-              </div>
-            </div>
-
-            <Link
-              href="/verify"
-              className="flex items-center justify-center gap-3 w-full px-7 py-4 text-sm font-medium rounded-md transition-all duration-200 hover:-translate-y-0.5 shadow-lg"
-              style={{ backgroundColor: CAROLINA, color: CLOUD, boxShadow: `0 4px 14px ${CAROLINA}33` }}
-              data-testid="btn-continue"
-            >
-              Continue <ArrowRight className="h-4 w-4" />
-            </Link>
+    <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-5 py-20" style={{ backgroundColor: BG }}>
+      <div className="w-full max-w-md">
+        <div className="mb-10 text-center">
+          <div className="flex justify-center mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ backgroundColor: CAROLINA, color: "#000" }}>
+              ◎ DOCSY SAFE+
+            </span>
           </div>
-
-          <div className="flex items-center gap-4 mb-8">
-            <div className="flex-1 h-px" style={{ backgroundColor: `${EMERALD}66` }} />
-            <span className="text-xs uppercase tracking-wider" style={{ color: `${CLOUD}4d` }}>or</span>
-            <div className="flex-1 h-px" style={{ backgroundColor: `${EMERALD}66` }} />
-          </div>
-
-          <button className="flex items-center justify-center gap-3 w-full px-7 py-4 text-sm font-medium rounded-md transition-all duration-200 hover:-translate-y-0.5 mb-3" style={{ color: `${CLOUD}cc`, border: `1px solid ${CLOUD}33` }} data-testid="btn-google">
-            Continue with Google
-          </button>
-          <button className="flex items-center justify-center gap-3 w-full px-7 py-4 text-sm font-medium rounded-md transition-all duration-200 hover:-translate-y-0.5" style={{ color: `${CLOUD}cc`, border: `1px solid ${CLOUD}33` }} data-testid="btn-apple">
-            Continue with Apple
-          </button>
-
-          <p className="text-xs text-center mt-10 leading-relaxed" style={{ color: `${CLOUD}4d` }}>
-            By continuing, you agree to Docsy's Terms of Service and Privacy Policy.
+          <h1 className="text-4xl sm:text-5xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
+            Sign in.
+          </h1>
+          <p className="text-white/40 text-base">
+            We'll send a one-time link to your email.
           </p>
         </div>
-      </Reveal>
+
+        {!submitted ? (
+          <form
+            onSubmit={(e) => { e.preventDefault(); if (email) setSubmitted(true); }}
+            className="flex flex-col gap-4"
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
+              className="w-full px-5 py-4 text-base text-white placeholder-white/20 border border-[#222] focus:border-[#444] outline-none transition-colors"
+              style={{ backgroundColor: "#111" }}
+              data-testid="input-email"
+            />
+            <button
+              type="submit"
+              className="w-full px-5 py-4 text-base font-bold text-black transition-opacity hover:opacity-90"
+              style={{ backgroundColor: CAROLINA }}
+              data-testid="btn-send-link"
+            >
+              Send Sign-In Link
+            </button>
+          </form>
+        ) : (
+          <div className="text-center border border-[#1a1a1a] px-8 py-12" style={{ backgroundColor: "#111" }}>
+            <p className="text-4xl font-black text-white mb-2" style={{ letterSpacing: "-0.02em" }}>Check your email.</p>
+            <p className="text-white/40 text-sm mt-4">
+              We sent a link to <strong className="text-white/60">{email}</strong>. Click it to sign in. The link expires in 15 minutes.
+            </p>
+            <button
+              onClick={() => setSubmitted(false)}
+              className="mt-8 text-sm text-white/30 hover:text-white/60 underline transition-colors"
+            >
+              Try a different email
+            </button>
+          </div>
+        )}
+
+        <p className="mt-8 text-center text-sm text-white/25">
+          Don't have an account?{" "}
+          <Link href="/" className="text-white/40 hover:text-white underline transition-colors">
+            Book your first service
+          </Link>{" "}
+          to get started.
+        </p>
+      </div>
     </div>
   );
 }
