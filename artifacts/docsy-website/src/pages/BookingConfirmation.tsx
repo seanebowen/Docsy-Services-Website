@@ -9,10 +9,11 @@ const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
 interface BookingData {
-  date:     string;
-  time:     string;
-  note:     string;
-  estimate: { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
+  date:         string;
+  time:         string;
+  note:         string;
+  estimate:     { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
+  safePlusOptIn?: boolean;
 }
 
 export default function BookingConfirmation() {
@@ -92,6 +93,33 @@ export default function BookingConfirmation() {
                 <div className="flex justify-between items-baseline pt-4">
                   <span className="text-sm font-bold text-white">Estimated Total</span>
                   <span className="text-2xl font-black" style={{ color: BLUE }}>${booking.estimate.total.toLocaleString()}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Safe+ status */}
+            {booking && (
+              <div className="px-8 py-5 border-b flex items-start gap-4" style={{ borderColor: DIV }}>
+                <div
+                  className="mt-0.5 w-5 h-5 shrink-0 border-2 flex items-center justify-center"
+                  style={{
+                    borderColor:     booking.safePlusOptIn !== false ? BLUE : "rgba(255,255,255,0.2)",
+                    backgroundColor: booking.safePlusOptIn !== false ? BLUE : "transparent",
+                  }}
+                >
+                  {booking.safePlusOptIn !== false && (
+                    <span className="text-black text-[11px] font-black leading-none">✓</span>
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white mb-0.5">
+                    Docsy Safe+{booking.safePlusOptIn !== false ? " — 30-Day Free Trial Enrolled" : " — Opted Out"}
+                  </p>
+                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
+                    {booking.safePlusOptIn !== false
+                      ? "Your notarized documents will upload automatically after your appointment. No charge for 30 days. Cancel anytime."
+                      : "You opted out of Safe+. You can enroll at any time through your account or on your next booking."}
+                  </p>
                 </div>
               </div>
             )}
