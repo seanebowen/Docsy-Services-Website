@@ -588,7 +588,7 @@ export default function Estimator() {
                     <div className="border" style={{ borderColor: DIV }}>
                       <RadioRow
                         label="2-Hour Minimum"
-                        price="$225"
+                        price={court.format === "remote" ? "$150" : "$225"}
                         selected={court.duration === "2hr"}
                         onClick={() => upC({ duration: "2hr" })}
                       />
