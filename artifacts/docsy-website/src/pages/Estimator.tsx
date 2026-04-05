@@ -21,6 +21,15 @@ const Pill = ({ text }: { text: string }) => (
 
 /* ─── control helpers ─── */
 function Stepper({ value, onChange, min = 1, max = 50 }: { value: number; onChange: (n: number) => void; min?: number; max?: number }) {
+  const [draft, setDraft] = React.useState<string>(String(value));
+  React.useEffect(() => { setDraft(String(value)); }, [value]);
+
+  const commit = (raw: string) => {
+    const n = parseInt(raw, 10);
+    if (!isNaN(n)) onChange(Math.min(max, Math.max(min, n)));
+    else setDraft(String(value));
+  };
+
   return (
     <div className="flex items-center gap-0 border" style={{ borderColor: DIV }}>
       <button
@@ -28,7 +37,16 @@ function Stepper({ value, onChange, min = 1, max = 50 }: { value: number; onChan
         className="px-3 py-1.5 text-sm font-bold transition-colors hover:bg-white/10"
         style={{ color: "rgba(255,255,255,0.5)", borderRight: `1px solid ${DIV}` }}
       >−</button>
-      <span className="px-4 py-1.5 text-sm font-bold text-white min-w-[3rem] text-center">{value}</span>
+      <input
+        type="text"
+        inputMode="numeric"
+        value={draft}
+        onChange={e => setDraft(e.target.value)}
+        onBlur={e => commit(e.target.value)}
+        onKeyDown={e => { if (e.key === "Enter") commit(draft); }}
+        className="px-2 py-1.5 text-sm font-bold text-white text-center bg-transparent outline-none min-w-[3rem]"
+        style={{ caretColor: BLUE } as React.CSSProperties}
+      />
       <button
         onClick={() => onChange(Math.min(max, value + 1))}
         className="px-3 py-1.5 text-sm font-bold transition-colors hover:bg-white/10"
@@ -605,7 +623,7 @@ export default function Estimator() {
                           <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>pages</span>
                         </div>
                         <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Average deposition: 50–400 pages. Adjust to match your expected duration.
+                          Average page count is 32–35 pages per hour of recording. Typical depositions run 50–400 pages.
                         </p>
                       </div>
 
