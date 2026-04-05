@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ImageBand } from "@/components/ui/ImageBand";
+import ronImg from "@/assets/images/ron-laptop.png";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -57,6 +59,8 @@ export default function RON() {
           </FadeIn>
         </div>
       </section>
+
+      <ImageBand src={ronImg} alt="Remote online notarization video call" />
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">

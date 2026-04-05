@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ImageBand } from "@/components/ui/ImageBand";
+import apostilleImg from "@/assets/images/apostille-seal.png";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -60,6 +62,8 @@ export default function Apostille() {
           </FadeIn>
         </div>
       </section>
+
+      <ImageBand src={apostilleImg} alt="Apostille wax seal on official document" />
 
       {[
         {

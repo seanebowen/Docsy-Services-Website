@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ImageBand } from "@/components/ui/ImageBand";
+import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
 const SLATE  = "#131929";
@@ -127,6 +129,9 @@ export default function Home() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ── IMAGE BAND ──────────────────────────────────────── */}
+      <ImageBand src={homeImg} alt="Texas legal workspace" />
 
       {/* ── TYPEWRITER STRIP ────────────────────────────────── */}
       <div className="px-5 py-3 border-b" style={{ backgroundColor: "#0b1220", borderColor: DIV }}>

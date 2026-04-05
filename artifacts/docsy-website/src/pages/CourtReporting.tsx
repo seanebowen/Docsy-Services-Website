@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { ImageBand } from "@/components/ui/ImageBand";
+import courtImg from "@/assets/images/court-reporting-mic.png";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -57,6 +59,8 @@ export default function CourtReporting() {
           </FadeIn>
         </div>
       </section>
+
+      <ImageBand src={courtImg} alt="Court reporting conference table with microphone" />
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">

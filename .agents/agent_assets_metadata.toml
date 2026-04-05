@@ -1,0 +1,38 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "bdjMapL9VuYhFFBOs5Nb9"
+uri = "file://attached_assets/stock_images/home-workspace.jpg"
+type = "image"
+title = "legal documents pen desk professional office notary"
+
+[[outputs]]
+id = "NihdlbtuCSeA1-nImnoz9"
+uri = "file://attached_assets/stock_images/ron-laptop.jpg"
+type = "image"
+title = "laptop computer video call home office modern"
+
+[[outputs]]
+id = "Po1D_QLvnn1kiLFzVZpvn"
+uri = "file://attached_assets/stock_images/mobile-notary-folio.jpg"
+type = "image"
+title = "hand holding leather document folio briefcase professional door exterior"
+
+[[outputs]]
+id = "bi4ejvhaVxqP2BlSnNFn3"
+uri = "file://attached_assets/stock_images/loan-signing-keys.jpg"
+type = "image"
+title = "pen signing document house keys real estate closing"
+
+[[outputs]]
+id = "JsLynr_rTKscweL-VBWeu"
+uri = "file://attached_assets/stock_images/apostille-seal.jpg"
+type = "image"
+title = "official wax seal document world map international certificate formal"
+
+[[outputs]]
+id = "wnRP64Yyh0pJXCTUkegGA"
+uri = "file://attached_assets/stock_images/court-reporting-mic.jpg"
+type = "image"
+title = "conference room table microphone legal notepad court reporting deposition"
