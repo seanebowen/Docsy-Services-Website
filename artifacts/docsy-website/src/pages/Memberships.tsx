@@ -177,10 +177,10 @@ export default function Memberships() {
           <FadeIn delay={80} threshold={0.05}>
             <div className="border max-w-xl mx-auto divide-y" style={{ borderColor: DIV, "--tw-divide-opacity": 1 } as React.CSSProperties}>
               {[
-                { l: "Free Tier", p: "Free", note: "Up to 5 documents" },
-                { l: "Personal", p: "$7/mo", note: "Up to 50 documents" },
-                { l: "Family", p: "$18/mo", note: "Up to 150 docs · 4 members" },
-                { l: "Professional", p: "$29/mo", note: "Up to 500 documents" },
+                { l: "Free Tier", p: "Free", note: "Up to 5 files" },
+                { l: "Personal", p: "$7/mo", note: "Up to 50 files" },
+                { l: "Family", p: "$18/mo", note: "Up to 150 files · 4 members" },
+                { l: "Professional", p: "$29/mo", note: "Up to 500 files" },
                 { l: "Business / Enterprise", p: "Custom", note: "Contact us" },
               ].map((row) => (
                 <div key={row.l} className="flex justify-between items-center px-6 py-5" style={{ borderColor: DIV }}>
