@@ -36,3 +36,39 @@ id = "wnRP64Yyh0pJXCTUkegGA"
 uri = "file://attached_assets/stock_images/court-reporting-mic.jpg"
 type = "image"
 title = "conference room table microphone legal notepad court reporting deposition"
+
+[[outputs]]
+id = "gasYByiMhkgEagY40CxN1"
+uri = "file://attached_assets/stock_images/mobile-notary-driving_1.jpg"
+type = "image"
+title = "person driving car on road, professional commute"
+
+[[outputs]]
+id = "VP9G1GEzZuxLtSXnrQKxu"
+uri = "file://attached_assets/stock_images/mobile-notary-driving_2.jpg"
+type = "image"
+title = "person driving car on road, professional commute"
+
+[[outputs]]
+id = "GNUFhOEi6t3dlpJ7m8HbG"
+uri = "file://attached_assets/stock_images/mobile-notary-driving_3.jpg"
+type = "image"
+title = "person driving car on road, professional commute"
+
+[[outputs]]
+id = "u3Wcs8wGyULw8v8NukDyj"
+uri = "file://attached_assets/stock_images/mobile-notary-signing_1.jpg"
+type = "image"
+title = "two people signing legal documents at a table, professional meeting, paperwork"
+
+[[outputs]]
+id = "KG2roiJfCr5xML9DnPxxF"
+uri = "file://attached_assets/stock_images/mobile-notary-signing_2.jpg"
+type = "image"
+title = "two people signing legal documents at a table, professional meeting, paperwork"
+
+[[outputs]]
+id = "kmrwyBSDDOAjZjJnZpMw5"
+uri = "file://attached_assets/stock_images/mobile-notary-signing_3.jpg"
+type = "image"
+title = "two people signing legal documents at a table, professional meeting, paperwork"
