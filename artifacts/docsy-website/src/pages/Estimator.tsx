@@ -169,7 +169,7 @@ function calcApostille(s: ApostilleState): number {
 function calcCourt(s: CourtState): number {
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
     inperson: { "2hr": 225, halfday: 325, fullday: 550 },
-    remote:   { "2hr": 225, halfday: 250, fullday: 450 },
+    remote:   { "2hr": 150, halfday: 250, fullday: 450 },
   };
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
@@ -570,7 +570,7 @@ export default function Estimator() {
               <ServiceCard
                 num="05" title="Court Reporting"
                 desc="AAERT-certified digital court reporter. $4.75/page standard — below agency rates."
-                startingAt="$225"
+                startingAt="$150"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
                 <div className="space-y-6">

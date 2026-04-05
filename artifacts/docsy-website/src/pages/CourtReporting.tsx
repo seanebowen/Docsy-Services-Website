@@ -126,9 +126,10 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Appearance Fees</p>
               </div>
               {[
-                { l: "2-Hour Minimum", p: "$225" }, { l: "Half-Day (up to 4 hrs)", p: "$325" },
-                { l: "Full-Day (up to 8 hrs)", p: "$550" }, { l: "Remote Half-Day", p: "$250" },
-                { l: "Remote Full-Day", p: "$450" }, { l: "Overtime per 30 min", p: "$45" },
+                { l: "2-Hour Minimum (In-Person)", p: "$225" }, { l: "Half-Day (up to 4 hrs)", p: "$325" },
+                { l: "Full-Day (up to 8 hrs)", p: "$550" }, { l: "2-Hour Minimum (Remote)", p: "$150" },
+                { l: "Remote Half-Day", p: "$250" }, { l: "Remote Full-Day", p: "$450" },
+                { l: "Overtime per 30 min", p: "$45" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
