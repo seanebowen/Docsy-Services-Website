@@ -52,7 +52,7 @@ function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) 
 }
 
 const NUM_CARDS = [
-  { num: "01", title: "Written estimate before we start.", body: "You see the full price before anything is signed. Not a range — the exact number. If it wasn't in the estimate, it's not on the invoice." },
+  { num: "01", title: "Always know your price before you book.", body: "You see the full price before anything is signed. Not a range — the exact number. If it wasn't in your price, it's not on the invoice." },
   { num: "02", title: "Same-hour RON, same-day mobile.", body: "Remote Online Notarization available same-hour. Mobile visits same-day. 7 days a week, early morning to midnight. Surcharges disclosed at booking." },
   { num: "03", title: "Six service divisions, one call.", body: "RON, mobile notary, loan signing, apostille, court reporting, and encrypted vault storage — all under one roof. One contact handles everything." },
   { num: "04", title: "No agency markup. No runaround.", body: "Docsy is direct-to-client. No middlemen. The statutory notary fee is always separated on your invoice, as required by Texas law." },
@@ -95,7 +95,7 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={200}>
             <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
-              Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Written estimate before every appointment.</strong> No hidden fees. No agency markup.
+              Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
             </p>
           </FadeIn>
           <FadeIn delay={320}>
@@ -133,7 +133,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto flex items-center gap-3 font-mono text-xs" style={{ color: "rgba(255,255,255,0.30)" }}>
           <span style={{ color: AMBER }}>→</span>
           <TypewriterLine
-            text="Transparent pricing · Same-hour RON available · Written estimate before every appointment · 7 days a week"
+            text="Transparent pricing · Same-hour RON available · Always know your price before you book · 7 days a week"
             speed={36}
           />
         </div>

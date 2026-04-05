@@ -118,7 +118,7 @@ export default function RON() {
             ))}
           </div>
           <p className="text-sm text-white/30 leading-relaxed">
-            <H>Written estimate before every appointment.</H> If it wasn't in the estimate, it's not on the invoice.
+            <H>Always know your price before you book.</H> If it wasn't in your price, it's not on the invoice.
           </p>
         </div>
       </section>
