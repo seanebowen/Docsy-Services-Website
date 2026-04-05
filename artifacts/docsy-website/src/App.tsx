@@ -20,6 +20,7 @@ import Verify from "@/pages/Verify";
 import Estimator from "@/pages/Estimator";
 import Booking from "@/pages/Booking";
 import BookingConfirmation from "@/pages/BookingConfirmation";
+import Contact from "@/pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ function Router() {
       <Route path="/promos" component={Promos} />
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );
