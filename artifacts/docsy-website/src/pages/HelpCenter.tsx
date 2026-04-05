@@ -103,12 +103,12 @@ const guides = [
     id: "docsy-safe-plus",
     icon: ScanLine,
     title: "How Docsy Safe+ Works",
-    summary: "Encrypted document storage built for legal documents.",
+    summary: "Encrypted storage for all Docsy appointment deliverables.",
     content: [
-      { heading: "What it is", body: "Docsy Safe+ is an encrypted document vault that automatically stores every document from every Docsy appointment. No uploading required. Every RON notarization, every apostille, every loan signing — stored automatically." },
+      { heading: "What it is", body: "Docsy Safe+ is an encrypted file vault that automatically stores every deliverable from every Docsy appointment. No uploading required. Every RON notarization, every apostille, every loan signing, every court reporting session — transcripts and audio included — stored automatically." },
       { heading: "Free trial", body: "Docsy Safe+ starts automatically with your first service — no signup, no credit card required, unless you opt out. 30 days free. After 30 days, continue for $7/month or stop — no automatic charge." },
-      { heading: "Access", body: "Access your vault from any device, any time. Share documents directly from your vault. Grant family members access (Family plan). Export any document as a certified PDF." },
-      { heading: "Plans", body: "Free (up to 5 docs), Personal $7/month (up to 50 docs), Family $18/month (up to 150 docs, 4 users), Professional $29/month (up to 500 docs), Business/Enterprise (custom pricing, contact Docsy)." },
+      { heading: "Access", body: "Access your vault from any device, any time. Download or share documents, transcripts, and audio files directly from your vault. Grant family members access (Family plan)." },
+      { heading: "Plans", body: "Free (up to 5 files), Personal $7/month (up to 50 files), Family $18/month (up to 150 files, 4 users), Professional $29/month (up to 500 files), Business/Enterprise (custom pricing, contact Docsy)." },
     ],
   },
   {

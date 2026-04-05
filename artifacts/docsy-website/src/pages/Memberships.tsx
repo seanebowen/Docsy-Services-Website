@@ -158,7 +158,7 @@ export default function Memberships() {
               No more lost documents.
             </h2>
             <p className="text-lg text-white/50 leading-relaxed">
-              Docsy Safe+ is an encrypted document vault built for notarized, apostilled, and legally signed documents. Every document from every Docsy appointment is uploaded automatically. Access it from any device, any time. This is a storage subscription — not a membership. No perks attached, just your documents, always there.
+              Docsy Safe+ is an encrypted file vault that stores every deliverable from every Docsy appointment — notarized documents, apostille packages, loan signing files, court reporting transcripts, and audio recordings. Everything uploads automatically. Access it from any device, any time. This is a storage subscription — not a membership. No perks attached, just your files, always there.
             </p>
           </FadeIn>
         </div>

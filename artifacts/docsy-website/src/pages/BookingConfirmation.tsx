@@ -117,7 +117,7 @@ export default function BookingConfirmation() {
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
                     {booking.safePlusOptIn !== false
-                      ? "Your notarized documents will upload automatically after your appointment. No charge for 30 days. Cancel anytime."
+                      ? "All your appointment files — documents, transcripts, and recordings — will upload automatically. No charge for 30 days. Cancel anytime."
                       : "You opted out of Safe+. You can enroll at any time through your account or on your next booking."}
                   </p>
                 </div>

@@ -59,7 +59,7 @@ const NUM_CARDS = [
   { num: "03", title: "Six service divisions, one call.", body: "RON, mobile notary, loan signing, apostille, court reporting, and encrypted vault storage — all under one roof. One contact handles everything." },
   { num: "04", title: "No agency markup. No runaround.", body: "Docsy is direct-to-client. No middlemen. The statutory notary fee is always separated on your invoice, as required by Texas law." },
   { num: "05", title: "Itemized invoices, always.", body: "Every charge listed separately — service fee, travel tier, timing surcharge. No bundled mystery fees. No administrative processing line items." },
-  { num: "06", title: "Encrypted document storage.", body: "Every notarized document uploads automatically to your Docsy Safe+ vault. 30-day free trial — auto-starts with your first service, no signup needed." },
+  { num: "06", title: "Encrypted file storage.", body: "Every file from every appointment — notarized documents, audio recordings, and transcripts — uploads automatically to your Docsy Safe+ vault. 30-day free trial, no signup needed." },
 ];
 
 const SERVICES = [
@@ -68,7 +68,7 @@ const SERVICES = [
   { icon: FileText,    label: "Loan Signing",               desc: "Flat rates. Scanbacks included. Texas HELOC compliant.", href: "/loan-signing" },
   { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
   { icon: Briefcase,   label: "Court Reporting",            desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
-  { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted document storage. 30-day free trial.", href: "/memberships" },
+  { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted file storage for all appointment deliverables. 30-day free trial.", href: "/memberships" },
 ];
 
 export default function Home() {

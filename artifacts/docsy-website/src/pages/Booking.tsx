@@ -89,10 +89,10 @@ function BookingModal({
           {/* ── 2. Safe+ ── */}
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
-              02 — Docsy Safe+ Document Vault
+              02 — Docsy Safe+ File Vault
             </p>
             <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-              Docsy Safe+ is an encrypted document vault. Your notarized documents upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime.
+              Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, transcripts, and audio recordings — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime.
             </div>
             <div className="space-y-2">
               {([
