@@ -142,7 +142,7 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Transcript Rates (per page)</p>
               </div>
               {[
-                { l: "Ordinary (30 days)", p: "$4.75" }, { l: "14-Day", p: "$4.75" },
+                { l: "14-Day", p: "$4.75" },
                 { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.75" },
                 { l: "Same-Day", p: "Call for pricing" },
               ].map((r) => (

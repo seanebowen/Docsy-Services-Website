@@ -103,7 +103,7 @@ type ApostilleType = "personal" | "business" | "federal";
 type ApostilleTurnaround = "standard" | "nextday" | "sameday";
 type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
-type TranscriptSpeed = "ordinary" | "14day" | "7day" | "3day" | "sameday";
+type TranscriptSpeed = "14day" | "7day" | "3day" | "sameday";
 
 interface RONState {
   docs: number;
@@ -174,7 +174,7 @@ function calcCourt(s: CourtState): number {
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    ordinary: 4.75, "14day": 4.75, "7day": 5.75, "3day": 6.75, sameday: 0,
+    "14day": 4.75, "7day": 5.75, "3day": 6.75, sameday: 0,
   };
   return appear + s.pages * ratePerPage[s.speed];
 }
@@ -287,7 +287,7 @@ export default function Estimator() {
   /* Court state */
   const [court, setCourt] = useState<CourtState>({
     format: "inperson", duration: "2hr",
-    transcript: false, pages: 100, speed: "ordinary",
+    transcript: false, pages: 100, speed: "14day",
   });
 
   /* computed totals */
@@ -346,7 +346,6 @@ export default function Estimator() {
   };
 
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
-    ["ordinary", "Ordinary (30 days)", "$4.75/pg"],
     ["14day",    "14-Day",             "$4.75/pg"],
     ["7day",     "7-Day Expedited",    "$5.75/pg"],
     ["3day",     "3-Day Rush",         "$6.75/pg"],
