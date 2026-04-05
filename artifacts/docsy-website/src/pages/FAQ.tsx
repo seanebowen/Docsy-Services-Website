@@ -1,6 +1,7 @@
 import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Link } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -64,23 +65,28 @@ export default function FAQ() {
 
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            The questions we
-            <br />
-            get asked every day.
-            <br />
-            <HI>Answered honestly.</HI>
-          </h1>
-          <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
-            Real questions. Real answers. No "please consult a professional for more information" non-answers.
-          </p>
+          <FadeIn delay={0}>
+            <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+              The questions we
+              <br />
+              get asked every day.
+              <br />
+              <HI>Answered honestly.</HI>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
+              Real questions. Real answers. No "please consult a professional for more information" non-answers.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
       <section className="py-16 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-3xl mx-auto">
           {faqs.map((section, si) => (
-            <div key={section.category} className="mb-16">
+            <FadeIn key={section.category} delay={si * 60} threshold={0.05}>
+            <div className="mb-16">
               <p className="text-xs font-bold uppercase tracking-widest mb-6 pb-4 border-b border-[#1e2a3a]" style={{ color: IVORY }}>
                 {section.category}
               </p>
@@ -104,19 +110,26 @@ export default function FAQ() {
                 ))}
               </Accordion>
             </div>
+            </FadeIn>
           ))}
         </div>
       </section>
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Still have a question?
-          </h2>
-          <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight — no runaround.</p>
-          <Link href="/help-center" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
-            Help Center
-          </Link>
+          <FadeIn delay={0}>
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+              Still have a question?
+            </h2>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight — no runaround.</p>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <Link href="/help-center" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
+              Help Center
+            </Link>
+          </FadeIn>
         </div>
       </section>
 

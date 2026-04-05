@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -14,6 +15,7 @@ export default function Login() {
 
   return (
     <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-5 py-20" style={{ backgroundColor: BG }}>
+      <FadeIn delay={0}>
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <div className="flex justify-center mb-6">
@@ -76,6 +78,7 @@ export default function Login() {
           to get started.
         </p>
       </div>
+      </FadeIn>
     </div>
   );
 }

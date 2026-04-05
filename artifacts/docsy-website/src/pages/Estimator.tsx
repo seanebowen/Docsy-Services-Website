@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Link, useLocation } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -358,17 +359,21 @@ export default function Estimator() {
       {/* ── Hero ── */}
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
-          <Pill text="JOB ESTIMATOR" />
-          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            <span className="font-black">Know your cost</span>
-            <br />
-            <span className="font-light text-black/45">before you</span>
-            <br />
-            <span className="font-black"><H>book.</H></span>
-          </h1>
-          <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
-            Select the services you need. Configure the details. We'll calculate your estimate on the spot — down to the dollar.
-          </p>
+          <FadeIn delay={0}>
+            <Pill text="JOB ESTIMATOR" />
+            <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+              <span className="font-black">Know your cost</span>
+              <br />
+              <span className="font-light text-black/45">before you</span>
+              <br />
+              <span className="font-black"><H>book.</H></span>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
+              Select the services you need. Configure the details. We'll calculate your estimate on the spot — down to the dollar.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
@@ -387,6 +392,7 @@ export default function Estimator() {
               </div>
 
               {/* ── RON ── */}
+              <FadeIn delay={0} threshold={0.05}>
               <ServiceCard
                 num="01" title="Remote Online Notarization"
                 desc="Get notarized via live video in under 15 minutes. No travel. Anywhere in the US."
@@ -408,8 +414,10 @@ export default function Estimator() {
                   </div>
                 </div>
               </ServiceCard>
+              </FadeIn>
 
               {/* ── Mobile Notary ── */}
+              <FadeIn delay={60} threshold={0.05}>
               <ServiceCard
                 num="02" title="Mobile Notary"
                 desc="We come to you — home, office, hospital, hospice. 7 days, 7 AM to midnight."
@@ -477,7 +485,10 @@ export default function Estimator() {
                 </div>
               </ServiceCard>
 
+              </FadeIn>
+
               {/* ── Loan Signing ── */}
+              <FadeIn delay={120} threshold={0.05}>
               <ServiceCard
                 num="03" title="Loan Signing"
                 desc="Certified loan signing agent for refinance, buyer, seller, HELOC, and more. Flat rates."
@@ -503,7 +514,10 @@ export default function Estimator() {
                 </div>
               </ServiceCard>
 
+              </FadeIn>
+
               {/* ── Apostille ── */}
+              <FadeIn delay={180} threshold={0.05}>
               <ServiceCard
                 num="04" title="Apostille Services"
                 desc="Texas apostille filing. State fee, digital scan, and return shipping prep all included."
@@ -565,7 +579,10 @@ export default function Estimator() {
                 </div>
               </ServiceCard>
 
+              </FadeIn>
+
               {/* ── Court Reporting ── */}
+              <FadeIn delay={240} threshold={0.05}>
               <ServiceCard
                 num="05" title="Court Reporting"
                 desc="AAERT-certified digital court reporter. $4.75/page standard — below agency rates."
@@ -649,6 +666,7 @@ export default function Estimator() {
 
                 </div>
               </ServiceCard>
+              </FadeIn>
 
             </div>{/* end left col */}
 

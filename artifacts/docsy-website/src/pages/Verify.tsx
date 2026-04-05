@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "wouter";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -36,6 +37,7 @@ export default function Verify() {
 
   return (
     <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-5 py-20" style={{ backgroundColor: BG }}>
+      <FadeIn delay={0}>
       <div className="w-full max-w-md text-center">
 
         {!verified ? (
@@ -96,6 +98,7 @@ export default function Verify() {
           </>
         )}
       </div>
+      </FadeIn>
     </div>
   );
 }

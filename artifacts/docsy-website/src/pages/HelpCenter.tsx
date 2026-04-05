@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useParams } from "wouter";
 import { ChevronLeft, Upload, ScanLine, FileCheck, Video, MapPin, Package, Globe, FileText, Receipt, HelpCircle, FileSignature } from "lucide-react";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const IVORY = "#F5EFE6";
 const BG = "#131929";
@@ -174,21 +175,27 @@ function GuideDetail({ guide }: { guide: typeof guides[0] }) {
 
       <section className="px-5 pt-14 pb-12 border-b border-[#1e2a3a]" style={{ backgroundColor: IVORY }}>
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            {guide.title}
-          </h1>
-          <p className="text-lg text-black/60 font-medium">{guide.summary}</p>
+          <FadeIn delay={0}>
+            <h1 className="text-3xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+              {guide.title}
+            </h1>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg text-black/60 font-medium">{guide.summary}</p>
+          </FadeIn>
         </div>
       </section>
 
       <section className="px-5 py-16">
         <div className="max-w-3xl mx-auto">
           {guide.content.map((section, i) => (
-            <div key={i} className="border-b border-[#1e2a3a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: IVORY }}>STEP {String(i + 1).padStart(2, "0")}</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
-              <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
-            </div>
+            <FadeIn key={i} delay={i * 80} threshold={0.05}>
+              <div className="border-b border-[#1e2a3a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
+                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: IVORY }}>STEP {String(i + 1).padStart(2, "0")}</p>
+                <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
+                <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
+              </div>
+            </FadeIn>
           ))}
         </div>
       </section>
@@ -208,33 +215,38 @@ export default function HelpCenter() {
 
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
-            <HI>Help Center.</HI>
-          </h1>
-          <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
-            Step-by-step guides for every Docsy service. Plain language. No runaround.
-          </p>
+          <FadeIn delay={0}>
+            <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
+              <HI>Help Center.</HI>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
+              Step-by-step guides for every Docsy service. Plain language. No runaround.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
       <section className="py-16 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1e2a3a]">
-            {guides.map((guide) => (
-              <Link
-                key={guide.id}
-                href={`/help-center/${guide.id}`}
-                className="group block p-8 hover:bg-white/[0.03] transition-colors"
-                style={{ backgroundColor: BG }}
-                data-testid={`guide-link-${guide.id}`}
-              >
-                <guide.icon className="h-6 w-6 mb-5 text-white/25 group-hover:text-white/50 transition-colors" />
-                <h3 className="text-base font-black text-white mb-2 leading-tight group-hover:text-white transition-colors">{guide.title}</h3>
-                <p className="text-sm text-white/35 leading-relaxed">{guide.summary}</p>
-                <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: IVORY }}>
-                  Read guide →
-                </p>
-              </Link>
+            {guides.map((guide, i) => (
+              <FadeIn key={guide.id} delay={i * 50} threshold={0.05}>
+                <Link
+                  href={`/help-center/${guide.id}`}
+                  className="group block p-8 hover:bg-white/[0.03] transition-colors h-full"
+                  style={{ backgroundColor: BG }}
+                  data-testid={`guide-link-${guide.id}`}
+                >
+                  <guide.icon className="h-6 w-6 mb-5 text-white/25 group-hover:text-white/50 transition-colors" />
+                  <h3 className="text-base font-black text-white mb-2 leading-tight group-hover:text-white transition-colors">{guide.title}</h3>
+                  <p className="text-sm text-white/35 leading-relaxed">{guide.summary}</p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-widest transition-colors" style={{ color: IVORY }}>
+                    Read guide →
+                  </p>
+                </Link>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -242,13 +254,19 @@ export default function HelpCenter() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Still have a question?
-          </h2>
-          <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight.</p>
-          <Link href="/faq" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
-            Browse FAQ
-          </Link>
+          <FadeIn delay={0}>
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
+              Still have a question?
+            </h2>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <p className="text-lg text-black/60 mb-8">Text us. We'll tell you straight.</p>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <Link href="/faq" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
+              Browse FAQ
+            </Link>
+          </FadeIn>
         </div>
       </section>
 
