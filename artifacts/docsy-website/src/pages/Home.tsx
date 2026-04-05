@@ -208,7 +208,7 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={100}>
             <h2 className="text-4xl sm:text-5xl font-black text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-              Remove the meter.
+              Your notary, on retainer.
             </h2>
           </FadeIn>
           <FadeIn delay={200}>

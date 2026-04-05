@@ -42,7 +42,7 @@ export default function CourtReporting() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Digital court reporting for depositions and legal proceedings. Soniclear certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
+              Digital court reporting for depositions and legal proceedings. AAERT certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
@@ -137,9 +137,9 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Transcript Rates (per page)</p>
               </div>
               {[
-                { l: "Ordinary (30 days)", p: "$4.75" }, { l: "14-Day", p: "$5.50" },
-                { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.50" },
-                { l: "24-Hour Rush", p: "$7.75" }, { l: "Same-Day", p: "$9.50" },
+                { l: "Ordinary (30 days)", p: "$4.75" }, { l: "14-Day", p: "$4.75" },
+                { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.75" },
+                { l: "Same-Day", p: "Call for pricing" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>

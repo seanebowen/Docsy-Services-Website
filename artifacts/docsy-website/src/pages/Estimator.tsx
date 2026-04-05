@@ -85,7 +85,7 @@ type ApostilleType = "personal" | "business" | "federal";
 type ApostilleTurnaround = "standard" | "nextday" | "sameday";
 type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
-type TranscriptSpeed = "ordinary" | "14day" | "7day" | "3day" | "24hr" | "sameday";
+type TranscriptSpeed = "ordinary" | "14day" | "7day" | "3day" | "sameday";
 
 interface RONState {
   docs: number;
@@ -156,7 +156,7 @@ function calcCourt(s: CourtState): number {
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    ordinary: 4.75, "14day": 5.50, "7day": 6.00, "3day": 6.75, "24hr": 8.00, sameday: 9.75,
+    ordinary: 4.75, "14day": 4.75, "7day": 5.75, "3day": 6.75, sameday: 0,
   };
   return appear + s.pages * ratePerPage[s.speed];
 }
@@ -329,11 +329,10 @@ export default function Estimator() {
 
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
     ["ordinary", "Ordinary (30 days)", "$4.75/pg"],
-    ["14day",    "14-Day",             "$5.50/pg"],
-    ["7day",     "7-Day Expedited",    "$6.00/pg"],
+    ["14day",    "14-Day",             "$4.75/pg"],
+    ["7day",     "7-Day Expedited",    "$5.75/pg"],
     ["3day",     "3-Day Rush",         "$6.75/pg"],
-    ["24hr",     "24-Hour Rush",       "$8.00/pg"],
-    ["sameday",  "Same-Day",           "$9.75/pg"],
+    ["sameday",  "Same-Day",           "Call for pricing"],
   ];
 
   return (
@@ -552,7 +551,7 @@ export default function Estimator() {
               {/* ── Court Reporting ── */}
               <ServiceCard
                 num="05" title="Court Reporting"
-                desc="Soniclear-certified digital court reporter. $4.75/page standard — below agency rates."
+                desc="AAERT-certified digital court reporter. $4.75/page standard — below agency rates."
                 startingAt="$225"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
@@ -625,6 +624,7 @@ export default function Estimator() {
                         </div>
                         <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
                           Word index, certified PDF, e-transcript, and digital delivery always included.
+                          {court.speed === "sameday" && " Same-Day transcript pricing is custom — Docsy will confirm cost before the appointment."}
                         </p>
                       </div>
                     </>

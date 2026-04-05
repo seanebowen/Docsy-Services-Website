@@ -42,7 +42,7 @@ export default function MobileNotary() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Docsy mobile notary serves the Texas area. Home, office, hospital, nursing home, hospice — wherever you need us. <strong className="text-black">7 days, early morning to midnight.</strong>
+              Docsy mobile notary serves the Texas area. Home, office, hospital, nursing home, hospice — wherever you need us. <strong className="text-black">Available 7 days a week, early morning to late at night.</strong>
             </p>
           </FadeIn>
           <FadeIn delay={300}>
