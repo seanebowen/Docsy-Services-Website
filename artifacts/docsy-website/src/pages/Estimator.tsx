@@ -45,7 +45,7 @@ function Stepper({ value, onChange, min = 1, max = 50 }: { value: number; onChan
         onBlur={e => commit(e.target.value)}
         onKeyDown={e => { if (e.key === "Enter") commit(draft); }}
         className="px-2 py-1.5 text-sm font-bold text-white text-center bg-transparent outline-none min-w-[3rem]"
-        style={{ caretColor: BLUE } as React.CSSProperties}
+        style={{ caretColor: AMBER } as React.CSSProperties}
       />
       <button
         onClick={() => onChange(Math.min(max, value + 1))}
