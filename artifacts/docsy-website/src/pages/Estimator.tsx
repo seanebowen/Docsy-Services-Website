@@ -592,8 +592,8 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
-              {/* ── Shared Scheduling & Distance ── */}
-              {needsTravel && (
+              {/* ── Shared Scheduling & Distance — only shows for GNW (travel is included in Loan/Apostille pricing) ── */}
+              {gnwOn && (
                 <FadeIn delay={0} threshold={0.01}>
                 <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
                   <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
@@ -725,13 +725,13 @@ export default function Estimator() {
                     <input
                       type="text"
                       value={loan.address}
-                      onChange={e => { upL({ address: e.target.value }); handleAddressGeo(e.target.value); }}
+                      onChange={e => upL({ address: e.target.value })}
                       placeholder="Title company, escrow office, or your home/office address"
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
                     />
                     <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                      Type your address — distance auto-calculates from Alamo Ranch (San Antonio, TX 78253). Travel is included in your package rate.
+                      Travel is included in your package rate. Address is used for scheduling coordination.
                     </p>
                   </div>
                 </div>
@@ -822,7 +822,7 @@ export default function Estimator() {
                     <input
                       type="text"
                       value={apost.address}
-                      onChange={e => { upA({ address: e.target.value }); if (apost.mobile) handleAddressGeo(e.target.value); }}
+                      onChange={e => upA({ address: e.target.value })}
                       placeholder={apost.mobile ? "Your address for mobile pickup" : "Mailing address or drop-off location"}
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
