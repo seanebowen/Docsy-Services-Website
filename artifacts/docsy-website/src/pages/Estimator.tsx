@@ -846,7 +846,7 @@ export default function Estimator() {
                       )}
                       {geoStatus === "idle" && !gnwTravelWaived && (
                         <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                          Type your location in any service field above — distance auto-calculates from Alamo Ranch (San Antonio, TX 78253) and selects your tier.
+                          Type your address in any service field above — travel fee calculates automatically from Headquarters (Alamo Ranch, San Antonio TX 78253).
                         </p>
                       )}
                       {geoStatus === "loading" && (
@@ -854,13 +854,13 @@ export default function Estimator() {
                       )}
                       {geoStatus === "done" && geoMiles !== null && (
                         <p className="text-sm font-light" style={{ color: AMBER }}>
-                          ~{geoMiles.toFixed(1)} miles from Alamo Ranch — Tier {travel.tier} auto-applied
-                          {gnwTravelWaived ? " (GNW travel still waived)." : "."}
+                          ~{geoMiles.toFixed(1)} miles from Headquarters — travel fee updated.
+                          {gnwTravelWaived ? " GNW travel still waived." : ""}
                         </p>
                       )}
                       {geoStatus === "error" && (
                         <p className="text-sm font-light" style={{ color: "rgba(255,130,130,0.85)" }}>
-                          Address not found — select your distance tier manually below.
+                          Address not found — double-check what you entered and try again.
                         </p>
                       )}
                     </div>
@@ -869,28 +869,42 @@ export default function Estimator() {
                     <div className="pt-5 space-y-6">
 
                       <div>
-                        <RowLabel>
-                          Estimated distance{" "}
-                          <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>
-                            (for budgeting — backend confirms from your addresses)
-                          </span>
-                        </RowLabel>
+                        <RowLabel>Distance tiers — for your reference</RowLabel>
                         <div className="border" style={{ borderColor: DIV }}>
                           {([
-                            [1, "Tier 1 — 0 to 10 miles",  gnwTravelWaived ? "no add-on" : "$30"],
-                            [2, "Tier 2 — 11 to 25 miles", gnwTravelWaived ? "no add-on" : "$45"],
-                            [3, "Tier 3 — 26 to 40 miles", gnwTravelWaived ? "no add-on" : "$65"],
-                            [4, "Tier 4 — 40+ miles",      "$85 extended"],
-                          ] as [1|2|3|4, string, string][]).map(([t, label, price]) => (
-                            <RadioRow key={t} label={label} price={price} selected={travel.tier === t} onClick={() => upT({ tier: t })} />
-                          ))}
+                            [1, "Tier 1", "0 to 10 miles",  gnwTravelWaived ? "included" : "$30"],
+                            [2, "Tier 2", "11 to 25 miles", gnwTravelWaived ? "included" : "$45"],
+                            [3, "Tier 3", "26 to 40 miles", gnwTravelWaived ? "included" : "$65"],
+                            [4, "Tier 4", "40+ miles",      "$85 extended"],
+                          ] as [1|2|3|4, string, string, string][]).map(([t, tierLabel, range, price]) => {
+                            const isActive = geoStatus === "done" && travel.tier === t;
+                            return (
+                              <div key={t} className="flex justify-between items-center px-4 py-3 border-b last:border-b-0"
+                                style={{ borderColor: DIV, backgroundColor: isActive ? "rgba(77,159,219,0.1)" : "transparent" }}>
+                                <div className="flex items-center gap-3">
+                                  {isActive && (
+                                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 shrink-0"
+                                      style={{ backgroundColor: AMBER, color: "#000" }}>Your tier</span>
+                                  )}
+                                  <span className="text-sm font-light"
+                                    style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.45)" }}>
+                                    {tierLabel} — {range}
+                                  </span>
+                                </div>
+                                <span className="text-sm font-bold ml-4"
+                                  style={{ color: isActive ? AMBER : "rgba(255,255,255,0.25)" }}>
+                                  {price}
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
-                        {gnwTravelWaived && travel.tier < 4 && (
+                        {gnwTravelWaived && travel.tier < 4 && geoStatus === "done" && (
                           <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
                             Travel waived — GNW shares this appointment with a service that includes travel. No separate travel fee for tiers 1–3.
                           </p>
                         )}
-                        {travel.tier === 4 && (
+                        {travel.tier === 4 && geoStatus === "done" && (
                           <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
                             Extended distance (40+ miles) — $85 added even when travel is otherwise included.
                           </p>
