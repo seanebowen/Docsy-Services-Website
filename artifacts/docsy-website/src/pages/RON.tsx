@@ -117,6 +117,19 @@ export default function RON() {
                 <span className="text-sm font-bold" style={{ color: IVORY }}>{row.p}</span>
               </div>
             ))}
+            <div className="px-6 py-2.5 bg-white/[0.03]">
+              <span className="text-xs font-bold uppercase tracking-widest text-white/25">Available Add-ons</span>
+            </div>
+            {[
+              { l: "Witness", p: "+$10" },
+              { l: "Additional signer", p: "+$5" },
+              { l: "Additional seal / document", p: "+$5" },
+            ].map((row) => (
+              <div key={row.l} className="flex justify-between items-center px-6 py-4">
+                <span className="text-sm text-white/60">{row.l}</span>
+                <span className="text-sm font-bold text-white/40">{row.p}</span>
+              </div>
+            ))}
           </div>
           <p className="text-sm text-white/30 leading-relaxed">
             <H>Always know your price before you book.</H> If it wasn't in your price, it's not on the invoice.
