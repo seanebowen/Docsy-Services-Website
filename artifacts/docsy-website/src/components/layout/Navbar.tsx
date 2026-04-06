@@ -8,7 +8,7 @@ const AMBER = "#4D9FDB";
 
 const allLinks = [
   { href: "/ron",            label: "RON" },
-  { href: "/mobile-notary",  label: "Mobile Notary" },
+  { href: "/mobile-notary",  label: "Mobile/GNW" },
   { href: "/loan-signing",   label: "Loan Signing" },
   { href: "/apostille",      label: "Apostille" },
   { href: "/court-reporting",label: "Court Reporting" },
