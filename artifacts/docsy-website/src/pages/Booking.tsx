@@ -151,6 +151,7 @@ export default function Booking() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [note, setNote]               = useState("");
+  const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
 
   const today    = new Date();
@@ -209,6 +210,7 @@ export default function Booking() {
       date: selectedDate!.toISOString(),
       time: selectedTime,
       note,
+      promoCode: promoCode.trim(),
       estimate,
       safePlusOptIn,
     }));
@@ -326,16 +328,30 @@ export default function Booking() {
 
                 {/* Note */}
                 {selectedDate && selectedTime && (
-                  <div className="border-t mt-6 pt-6" style={{ borderColor: DIV }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>Additional Note (optional)</p>
-                    <textarea
-                      value={note}
-                      onChange={e => setNote(e.target.value)}
-                      rows={3}
-                      placeholder="Parking info, accessibility needs, document details, extra signers, etc."
-                      className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none resize-none"
-                      style={{ borderColor: DIV, color: IVORY, caretColor: BLUE } as React.CSSProperties}
-                    />
+                  <div className="border-t mt-6 pt-6 space-y-6" style={{ borderColor: DIV }}>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>Additional Note (optional)</p>
+                      <textarea
+                        value={note}
+                        onChange={e => setNote(e.target.value)}
+                        rows={3}
+                        placeholder="Parking info, accessibility needs, document details, extra signers, etc."
+                        className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none resize-none"
+                        style={{ borderColor: DIV, color: IVORY, caretColor: BLUE } as React.CSSProperties}
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>Promo Code (optional)</p>
+                      <p className="text-[10px] text-white/20 mb-3">Active promotions apply automatically — no code required. Enter one only if you have it.</p>
+                      <input
+                        type="text"
+                        value={promoCode}
+                        onChange={e => setPromoCode(e.target.value.toUpperCase())}
+                        placeholder="e.g. HONORPASS"
+                        className="w-full px-4 py-3 text-sm font-bold bg-transparent border outline-none"
+                        style={{ borderColor: promoCode ? BLUE : DIV, color: BLUE, caretColor: BLUE, letterSpacing: "0.08em" } as React.CSSProperties}
+                      />
+                    </div>
                   </div>
                 )}
               </div>

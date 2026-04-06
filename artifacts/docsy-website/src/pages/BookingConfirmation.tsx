@@ -9,10 +9,11 @@ const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
 interface BookingData {
-  date:         string;
-  time:         string;
-  note:         string;
-  estimate:     { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
+  date:          string;
+  time:          string;
+  note:          string;
+  promoCode?:    string;
+  estimate:      { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
   safePlusOptIn?: boolean;
 }
 
@@ -75,6 +76,11 @@ export default function BookingConfirmation() {
                 {booking.note && (
                   <p className="text-xs mt-3 leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
                     Note: {booking.note}
+                  </p>
+                )}
+                {booking.promoCode && (
+                  <p className="text-xs mt-2 font-bold uppercase tracking-widest" style={{ color: BLUE }}>
+                    Promo: {booking.promoCode}
                   </p>
                 )}
               </div>
