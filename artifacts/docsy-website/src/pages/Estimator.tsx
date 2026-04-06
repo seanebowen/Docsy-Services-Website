@@ -872,7 +872,7 @@ export default function Estimator() {
                   {court.transcript && (
                     <>
                       <div>
-                        <RowLabel>Page count</RowLabel>
+                        <RowLabel>Estimated page count</RowLabel>
                         <div className="flex items-center gap-4">
                           <Stepper value={court.pages} onChange={v => upC({ pages: v })} min={1} max={2000} />
                           <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>pages</span>
