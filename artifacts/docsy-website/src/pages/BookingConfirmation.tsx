@@ -40,7 +40,10 @@ export default function BookingConfirmation() {
     } catch { return "—"; }
   };
 
-  const isRON = !!booking?.estimate?.hasRON;
+  const isRON        = !!booking?.estimate?.hasRON;
+  const hasCourtRep  = booking?.estimate?.services?.some(s =>
+    s.name.toLowerCase().includes("court reporting")
+  ) ?? false;
 
   return (
     <div className="w-full" style={{ backgroundColor: IVORY }}>
@@ -165,13 +168,16 @@ export default function BookingConfirmation() {
             <div className="px-8 py-6 border-b" style={{ borderColor: DIV }}>
               <p className="text-[10px] font-bold uppercase tracking-widest mb-5" style={{ color: "rgba(255,255,255,0.3)" }}>What happens next</p>
               <div className="space-y-4">
-                {[
+                {([
                   "Docsy reviews your request and confirms availability for your preferred time.",
                   isRON
                     ? "You'll receive an email with your secure RON video session link to join your appointment."
                     : "You'll receive a confirmation email with appointment details and any prep instructions.",
+                  hasCourtRep
+                    ? "For your court reporting appointment: reply to the confirmation email with the deposition notice. It has everything Docsy needs — venue address, case name, witness names, and start time."
+                    : null,
                   "Your price is confirmed before the appointment starts. You know what you owe before anyone shows up.",
-                ].map((step, i) => (
+                ] as (string | null)[]).filter(Boolean).map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="text-xs font-black shrink-0 mt-0.5" style={{ color: BLUE }}>0{i + 1}</span>
                     <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{step}</p>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -6,6 +6,23 @@ const IVORY = "#F5EFE6";
 const BG    = "#131929";
 const AMBER = "#4D9FDB";
 const DIV   = "#1e2a3a";
+
+/* ── Geocoding helpers (Nominatim / OpenStreetMap — free, no API key) ── */
+const HOMEBASE = { lat: 29.5958, lng: -98.7255 }; // San Antonio TX 78253, Alamo Ranch
+function haversine(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 3958.8;
+  const toR = (d: number) => (d * Math.PI) / 180;
+  const dLat = toR(lat2 - lat1);
+  const dLng = toR(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toR(lat1)) * Math.cos(toR(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function distanceToTier(miles: number): 1 | 2 | 3 | 4 {
+  if (miles <= 10) return 1;
+  if (miles <= 25) return 2;
+  if (miles <= 40) return 3;
+  return 4;
+}
 
 const H = ({ children }: { children: React.ReactNode }) => (
   <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
@@ -118,7 +135,7 @@ interface ApostilleState {
 }
 interface CourtState {
   format: CourtFormat; duration: CourtDuration;
-  transcript: boolean; pages: number; speed: TranscriptSpeed; address: string;
+  transcript: boolean; pages: number; speed: TranscriptSpeed;
 }
 
 /* Witness: $10/witness. Additional signers: $5/signer beyond first. */
@@ -298,8 +315,13 @@ export default function Estimator() {
   /* Court state */
   const [court, setCourt] = useState<CourtState>({
     format: "inperson", duration: "2hr",
-    transcript: false, pages: 100, speed: "14day", address: "",
+    transcript: false, pages: 100, speed: "14day",
   });
+
+  /* Geocoding state */
+  const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [geoMiles, setGeoMiles]   = useState<number | null>(null);
+  const geoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* ── Travel fee logic ──────────────────────────────────────────────────────
      - Apostille & Loan Signing include a base travel fee in their pricing.
@@ -370,6 +392,30 @@ export default function Estimator() {
   const upA = useCallback((patch: Partial<ApostilleState>) => setApost(p => ({ ...p, ...patch })), []);
   const upC = useCallback((patch: Partial<CourtState>)     => setCourt(p => ({ ...p, ...patch })), []);
   const upL = useCallback((patch: Partial<LoanState>)      => setLoan(p  => ({ ...p, ...patch })), []);
+
+  /* ── Auto-geocode: fires when user types an address in any in-person service field ── */
+  const geocodeAddress = useCallback(async (addr: string) => {
+    if (!addr.trim()) { setGeoStatus("idle"); setGeoMiles(null); return; }
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&limit=1&countrycodes=us`;
+      const res  = await fetch(url, { headers: { "User-Agent": "DcsyEstimator/1.0 (hello@docsynotary.com)" } });
+      const data = await res.json() as { lat: string; lon: string }[];
+      if (!data.length) { setGeoStatus("error"); return; }
+      const miles = haversine(HOMEBASE.lat, HOMEBASE.lng, parseFloat(data[0].lat), parseFloat(data[0].lon));
+      setGeoMiles(miles);
+      setGeoStatus("done");
+      upT({ tier: distanceToTier(miles) });
+    } catch {
+      setGeoStatus("error");
+    }
+  }, [upT]);
+
+  const handleAddressGeo = useCallback((addr: string) => {
+    if (geoTimerRef.current) clearTimeout(geoTimerRef.current);
+    if (!addr.trim()) { setGeoStatus("idle"); setGeoMiles(null); return; }
+    setGeoStatus("loading");
+    geoTimerRef.current = setTimeout(() => geocodeAddress(addr), 900);
+  }, [geocodeAddress]);
 
   const toggleLoanPkg = useCallback((key: LoanPackage) => {
     setLoan(prev => ({
@@ -531,13 +577,13 @@ export default function Estimator() {
                     <input
                       type="text"
                       value={gnw.address}
-                      onChange={e => upG({ address: e.target.value })}
-                      placeholder="123 Main St, Austin TX — home, office, hospital, hospice, etc."
+                      onChange={e => { upG({ address: e.target.value }); handleAddressGeo(e.target.value); }}
+                      placeholder="123 Main St, San Antonio TX — home, office, hospital, hospice, etc."
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
                     />
                     <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                      Backend auto-calculates travel fee from this address. Distance tier below is for budgeting only.
+                      Type your address — distance auto-calculates from Alamo Ranch (San Antonio, TX 78253).
                       {gnwTravelWaived && <span style={{ color: AMBER }}> Travel included — waived because Apostille or Loan Signing is also selected.</span>}
                     </p>
                   </div>
@@ -577,13 +623,13 @@ export default function Estimator() {
                     <input
                       type="text"
                       value={loan.address}
-                      onChange={e => upL({ address: e.target.value })}
+                      onChange={e => { upL({ address: e.target.value }); handleAddressGeo(e.target.value); }}
                       placeholder="Title company, escrow office, or your home/office address"
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
                     />
                     <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                      Backend confirms exact travel cost from this address. Travel is included in your package rate.
+                      Type your address — distance auto-calculates from Alamo Ranch (San Antonio, TX 78253). Travel is included in your package rate.
                     </p>
                   </div>
                 </div>
@@ -674,7 +720,7 @@ export default function Estimator() {
                     <input
                       type="text"
                       value={apost.address}
-                      onChange={e => upA({ address: e.target.value })}
+                      onChange={e => { upA({ address: e.target.value }); if (apost.mobile) handleAddressGeo(e.target.value); }}
                       placeholder={apost.mobile ? "Your address for mobile pickup" : "Mailing address or drop-off location"}
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
@@ -705,18 +751,10 @@ export default function Estimator() {
                   </div>
 
                   {court.format === "inperson" && (
-                    <div>
-                      <RowLabel>Venue address</RowLabel>
-                      <input
-                        type="text"
-                        value={court.address}
-                        onChange={e => upC({ address: e.target.value })}
-                        placeholder="Courthouse, law office, deposition suite address"
-                        className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
-                        style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
-                      />
-                      <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                        Provided for scheduling coordination. Travel to venue confirmed at booking.
+                    <div className="px-4 py-3 border-l-2" style={{ borderColor: AMBER, backgroundColor: "rgba(77,159,219,0.06)" }}>
+                      <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: AMBER }}>Venue address collected separately</p>
+                      <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                        No address needed here. When you book, Docsy will email you a confirmation and ask you to reply with the deposition notice — venue, date, time, and case info all come from there.
                       </p>
                     </div>
                   )}
@@ -800,11 +838,32 @@ export default function Estimator() {
                       <p className="text-base font-black text-white">Distance &amp; Timing</p>
                       <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Applies once per appointment</span>
                     </div>
-                    <p className="text-sm font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.4)" }}>
-                      {gnwTravelWaived
-                        ? "GNW travel waived — covered by your Apostille or Loan Signing appointment. Only extended distance (40+ miles) or timing surcharges may apply."
-                        : "Backend auto-calculates travel fee from the addresses you entered above. The distance tier below is for budgeting only."}
-                    </p>
+                    <div className="mt-1 ml-7 space-y-1">
+                      {gnwTravelWaived && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          GNW travel waived — covered by your Apostille or Loan Signing appointment. Only extended distance (40+ miles) or timing surcharges may apply.
+                        </p>
+                      )}
+                      {geoStatus === "idle" && !gnwTravelWaived && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          Type your location in any service field above — distance auto-calculates from Alamo Ranch (San Antonio, TX 78253) and selects your tier.
+                        </p>
+                      )}
+                      {geoStatus === "loading" && (
+                        <p className="text-sm font-light" style={{ color: AMBER }}>Calculating distance from Alamo Ranch…</p>
+                      )}
+                      {geoStatus === "done" && geoMiles !== null && (
+                        <p className="text-sm font-light" style={{ color: AMBER }}>
+                          ~{geoMiles.toFixed(1)} miles from Alamo Ranch — Tier {travel.tier} auto-applied
+                          {gnwTravelWaived ? " (GNW travel still waived)." : "."}
+                        </p>
+                      )}
+                      {geoStatus === "error" && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,130,130,0.85)" }}>
+                          Address not found — select your distance tier manually below.
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
                     <div className="pt-5 space-y-6">
