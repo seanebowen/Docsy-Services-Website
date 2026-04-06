@@ -19,6 +19,7 @@ import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
 import Estimator from "@/pages/Estimator";
 import Booking from "@/pages/Booking";
+import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
 import Contact from "@/pages/Contact";
 
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/estimate" component={Estimator} />
       <Route path="/booking/confirmation" component={BookingConfirmation} />
+      <Route path="/booking/payment" component={BookingPayment} />
       <Route path="/booking" component={Booking} />
       <Route path="/ron" component={RON} />
       <Route path="/mobile-notary" component={MobileNotary} />

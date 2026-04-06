@@ -247,7 +247,7 @@ export default function Booking() {
       safePlusOptIn,
     }));
     setShowModal(false);
-    setLocation("/booking/confirmation");
+    setLocation("/booking/payment");
   };
 
   return (
