@@ -136,7 +136,7 @@ function BookingModal({
                 02 — Docsy Safe+ File Vault
               </p>
               <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, and signed loan packages — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime. <strong className="text-white/50">Available only when your booking includes a service with deliverables.</strong>
+                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime.
               </div>
               <div className="space-y-2">
                 {([
@@ -204,7 +204,8 @@ export default function Booking() {
     ? estimate.services.some(s => {
         const n = s.name.toLowerCase();
         return n.includes("remote online") || n.includes("mobile notary") ||
-               n.includes("loan signing")  || n.includes("apostille");
+               n.includes("loan signing")  || n.includes("apostille") ||
+               n.includes("court reporting");
       })
     : false;
 

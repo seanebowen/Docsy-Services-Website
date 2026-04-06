@@ -195,7 +195,7 @@ export default function Promos() {
               <span
                 className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border"
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.3)" }}
-              >RON · Mobile · Loan Signing · Apostille</span>
+              >RON · Mobile · Loan Signing · Apostille · Court Reporting</span>
             </div>
           </FadeIn>
           <FadeIn delay={60} threshold={0.05}>
@@ -209,7 +209,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Offered at booking — services with deliverables only</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, and signed loan packages. Activated through the booking flow when your appointment includes a service that produces deliverables. No card. No signup. After 30 days, continue for $7/month or stop — no automatic charge.
+                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue for $7/month or stop — no automatic charge.
               </p>
             </div>
           </FadeIn>
