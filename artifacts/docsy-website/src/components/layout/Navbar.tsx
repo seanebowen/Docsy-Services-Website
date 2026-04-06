@@ -92,7 +92,7 @@ export function Navbar() {
             style={{ backgroundColor: "#4D9FDB", color: "#fff" }}
             data-testid="btn-book-nav"
           >
-            Book Now
+            Book Now →
           </Link>
         </div>
 
@@ -130,7 +130,7 @@ export function Navbar() {
                 className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center"
                 style={{ backgroundColor: "#4D9FDB", color: "#fff" }}
               >
-                Book Now
+                Book Now →
               </Link>
             </div>
           </nav>

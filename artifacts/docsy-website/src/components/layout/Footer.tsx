@@ -32,7 +32,7 @@ export function Footer() {
               style={{ backgroundColor: "#4D9FDB" }}
               data-testid="btn-book-footer"
             >
-              Book Now
+              Book Now →
             </Link>
           </div>
         </div>
