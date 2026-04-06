@@ -592,6 +592,108 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
+              {/* ── Shared Scheduling & Distance ── */}
+              {needsTravel && (
+                <FadeIn delay={0} threshold={0.01}>
+                <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
+                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[SCHEDULING]</span>
+                      <p className="text-base font-black text-white">Distance &amp; Timing</p>
+                      <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Applies once per appointment</span>
+                    </div>
+                    <div className="mt-1 ml-7 space-y-1">
+                      {gnwTravelWaived && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          GNW travel waived — covered by your Apostille or Loan Signing appointment. Only extended distance (40+ miles) or timing surcharges may apply.
+                        </p>
+                      )}
+                      {geoStatus === "idle" && !gnwTravelWaived && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          Type your address in any service field above — travel fee calculates automatically from Headquarters (Alamo Ranch, San Antonio TX 78253).
+                        </p>
+                      )}
+                      {geoStatus === "loading" && (
+                        <p className="text-sm font-light" style={{ color: AMBER }}>Calculating distance from Alamo Ranch…</p>
+                      )}
+                      {geoStatus === "done" && geoMiles !== null && (
+                        <p className="text-sm font-light" style={{ color: AMBER }}>
+                          ~{geoMiles.toFixed(1)} miles from Headquarters — travel fee updated.
+                          {gnwTravelWaived ? " GNW travel still waived." : ""}
+                        </p>
+                      )}
+                      {geoStatus === "error" && (
+                        <p className="text-sm font-light" style={{ color: "rgba(255,130,130,0.85)" }}>
+                          Address not found — double-check what you entered and try again.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
+                    <div className="pt-5 space-y-6">
+
+                      <div>
+                        <RowLabel>Distance tiers — for your reference</RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          {([
+                            [1, "Tier 1", "0 to 10 miles",  gnwTravelWaived ? "included" : "$30"],
+                            [2, "Tier 2", "11 to 25 miles", gnwTravelWaived ? "included" : "$45"],
+                            [3, "Tier 3", "26 to 40 miles", gnwTravelWaived ? "included" : "$65"],
+                            [4, "Tier 4", "40+ miles",      "$85 extended"],
+                          ] as [1|2|3|4, string, string, string][]).map(([t, tierLabel, range, price]) => {
+                            const isActive = geoStatus === "done" && travel.tier === t;
+                            return (
+                              <div key={t} className="flex justify-between items-center px-4 py-3 border-b last:border-b-0"
+                                style={{ borderColor: DIV, backgroundColor: isActive ? "rgba(77,159,219,0.1)" : "transparent" }}>
+                                <div className="flex items-center gap-3">
+                                  {isActive && (
+                                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 shrink-0"
+                                      style={{ backgroundColor: AMBER, color: "#000" }}>Your tier</span>
+                                  )}
+                                  <span className="text-sm font-light"
+                                    style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.45)" }}>
+                                    {tierLabel} — {range}
+                                  </span>
+                                </div>
+                                <span className="text-sm font-bold ml-4"
+                                  style={{ color: isActive ? AMBER : "rgba(255,255,255,0.25)" }}>
+                                  {price}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        {gnwTravelWaived && travel.tier < 4 && geoStatus === "done" && (
+                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
+                            Travel waived — GNW shares this appointment with a service that includes travel. No separate travel fee for tiers 1–3.
+                          </p>
+                        )}
+                        {travel.tier === 4 && geoStatus === "done" && (
+                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
+                            Extended distance (40+ miles) — $85 added even when travel is otherwise included.
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <RowLabel>Timing add-ons (select all that apply)</RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          <CheckRow label="After-hours (after 6 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
+                          <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={travel.lateNight} onChange={v => upT({ lateNight: v, afterHours: v ? false : travel.afterHours })} />
+                          <CheckRow label="Rush — within 2 hours"        price="+$35" checked={travel.rush}      onChange={v => upT({ rush: v })} />
+                          <CheckRow label="Weekend or holiday"           price="+$25" checked={travel.weekend}   onChange={v => upT({ weekend: v })} />
+                        </div>
+                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20).
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                </FadeIn>
+              )}
+
               {/* ── Loan Signing ── */}
               <FadeIn delay={120} threshold={0.05}>
               <ServiceCard
@@ -828,107 +930,6 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
-              {/* ── Shared Scheduling & Distance ── */}
-              {needsTravel && (
-                <FadeIn delay={0} threshold={0.01}>
-                <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
-                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[SCHEDULING]</span>
-                      <p className="text-base font-black text-white">Distance &amp; Timing</p>
-                      <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Applies once per appointment</span>
-                    </div>
-                    <div className="mt-1 ml-7 space-y-1">
-                      {gnwTravelWaived && (
-                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                          GNW travel waived — covered by your Apostille or Loan Signing appointment. Only extended distance (40+ miles) or timing surcharges may apply.
-                        </p>
-                      )}
-                      {geoStatus === "idle" && !gnwTravelWaived && (
-                        <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                          Type your address in any service field above — travel fee calculates automatically from Headquarters (Alamo Ranch, San Antonio TX 78253).
-                        </p>
-                      )}
-                      {geoStatus === "loading" && (
-                        <p className="text-sm font-light" style={{ color: AMBER }}>Calculating distance from Alamo Ranch…</p>
-                      )}
-                      {geoStatus === "done" && geoMiles !== null && (
-                        <p className="text-sm font-light" style={{ color: AMBER }}>
-                          ~{geoMiles.toFixed(1)} miles from Headquarters — travel fee updated.
-                          {gnwTravelWaived ? " GNW travel still waived." : ""}
-                        </p>
-                      )}
-                      {geoStatus === "error" && (
-                        <p className="text-sm font-light" style={{ color: "rgba(255,130,130,0.85)" }}>
-                          Address not found — double-check what you entered and try again.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
-                    <div className="pt-5 space-y-6">
-
-                      <div>
-                        <RowLabel>Distance tiers — for your reference</RowLabel>
-                        <div className="border" style={{ borderColor: DIV }}>
-                          {([
-                            [1, "Tier 1", "0 to 10 miles",  gnwTravelWaived ? "included" : "$30"],
-                            [2, "Tier 2", "11 to 25 miles", gnwTravelWaived ? "included" : "$45"],
-                            [3, "Tier 3", "26 to 40 miles", gnwTravelWaived ? "included" : "$65"],
-                            [4, "Tier 4", "40+ miles",      "$85 extended"],
-                          ] as [1|2|3|4, string, string, string][]).map(([t, tierLabel, range, price]) => {
-                            const isActive = geoStatus === "done" && travel.tier === t;
-                            return (
-                              <div key={t} className="flex justify-between items-center px-4 py-3 border-b last:border-b-0"
-                                style={{ borderColor: DIV, backgroundColor: isActive ? "rgba(77,159,219,0.1)" : "transparent" }}>
-                                <div className="flex items-center gap-3">
-                                  {isActive && (
-                                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 shrink-0"
-                                      style={{ backgroundColor: AMBER, color: "#000" }}>Your tier</span>
-                                  )}
-                                  <span className="text-sm font-light"
-                                    style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.45)" }}>
-                                    {tierLabel} — {range}
-                                  </span>
-                                </div>
-                                <span className="text-sm font-bold ml-4"
-                                  style={{ color: isActive ? AMBER : "rgba(255,255,255,0.25)" }}>
-                                  {price}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        {gnwTravelWaived && travel.tier < 4 && geoStatus === "done" && (
-                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
-                            Travel waived — GNW shares this appointment with a service that includes travel. No separate travel fee for tiers 1–3.
-                          </p>
-                        )}
-                        {travel.tier === 4 && geoStatus === "done" && (
-                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
-                            Extended distance (40+ miles) — $85 added even when travel is otherwise included.
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <RowLabel>Timing add-ons (select all that apply)</RowLabel>
-                        <div className="border" style={{ borderColor: DIV }}>
-                          <CheckRow label="After-hours (after 6 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
-                          <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={travel.lateNight} onChange={v => upT({ lateNight: v, afterHours: v ? false : travel.afterHours })} />
-                          <CheckRow label="Rush — within 2 hours"        price="+$35" checked={travel.rush}      onChange={v => upT({ rush: v })} />
-                          <CheckRow label="Weekend or holiday"           price="+$25" checked={travel.weekend}   onChange={v => upT({ weekend: v })} />
-                        </div>
-                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20).
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                </FadeIn>
-              )}
 
             </div>{/* end left col */}
 
