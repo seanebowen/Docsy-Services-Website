@@ -31,10 +31,12 @@ function isFederalHoliday(date: Date): boolean {
     return [hm, last.getDate() - (last.getDay() - wday + 7) % 7];
   };
   const ck = ([hm, hd]: [number, number]) => m === hm && d === hd;
+  /* Fixed-date holidays: match the actual date OR the observed substitute weekday */
+  const ckFixed = (hm: number, hd: number) => (m === hm && d === hd) || ck(obs(hm, hd));
   return (
-    ck(obs(0, 1))      || ck(nthW(0, 1, 3))  || ck(nthW(1, 1, 3))  ||
-    ck(lastW(4, 1))    || ck(obs(6, 4))       || ck(nthW(8, 1, 1))  ||
-    ck(nthW(9, 1, 2))  || ck(nthW(10, 4, 4)) || ck(obs(11, 25))
+    ckFixed(0, 1)      || ck(nthW(0, 1, 3))  || ck(nthW(1, 1, 3))  ||
+    ck(lastW(4, 1))    || ckFixed(6, 4)       || ck(nthW(8, 1, 1))  ||
+    ck(nthW(9, 1, 2))  || ck(nthW(10, 4, 4)) || ckFixed(11, 25)
   );
 }
 
