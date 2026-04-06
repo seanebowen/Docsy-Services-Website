@@ -8,21 +8,29 @@ const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
-interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; autoPromos?: { label: string; amount: number }[]; }
+interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; }
 type PromoResult = { label: string; amount: number } | null;
 
-function applyPromoCode(code: string, estimate: EstimateSummary | null): PromoResult {
+function parseHour(timeStr: string): number {
+  const [clock, period] = timeStr.split(" ");
+  let h = parseInt(clock.split(":")[0], 10);
+  if (period === "PM" && h !== 12) h += 12;
+  if (period === "AM" && h === 12) h = 0;
+  return h;
+}
+
+function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedAuto: { label: string; amount: number }[] = []): PromoResult {
   if (!estimate || !code.trim()) return null;
   const n = code.trim().toUpperCase();
-  const { services, baseTotal, total, autoPromos = [] } = estimate;
+  const { services, baseTotal, total } = estimate;
   const base = baseTotal ?? total;
-  const has = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
-  const autoHas = (kw: string) => autoPromos.some(p => p.label.toLowerCase().includes(kw.toLowerCase()));
+  const has    = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
+  const autoHas = (kw: string) => appliedAuto.some(p => p.label.toLowerCase().includes(kw.toLowerCase()));
   switch (n) {
     case "HONORPASS":
       return { label: "HonorPass — 10% Off Base Service Fee", amount: -Math.round(base * 0.10) };
     case "WEEKENDWARRIOR": {
-      if (autoHas("weekend warrior")) return null; // already auto-applied
+      if (autoHas("weekend warrior")) return null;
       const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
       return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) } : null;
     }
@@ -187,9 +195,34 @@ export default function Booking() {
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
 
-  const promoDiscount  = useMemo(() => applyPromoCode(promoCode, estimate), [promoCode, estimate]);
-  const promoInvalid   = promoCode.trim().length > 0 && promoDiscount === null;
-  const discountedTotal = estimate ? Math.max(0, estimate.total + (promoDiscount?.amount ?? 0)) : 0;
+  /* Auto-promos: computed from the selected appointment date + time */
+  const autoPromos = useMemo((): { label: string; amount: number }[] => {
+    if (!selectedDate || !selectedTime || !estimate) return [];
+    const day  = selectedDate.getDay(); // 0=Sun, 6=Sat
+    const isWeekend = day === 0 || day === 6;
+    const isWeekday = day >= 1 && day <= 5;
+    const hour = parseHour(selectedTime);
+    const has  = (kw: string) => estimate.services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
+    const result: { label: string; amount: number }[] = [];
+
+    if (has("remote online")) {
+      if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
+      else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
+      else if (hour >= 21)              result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
+    }
+    if (has("mobile notary") && isWeekday && hour >= 12 && hour < 18)
+      result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });
+    if (has("loan signing") && isWeekend) {
+      const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
+      if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) });
+    }
+    return result;
+  }, [selectedDate, selectedTime, estimate]);
+
+  const autoPromoTotal  = autoPromos.reduce((sum, p) => sum + p.amount, 0);
+  const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos), [promoCode, estimate, autoPromos]);
+  const promoInvalid    = promoCode.trim().length > 0 && promoDiscount === null;
+  const discountedTotal = estimate ? Math.max(0, estimate.total + autoPromoTotal + (promoDiscount?.amount ?? 0)) : 0;
 
   const today    = new Date();
   const todayStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
@@ -249,6 +282,7 @@ export default function Booking() {
       note,
       promoCode: promoCode.trim(),
       promoDiscount,
+      autoPromos,
       discountedTotal,
       estimate,
       safePlusOptIn,
@@ -414,7 +448,7 @@ export default function Booking() {
                         <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                       </div>
                     ))}
-                    {(estimate.autoPromos ?? []).map(p => (
+                    {autoPromos.map(p => (
                       <div key={p.label} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
                         <span className="flex items-center gap-2" style={{ color: BLUE }}>
                           ↳ {p.label}
@@ -432,11 +466,11 @@ export default function Booking() {
                     <div className="flex justify-between items-baseline pt-4">
                       <span className="text-sm font-bold text-white">Est. Total</span>
                       <div className="text-right">
-                        {promoDiscount && (
+                        {(autoPromos.length > 0 || promoDiscount) && (
                           <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toLocaleString()}</span>
                         )}
                         <span className="text-2xl font-black" style={{ color: BLUE }}>
-                          ${promoDiscount ? discountedTotal.toLocaleString() : estimate.total.toLocaleString()}
+                          ${(autoPromos.length > 0 || promoDiscount) ? discountedTotal.toLocaleString() : estimate.total.toLocaleString()}
                         </span>
                       </div>
                     </div>

@@ -15,6 +15,7 @@ interface BookingData {
   note:             string;
   promoCode?:       string;
   promoDiscount?:   PromoResult | null;
+  autoPromos?:      { label: string; amount: number }[];
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
   safePlusOptIn?:   boolean;
@@ -99,7 +100,7 @@ export default function BookingConfirmation() {
                     <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                   </div>
                 ))}
-                {(booking.estimate.autoPromos ?? []).map((p: { label: string; amount: number }) => (
+                {(booking.autoPromos ?? []).map((p: { label: string; amount: number }) => (
                   <div key={p.label} className="flex justify-between py-2.5 border-b text-sm" style={{ borderColor: DIV }}>
                     <span className="flex items-center gap-2" style={{ color: BLUE }}>
                       ↳ {p.label}
@@ -117,11 +118,11 @@ export default function BookingConfirmation() {
                 <div className="flex justify-between items-baseline pt-4">
                   <span className="text-sm font-bold text-white">Estimated Total</span>
                   <div className="text-right">
-                    {booking.promoDiscount && (
+                    {((booking.autoPromos?.length ?? 0) > 0 || booking.promoDiscount) && (
                       <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${booking.estimate.total.toLocaleString()}</span>
                     )}
                     <span className="text-2xl font-black" style={{ color: BLUE }}>
-                      ${booking.promoDiscount && booking.discountedTotal != null
+                      ${((booking.autoPromos?.length ?? 0) > 0 || booking.promoDiscount) && booking.discountedTotal != null
                         ? booking.discountedTotal.toLocaleString()
                         : booking.estimate.total.toLocaleString()}
                     </span>

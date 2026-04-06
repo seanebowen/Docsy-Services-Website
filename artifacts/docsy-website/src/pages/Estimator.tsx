@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -322,31 +322,6 @@ export default function Estimator() {
     : 0;
   const apostilleAddonLabel = apost.turnaround === "nextday" ? "Next-Day Turnaround" : "Same-Day Rush Turnaround";
 
-  /* ── Auto-apply promos based on current time / day ── */
-  const autoPromos = useMemo(() => {
-    const now = new Date();
-    const hour = now.getHours(); // 0–23
-    const day  = now.getDay();   // 0=Sun … 6=Sat
-    const isWeekend = day === 0 || day === 6;
-    const isWeekday = day >= 1 && day <= 5;
-    const result: { label: string; amount: number }[] = [];
-
-    if (ronOn) {
-      if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",   amount: -10 });
-      else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off",  amount: -10 });
-      else if (hour >= 21)              result.push({ label: "Night Shift Seal™ — $10 Off",   amount: -10 });
-    }
-    if (mobileOn && isWeekday && hour >= 12 && hour < 18)
-      result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });
-    if (loanOn && isWeekend)
-      result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(loanTotal * 0.20) });
-
-    return result;
-  }, [ronOn, mobileOn, loanOn, loanTotal]);
-
-  const autoPromoTotal = autoPromos.reduce((sum, p) => sum + p.amount, 0);
-  const displayTotal   = grandTotal + autoPromoTotal;
-
   const baseTotal = (ronOn    ? calcRONBase(ron)       : 0)
                   + (mobileOn ? calcMobileBase(mobile) : 0)
                   + (loanOn   ? calcLoanBase(loan)     : 0)
@@ -366,9 +341,9 @@ export default function Estimator() {
       apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`, amount: apostilleAddon },
       courtOn  && { name: "Court Reporting",                                                      amount: courtTotal },
     ].filter(Boolean) as { name: string; amount: number }[];
-    sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: displayTotal, baseTotal, hasRON: ronOn, autoPromos }));
+    sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, baseTotal, hasRON: ronOn }));
     setLocation("/booking");
-  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, displayTotal, baseTotal, autoPromos, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs]);
+  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs]);
 
   /* helpers */
   const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);
@@ -754,28 +729,13 @@ export default function Estimator() {
                     {apostOn && apostilleAddon > 0 && <SummaryLine label={`↳ ${apostilleAddonLabel}`} amount={apostilleAddon} />}
                     {courtOn  && <SummaryLine label="Court Reporting" amount={courtTotal} />}
 
-                    {/* Auto-applied promo lines */}
-                    {autoPromos.map(p => (
-                      <div key={p.label} className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
-                        <span className="text-sm font-light flex items-center gap-2" style={{ color: AMBER }}>
-                          ↳ {p.label}
-                          <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.18)", color: AMBER }}>Auto</span>
-                        </span>
-                        <span className="text-sm font-bold" style={{ color: AMBER }}>−${Math.abs(p.amount).toFixed(2)}</span>
-                      </div>
-                    ))}
                   </div>
 
                   {/* grand total */}
                   <div className="border-t pt-5 mb-6" style={{ borderColor: DIV }}>
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>Your Price</p>
-                    {autoPromoTotal < 0 && (
-                      <p className="text-sm line-through mb-0.5" style={{ color: "rgba(255,255,255,0.25)" }}>
-                        ${grandTotal % 1 === 0 ? grandTotal.toLocaleString() : grandTotal.toFixed(2)}
-                      </p>
-                    )}
                     <p className="font-black leading-none" style={{ fontSize: "clamp(2.5rem,6vw,3.5rem)", color: AMBER, letterSpacing: "-0.03em" }}>
-                      ${displayTotal % 1 === 0 ? displayTotal.toLocaleString() : displayTotal.toFixed(2)}
+                      ${grandTotal % 1 === 0 ? grandTotal.toLocaleString() : grandTotal.toFixed(2)}
                     </p>
                   </div>
 
