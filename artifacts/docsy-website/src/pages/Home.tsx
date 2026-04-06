@@ -104,27 +104,19 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <Link
                 href="/estimate"
-                className="px-8 py-4 text-sm font-bold text-white text-center"
-                style={{ backgroundColor: SLATE }}
-                data-testid="btn-book-hero"
-              >
-                Calculate Your Price and Book
-              </Link>
-              <Link
-                href="/estimate"
                 className="px-8 py-4 text-sm font-bold text-center border"
                 style={{ borderColor: AMBER, color: AMBER }}
                 data-testid="btn-estimate-hero"
               >
                 Calculate Your Price →
               </Link>
-              <Link
-                href="#services"
+              <button
+                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
                 className="px-8 py-4 text-sm font-bold text-center border"
                 style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
               >
                 Our Services
-              </Link>
+              </button>
             </div>
           </FadeIn>
         </div>
