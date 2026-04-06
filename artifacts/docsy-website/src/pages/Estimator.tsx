@@ -335,8 +335,9 @@ export default function Estimator() {
   /* General Notary Work state */
   const [gnw, setGnw] = useState<GNWState>({ seals: 1, witness: 0, signers: 1, address: "" });
 
-  /* Appointment date for holiday auto-detection */
+  /* Appointment date + time for timing fee auto-detection */
   const [apptDate, setApptDate] = useState<string>("");
+  const [apptTime, setApptTime] = useState<string>("");
 
   /* Shared travel state — distance tier + timing, one per appointment */
   const [travel, setTravel] = useState<TravelState>({
@@ -433,13 +434,23 @@ export default function Estimator() {
   const upC = useCallback((patch: Partial<CourtState>)     => setCourt(p => ({ ...p, ...patch })), []);
   const upL = useCallback((patch: Partial<LoanState>)      => setLoan(p  => ({ ...p, ...patch })), []);
 
-  /* ── Auto-detect federal holiday from appointment date ── */
+  /* ── Auto-detect timing fees from appointment date + time ── */
   useEffect(() => {
-    if (!apptDate) { upT({ holiday: false }); return; }
-    const [y, mo, d] = apptDate.split("-").map(Number);
-    const dt = new Date(y, mo - 1, d);
-    upT({ holiday: isFederalHoliday(dt) });
-  }, [apptDate, upT]);
+    const holiday = apptDate ? (() => {
+      const [y, mo, d] = apptDate.split("-").map(Number);
+      return isFederalHoliday(new Date(y, mo - 1, d));
+    })() : false;
+
+    let afterHours = false;
+    let lateNight  = false;
+    if (apptTime) {
+      const [hStr, mStr] = apptTime.split(":");
+      const hour = parseInt(hStr, 10) + parseInt(mStr, 10) / 60;
+      lateNight  = hour >= 22;          // 10 PM – midnight
+      afterHours = hour >= 21 && !lateNight; // 9 PM – 9:59 PM
+    }
+    upT({ holiday, afterHours, lateNight });
+  }, [apptDate, apptTime, upT]);
 
   /* ── Auto-geocode: fires when user types an address in any in-person service field ── */
   const geocodeAddress = useCallback(async (addr: string) => {
@@ -724,46 +735,49 @@ export default function Estimator() {
                       </div>
 
                       <div>
-                        <RowLabel>Timing add-ons (select all that apply)</RowLabel>
-                        <div className="border" style={{ borderColor: DIV }}>
-                          <CheckRow label="After-hours (after 9 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
-                          <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={travel.lateNight} onChange={v => upT({ lateNight: v, afterHours: v ? false : travel.afterHours })} />
-                          <div className="flex items-center justify-between px-4 py-3 border-t" style={{ borderColor: DIV }}>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-light" style={{ color: travel.holiday ? "#fff" : "rgba(255,255,255,0.45)" }}>
-                                Federal holiday
-                              </span>
-                              {travel.holiday && (
-                                <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Auto-applied</span>
-                              )}
-                            </div>
-                            <span className="text-sm font-bold" style={{ color: travel.holiday ? AMBER : "rgba(255,255,255,0.25)" }}>+$20</span>
-                          </div>
+                        <RowLabel>Appointment date &amp; time <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional — timing fees auto-apply)</span></RowLabel>
+                        <div className="flex gap-3">
+                          <input
+                            type="date"
+                            value={apptDate}
+                            onChange={e => setApptDate(e.target.value)}
+                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
+                            style={{ borderColor: DIV, colorScheme: "dark" }}
+                          />
+                          <input
+                            type="time"
+                            value={apptTime}
+                            onChange={e => setApptTime(e.target.value)}
+                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
+                            style={{ borderColor: DIV, colorScheme: "dark" }}
+                          />
                         </div>
-                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20). Holiday fee auto-applies when you enter a federal holiday date below.
-                        </p>
                       </div>
 
                       <div>
-                        <RowLabel>Appointment date <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional — for holiday detection)</span></RowLabel>
-                        <input
-                          type="date"
-                          value={apptDate}
-                          onChange={e => setApptDate(e.target.value)}
-                          className="w-full px-4 py-3 text-sm font-light text-white bg-transparent border"
-                          style={{ borderColor: DIV, colorScheme: "dark" }}
-                        />
-                        {apptDate && travel.holiday && (
-                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
-                            Federal holiday detected — +$20 surcharge auto-applied.
-                          </p>
-                        )}
-                        {apptDate && !travel.holiday && (
-                          <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                            Not a federal holiday — no holiday surcharge.
-                          </p>
-                        )}
+                        <RowLabel>Timing fees</RowLabel>
+                        <div className="border divide-y" style={{ borderColor: DIV, borderTopColor: DIV }}>
+                          {([
+                            { label: "After-hours (9 PM – 9:59 PM)", price: "+$20", active: travel.afterHours },
+                            { label: "Late night (10 PM – midnight)",  price: "+$35", active: travel.lateNight },
+                            { label: "Federal holiday",                price: "+$20", active: travel.holiday },
+                          ] as { label: string; price: string; active: boolean }[]).map(row => (
+                            <div key={row.label} className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-light" style={{ color: row.active ? "#fff" : "rgba(255,255,255,0.3)" }}>
+                                  {row.label}
+                                </span>
+                                {row.active && (
+                                  <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>
+                                )}
+                              </div>
+                              <span className="text-sm font-bold" style={{ color: row.active ? AMBER : "rgba(255,255,255,0.2)" }}>{row.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          Enter your preferred date and time above — applicable fees apply automatically. After-hours and late night are mutually exclusive.
+                        </p>
                       </div>
 
                     </div>
