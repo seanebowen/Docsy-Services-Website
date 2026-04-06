@@ -153,18 +153,13 @@ function calcLoan(s: LoanState): number {
 function calcApostille(s: ApostilleState): number {
   if (s.types.length === 0) return 0;
   const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
-  const turnaroundFlat: Record<ApostilleTurnaround, number | null> = { standard: null, nextday: 190, sameday: 225 };
+  const turnaroundAddon: Record<ApostilleTurnaround, number> = { standard: 0, nextday: 50, sameday: 75 };
   const hasFederal = s.types.includes("federal");
   const nonFederal = s.types.filter(t => t !== "federal");
   let base = hasFederal ? 275 : 0;
-  if (nonFederal.length > 0) {
-    const override = turnaroundFlat[s.turnaround];
-    base += override
-      ? override * nonFederal.length
-      : nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
-  }
-  if (s.docs <= 1) return base;
-  return base + (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
+  base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
+  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
+  return base + turnaroundAddon[s.turnaround];
 }
 
 function calcCourt(s: CourtState): number {
@@ -184,7 +179,17 @@ function calcCourt(s: CourtState): number {
 function calcRONBase(_s: RONState): number { return 25; } // base seal only; extra docs are add-ons
 function calcMobileBase(s: MobileState): number { return 10 + Math.max(0, s.seals - 1) * 1; } // notary fee only; travel & surcharges are add-ons
 function calcLoanBase(s: LoanState): number { return calcLoan(s); } // package prices are the base service fee
-function calcApostilleBase(s: ApostilleState): number { return calcApostille(s); } // service fees are base; no separate add-ons
+function calcApostilleBase(s: ApostilleState): number {
+  // base service fee only — excludes next-day / same-day turnaround add-ons
+  if (s.types.length === 0) return 0;
+  const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
+  const hasFederal = s.types.includes("federal");
+  const nonFederal = s.types.filter(t => t !== "federal");
+  let base = hasFederal ? 275 : 0;
+  base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
+  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
+  return base;
+}
 function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
     inperson: { "2hr": 225, halfday: 325, fullday: 550 },
@@ -567,13 +572,13 @@ export default function Estimator() {
                         />
                         <RadioRow
                           label="Next-Day"
-                          price="$190/type"
+                          price="+$50 add-on"
                           selected={apost.turnaround === "nextday"}
                           onClick={() => upA({ turnaround: "nextday" })}
                         />
                         <RadioRow
                           label="Same-Day Rush (order before 10 AM)"
-                          price="$225/type"
+                          price="+$75 add-on"
                           selected={apost.turnaround === "sameday"}
                           onClick={() => upA({ turnaround: "sameday" })}
                         />

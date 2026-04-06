@@ -110,8 +110,8 @@ export default function Apostille() {
                 { l: "Pre-Check (waived for retainer clients)", p: "$25" },
                 { l: "Standard Personal Documents", p: "$150" },
                 { l: "Standard Business Documents", p: "$175" },
-                { l: "Next-Day", p: "$190" },
-                { l: "Same-Day Rush (before 10 AM)", p: "$225" },
+                { l: "Next-Day Turnaround", p: "+$50 add-on" },
+                { l: "Same-Day Rush (before 10 AM)", p: "+$75 add-on" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between items-center px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
