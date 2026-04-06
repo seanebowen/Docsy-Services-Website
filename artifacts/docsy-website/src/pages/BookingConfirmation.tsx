@@ -105,13 +105,15 @@ export default function BookingConfirmation() {
                 ))}
                 {(booking.autoPromos ?? []).map((p: { label: string; amount: number; rateOnly?: boolean }) => (
                   <div key={p.label} className="flex justify-between py-2.5 border-b text-sm" style={{ borderColor: DIV }}>
-                    <span className="flex items-center gap-2" style={{ color: BLUE }}>
+                    <span className="flex items-center gap-2" style={{ color: p.amount > 0 ? "#F5A623" : BLUE }}>
                       ↳ {p.label}
-                      <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.15)", color: BLUE }}>Auto</span>
+                      <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: p.amount > 0 ? "rgba(245,166,35,0.15)" : "rgba(77,159,219,0.15)", color: p.amount > 0 ? "#F5A623" : BLUE }}>Auto</span>
                     </span>
                     {p.rateOnly
                       ? <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>Applied</span>
-                      : <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                      : <span className="font-bold" style={{ color: p.amount > 0 ? "#F5A623" : BLUE }}>
+                          {p.amount > 0 ? `+$${p.amount.toFixed(2)}` : `−$${Math.abs(p.amount).toFixed(2)}`}
+                        </span>
                     }
                   </div>
                 ))}

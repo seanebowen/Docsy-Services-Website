@@ -261,6 +261,13 @@ export default function Booking() {
 
     if (isHoliday) result.push({ label: "Federal Holiday Surcharge", amount: 20 });
 
+    /* Timing surcharges — in-person services only, auto-apply from selected time */
+    const isInPerson = has("general notary work") || has("loan signing");
+    if (isInPerson && hour >= 22)
+      result.push({ label: "Late Night Surcharge (10 PM – midnight)", amount: 35 });
+    else if (isInPerson && hour >= 21)
+      result.push({ label: "After-Hours Surcharge (9 PM – 9:59 PM)", amount: 20 });
+
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
       else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
@@ -516,13 +523,15 @@ export default function Booking() {
                     ))}
                     {autoPromos.map(p => (
                       <div key={p.label} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
-                        <span className="flex items-center gap-2" style={{ color: BLUE }}>
+                        <span className="flex items-center gap-2" style={{ color: p.amount > 0 ? "#F5A623" : BLUE }}>
                           ↳ {p.label}
-                          <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.15)", color: BLUE }}>Auto</span>
+                          <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: p.amount > 0 ? "rgba(245,166,35,0.15)" : "rgba(77,159,219,0.15)", color: p.amount > 0 ? "#F5A623" : BLUE }}>Auto</span>
                         </span>
                         {p.rateOnly
                           ? <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>Applied</span>
-                          : <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                          : <span className="font-bold" style={{ color: p.amount > 0 ? "#F5A623" : BLUE }}>
+                              {p.amount > 0 ? `+$${p.amount.toFixed(2)}` : `−$${Math.abs(p.amount).toFixed(2)}`}
+                            </span>
                         }
                       </div>
                     ))}

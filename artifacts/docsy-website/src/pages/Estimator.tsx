@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -127,7 +127,6 @@ interface RONState   { docs: number; witness: number; signers: number; }
 interface GNWState   { seals: number; witness: number; signers: number; address: string; }
 interface TravelState {
   tier: 1 | 2 | 3 | 4;
-  afterHours: boolean; lateNight: boolean; holiday: boolean;
 }
 interface LoanState  { packages: LoanPackage[]; address: string; }
 interface ApostilleState {
@@ -145,47 +144,7 @@ function calcRON(s: RONState): number {
 function calcGNW(s: GNWState): number {
   return 10 + Math.max(0, s.seals - 1) * 1 + s.witness * 10 + Math.max(0, s.signers - 1) * 5;
 }
-function timingFee(s: TravelState): number {
-  return (s.lateNight ? 35 : s.afterHours ? 20 : 0) + (s.holiday ? 20 : 0);
-}
-
-/* Returns true if the given date falls on a US federal holiday (or its observed substitute). */
-function isFederalHoliday(date: Date): boolean {
-  const y = date.getFullYear();
-  const m = date.getMonth(); // 0-indexed
-  const d = date.getDate();
-  /* Shift a fixed-date holiday to its observed weekday */
-  const obs = (hm: number, hd: number): [number, number] => {
-    const hw = new Date(y, hm, hd).getDay();
-    if (hw === 0) { const n = new Date(y, hm, hd + 1); return [n.getMonth(), n.getDate()]; }
-    if (hw === 6) { const n = new Date(y, hm, hd - 1); return [n.getMonth(), n.getDate()]; }
-    return [hm, hd];
-  };
-  /* nth weekday of a given month (wday: 0=Sun … 6=Sat, n: 1-based) */
-  const nthW = (hm: number, wday: number, n: number): [number, number] => {
-    const firstDow = new Date(y, hm, 1).getDay();
-    const offset   = (wday - firstDow + 7) % 7;
-    return [hm, 1 + offset + (n - 1) * 7];
-  };
-  /* Last weekday of a given month */
-  const lastW = (hm: number, wday: number): [number, number] => {
-    const last = new Date(y, hm + 1, 0);
-    return [hm, last.getDate() - (last.getDay() - wday + 7) % 7];
-  };
-  const ck = ([hm, hd]: [number, number]) => m === hm && d === hd;
-  return (
-    ck(obs(0, 1))       || // New Year's Day
-    ck(nthW(0, 1, 3))   || // MLK Day — 3rd Mon Jan
-    ck(nthW(1, 1, 3))   || // Presidents Day — 3rd Mon Feb
-    ck(lastW(4, 1))     || // Memorial Day — last Mon May
-    ck(obs(6, 4))       || // Independence Day
-    ck(nthW(8, 1, 1))   || // Labor Day — 1st Mon Sep
-    ck(nthW(9, 1, 2))   || // Columbus Day — 2nd Mon Oct
-    ck(nthW(10, 4, 4))  || // Thanksgiving — 4th Thu Nov
-    ck(obs(11, 25))        // Christmas
-  );
-}
-/* GNW travel tier: $30/$45/$65/$85 — only applied when GNW is the sole in-person service (or 40+ miles extension) */
+/* GNW travel tier: $30/$45/$65/$65/$85 — only applied when GNW is the sole in-person service (or 40+ miles extension) */
 function gnwTierFee(tier: 1|2|3|4): number { return [0, 30, 45, 65, 85][tier]; }
 
 function calcLoan(s: LoanState): number {
@@ -335,15 +294,8 @@ export default function Estimator() {
   /* General Notary Work state */
   const [gnw, setGnw] = useState<GNWState>({ seals: 1, witness: 0, signers: 1, address: "" });
 
-  /* Appointment date + time for timing fee auto-detection */
-  const [apptDate, setApptDate] = useState<string>("");
-  const [apptTime, setApptTime] = useState<string>("");
-
-  /* Shared travel state — distance tier + timing, one per appointment */
-  const [travel, setTravel] = useState<TravelState>({
-    tier: 1,
-    afterHours: false, lateNight: false, holiday: false,
-  });
+  /* Shared travel state — distance tier, one per appointment */
+  const [travel, setTravel] = useState<TravelState>({ tier: 1 });
 
   /* Loan state */
   const [loan, setLoan] = useState<LoanState>({ packages: ["refi"], address: "" });
@@ -383,12 +335,7 @@ export default function Estimator() {
   /* Extended distance surcharge: applies when Apostille/Loan Signing is selected AND tier 4 */
   const extendedFee    = hasIncludedTravel && travel.tier === 4 ? 85 : 0;
 
-  /* Timing: in-person surcharges gated by needsTravel; holiday always applies when any service is selected */
-  const anyOn = ronOn || gnwOn || loanOn || apostOn || courtOn;
-  const inPersonTimingFee = needsTravel ? (travel.lateNight ? 35 : travel.afterHours ? 20 : 0) : 0;
-  const timingTotal    = inPersonTimingFee + (anyOn && travel.holiday ? 20 : 0);
-
-  const travelTotal    = gnwTierTotal + extendedFee + timingTotal;
+  const travelTotal    = gnwTierTotal + extendedFee;
 
   /* computed service totals (no travel inside these) */
   const ronTotal   = ronOn   ? calcRON(ron)        : 0;
@@ -410,7 +357,7 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = anyOn;
+  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn;
 
   const [, setLocation] = useLocation();
 
@@ -435,24 +382,6 @@ export default function Estimator() {
   const upA = useCallback((patch: Partial<ApostilleState>) => setApost(p => ({ ...p, ...patch })), []);
   const upC = useCallback((patch: Partial<CourtState>)     => setCourt(p => ({ ...p, ...patch })), []);
   const upL = useCallback((patch: Partial<LoanState>)      => setLoan(p  => ({ ...p, ...patch })), []);
-
-  /* ── Auto-detect timing fees from appointment date + time ── */
-  useEffect(() => {
-    const holiday = apptDate ? (() => {
-      const [y, mo, d] = apptDate.split("-").map(Number);
-      return isFederalHoliday(new Date(y, mo - 1, d));
-    })() : false;
-
-    let afterHours = false;
-    let lateNight  = false;
-    if (apptTime) {
-      const [hStr, mStr] = apptTime.split(":");
-      const hour = parseInt(hStr, 10) + parseInt(mStr, 10) / 60;
-      lateNight  = hour >= 22;          // 10 PM – midnight
-      afterHours = hour >= 21 && !lateNight; // 9 PM – 9:59 PM
-    }
-    upT({ holiday, afterHours, lateNight });
-  }, [apptDate, apptTime, upT]);
 
   /* ── Auto-geocode: fires when user types an address in any in-person service field ── */
   const geocodeAddress = useCallback(async (addr: string) => {
@@ -978,78 +907,6 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
-
-              {/* ── Appointment Date & Time — always shown when any service is selected ── */}
-              {anySelected && (
-                <FadeIn delay={0} threshold={0.01}>
-                <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
-                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[SCHEDULING]</span>
-                      <p className="text-base font-black text-white">Appointment Date &amp; Time</p>
-                      <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Timing fees auto-apply</span>
-                    </div>
-                  </div>
-                  <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
-                    <div className="pt-5 space-y-6">
-
-                      <div>
-                        <RowLabel>Date &amp; time <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional)</span></RowLabel>
-                        <div className="flex gap-3">
-                          <input
-                            type="date"
-                            value={apptDate}
-                            onChange={e => setApptDate(e.target.value)}
-                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
-                            style={{ borderColor: DIV, colorScheme: "dark" }}
-                          />
-                          {needsTravel && (
-                            <input
-                              type="time"
-                              value={apptTime}
-                              onChange={e => setApptTime(e.target.value)}
-                              className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
-                              style={{ borderColor: DIV, colorScheme: "dark" }}
-                            />
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <RowLabel>Timing fees</RowLabel>
-                        <div className="border divide-y" style={{ borderColor: DIV }}>
-                          {needsTravel && ([
-                            { label: "After-hours (9 PM – 9:59 PM)", price: "+$20", active: travel.afterHours },
-                            { label: "Late night (10 PM – midnight)",  price: "+$35", active: travel.lateNight },
-                          ] as { label: string; price: string; active: boolean }[]).map(row => (
-                            <div key={row.label} className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-light" style={{ color: row.active ? "#fff" : "rgba(255,255,255,0.3)" }}>{row.label}</span>
-                                {row.active && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>}
-                              </div>
-                              <span className="text-sm font-bold" style={{ color: row.active ? AMBER : "rgba(255,255,255,0.2)" }}>{row.price}</span>
-                            </div>
-                          ))}
-                          <div className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-light" style={{ color: travel.holiday ? "#fff" : "rgba(255,255,255,0.3)" }}>Federal holiday</span>
-                              {travel.holiday && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>}
-                            </div>
-                            <span className="text-sm font-bold" style={{ color: travel.holiday ? AMBER : "rgba(255,255,255,0.2)" }}>+$20</span>
-                          </div>
-                        </div>
-                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          {needsTravel
-                            ? "After-hours and late night are mutually exclusive. Federal holiday applies to all services."
-                            : "Federal holiday fee applies when your appointment date falls on a US federal holiday."}
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                </FadeIn>
-              )}
 
             </div>{/* end left col */}
 
