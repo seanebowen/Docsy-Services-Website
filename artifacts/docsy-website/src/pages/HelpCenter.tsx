@@ -56,7 +56,7 @@ const guides = [
     title: "How to Send Documents for Apostille",
     summary: "Original documents only. Here's exactly what to do.",
     content: [
-      { heading: "Step 1 — Use the Free Pre-Check", body: "Before sending anything, use Docsy's free Pre-Check service. Text or email us a photo or scan of your document. We'll tell you whether it qualifies, what kind of apostille it needs, and the total cost. This prevents costly mistakes." },
+      { heading: "Step 1 — Use the Free Pre-Check", body: "Before sending anything, use Docsy's free Pre-Check service. Text or email us a photo or scan of your document and we'll tell you whether it qualifies, what kind of apostille it needs, and the total cost — before you send anything. This prevents costly mistakes.\n\n📱 Text: (512) 555-0190\n📧 Email: hello@docsynotary.com" },
       { heading: "Step 2 — Get the right copy", body: "For vital records (birth certificates, marriage licenses, death certificates, divorce decrees): you need a certified copy issued by the county or state. Not a personal photocopy. Not a scan. A certified copy with a raised seal or official stamp. For notarized documents: the original signed and notarized document." },
       { heading: "Step 3 — Ship safely", body: "Do not laminate documents. Use a padded mailer or document sleeve. Use a trackable shipping method — we recommend USPS Priority Mail with tracking, or FedEx. Keep your tracking number." },
       { heading: "Step 4 — What happens next", body: "Docsy reviews the document on receipt. If anything is off, we'll contact you immediately. Otherwise we file it at the Texas Secretary of State. You'll receive a digital certified scan the moment it's complete. The original is returned to you via trackable mail." },
@@ -193,7 +193,7 @@ function GuideDetail({ guide }: { guide: typeof guides[0] }) {
               <div className="border-b border-[#1e2a3a] last:border-b-0 pb-10 mb-10 last:pb-0 last:mb-0">
                 <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: IVORY }}>STEP {String(i + 1).padStart(2, "0")}</p>
                 <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>{section.heading}</h2>
-                <p className="text-base text-white/50 leading-relaxed">{section.body}</p>
+                <p className="text-base text-white/50 leading-relaxed whitespace-pre-line">{section.body}</p>
               </div>
             </FadeIn>
           ))}

@@ -110,7 +110,7 @@ export default function Home() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto text-center">
           <div>
             <FadeIn delay={0}>
               <Pill text="⊙ Texas Notary Services" />
@@ -128,12 +128,12 @@ export default function Home() {
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
-              <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
+              <p className="text-base sm:text-lg font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
                 Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
               </p>
             </FadeIn>
             <FadeIn delay={320}>
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
                 <Link
                   href="/estimate"
                   className="px-8 py-4 text-sm font-bold text-center border"

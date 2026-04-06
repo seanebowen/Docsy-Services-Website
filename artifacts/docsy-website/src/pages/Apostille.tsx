@@ -52,7 +52,7 @@ export default function Apostille() {
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-apostille">
                 Book Now →
               </Link>
-              <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
+              <Link href="/help-center/how-to-send-apostille" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
               </Link>
             </div>
