@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -9,6 +9,32 @@ const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
 interface EstimateSummary { services: ServiceLine[]; total: number; hasRON: boolean; }
+type PromoResult = { label: string; amount: number } | null;
+
+function applyPromoCode(code: string, estimate: EstimateSummary | null): PromoResult {
+  if (!estimate || !code.trim()) return null;
+  const n = code.trim().toUpperCase();
+  const { services, total } = estimate;
+  const has = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
+  switch (n) {
+    case "HONORPASS":
+      return { label: "HonorPass — 10% Off", amount: -Math.round(total * 0.10) };
+    case "WEEKENDWARRIOR": {
+      const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
+      return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) } : null;
+    }
+    case "EARLYBIRDSEAL":
+      return has("remote online") ? { label: "Early Bird Seal™ — $10 Off", amount: -10 } : null;
+    case "LUNCHBREAKSEAL":
+      return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off", amount: -10 } : null;
+    case "NIGHTSHIFTSEAL":
+      return has("remote online") ? { label: "Night Shift Seal™ — $10 Off", amount: -10 } : null;
+    case "MIDDAYMILES":
+      return has("mobile notary") ? { label: "Midday Miles™ — $10 Off", amount: -10 } : null;
+    default:
+      return null;
+  }
+}
 
 const MONTHS   = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const WEEKDAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -154,6 +180,10 @@ export default function Booking() {
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
 
+  const promoDiscount  = useMemo(() => applyPromoCode(promoCode, estimate), [promoCode, estimate]);
+  const promoInvalid   = promoCode.trim().length > 0 && promoDiscount === null;
+  const discountedTotal = estimate ? Math.max(0, estimate.total + (promoDiscount?.amount ?? 0)) : 0;
+
   const today    = new Date();
   const todayStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -211,6 +241,8 @@ export default function Booking() {
       time: selectedTime,
       note,
       promoCode: promoCode.trim(),
+      promoDiscount,
+      discountedTotal,
       estimate,
       safePlusOptIn,
     }));
@@ -349,8 +381,14 @@ export default function Booking() {
                         onChange={e => setPromoCode(e.target.value.toUpperCase())}
                         placeholder="e.g. HONORPASS"
                         className="w-full px-4 py-3 text-sm font-bold bg-transparent border outline-none"
-                        style={{ borderColor: promoCode ? BLUE : DIV, color: BLUE, caretColor: BLUE, letterSpacing: "0.08em" } as React.CSSProperties}
+                        style={{ borderColor: promoInvalid ? "#e05252" : promoDiscount ? BLUE : DIV, color: promoInvalid ? "#e05252" : BLUE, caretColor: BLUE, letterSpacing: "0.08em" } as React.CSSProperties}
                       />
+                      {promoInvalid && (
+                        <p className="text-[10px] mt-2" style={{ color: "#e05252" }}>Code not recognized or doesn't apply to your selected services.</p>
+                      )}
+                      {promoDiscount && (
+                        <p className="text-[10px] mt-2 font-bold" style={{ color: BLUE }}>✓ {promoDiscount.label} applied</p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -369,9 +407,22 @@ export default function Booking() {
                         <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                       </div>
                     ))}
+                    {promoDiscount && (
+                      <div className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
+                        <span style={{ color: BLUE }}>↳ {promoDiscount.label}</span>
+                        <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(promoDiscount.amount).toFixed(2)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between items-baseline pt-4">
                       <span className="text-sm font-bold text-white">Est. Total</span>
-                      <span className="text-2xl font-black" style={{ color: BLUE }}>${estimate.total.toLocaleString()}</span>
+                      <div className="text-right">
+                        {promoDiscount && (
+                          <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toLocaleString()}</span>
+                        )}
+                        <span className="text-2xl font-black" style={{ color: BLUE }}>
+                          ${promoDiscount ? discountedTotal.toLocaleString() : estimate.total.toLocaleString()}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ) : (

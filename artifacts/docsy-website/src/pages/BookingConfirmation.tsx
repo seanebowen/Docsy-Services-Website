@@ -8,13 +8,16 @@ const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
+interface PromoResult { label: string; amount: number; }
 interface BookingData {
-  date:          string;
-  time:          string;
-  note:          string;
-  promoCode?:    string;
-  estimate:      { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
-  safePlusOptIn?: boolean;
+  date:             string;
+  time:             string;
+  note:             string;
+  promoCode?:       string;
+  promoDiscount?:   PromoResult | null;
+  discountedTotal?: number;
+  estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
+  safePlusOptIn?:   boolean;
 }
 
 export default function BookingConfirmation() {
@@ -96,9 +99,24 @@ export default function BookingConfirmation() {
                     <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                   </div>
                 ))}
+                {booking.promoDiscount && (
+                  <div className="flex justify-between py-2.5 border-b text-sm" style={{ borderColor: DIV }}>
+                    <span style={{ color: BLUE }}>↳ {booking.promoDiscount.label}</span>
+                    <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(booking.promoDiscount.amount).toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-baseline pt-4">
                   <span className="text-sm font-bold text-white">Estimated Total</span>
-                  <span className="text-2xl font-black" style={{ color: BLUE }}>${booking.estimate.total.toLocaleString()}</span>
+                  <div className="text-right">
+                    {booking.promoDiscount && (
+                      <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${booking.estimate.total.toLocaleString()}</span>
+                    )}
+                    <span className="text-2xl font-black" style={{ color: BLUE }}>
+                      ${booking.promoDiscount && booking.discountedTotal != null
+                        ? booking.discountedTotal.toLocaleString()
+                        : booking.estimate.total.toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
