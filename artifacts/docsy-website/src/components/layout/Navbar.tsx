@@ -88,11 +88,11 @@ export function Navbar() {
           </Link>
           <Link
             href="/estimate"
-            className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] border transition-colors hover:bg-white/10"
-            style={{ borderColor: AMBER, color: AMBER }}
+            className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-colors hover:opacity-90"
+            style={{ backgroundColor: "#4D9FDB", color: "#fff" }}
             data-testid="btn-book-nav"
           >
-            Calculate Your Price and Book
+            Book Now
           </Link>
         </div>
 
@@ -127,10 +127,10 @@ export function Navbar() {
             <div className="pt-4">
               <Link
                 href="/estimate"
-                className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center border"
-                style={{ borderColor: AMBER, color: AMBER }}
+                className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center"
+                style={{ backgroundColor: "#4D9FDB", color: "#fff" }}
               >
-                Calculate Your Price and Book
+                Book Now
               </Link>
             </div>
           </nav>

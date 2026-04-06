@@ -28,11 +28,11 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/estimate"
-              className="px-8 py-4 text-sm font-bold text-white text-center border"
-              style={{ borderColor: "rgba(255,255,255,0.15)", backgroundColor: "rgba(255,255,255,0.05)" }}
+              className="px-8 py-4 text-sm font-bold text-white text-center"
+              style={{ backgroundColor: "#4D9FDB" }}
               data-testid="btn-book-footer"
             >
-              Calculate Your Price and Book
+              Book Now
             </Link>
           </div>
         </div>
