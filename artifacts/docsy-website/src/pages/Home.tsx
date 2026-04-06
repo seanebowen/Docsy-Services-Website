@@ -57,7 +57,7 @@ const STATS = [
   { value: "< 15 min", label: "Average RON session" },
   { value: "7 days",   label: "Every week, 7AM–midnight" },
   { value: "$0",       label: "Hidden fees, ever" },
-  { value: "5",        label: "Service types, one number" },
+  { value: "Midnight", label: "Latest available appointment" },
 ];
 
 const NUM_CARDS = [
