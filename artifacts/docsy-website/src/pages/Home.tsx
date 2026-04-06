@@ -108,7 +108,7 @@ export default function Home() {
                 style={{ backgroundColor: SLATE }}
                 data-testid="btn-book-hero"
               >
-                Book a Service
+                Calculate Your Price and Book
               </Link>
               <Link
                 href="/estimate"

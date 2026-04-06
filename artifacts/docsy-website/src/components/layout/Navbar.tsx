@@ -92,7 +92,7 @@ export function Navbar() {
             style={{ borderColor: AMBER, color: AMBER }}
             data-testid="btn-book-nav"
           >
-            Book a Service
+            Calculate Your Price and Book
           </Link>
         </div>
 
@@ -130,7 +130,7 @@ export function Navbar() {
                 className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center border"
                 style={{ borderColor: AMBER, color: AMBER }}
               >
-                Book a Service
+                Calculate Your Price and Book
               </Link>
             </div>
           </nav>
