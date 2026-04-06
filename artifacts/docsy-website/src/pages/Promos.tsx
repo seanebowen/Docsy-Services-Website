@@ -190,7 +190,13 @@ export default function Promos() {
       <section className="py-14 px-5 border-b" style={{ borderColor: DIV }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0} threshold={0.05}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>Included With Every First Service</p>
+            <div className="flex items-center gap-4 mb-8">
+              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)" }}>Included With Every First Deliverable Service</p>
+              <span
+                className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border"
+                style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.3)" }}
+              >RON · Mobile · Loan Signing · Apostille</span>
+            </div>
           </FadeIn>
           <FadeIn delay={60} threshold={0.05}>
             <div className="max-w-2xl border p-8" style={{ borderColor: DIV, backgroundColor: BG }}>
@@ -201,9 +207,9 @@ export default function Promos() {
                   style={{ borderColor: BLUE, color: BLUE }}
                 >FREE 30 DAYS</span>
               </div>
-              <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Auto-starts with your first Docsy service</p>
+              <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Offered at booking — services with deliverables only</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Encrypted file vault that stores every deliverable from every appointment automatically. Activates on any first service unless you opt out. No card. No signup. After 30 days, continue for $7/month or stop — no automatic charge.
+                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, and signed loan packages. Activated through the booking flow when your appointment includes a service that produces deliverables. No card. No signup. After 30 days, continue for $7/month or stop — no automatic charge.
               </p>
             </div>
           </FadeIn>

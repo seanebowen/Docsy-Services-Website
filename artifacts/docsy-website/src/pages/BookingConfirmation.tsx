@@ -15,7 +15,7 @@ interface BookingData {
   note:             string;
   promoCode?:       string;
   promoDiscount?:   PromoResult | null;
-  autoPromos?:      { label: string; amount: number }[];
+  autoPromos?:      { label: string; amount: number; rateOnly?: boolean }[];
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
   safePlusOptIn?:   boolean;
@@ -100,13 +100,16 @@ export default function BookingConfirmation() {
                     <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                   </div>
                 ))}
-                {(booking.autoPromos ?? []).map((p: { label: string; amount: number }) => (
+                {(booking.autoPromos ?? []).map((p: { label: string; amount: number; rateOnly?: boolean }) => (
                   <div key={p.label} className="flex justify-between py-2.5 border-b text-sm" style={{ borderColor: DIV }}>
                     <span className="flex items-center gap-2" style={{ color: BLUE }}>
                       ↳ {p.label}
                       <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.15)", color: BLUE }}>Auto</span>
                     </span>
-                    <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                    {p.rateOnly
+                      ? <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>Applied</span>
+                      : <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                    }
                   </div>
                 ))}
                 {booking.promoDiscount && (

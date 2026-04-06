@@ -67,9 +67,11 @@ const TIME_SLOTS = Array.from({ length: 17 }, (_, i) => {
 function BookingModal({
   onConfirm,
   onCancel,
+  hasDeliverables,
 }: {
   onConfirm: (safePlus: boolean) => void;
   onCancel: () => void;
+  hasDeliverables: boolean;
 }) {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [safePlus,    setSafePlus]    = useState<"in" | "out">("in");
@@ -127,44 +129,46 @@ function BookingModal({
             </label>
           </div>
 
-          {/* ── 2. Safe+ ── */}
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
-              02 — Docsy Safe+ File Vault
-            </p>
-            <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-              Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, transcripts, and audio recordings — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime.
+          {/* ── 2. Safe+ — only if booking includes deliverable services ── */}
+          {hasDeliverables && (
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
+                02 — Docsy Safe+ File Vault
+              </p>
+              <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
+                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, and signed loan packages — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $7/month if you choose to continue. You can cancel anytime. <strong className="text-white/50">Available only when your booking includes a service with deliverables.</strong>
+              </div>
+              <div className="space-y-2">
+                {([
+                  ["in",  "Yes — enroll me in the free 30-day Safe+ trial"],
+                  ["out", "No thanks — I'll opt out of Safe+"],
+                ] as ["in" | "out", string][]).map(([val, label]) => (
+                  <label key={val} className="flex items-center gap-3 cursor-pointer" onClick={() => setSafePlus(val)}>
+                    <div
+                      className="w-4 h-4 shrink-0 border-2 flex items-center justify-center"
+                      style={{
+                        borderColor:     safePlus === val ? BLUE : "rgba(255,255,255,0.2)",
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      {safePlus === val && (
+                        <div className="w-2 h-2" style={{ backgroundColor: BLUE }} />
+                      )}
+                    </div>
+                    <span className="text-sm font-medium" style={{ color: safePlus === val ? IVORY : "rgba(255,255,255,0.45)" }}>
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
-            <div className="space-y-2">
-              {([
-                ["in",  "Yes — enroll me in the free 30-day Safe+ trial"],
-                ["out", "No thanks — I'll opt out of Safe+"],
-              ] as ["in" | "out", string][]).map(([val, label]) => (
-                <label key={val} className="flex items-center gap-3 cursor-pointer" onClick={() => setSafePlus(val)}>
-                  <div
-                    className="w-4 h-4 shrink-0 border-2 flex items-center justify-center"
-                    style={{
-                      borderColor:     safePlus === val ? BLUE : "rgba(255,255,255,0.2)",
-                      backgroundColor: "transparent",
-                    }}
-                  >
-                    {safePlus === val && (
-                      <div className="w-2 h-2" style={{ backgroundColor: BLUE }} />
-                    )}
-                  </div>
-                  <span className="text-sm font-medium" style={{ color: safePlus === val ? IVORY : "rgba(255,255,255,0.45)" }}>
-                    {label}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Footer */}
         <div className="px-7 py-5 border-t flex flex-col sm:flex-row gap-3" style={{ borderColor: DIV }}>
           <button
-            onClick={() => onConfirm(safePlus === "in")}
+            onClick={() => onConfirm(hasDeliverables ? safePlus === "in" : false)}
             disabled={!termsAgreed}
             className="flex-1 py-3.5 text-sm font-bold text-white transition-opacity"
             style={{ backgroundColor: "#000", opacity: termsAgreed ? 1 : 0.3, cursor: termsAgreed ? "pointer" : "not-allowed" }}
@@ -195,15 +199,36 @@ export default function Booking() {
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
 
+  /* Services with deliverables — gates Safe+ trial offer */
+  const hasDeliverables = estimate
+    ? estimate.services.some(s => {
+        const n = s.name.toLowerCase();
+        return n.includes("remote online") || n.includes("mobile notary") ||
+               n.includes("loan signing")  || n.includes("apostille");
+      })
+    : false;
+
   /* Auto-promos: computed from the selected appointment date + time */
-  const autoPromos = useMemo((): { label: string; amount: number }[] => {
-    if (!selectedDate || !selectedTime || !estimate) return [];
-    const day  = selectedDate.getDay(); // 0=Sun, 6=Sat
+  const autoPromos = useMemo((): { label: string; amount: number; rateOnly?: boolean }[] => {
+    if (!selectedDate || !selectedTime || !estimate) {
+      // Apostille bundle applies regardless of time — compute it even without a time slot
+      if (!estimate) return [];
+      const apostSvc = estimate.services.find(s =>
+        s.name.toLowerCase().includes("apostille") && !s.name.toLowerCase().includes("turnaround")
+      );
+      if (apostSvc) {
+        const m = apostSvc.name.match(/\((\d+) doc/);
+        const docs = m ? parseInt(m[1], 10) : 1;
+        if (docs >= 5) return [{ label: `Apostille Bundle Rate — $90/doc (${docs} docs)`, amount: 0, rateOnly: true }];
+      }
+      return [];
+    }
+    const day  = selectedDate.getDay();
     const isWeekend = day === 0 || day === 6;
     const isWeekday = day >= 1 && day <= 5;
     const hour = parseHour(selectedTime);
     const has  = (kw: string) => estimate.services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
-    const result: { label: string; amount: number }[] = [];
+    const result: { label: string; amount: number; rateOnly?: boolean }[] = [];
 
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
@@ -215,6 +240,15 @@ export default function Booking() {
     if (has("loan signing") && isWeekend) {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
       if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) });
+    }
+    // Apostille bundle — rate already baked in, show as applied note
+    const apostSvc = estimate.services.find(s =>
+      s.name.toLowerCase().includes("apostille") && !s.name.toLowerCase().includes("turnaround")
+    );
+    if (apostSvc) {
+      const m = apostSvc.name.match(/\((\d+) doc/);
+      const docs = m ? parseInt(m[1], 10) : 1;
+      if (docs >= 5) result.push({ label: `Apostille Bundle Rate — $90/doc (${docs} docs)`, amount: 0, rateOnly: true });
     }
     return result;
   }, [selectedDate, selectedTime, estimate]);
@@ -297,6 +331,7 @@ export default function Booking() {
         <BookingModal
           onConfirm={handleModalConfirm}
           onCancel={() => setShowModal(false)}
+          hasDeliverables={hasDeliverables}
         />
       )}
 
@@ -454,7 +489,10 @@ export default function Booking() {
                           ↳ {p.label}
                           <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.15)", color: BLUE }}>Auto</span>
                         </span>
-                        <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                        {p.rateOnly
+                          ? <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>Applied</span>
+                          : <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                        }
                       </div>
                     ))}
                     {promoDiscount && (
