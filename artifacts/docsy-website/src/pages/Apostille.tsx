@@ -107,7 +107,7 @@ export default function Apostille() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Texas Apostille</p>
               </div>
               {[
-                { l: "Pre-Check (waived for retainer clients)", p: "$25" },
+                { l: "Pre-Check", p: "Always Free" },
                 { l: "Standard Personal Documents", p: "$150" },
                 { l: "Standard Business Documents", p: "$175" },
                 { l: "Next-Day Turnaround", p: "+$50 add-on" },
