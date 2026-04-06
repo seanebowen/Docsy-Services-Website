@@ -53,13 +53,44 @@ function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) 
   );
 }
 
+const STATS = [
+  { value: "< 15 min", label: "Average RON session" },
+  { value: "7 days",   label: "Every week, 7AM–midnight" },
+  { value: "$0",       label: "Hidden fees, ever" },
+  { value: "5",        label: "Service types, one number" },
+];
+
 const NUM_CARDS = [
-  { num: "01", title: "Always know your price before you book.", body: "You see the full price before anything is signed. Not a range — the exact number. If it wasn't in your price, it's not on the invoice." },
-  { num: "02", title: "Same-hour RON, same-day mobile.", body: "Remote Online Notarization available same-hour. Mobile visits same-day. 7 days a week, early morning to midnight. Surcharges disclosed at booking." },
-  { num: "03", title: "Six service divisions, one call.", body: "RON, mobile notary, loan signing, apostille, court reporting, and encrypted vault storage — all under one roof. One contact handles everything." },
-  { num: "04", title: "No agency markup. No runaround.", body: "Docsy is direct-to-client. No middlemen. The statutory notary fee is always separated on your invoice, as required by Texas law." },
-  { num: "05", title: "Itemized invoices, always.", body: "Every charge listed separately — service fee, travel tier, timing surcharge. No bundled mystery fees. No administrative processing line items." },
-  { num: "06", title: "Encrypted file storage.", body: "Every file from every appointment — notarized documents, audio recordings, and transcripts — uploads automatically to your Docsy Safe+ vault. 30-day free trial — auto-starts with your first service, no signup needed." },
+  {
+    num: "01",
+    title: "You see the exact total before confirming.",
+    body: "Not a range. Not an estimate. The exact dollar amount — service fee, travel tier, timing add-on — all itemized before you pay. If it wasn't quoted, it won't be invoiced. Ever.",
+  },
+  {
+    num: "02",
+    title: "Same-hour RON. Anywhere in the US.",
+    body: "Need it notarized today? Remote Online Notarization is available same-hour, 7 days a week. No office visit. No printer. No travel. Done in under 15 minutes from your phone or laptop.",
+  },
+  {
+    num: "03",
+    title: "Mobile notary to midnight, 7 days a week.",
+    body: "We come to you — home, office, hospital, hospice, curbside. Any day of the week, up to midnight. Same-day availability in most of the San Antonio metro area.",
+  },
+  {
+    num: "04",
+    title: "No middlemen. No agency cut.",
+    body: "Docsy is direct-to-client. No staffing agency skimming 40%. The Texas statutory notary fee is always a separate line item on your invoice — as required by law — so you always know exactly what goes where.",
+  },
+  {
+    num: "05",
+    title: "One provider for every Texas notary need.",
+    body: "RON, mobile notary, loan signing, apostille, court reporting. One phone number. One invoice format. No 'let me connect you with someone else.' If it needs a Texas notary, Docsy handles it.",
+  },
+  {
+    num: "06",
+    title: "Encrypted file vault — auto-started, 30 days free.",
+    body: "Every document, recording, and transcript from every appointment uploads automatically to your Docsy Safe+ vault. No action required. It starts the day of your first service — no card, no signup.",
+  },
 ];
 
 const SERVICES = [
@@ -171,16 +202,29 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
             <div className="mb-14 text-center">
-              <Pill text="⊙ How Docsy Works" dark />
+              <Pill text="⊙ Why Docsy" dark />
               <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
                 The notary service it should<br />
                 <span className="font-light text-white/40">have always been.</span>
               </h2>
             </div>
           </FadeIn>
+
+          {/* Stat strip */}
+          <FadeIn delay={60}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px mb-14" style={{ backgroundColor: DIV }}>
+              {STATS.map(({ value, label }) => (
+                <div key={label} className="py-8 px-6 text-center" style={{ backgroundColor: SLATE }}>
+                  <div className="text-3xl sm:text-4xl font-black mb-1" style={{ color: AMBER, letterSpacing: "-0.03em" }}>{value}</div>
+                  <div className="text-xs font-medium uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.35)" }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-px" style={{ backgroundColor: DIV }}>
             {NUM_CARDS.map(({ num, title, body }, i) => (
-              <FadeIn key={num} delay={i * 80} threshold={0.05}>
+              <FadeIn key={num} delay={i * 70} threshold={0.05}>
                 <div
                   className="p-7 border transition-colors hover:bg-white/[0.025] h-full"
                   style={{ borderColor: DIV, backgroundColor: "rgba(255,255,255,0.015)" }}
