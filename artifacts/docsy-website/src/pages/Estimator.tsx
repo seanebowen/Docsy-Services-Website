@@ -383,8 +383,10 @@ export default function Estimator() {
   /* Extended distance surcharge: applies when Apostille/Loan Signing is selected AND tier 4 */
   const extendedFee    = hasIncludedTravel && travel.tier === 4 ? 85 : 0;
 
-  /* Timing: one charge for the whole appointment */
-  const timingTotal    = needsTravel ? timingFee(travel) : 0;
+  /* Timing: in-person surcharges gated by needsTravel; holiday always applies when any service is selected */
+  const anyOn = ronOn || gnwOn || loanOn || apostOn || courtOn;
+  const inPersonTimingFee = needsTravel ? (travel.lateNight ? 35 : travel.afterHours ? 20 : 0) : 0;
+  const timingTotal    = inPersonTimingFee + (anyOn && travel.holiday ? 20 : 0);
 
   const travelTotal    = gnwTierTotal + extendedFee + timingTotal;
 
@@ -408,7 +410,7 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn;
+  const anySelected = anyOn;
 
   const [, setLocation] = useLocation();
 
@@ -734,52 +736,6 @@ export default function Estimator() {
                         )}
                       </div>
 
-                      <div>
-                        <RowLabel>Appointment date &amp; time <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional — timing fees auto-apply)</span></RowLabel>
-                        <div className="flex gap-3">
-                          <input
-                            type="date"
-                            value={apptDate}
-                            onChange={e => setApptDate(e.target.value)}
-                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
-                            style={{ borderColor: DIV, colorScheme: "dark" }}
-                          />
-                          <input
-                            type="time"
-                            value={apptTime}
-                            onChange={e => setApptTime(e.target.value)}
-                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
-                            style={{ borderColor: DIV, colorScheme: "dark" }}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <RowLabel>Timing fees</RowLabel>
-                        <div className="border divide-y" style={{ borderColor: DIV, borderTopColor: DIV }}>
-                          {([
-                            { label: "After-hours (9 PM – 9:59 PM)", price: "+$20", active: travel.afterHours },
-                            { label: "Late night (10 PM – midnight)",  price: "+$35", active: travel.lateNight },
-                            { label: "Federal holiday",                price: "+$20", active: travel.holiday },
-                          ] as { label: string; price: string; active: boolean }[]).map(row => (
-                            <div key={row.label} className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-light" style={{ color: row.active ? "#fff" : "rgba(255,255,255,0.3)" }}>
-                                  {row.label}
-                                </span>
-                                {row.active && (
-                                  <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>
-                                )}
-                              </div>
-                              <span className="text-sm font-bold" style={{ color: row.active ? AMBER : "rgba(255,255,255,0.2)" }}>{row.price}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Enter your preferred date and time above — applicable fees apply automatically. After-hours and late night are mutually exclusive.
-                        </p>
-                      </div>
-
                     </div>
                   </div>
                 </div>
@@ -1022,6 +978,78 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
+
+              {/* ── Appointment Date & Time — always shown when any service is selected ── */}
+              {anySelected && (
+                <FadeIn delay={0} threshold={0.01}>
+                <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
+                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[SCHEDULING]</span>
+                      <p className="text-base font-black text-white">Appointment Date &amp; Time</p>
+                      <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Timing fees auto-apply</span>
+                    </div>
+                  </div>
+                  <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
+                    <div className="pt-5 space-y-6">
+
+                      <div>
+                        <RowLabel>Date &amp; time <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional)</span></RowLabel>
+                        <div className="flex gap-3">
+                          <input
+                            type="date"
+                            value={apptDate}
+                            onChange={e => setApptDate(e.target.value)}
+                            className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
+                            style={{ borderColor: DIV, colorScheme: "dark" }}
+                          />
+                          {needsTravel && (
+                            <input
+                              type="time"
+                              value={apptTime}
+                              onChange={e => setApptTime(e.target.value)}
+                              className="flex-1 px-4 py-3 text-sm font-light text-white bg-transparent border"
+                              style={{ borderColor: DIV, colorScheme: "dark" }}
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <RowLabel>Timing fees</RowLabel>
+                        <div className="border divide-y" style={{ borderColor: DIV }}>
+                          {needsTravel && ([
+                            { label: "After-hours (9 PM – 9:59 PM)", price: "+$20", active: travel.afterHours },
+                            { label: "Late night (10 PM – midnight)",  price: "+$35", active: travel.lateNight },
+                          ] as { label: string; price: string; active: boolean }[]).map(row => (
+                            <div key={row.label} className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-light" style={{ color: row.active ? "#fff" : "rgba(255,255,255,0.3)" }}>{row.label}</span>
+                                {row.active && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>}
+                              </div>
+                              <span className="text-sm font-bold" style={{ color: row.active ? AMBER : "rgba(255,255,255,0.2)" }}>{row.price}</span>
+                            </div>
+                          ))}
+                          <div className="flex items-center justify-between px-4 py-3" style={{ borderColor: DIV }}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-light" style={{ color: travel.holiday ? "#fff" : "rgba(255,255,255,0.3)" }}>Federal holiday</span>
+                              {travel.holiday && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Applied</span>}
+                            </div>
+                            <span className="text-sm font-bold" style={{ color: travel.holiday ? AMBER : "rgba(255,255,255,0.2)" }}>+$20</span>
+                          </div>
+                        </div>
+                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          {needsTravel
+                            ? "After-hours and late night are mutually exclusive. Federal holiday applies to all services."
+                            : "Federal holiday fee applies when your appointment date falls on a US federal holiday."}
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                </FadeIn>
+              )}
 
             </div>{/* end left col */}
 
