@@ -86,7 +86,7 @@ function detectTermKeys(booking: BookingData): string[] {
   const keys: string[] = [];
   const svcs = booking.estimate?.services ?? [];
   if (svcs.some(s => s.name.toLowerCase().includes("remote online")))  keys.push("ron");
-  if (svcs.some(s => s.name.toLowerCase().includes("mobile notary")))  keys.push("mobile");
+  if (svcs.some(s => s.name.toLowerCase().includes("general notary work"))) keys.push("mobile");
   if (svcs.some(s => s.name.toLowerCase().includes("loan signing")))   keys.push("loan");
   if (svcs.some(s => s.name.toLowerCase().includes("apostille")))      keys.push("apostille");
   if (svcs.some(s => s.name.toLowerCase().includes("court reporting"))) keys.push("court");

@@ -45,7 +45,7 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
       return has("remote online") ? { label: "Night Shift Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "MIDDAYMILES":
       if (autoHas("midday miles")) return null;
-      return has("mobile notary") ? { label: "Midday Miles™ — $10 Off Base Notary Fee", amount: -10 } : null;
+      return has("general notary work") ? { label: "Midday Miles™ — $10 Off Base Notary Fee", amount: -10 } : null;
     default:
       return null;
   }
@@ -203,7 +203,7 @@ export default function Booking() {
   const hasDeliverables = estimate
     ? estimate.services.some(s => {
         const n = s.name.toLowerCase();
-        return n.includes("remote online") || n.includes("mobile notary") ||
+        return n.includes("remote online") || n.includes("general notary work") ||
                n.includes("loan signing")  || n.includes("apostille") ||
                n.includes("court reporting");
       })
@@ -236,7 +236,7 @@ export default function Booking() {
       else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
       else if (hour >= 21)              result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
     }
-    if (has("mobile notary") && isWeekday && hour >= 12 && hour < 18)
+    if (has("general notary work") && isWeekday && hour >= 12 && hour < 18)
       result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });
     if (has("loan signing") && isWeekend) {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));

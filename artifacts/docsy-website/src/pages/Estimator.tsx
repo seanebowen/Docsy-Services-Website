@@ -106,43 +106,31 @@ type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
 type TranscriptSpeed = "14day" | "7day" | "3day" | "sameday";
 
-interface RONState {
-  docs: number;
+interface RONState   { docs: number; witness: number; signers: number; }
+interface GNWState   { seals: number; witness: number; signers: number; }
+interface TravelState {
+  address: string; tier: 1 | 2 | 3 | 4;
+  afterHours: boolean; lateNight: boolean; rush: boolean; weekend: boolean;
 }
-interface MobileState {
-  seals: number;
-  address: string;
-  tier: 1 | 2 | 3 | 4;
-  afterHours: boolean;
-  lateNight: boolean;
-  rush: boolean;
-  weekend: boolean;
-}
-interface LoanState {
-  packages: LoanPackage[];
-}
+interface LoanState  { packages: LoanPackage[]; }
 interface ApostilleState {
-  types: ApostilleType[];
-  docs: number;
-  turnaround: ApostilleTurnaround;
+  types: ApostilleType[]; docs: number; turnaround: ApostilleTurnaround; mobile: boolean;
 }
 interface CourtState {
-  format: CourtFormat;
-  duration: CourtDuration;
-  transcript: boolean;
-  pages: number;
-  speed: TranscriptSpeed;
+  format: CourtFormat; duration: CourtDuration;
+  transcript: boolean; pages: number; speed: TranscriptSpeed;
 }
 
 function calcRON(s: RONState): number {
-  return 25 + Math.max(0, s.docs - 1) * 5;
+  return 25 + Math.max(0, s.docs - 1) * 5 + s.witness * 25 + Math.max(0, s.signers - 1) * 10;
 }
-
-function calcMobile(s: MobileState): number {
-  const notary = 10 + Math.max(0, s.seals - 1) * 1;
+function calcGNW(s: GNWState): number {
+  return 10 + Math.max(0, s.seals - 1) * 1 + s.witness * 25 + Math.max(0, s.signers - 1) * 10;
+}
+function calcTravel(s: TravelState): number {
   const travel = [0, 30, 45, 65, 85][s.tier];
   const timing = (s.lateNight ? 35 : s.afterHours ? 20 : 0) + (s.rush ? 35 : 0) + (s.weekend ? 25 : 0);
-  return notary + travel + timing;
+  return travel + timing;
 }
 
 function calcLoan(s: LoanState): number {
@@ -176,9 +164,10 @@ function calcCourt(s: CourtState): number {
 }
 
 /* ── Base-fee-only versions (excludes add-ons/surcharges) ── */
-function calcRONBase(_s: RONState): number { return 25; } // base seal only; extra docs are add-ons
-function calcMobileBase(s: MobileState): number { return 10 + Math.max(0, s.seals - 1) * 1; } // notary fee only; travel & surcharges are add-ons
-function calcLoanBase(s: LoanState): number { return calcLoan(s); } // package prices are the base service fee
+function calcRONBase(_s: RONState): number { return 25; }
+function calcGNWBase(s: GNWState): number  { return 10 + Math.max(0, s.seals - 1) * 1; }
+function calcTravelBase(s: TravelState): number { return [0, 30, 45, 65, 85][s.tier]; }
+function calcLoanBase(s: LoanState): number { return calcLoan(s); }
 function calcApostilleBase(s: ApostilleState): number {
   // base service fee only — excludes next-day / same-day turnaround add-ons
   if (s.types.length === 0) return 0;
@@ -280,18 +269,21 @@ export default function Estimator() {
   React.useEffect(() => { document.title = "Price Calculator | Docsy Notary Services"; }, []);
 
   /* active service toggles */
-  const [ronOn,    setRonOn]    = useState(false);
-  const [mobileOn, setMobileOn] = useState(false);
-  const [loanOn,   setLoanOn]   = useState(false);
-  const [apostOn,  setApostOn]  = useState(false);
-  const [courtOn,  setCourtOn]  = useState(false);
+  const [ronOn,   setRonOn]   = useState(false);
+  const [gnwOn,   setGnwOn]   = useState(false);
+  const [loanOn,  setLoanOn]  = useState(false);
+  const [apostOn, setApostOn] = useState(false);
+  const [courtOn, setCourtOn] = useState(false);
 
   /* RON state */
-  const [ron, setRon] = useState<RONState>({ docs: 1 });
+  const [ron, setRon] = useState<RONState>({ docs: 1, witness: 0, signers: 1 });
 
-  /* Mobile state */
-  const [mobile, setMobile] = useState<MobileState>({
-    seals: 1, address: "", tier: 1,
+  /* General Notary Work state */
+  const [gnw, setGnw] = useState<GNWState>({ seals: 1, witness: 0, signers: 1 });
+
+  /* Shared travel state — one fee regardless of how many in-person services */
+  const [travel, setTravel] = useState<TravelState>({
+    address: "", tier: 1,
     afterHours: false, lateNight: false, rush: false, weekend: false,
   });
 
@@ -300,7 +292,7 @@ export default function Estimator() {
 
   /* Apostille state */
   const [apost, setApost] = useState<ApostilleState>({
-    types: ["personal"], docs: 1, turnaround: "standard",
+    types: ["personal"], docs: 1, turnaround: "standard", mobile: false,
   });
 
   /* Court state */
@@ -309,44 +301,51 @@ export default function Estimator() {
     transcript: false, pages: 100, speed: "14day",
   });
 
+  /* Travel applies once whenever any in-person service is selected */
+  const needsTravel = gnwOn || loanOn || (apostOn && apost.mobile);
+  const travelTotal = needsTravel ? calcTravel(travel) : 0;
+
   /* computed totals */
-  const ronTotal    = ronOn    ? calcRON(ron)       : 0;
-  const mobileTotal = mobileOn ? calcMobile(mobile) : 0;
-  const loanTotal   = loanOn   ? calcLoan(loan)     : 0;
-  const apostTotal  = apostOn  ? calcApostille(apost): 0;
-  const courtTotal  = courtOn  ? calcCourt(court)   : 0;
-  const grandTotal  = ronTotal + mobileTotal + loanTotal + apostTotal + courtTotal;
+  const ronTotal   = ronOn   ? calcRON(ron)        : 0;
+  const gnwTotal   = gnwOn   ? calcGNW(gnw)        : 0;
+  const loanTotal  = loanOn  ? calcLoan(loan)      : 0;
+  const apostTotal = apostOn ? calcApostille(apost) : 0;
+  const courtTotal = courtOn ? calcCourt(court)    : 0;
+  const grandTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal;
 
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
     ? (apost.turnaround === "nextday" ? 50 : 75)
     : 0;
   const apostilleAddonLabel = apost.turnaround === "nextday" ? "Next-Day Turnaround" : "Same-Day Rush Turnaround";
 
-  const baseTotal = (ronOn    ? calcRONBase(ron)       : 0)
-                  + (mobileOn ? calcMobileBase(mobile) : 0)
-                  + (loanOn   ? calcLoanBase(loan)     : 0)
-                  + (apostOn  ? calcApostilleBase(apost): 0)
-                  + (courtOn  ? calcCourtBase(court)   : 0);
-  const anySelected = ronOn || mobileOn || loanOn || apostOn || courtOn;
+  const baseTotal = (ronOn   ? calcRONBase(ron)          : 0)
+                  + (gnwOn   ? calcGNWBase(gnw)           : 0)
+                  + (loanOn  ? calcLoanBase(loan)         : 0)
+                  + (apostOn ? calcApostilleBase(apost)   : 0)
+                  + (courtOn ? calcCourtBase(court)       : 0)
+                  + (needsTravel ? calcTravelBase(travel) : 0);
+  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn;
 
   const [, setLocation] = useLocation();
 
   /* save estimate → navigate to booking */
   const handleBookJob = useCallback(() => {
     const services = [
-      ronOn    && { name: "Remote Online Notarization",                                           amount: ronTotal },
-      mobileOn && { name: "Mobile Notary",                                                        amount: mobileTotal },
-      loanOn   && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`, amount: loanTotal },
-      apostOn  && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`, amount: apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal },
-      apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`, amount: apostilleAddon },
-      courtOn  && { name: "Court Reporting",                                                      amount: courtTotal },
+      ronOn      && { name: "Remote Online Notarization",                                                                   amount: ronTotal },
+      gnwOn      && { name: `General Notary Work (${gnw.seals} seal${gnw.seals !== 1 ? "s" : ""})`,                        amount: gnwTotal },
+      loanOn     && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`,           amount: loanTotal },
+      apostOn    && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`,      amount: apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal },
+      apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`,                                       amount: apostilleAddon },
+      courtOn    && { name: "Court Reporting",                                                                              amount: courtTotal },
+      needsTravel && { name: "Travel & Scheduling Fee",                                                                     amount: travelTotal },
     ].filter(Boolean) as { name: string; amount: number }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, baseTotal, hasRON: ronOn }));
     setLocation("/booking");
-  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs]);
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, needsTravel, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals]);
 
   /* helpers */
-  const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);
+  const upG = useCallback((patch: Partial<GNWState>)     => setGnw(p    => ({ ...p, ...patch })), []);
+  const upT = useCallback((patch: Partial<TravelState>)   => setTravel(p => ({ ...p, ...patch })), []);
   const upA = useCallback((patch: Partial<ApostilleState>) => setApost(p => ({ ...p, ...patch })), []);
   const upC = useCallback((patch: Partial<CourtState>) => setCourt(p => ({ ...p, ...patch })), []);
 
@@ -433,12 +432,32 @@ export default function Estimator() {
                   <div>
                     <RowLabel>Number of documents / seals</RowLabel>
                     <div className="flex items-center gap-4">
-                      <Stepper value={ron.docs} onChange={v => setRon({ docs: v })} />
+                      <Stepper value={ron.docs} onChange={v => setRon(p => ({ ...p, docs: v }))} />
                       <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
                         {ron.docs === 1 ? "$25 flat" : `$25 + ${ron.docs - 1} × $5 additional`}
                       </span>
                     </div>
                   </div>
+
+                  <div>
+                    <RowLabel>Additional signers <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(beyond the first — $10 each)</span></RowLabel>
+                    <div className="flex items-center gap-4">
+                      <Stepper value={ron.signers} onChange={v => setRon(p => ({ ...p, signers: v }))} />
+                      <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                        {ron.signers <= 1 ? "1 signer included" : `+${ron.signers - 1} additional × $10`}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <RowLabel>Does Docsy need to provide a witness? <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>($25 per witness)</span></RowLabel>
+                    <div className="border" style={{ borderColor: DIV }}>
+                      {([0, 1, 2] as const).map(n => (
+                        <RadioRow key={n} label={n === 0 ? "No witness needed" : `Yes — ${n} witness${n > 1 ? "es" : ""}`} price={n === 0 ? "" : `+$${n * 25}`} selected={ron.witness === n} onClick={() => setRon(p => ({ ...p, witness: n }))} />
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
                     Same-hour availability, digital certified copy, and 30-day Safe+ trial included at no extra charge.
                   </div>
@@ -446,75 +465,50 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
-              {/* ── Mobile Notary ── */}
+              {/* ── General Notary Work ── */}
               <FadeIn delay={60} threshold={0.05}>
               <ServiceCard
-                num="02" title="Mobile Notary"
-                desc="We come to you — home, office, hospital, hospice. 7 days, 7 AM to midnight."
+                num="02" title="General Notary Work"
+                desc="In-person notarizations — powers of attorney, affidavits, medical forms, and more. We come to you."
                 startingAt="$40"
-                active={mobileOn} onToggle={() => setMobileOn(o => !o)}
+                active={gnwOn} onToggle={() => setGnwOn(o => !o)}
               >
-                <div className="space-y-6">
+                <div className="space-y-5">
 
                   <div>
                     <RowLabel>Number of notarizations (seals)</RowLabel>
                     <div className="flex items-center gap-4">
-                      <Stepper value={mobile.seals} onChange={v => upM({ seals: v })} />
+                      <Stepper value={gnw.seals} onChange={v => upG({ seals: v })} />
                       <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                        {mobile.seals === 1 ? "$10 first seal" : `$10 + ${mobile.seals - 1} × $1`}
+                        {gnw.seals === 1 ? "$10 first seal" : `$10 + ${gnw.seals - 1} × $1`}
                       </span>
                     </div>
                   </div>
 
                   <div>
-                    <RowLabel>Meeting point address</RowLabel>
-                    <input
-                      type="text"
-                      value={mobile.address}
-                      onChange={e => upM({ address: e.target.value })}
-                      placeholder="123 Main St, Austin TX — or hospital, office, etc."
-                      className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
-                      style={{
-                        borderColor: DIV,
-                        color: IVORY,
-                        caretColor: AMBER,
-                      }}
-                    />
-                    <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                      Actual travel fee confirmed at booking from this address.
-                    </p>
+                    <RowLabel>Additional signers <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(beyond the first — $10 each)</span></RowLabel>
+                    <div className="flex items-center gap-4">
+                      <Stepper value={gnw.signers} onChange={v => upG({ signers: v })} />
+                      <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+                        {gnw.signers <= 1 ? "1 signer included" : `+${gnw.signers - 1} additional × $10`}
+                      </span>
+                    </div>
                   </div>
 
                   <div>
-                    <RowLabel>Estimated distance <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(for budgeting — confirmed from your address at booking)</span></RowLabel>
+                    <RowLabel>Does Docsy need to provide a witness? <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>($25 per witness)</span></RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
-                      {([
-                        [1, "Tier 1 — 0 to 10 miles", "$30"],
-                        [2, "Tier 2 — 11 to 25 miles", "$45"],
-                        [3, "Tier 3 — 26 to 40 miles", "$65"],
-                        [4, "Tier 4 — 40+ miles", "$85"],
-                      ] as [1|2|3|4, string, string][]).map(([t, label, price]) => (
-                        <RadioRow key={t} label={label} price={price} selected={mobile.tier === t} onClick={() => upM({ tier: t })} />
+                      {([0, 1, 2] as const).map(n => (
+                        <RadioRow key={n} label={n === 0 ? "No witness needed" : `Yes — ${n} witness${n > 1 ? "es" : ""}`} price={n === 0 ? "" : `+$${n * 25}`} selected={gnw.witness === n} onClick={() => upG({ witness: n })} />
                       ))}
                     </div>
-                  </div>
-
-                  <div>
-                    <RowLabel>Timing add-ons (select all that apply)</RowLabel>
-                    <div className="border" style={{ borderColor: DIV }}>
-                      <CheckRow label="After-hours (after 6 PM)" price="+$20" checked={mobile.afterHours} onChange={v => upM({ afterHours: v, lateNight: v ? false : mobile.lateNight })} />
-                      <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={mobile.lateNight} onChange={v => upM({ lateNight: v, afterHours: v ? false : mobile.afterHours })} />
-                      <CheckRow label="Rush — within 2 hours" price="+$35" checked={mobile.rush} onChange={v => upM({ rush: v })} />
-                      <CheckRow label="Weekend or holiday" price="+$25" checked={mobile.weekend} onChange={v => upM({ weekend: v })} />
-                    </div>
                     <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                      After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20).
+                      Travel fee is shared across all in-person services and added once — see the Travel section below.
                     </p>
                   </div>
 
                 </div>
               </ServiceCard>
-
               </FadeIn>
 
               {/* ── Loan Signing ── */}
@@ -611,6 +605,17 @@ export default function Estimator() {
                     </div>
                   </div>
 
+                  <div>
+                    <RowLabel>Document delivery method</RowLabel>
+                    <div className="border" style={{ borderColor: DIV }}>
+                      <RadioRow label="Mail-in / drop-off" price="no travel fee" selected={!apost.mobile} onClick={() => upA({ mobile: false })} />
+                      <RadioRow label="Mobile pickup — notary comes to you" price="+ travel fee" selected={apost.mobile} onClick={() => upA({ mobile: true })} />
+                    </div>
+                    <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
+                      If mobile pickup, travel is shared with any other in-person services — one fee total.
+                    </p>
+                  </div>
+
                 </div>
               </ServiceCard>
 
@@ -703,6 +708,71 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
+              {/* ── Shared Travel & Location ── */}
+              {needsTravel && (
+                <FadeIn delay={0} threshold={0.01}>
+                <div className="border-b" style={{ borderColor: DIV, borderLeft: `3px solid ${AMBER}` }}>
+                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[TRAVEL]</span>
+                      <p className="text-base font-black text-white">In-Person Service Location</p>
+                      <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>One fee shared</span>
+                    </div>
+                    <p className="text-sm font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.4)" }}>
+                      Applies once to this appointment regardless of how many in-person services you've selected.
+                    </p>
+                  </div>
+                  <div className="px-6 pb-6 border-t" style={{ borderColor: DIV, backgroundColor: "rgba(0,0,0,0.15)" }}>
+                    <div className="pt-5 space-y-6">
+
+                      <div>
+                        <RowLabel>Meeting point address</RowLabel>
+                        <input
+                          type="text"
+                          value={travel.address}
+                          onChange={e => upT({ address: e.target.value })}
+                          placeholder="123 Main St, Austin TX — or hospital, office, title company, etc."
+                          className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
+                          style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
+                        />
+                        <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
+                          Actual travel fee confirmed from this address at booking.
+                        </p>
+                      </div>
+
+                      <div>
+                        <RowLabel>Estimated distance <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(for budgeting — confirmed at booking)</span></RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          {([
+                            [1, "Tier 1 — 0 to 10 miles",  "$30"],
+                            [2, "Tier 2 — 11 to 25 miles", "$45"],
+                            [3, "Tier 3 — 26 to 40 miles", "$65"],
+                            [4, "Tier 4 — 40+ miles",      "$85"],
+                          ] as [1|2|3|4, string, string][]).map(([t, label, price]) => (
+                            <RadioRow key={t} label={label} price={price} selected={travel.tier === t} onClick={() => upT({ tier: t })} />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <RowLabel>Timing add-ons (select all that apply)</RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          <CheckRow label="After-hours (after 6 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
+                          <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={travel.lateNight} onChange={v => upT({ lateNight: v, afterHours: v ? false : travel.afterHours })} />
+                          <CheckRow label="Rush — within 2 hours"        price="+$35" checked={travel.rush}      onChange={v => upT({ rush: v })} />
+                          <CheckRow label="Weekend or holiday"           price="+$25" checked={travel.weekend}   onChange={v => upT({ weekend: v })} />
+                        </div>
+                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20).
+                        </p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                </FadeIn>
+              )}
+
             </div>{/* end left col */}
 
             {/* Right: sticky summary panel */}
@@ -722,13 +792,13 @@ export default function Estimator() {
 
                   {/* line items */}
                   <div className="mb-6">
-                    {ronOn    && <SummaryLine label="Remote Online Notarization" amount={ronTotal} />}
-                    {mobileOn && <SummaryLine label="Mobile Notary" amount={mobileTotal} />}
-                    {loanOn   && <SummaryLine label={`Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`} amount={loanTotal} />}
-                    {apostOn  && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal} />}
+                    {ronOn        && <SummaryLine label="Remote Online Notarization" amount={ronTotal} />}
+                    {gnwOn        && <SummaryLine label={`General Notary Work (${gnw.seals} seal${gnw.seals !== 1 ? "s" : ""})`} amount={gnwTotal} />}
+                    {loanOn       && <SummaryLine label={`Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`} amount={loanTotal} />}
+                    {apostOn      && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal} />}
                     {apostOn && apostilleAddon > 0 && <SummaryLine label={`↳ ${apostilleAddonLabel}`} amount={apostilleAddon} />}
-                    {courtOn  && <SummaryLine label="Court Reporting" amount={courtTotal} />}
-
+                    {courtOn      && <SummaryLine label="Court Reporting" amount={courtTotal} />}
+                    {needsTravel  && <SummaryLine label="↳ Travel & Scheduling" amount={travelTotal} />}
                   </div>
 
                   {/* grand total */}
