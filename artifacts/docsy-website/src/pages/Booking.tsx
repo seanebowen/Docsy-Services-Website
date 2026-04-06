@@ -8,30 +8,35 @@ const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
-interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; }
+interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; autoPromos?: { label: string; amount: number }[]; }
 type PromoResult = { label: string; amount: number } | null;
 
 function applyPromoCode(code: string, estimate: EstimateSummary | null): PromoResult {
   if (!estimate || !code.trim()) return null;
   const n = code.trim().toUpperCase();
-  const { services, baseTotal, total } = estimate;
-  const base = baseTotal ?? total; // fall back to total if baseTotal not saved yet
+  const { services, baseTotal, total, autoPromos = [] } = estimate;
+  const base = baseTotal ?? total;
   const has = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
+  const autoHas = (kw: string) => autoPromos.some(p => p.label.toLowerCase().includes(kw.toLowerCase()));
   switch (n) {
     case "HONORPASS":
       return { label: "HonorPass — 10% Off Base Service Fee", amount: -Math.round(base * 0.10) };
     case "WEEKENDWARRIOR": {
-      // Loan Signing packages are the full base fee — no add-ons
+      if (autoHas("weekend warrior")) return null; // already auto-applied
       const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
       return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) } : null;
     }
     case "EARLYBIRDSEAL":
+      if (autoHas("early bird")) return null;
       return has("remote online") ? { label: "Early Bird Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "LUNCHBREAKSEAL":
+      if (autoHas("lunch break")) return null;
       return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "NIGHTSHIFTSEAL":
+      if (autoHas("night shift")) return null;
       return has("remote online") ? { label: "Night Shift Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "MIDDAYMILES":
+      if (autoHas("midday miles")) return null;
       return has("mobile notary") ? { label: "Midday Miles™ — $10 Off Base Notary Fee", amount: -10 } : null;
     default:
       return null;
@@ -407,6 +412,15 @@ export default function Booking() {
                       <div key={s.name} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
                         <span style={{ color: "rgba(255,255,255,0.5)" }}>{s.name}</span>
                         <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
+                      </div>
+                    ))}
+                    {(estimate.autoPromos ?? []).map(p => (
+                      <div key={p.label} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
+                        <span className="flex items-center gap-2" style={{ color: BLUE }}>
+                          ↳ {p.label}
+                          <span className="text-[8px] font-black uppercase tracking-widest px-1 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.15)", color: BLUE }}>Auto</span>
+                        </span>
+                        <span className="font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
                       </div>
                     ))}
                     {promoDiscount && (

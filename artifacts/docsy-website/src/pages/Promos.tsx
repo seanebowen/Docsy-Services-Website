@@ -62,8 +62,8 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
       {
         name: "Weekend Warrior™",
         tag: "20% OFF",
-        window: "Sat & Sun appointments · Book by Thursday",
-        rule: "20% off the standard loan signing service fee. Appointment must be on Saturday or Sunday. Booking must be confirmed by 11:59 PM Thursday of the same week. Does not apply to travel fee or timing surcharges. Auto-applied — no code needed.",
+        window: "Sat & Sun · Any loan signing booked for the weekend",
+        rule: "20% off the standard loan signing service fee for any appointment scheduled on Saturday or Sunday. No advance booking deadline — auto-applies whenever a weekend loan signing is quoted. Does not apply to travel fee or timing surcharges. Auto-applied — no code needed.",
       },
     ],
   },
