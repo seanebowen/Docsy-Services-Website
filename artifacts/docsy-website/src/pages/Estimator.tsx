@@ -565,7 +565,7 @@ export default function Estimator() {
                       <RowLabel>Turnaround <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(applies to personal / business docs)</span></RowLabel>
                       <div className="border" style={{ borderColor: DIV }}>
                         <RadioRow
-                          label="Standard (30 days)"
+                          label="Standard"
                           price="base rate"
                           selected={apost.turnaround === "standard"}
                           onClick={() => upA({ turnaround: "standard" })}
@@ -583,6 +583,11 @@ export default function Estimator() {
                           onClick={() => upA({ turnaround: "sameday" })}
                         />
                       </div>
+                      {apost.turnaround === "standard" && (
+                        <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          Standard turnaround is subject to the Texas Secretary of State's processing times and is processed by mail. Turnaround can vary and is not guaranteed. Choose Next-Day or Same-Day if your timeline is firm.
+                        </p>
+                      )}
                     </div>
                   )}
 

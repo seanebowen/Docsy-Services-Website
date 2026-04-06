@@ -118,6 +118,11 @@ export default function Apostille() {
                   <span className="text-sm font-bold" style={{ color: IVORY }}>{r.p}</span>
                 </div>
               ))}
+              <div className="px-8 py-4 border-t border-[#1e2a3a]">
+                <p className="text-xs leading-relaxed text-white/25">
+                  Standard turnaround is subject to the Texas Secretary of State's processing times and is handled by mail. Turnaround can vary and is not guaranteed. If your timeline is firm, select Next-Day or Same-Day Rush.
+                </p>
+              </div>
             </div>
             <div style={{ backgroundColor: BG }}>
               <div className="px-8 py-5 border-b border-[#1e2a3a]">
