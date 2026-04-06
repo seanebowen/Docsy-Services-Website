@@ -96,7 +96,7 @@ export default function BookingConfirmation() {
             {/* Estimate summary */}
             {booking?.estimate && booking.estimate.services.length > 0 && (
               <div className="px-8 py-6 border-b" style={{ borderColor: DIV }}>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>Estimate Summary</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>Price Summary</p>
                 {booking.estimate.services.map(s => (
                   <div key={s.name} className="flex justify-between py-2.5 border-b text-sm" style={{ borderColor: DIV }}>
                     <span style={{ color: "rgba(255,255,255,0.5)" }}>{s.name}</span>
@@ -124,7 +124,7 @@ export default function BookingConfirmation() {
                   </div>
                 )}
                 <div className="flex justify-between items-baseline pt-4">
-                  <span className="text-sm font-bold text-white">Estimated Total</span>
+                  <span className="text-sm font-bold text-white">Calculated Total</span>
                   <div className="text-right">
                     {((booking.autoPromos?.length ?? 0) > 0 || booking.promoDiscount) && (
                       <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${booking.estimate.total.toLocaleString()}</span>
@@ -191,7 +191,7 @@ export default function BookingConfirmation() {
             {/* Disclaimer */}
             <div className="px-8 py-5">
               <p className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.22)" }}>
-                Preferred time is not guaranteed until confirmed by Docsy. Pricing is an estimate — final cost confirmed in writing before your appointment.
+                Preferred time is not guaranteed until confirmed by Docsy. Your calculated price is final once this confirmation is sent — any variation in scope is always disclosed before you confirm.
               </p>
             </div>
 

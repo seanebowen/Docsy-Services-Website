@@ -872,7 +872,7 @@ export default function Estimator() {
                   {court.transcript && (
                     <>
                       <div>
-                        <RowLabel>Estimated page count</RowLabel>
+                        <RowLabel>Page count</RowLabel>
                         <div className="flex items-center gap-4">
                           <Stepper value={court.pages} onChange={v => upC({ pages: v })} min={1} max={2000} />
                           <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>pages</span>
@@ -914,7 +914,7 @@ export default function Estimator() {
             <div className="lg:sticky lg:top-14 lg:self-start lg:max-h-[calc(100vh-3.5rem)] lg:overflow-y-auto border-t lg:border-t-0" style={{ borderColor: DIV }}>
 
               <div className="px-6 py-4 border-b" style={{ borderColor: DIV }}>
-                <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Your Estimate</p>
+                <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Calculated Price</p>
               </div>
 
               {!anySelected ? (

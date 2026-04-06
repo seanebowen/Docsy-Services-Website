@@ -133,7 +133,7 @@ function BookingModal({
             </p>
             <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
               <p className="mb-2">
-                The estimate shown is for planning purposes only. Your confirmed price is provided before the appointment starts — always. Final pricing may vary only if document count, session duration, or additional services change, and any difference is disclosed before you confirm.
+                Your calculated price is final once your confirmation email is sent and received. Any variation in document count, session duration, or additional services is always disclosed before you confirm — never applied without your knowledge.
               </p>
               <p className="mb-2">
                 Travel fees (mobile only) are based on your distance tier. After-hours, late-night, and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
@@ -544,7 +544,7 @@ export default function Booking() {
                       </div>
                     )}
                     <div className="flex justify-between items-baseline pt-4">
-                      <span className="text-sm font-bold text-white">Est. Total</span>
+                      <span className="text-sm font-bold text-white">Calculated Total</span>
                       <div className="text-right">
                         {(autoPromos.length > 0 || promoDiscount) && (
                           <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toLocaleString()}</span>
