@@ -53,7 +53,7 @@ export default function Apostille() {
                 Order Apostille
               </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-apostille">
-                Estimate Your Job →
+                Calculate Your Price →
               </Link>
               <Link href="/help-center" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check

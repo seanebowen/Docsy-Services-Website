@@ -53,7 +53,7 @@ export default function MobileNotary() {
                 Book Mobile Visit
               </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-estimate-mobile">
-                Get an Estimate
+                Calculate Your Price
               </Link>
             </div>
           </FadeIn>

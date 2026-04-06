@@ -240,7 +240,7 @@ export default function Promos() {
           </FadeIn>
           <FadeIn delay={160}>
             <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
-              Get an Estimate
+              Calculate Your Price
             </Link>
           </FadeIn>
         </div>

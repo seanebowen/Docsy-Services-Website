@@ -268,7 +268,7 @@ export default function Booking() {
           <div className="max-w-5xl mx-auto">
             <FadeIn delay={0}>
               <Link href="/estimate" className="inline-block text-sm font-bold text-black/40 hover:text-black/70 mb-6 transition-colors">
-                ← Back to Estimator
+                ← Back to Calculator
               </Link>
               <h1 className="text-[3rem] sm:text-[4.5rem] font-black leading-none text-black mb-4" style={{ letterSpacing: "-0.03em" }}>
                 Choose your time.
@@ -399,7 +399,7 @@ export default function Booking() {
               {/* ── Right: summary + confirm ── */}
               <div className="border-t lg:border-t-0 px-6 py-8" style={{ borderColor: DIV }}>
 
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>Estimate Summary</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>Price Summary</p>
 
                 {estimate ? (
                   <div className="mb-6">
@@ -430,8 +430,8 @@ export default function Booking() {
                 ) : (
                   <div className="mb-6 pb-4 border-b" style={{ borderColor: DIV }}>
                     <p className="text-sm" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      No estimate found.{" "}
-                      <Link href="/estimate" style={{ color: BLUE }}>Build one first →</Link>
+                      No price quote found.{" "}
+                      <Link href="/estimate" style={{ color: BLUE }}>Use the Calculator first →</Link>
                     </p>
                   </div>
                 )}

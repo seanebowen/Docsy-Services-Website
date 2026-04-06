@@ -235,7 +235,7 @@ function ServiceCard({
             <p className="text-base font-black text-white leading-tight">{title}</p>
             {active && (
               <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>
-                In estimate
+                In quote
               </span>
             )}
           </div>
@@ -277,7 +277,7 @@ function SummaryLine({ label, amount }: { label: string; amount: number }) {
 
 /* ════════════════════════════════════════════════════════ */
 export default function Estimator() {
-  React.useEffect(() => { document.title = "Job Estimator | Docsy Notary Services"; }, []);
+  React.useEffect(() => { document.title = "Price Calculator | Docsy Notary Services"; }, []);
 
   /* active service toggles */
   const [ronOn,    setRonOn]    = useState(false);
@@ -317,6 +317,11 @@ export default function Estimator() {
   const courtTotal  = courtOn  ? calcCourt(court)   : 0;
   const grandTotal  = ronTotal + mobileTotal + loanTotal + apostTotal + courtTotal;
 
+  const apostilleAddon = apostOn && apost.turnaround !== "standard"
+    ? (apost.turnaround === "nextday" ? 50 : 75)
+    : 0;
+  const apostilleAddonLabel = apost.turnaround === "nextday" ? "Next-Day Turnaround" : "Same-Day Rush Turnaround";
+
   const baseTotal = (ronOn    ? calcRONBase(ron)       : 0)
                   + (mobileOn ? calcMobileBase(mobile) : 0)
                   + (loanOn   ? calcLoanBase(loan)     : 0)
@@ -332,12 +337,13 @@ export default function Estimator() {
       ronOn    && { name: "Remote Online Notarization",                                           amount: ronTotal },
       mobileOn && { name: "Mobile Notary",                                                        amount: mobileTotal },
       loanOn   && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`, amount: loanTotal },
-      apostOn  && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`, amount: apostTotal },
+      apostOn  && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`, amount: apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal },
+      apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`, amount: apostilleAddon },
       courtOn  && { name: "Court Reporting",                                                      amount: courtTotal },
     ].filter(Boolean) as { name: string; amount: number }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, baseTotal, hasRON: ronOn }));
     setLocation("/booking");
-  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, baseTotal, loan.packages, apost.types, apost.docs]);
+  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs]);
 
   /* helpers */
   const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);
@@ -384,7 +390,7 @@ export default function Estimator() {
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
-            <Pill text="JOB ESTIMATOR" />
+            <Pill text="STEP 1 OF 3 — PRICE CALCULATOR" />
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
               <span className="font-black">Know your cost</span>
               <br />
@@ -395,7 +401,7 @@ export default function Estimator() {
           </FadeIn>
           <FadeIn delay={80}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
-              Select the services you need. Configure the details. We'll calculate your estimate on the spot — down to the dollar.
+              Select your services and configure the details — your exact price calculates in real time. Your quote carries directly into the booking flow as Step 1 of 3.
             </p>
           </FadeIn>
         </div>
@@ -411,7 +417,7 @@ export default function Estimator() {
 
               {/* header row */}
               <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: DIV }}>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Check any service to add it to your estimate</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>Check any service to build your quote</span>
                 <span className="text-[10px] font-light" style={{ color: "rgba(255,255,255,0.2)" }}>Multiple selections allowed</span>
               </div>
 
@@ -709,7 +715,7 @@ export default function Estimator() {
               {!anySelected ? (
                 <div className="px-6 py-12 text-center">
                   <p className="text-3xl mb-3" style={{ color: "rgba(255,255,255,0.1)" }}>—</p>
-                  <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.25)" }}>Select a service on the left to begin building your estimate.</p>
+                  <p className="text-sm font-light" style={{ color: "rgba(255,255,255,0.25)" }}>Select a service on the left to start your quote.</p>
                 </div>
               ) : (
                 <div className="px-6 py-6">
@@ -719,13 +725,14 @@ export default function Estimator() {
                     {ronOn    && <SummaryLine label="Remote Online Notarization" amount={ronTotal} />}
                     {mobileOn && <SummaryLine label="Mobile Notary" amount={mobileTotal} />}
                     {loanOn   && <SummaryLine label={`Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`} amount={loanTotal} />}
-                    {apostOn  && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostTotal} />}
+                    {apostOn  && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal} />}
+                    {apostOn && apostilleAddon > 0 && <SummaryLine label={`↳ ${apostilleAddonLabel}`} amount={apostilleAddon} />}
                     {courtOn  && <SummaryLine label="Court Reporting" amount={courtTotal} />}
                   </div>
 
                   {/* grand total */}
                   <div className="border-t pt-5 mb-6" style={{ borderColor: DIV }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>Estimated Total</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>Your Price</p>
                     <p className="font-black leading-none" style={{ fontSize: "clamp(2.5rem,6vw,3.5rem)", color: AMBER, letterSpacing: "-0.03em" }}>
                       ${grandTotal % 1 === 0 ? grandTotal.toLocaleString() : grandTotal.toFixed(2)}
                     </p>
@@ -739,15 +746,15 @@ export default function Estimator() {
                       style={{ backgroundColor: "#000" }}
                       data-testid="btn-book-estimate"
                     >
-                      Book This Job
+                      Continue to Book — Step 2 →
                     </button>
                   </div>
 
                   {/* disclaimer */}
                   <div className="border-t pt-5" style={{ borderColor: DIV }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Estimate Disclaimer</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>About This Quote</p>
                     <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      This estimate is for planning purposes only. You know your price before you book — always. Final pricing is confirmed before your appointment. Any differences (extra signers, rush changes, travel adjustments) are disclosed before you confirm.
+                      This quote is for planning purposes only. You know your price before you book — always. Final pricing is confirmed before your appointment starts. Any differences (extra signers, rush changes, travel adjustments) are disclosed before you confirm.
                     </p>
                   </div>
 

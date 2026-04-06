@@ -116,7 +116,7 @@ export default function Home() {
                 style={{ borderColor: AMBER, color: AMBER }}
                 data-testid="btn-estimate-hero"
               >
-                Estimate Your Job →
+                Calculate Your Price →
               </Link>
               <Link
                 href="#services"

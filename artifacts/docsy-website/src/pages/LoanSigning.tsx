@@ -53,7 +53,7 @@ export default function LoanSigning() {
                 Book a Signing
               </Link>
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-estimate-loan">
-                Estimate Your Job →
+                Calculate Your Price →
               </Link>
             </div>
           </FadeIn>
