@@ -11,6 +11,33 @@ interface ServiceLine { name: string; amount: number; }
 interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; }
 type PromoResult = { label: string; amount: number } | null;
 
+/* Returns true if the given date falls on a US federal holiday (or its observed substitute). */
+function isFederalHoliday(date: Date): boolean {
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const d = date.getDate();
+  const obs = (hm: number, hd: number): [number, number] => {
+    const hw = new Date(y, hm, hd).getDay();
+    if (hw === 0) { const n = new Date(y, hm, hd + 1); return [n.getMonth(), n.getDate()]; }
+    if (hw === 6) { const n = new Date(y, hm, hd - 1); return [n.getMonth(), n.getDate()]; }
+    return [hm, hd];
+  };
+  const nthW = (hm: number, wday: number, n: number): [number, number] => {
+    const firstDow = new Date(y, hm, 1).getDay();
+    return [hm, 1 + (wday - firstDow + 7) % 7 + (n - 1) * 7];
+  };
+  const lastW = (hm: number, wday: number): [number, number] => {
+    const last = new Date(y, hm + 1, 0);
+    return [hm, last.getDate() - (last.getDay() - wday + 7) % 7];
+  };
+  const ck = ([hm, hd]: [number, number]) => m === hm && d === hd;
+  return (
+    ck(obs(0, 1))      || ck(nthW(0, 1, 3))  || ck(nthW(1, 1, 3))  ||
+    ck(lastW(4, 1))    || ck(obs(6, 4))       || ck(nthW(8, 1, 1))  ||
+    ck(nthW(9, 1, 2))  || ck(nthW(10, 4, 4)) || ck(obs(11, 25))
+  );
+}
+
 function parseHour(timeStr: string): number {
   const [clock, period] = timeStr.split(" ");
   let h = parseInt(clock.split(":")[0], 10);
@@ -107,7 +134,7 @@ function BookingModal({
                 The estimate shown is for planning purposes only. Your confirmed price is provided before the appointment starts — always. Final pricing may vary only if document count, session duration, or additional services change, and any difference is disclosed before you confirm.
               </p>
               <p className="mb-2">
-                Travel fees (mobile only) are based on your distance tier. Rush, after-hours, and late-night surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
+                Travel fees (mobile only) are based on your distance tier. After-hours, late-night, and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
               </p>
               <p>
                 By proceeding you agree that Docsy may contact you to confirm your appointment, discuss document requirements, and send your invoice. You may cancel or reschedule at any time before confirmation.
@@ -227,9 +254,12 @@ export default function Booking() {
     const day  = selectedDate.getDay();
     const isWeekend = day === 0 || day === 6;
     const isWeekday = day >= 1 && day <= 5;
+    const isHoliday = isFederalHoliday(selectedDate);
     const hour = parseHour(selectedTime);
     const has  = (kw: string) => estimate.services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
     const result: { label: string; amount: number; rateOnly?: boolean }[] = [];
+
+    if (isHoliday) result.push({ label: "Federal Holiday Surcharge", amount: 20 });
 
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });

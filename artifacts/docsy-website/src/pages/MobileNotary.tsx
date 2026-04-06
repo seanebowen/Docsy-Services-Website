@@ -96,7 +96,7 @@ export default function MobileNotary() {
             <H>Every day.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            After-hours and late-night appointments carry a disclosed surcharge. Rush visits (within 2 hours) carry a rush fee. <H>Both are disclosed at booking, before you confirm.</H> No surprises when we hand you the invoice.
+            After-hours (after 9 PM) and late-night appointments carry a disclosed surcharge. Federal holidays carry a +$20 surcharge — <H>always disclosed at booking, before you confirm.</H> No surprises when we hand you the invoice.
           </p>
         </div>
       </section>
@@ -113,7 +113,7 @@ export default function MobileNotary() {
             {[
               { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
-              { title: "Timing Add-Ons", items: [{ l: "Rush within 2 hours", p: "+$35" }, { l: "After-hours (after 6 PM)", p: "+$20" }, { l: "Late night (10 PM–midnight)", p: "+$35" }, { l: "Weekend / holiday", p: "+$25" }] },
+              { title: "Timing Add-Ons", items: [{ l: "After-hours (after 9 PM)", p: "+$20" }, { l: "Late night (10 PM–midnight)", p: "+$35" }, { l: "Federal holiday", p: "+$20" }] },
             ].map((col) => (
               <div key={col.title} style={{ backgroundColor: BG }}>
                 <div className="px-8 py-5 border-b border-[#1e2a3a]">

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -127,7 +127,7 @@ interface RONState   { docs: number; witness: number; signers: number; }
 interface GNWState   { seals: number; witness: number; signers: number; address: string; }
 interface TravelState {
   tier: 1 | 2 | 3 | 4;
-  afterHours: boolean; lateNight: boolean; rush: boolean; weekend: boolean;
+  afterHours: boolean; lateNight: boolean; holiday: boolean;
 }
 interface LoanState  { packages: LoanPackage[]; address: string; }
 interface ApostilleState {
@@ -146,7 +146,44 @@ function calcGNW(s: GNWState): number {
   return 10 + Math.max(0, s.seals - 1) * 1 + s.witness * 10 + Math.max(0, s.signers - 1) * 5;
 }
 function timingFee(s: TravelState): number {
-  return (s.lateNight ? 35 : s.afterHours ? 20 : 0) + (s.rush ? 35 : 0) + (s.weekend ? 25 : 0);
+  return (s.lateNight ? 35 : s.afterHours ? 20 : 0) + (s.holiday ? 20 : 0);
+}
+
+/* Returns true if the given date falls on a US federal holiday (or its observed substitute). */
+function isFederalHoliday(date: Date): boolean {
+  const y = date.getFullYear();
+  const m = date.getMonth(); // 0-indexed
+  const d = date.getDate();
+  /* Shift a fixed-date holiday to its observed weekday */
+  const obs = (hm: number, hd: number): [number, number] => {
+    const hw = new Date(y, hm, hd).getDay();
+    if (hw === 0) { const n = new Date(y, hm, hd + 1); return [n.getMonth(), n.getDate()]; }
+    if (hw === 6) { const n = new Date(y, hm, hd - 1); return [n.getMonth(), n.getDate()]; }
+    return [hm, hd];
+  };
+  /* nth weekday of a given month (wday: 0=Sun … 6=Sat, n: 1-based) */
+  const nthW = (hm: number, wday: number, n: number): [number, number] => {
+    const firstDow = new Date(y, hm, 1).getDay();
+    const offset   = (wday - firstDow + 7) % 7;
+    return [hm, 1 + offset + (n - 1) * 7];
+  };
+  /* Last weekday of a given month */
+  const lastW = (hm: number, wday: number): [number, number] => {
+    const last = new Date(y, hm + 1, 0);
+    return [hm, last.getDate() - (last.getDay() - wday + 7) % 7];
+  };
+  const ck = ([hm, hd]: [number, number]) => m === hm && d === hd;
+  return (
+    ck(obs(0, 1))       || // New Year's Day
+    ck(nthW(0, 1, 3))   || // MLK Day — 3rd Mon Jan
+    ck(nthW(1, 1, 3))   || // Presidents Day — 3rd Mon Feb
+    ck(lastW(4, 1))     || // Memorial Day — last Mon May
+    ck(obs(6, 4))       || // Independence Day
+    ck(nthW(8, 1, 1))   || // Labor Day — 1st Mon Sep
+    ck(nthW(9, 1, 2))   || // Columbus Day — 2nd Mon Oct
+    ck(nthW(10, 4, 4))  || // Thanksgiving — 4th Thu Nov
+    ck(obs(11, 25))        // Christmas
+  );
 }
 /* GNW travel tier: $30/$45/$65/$85 — only applied when GNW is the sole in-person service (or 40+ miles extension) */
 function gnwTierFee(tier: 1|2|3|4): number { return [0, 30, 45, 65, 85][tier]; }
@@ -298,10 +335,13 @@ export default function Estimator() {
   /* General Notary Work state */
   const [gnw, setGnw] = useState<GNWState>({ seals: 1, witness: 0, signers: 1, address: "" });
 
+  /* Appointment date for holiday auto-detection */
+  const [apptDate, setApptDate] = useState<string>("");
+
   /* Shared travel state — distance tier + timing, one per appointment */
   const [travel, setTravel] = useState<TravelState>({
     tier: 1,
-    afterHours: false, lateNight: false, rush: false, weekend: false,
+    afterHours: false, lateNight: false, holiday: false,
   });
 
   /* Loan state */
@@ -392,6 +432,14 @@ export default function Estimator() {
   const upA = useCallback((patch: Partial<ApostilleState>) => setApost(p => ({ ...p, ...patch })), []);
   const upC = useCallback((patch: Partial<CourtState>)     => setCourt(p => ({ ...p, ...patch })), []);
   const upL = useCallback((patch: Partial<LoanState>)      => setLoan(p  => ({ ...p, ...patch })), []);
+
+  /* ── Auto-detect federal holiday from appointment date ── */
+  useEffect(() => {
+    if (!apptDate) { upT({ holiday: false }); return; }
+    const [y, mo, d] = apptDate.split("-").map(Number);
+    const dt = new Date(y, mo - 1, d);
+    upT({ holiday: isFederalHoliday(dt) });
+  }, [apptDate, upT]);
 
   /* ── Auto-geocode: fires when user types an address in any in-person service field ── */
   const geocodeAddress = useCallback(async (addr: string) => {
@@ -678,14 +726,44 @@ export default function Estimator() {
                       <div>
                         <RowLabel>Timing add-ons (select all that apply)</RowLabel>
                         <div className="border" style={{ borderColor: DIV }}>
-                          <CheckRow label="After-hours (after 6 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
+                          <CheckRow label="After-hours (after 9 PM)"     price="+$20" checked={travel.afterHours} onChange={v => upT({ afterHours: v, lateNight: v ? false : travel.lateNight })} />
                           <CheckRow label="Late night (10 PM – midnight)" price="+$35" checked={travel.lateNight} onChange={v => upT({ lateNight: v, afterHours: v ? false : travel.afterHours })} />
-                          <CheckRow label="Rush — within 2 hours"        price="+$35" checked={travel.rush}      onChange={v => upT({ rush: v })} />
-                          <CheckRow label="Weekend or holiday"           price="+$25" checked={travel.weekend}   onChange={v => upT({ weekend: v })} />
+                          <div className="flex items-center justify-between px-4 py-3 border-t" style={{ borderColor: DIV }}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-light" style={{ color: travel.holiday ? "#fff" : "rgba(255,255,255,0.45)" }}>
+                                Federal holiday
+                              </span>
+                              {travel.holiday && (
+                                <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: AMBER, color: "#000" }}>Auto-applied</span>
+                              )}
+                            </div>
+                            <span className="text-sm font-bold" style={{ color: travel.holiday ? AMBER : "rgba(255,255,255,0.25)" }}>+$20</span>
+                          </div>
                         </div>
                         <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20).
+                          After-hours and Late night are mutually exclusive. Late night (+$35) overrides after-hours (+$20). Holiday fee auto-applies when you enter a federal holiday date below.
                         </p>
+                      </div>
+
+                      <div>
+                        <RowLabel>Appointment date <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(optional — for holiday detection)</span></RowLabel>
+                        <input
+                          type="date"
+                          value={apptDate}
+                          onChange={e => setApptDate(e.target.value)}
+                          className="w-full px-4 py-3 text-sm font-light text-white bg-transparent border"
+                          style={{ borderColor: DIV, colorScheme: "dark" }}
+                        />
+                        {apptDate && travel.holiday && (
+                          <p className="text-xs font-light mt-2" style={{ color: AMBER }}>
+                            Federal holiday detected — +$20 surcharge auto-applied.
+                          </p>
+                        )}
+                        {apptDate && !travel.holiday && (
+                          <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                            Not a federal holiday — no holiday surcharge.
+                          </p>
+                        )}
                       </div>
 
                     </div>
@@ -991,7 +1069,7 @@ export default function Estimator() {
                   <div className="border-t pt-5" style={{ borderColor: DIV }}>
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>About This Quote</p>
                     <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      This quote is for planning purposes only. You know your price before you book — always. Final pricing is confirmed before your appointment starts. Any differences (extra signers, rush changes, travel adjustments) are disclosed before you confirm.
+                      This quote is for planning purposes only. You know your price before you book — always. Final pricing is confirmed before your appointment starts. Any differences (extra signers, timing changes, travel adjustments) are disclosed before you confirm.
                     </p>
                   </div>
 
