@@ -179,7 +179,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Military & Those Who Served · All services</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                For those who have served in the US military. Valid military ID or DD-214 required — verified once, applied permanently to your account. Applies to base service fees on any Docsy service. Cannot combine with other discounts on the same appointment. One discount per appointment.
+                For those who have served in the US military. Valid military ID or DD-214 required — verified once, applied permanently to your account. Applies to base service fees on any Docsy service. Cannot combine with time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) or any other discount on the same appointment. One discount per appointment.
               </p>
             </div>
           </FadeIn>
@@ -219,7 +219,7 @@ export default function Promos() {
               One time-window promo<br />per appointment.
             </h2>
             <p className="text-lg font-light text-white/50 leading-relaxed">
-              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass is a standing discount applied in addition to whatever service rate applies. Apostille Bundle pricing replaces per-document rates — it does not combine with other apostille discounts.
+              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass does not stack with time-window promos or any other discount — it applies alone, one discount per appointment. Apostille Bundle pricing replaces per-document rates — it does not combine with other apostille discounts.
             </p>
           </FadeIn>
         </div>
