@@ -154,17 +154,25 @@ export default function CourtReporting() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Book a deposition.
-            <br />
-            <HI>Know your price first.</HI>
-          </h2>
-          <p className="text-lg text-black/60 mb-8">Same certified reporter every time. The price you see is the price you pay.</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/estimate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-schedule-depo-cta">Schedule a Deposition</Link>
-            <Link href="/estimate" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center" data-testid="btn-estimate-cta">Request Estimate</Link>
+      <section className="py-16 px-5" style={{ backgroundColor: BG }}>
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5" style={{ letterSpacing: "-0.02em" }}>
+              Below agency rates.<br />
+              <span style={{ color: "#4D9FDB" }}>The price you see is the price you pay.</span>
+            </h2>
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              {["AAERT certified", "Word index always included", "Certified PDF delivery"].map(t => (
+                <span key={t} className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.50)" }}>
+                  <span style={{ color: "#4D9FDB" }}>✓</span> {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court-cta">
+              Book Now →
+            </Link>
           </div>
         </div>
       </section>

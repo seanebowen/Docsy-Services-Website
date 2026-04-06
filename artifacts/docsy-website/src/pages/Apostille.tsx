@@ -143,15 +143,25 @@ export default function Apostille() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Not sure if your document qualifies?
-          </h2>
-          <p className="text-lg text-black/60 mb-8">Free Pre-Check before we file anything. No guessing. No surprises.</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button className="px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }} data-testid="btn-ask-apostille">Free Pre-Check</button>
-            <button className="px-10 py-4 text-base font-bold text-black border-2 border-black">Ask a Question</button>
+      <section className="py-16 px-5" style={{ backgroundColor: BG }}>
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5" style={{ letterSpacing: "-0.02em" }}>
+              All-inclusive. Nothing hidden.<br />
+              <span style={{ color: "#4D9FDB" }}>State fee in. Scan emailed. Done.</span>
+            </h2>
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              {["State filing fee included", "Digital scan emailed", "Free Pre-Check available"].map(t => (
+                <span key={t} className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.50)" }}>
+                  <span style={{ color: "#4D9FDB" }}>✓</span> {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-apostille-cta">
+              Book Now →
+            </Link>
           </div>
         </div>
       </section>

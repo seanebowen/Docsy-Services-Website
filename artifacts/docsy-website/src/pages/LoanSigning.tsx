@@ -131,15 +131,26 @@ export default function LoanSigning() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Book a signing.
-            <br />
-            Know your price first.
-          </h2>
-          <p className="text-lg text-black/60 mb-8">All fees disclosed before you confirm. No surprises when we hand you the invoice.</p>
-          <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-signing-cta">Book a Signing</Link>
+      <section className="py-16 px-5" style={{ backgroundColor: BG }}>
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5" style={{ letterSpacing: "-0.02em" }}>
+              Flat rates. No surprises.<br />
+              <span style={{ color: "#4D9FDB" }}>Know your price first.</span>
+            </h2>
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              {["Scanbacks always included", "TX HELOC compliant", "Itemized invoice every time"].map(t => (
+                <span key={t} className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.50)" }}>
+                  <span style={{ color: "#4D9FDB" }}>✓</span> {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-signing-cta">
+              Book Now →
+            </Link>
+          </div>
         </div>
       </section>
 

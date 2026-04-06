@@ -131,17 +131,26 @@ export default function MobileNotary() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Tell us where you are.
-            <br />
-            <HI>We'll be there.</HI>
-          </h2>
-          <p className="text-lg text-black/60 mb-8">7 days · 7 AM to midnight · Know your price before you book.</p>
-          <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }} data-testid="btn-book-mobile-cta">
-            Book Mobile Visit
-          </Link>
+      <section className="py-16 px-5" style={{ backgroundColor: BG }}>
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-5" style={{ letterSpacing: "-0.02em" }}>
+              We come to you.<br />
+              <span style={{ color: "#4D9FDB" }}>Wherever that is.</span>
+            </h2>
+            <div className="flex flex-wrap gap-x-8 gap-y-2">
+              {["7 days · 7AM–midnight", "Know your price before you book", "No hidden fees"].map(t => (
+                <span key={t} className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.50)" }}>
+                  <span style={{ color: "#4D9FDB" }}>✓</span> {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-mobile-cta">
+              Book Now →
+            </Link>
+          </div>
         </div>
       </section>
 
