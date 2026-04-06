@@ -180,6 +180,19 @@ function calcCourt(s: CourtState): number {
   return appear + s.pages * ratePerPage[s.speed];
 }
 
+/* ── Base-fee-only versions (excludes add-ons/surcharges) ── */
+function calcRONBase(_s: RONState): number { return 25; } // base seal only; extra docs are add-ons
+function calcMobileBase(s: MobileState): number { return 10 + Math.max(0, s.seals - 1) * 1; } // notary fee only; travel & surcharges are add-ons
+function calcLoanBase(s: LoanState): number { return calcLoan(s); } // package prices are the base service fee
+function calcApostilleBase(s: ApostilleState): number { return calcApostille(s); } // service fees are base; no separate add-ons
+function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
+  const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
+    inperson: { "2hr": 225, halfday: 325, fullday: 550 },
+    remote:   { "2hr": 150, halfday: 250, fullday: 450 },
+  };
+  return appearFees[s.format][s.duration];
+}
+
 /* ─── service card wrapper ─── */
 function ServiceCard({
   num, title, desc, startingAt, active, onToggle, children,
@@ -298,6 +311,12 @@ export default function Estimator() {
   const apostTotal  = apostOn  ? calcApostille(apost): 0;
   const courtTotal  = courtOn  ? calcCourt(court)   : 0;
   const grandTotal  = ronTotal + mobileTotal + loanTotal + apostTotal + courtTotal;
+
+  const baseTotal = (ronOn    ? calcRONBase(ron)       : 0)
+                  + (mobileOn ? calcMobileBase(mobile) : 0)
+                  + (loanOn   ? calcLoanBase(loan)     : 0)
+                  + (apostOn  ? calcApostilleBase(apost): 0)
+                  + (courtOn  ? calcCourtBase(court)   : 0);
   const anySelected = ronOn || mobileOn || loanOn || apostOn || courtOn;
 
   const [, setLocation] = useLocation();
@@ -311,9 +330,9 @@ export default function Estimator() {
       apostOn  && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`, amount: apostTotal },
       courtOn  && { name: "Court Reporting",                                                      amount: courtTotal },
     ].filter(Boolean) as { name: string; amount: number }[];
-    sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, hasRON: ronOn }));
+    sessionStorage.setItem("docsy_estimate", JSON.stringify({ services, total: grandTotal, baseTotal, hasRON: ronOn }));
     setLocation("/booking");
-  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, loan.packages, apost.types, apost.docs]);
+  }, [ronOn, mobileOn, loanOn, apostOn, courtOn, ronTotal, mobileTotal, loanTotal, apostTotal, courtTotal, grandTotal, baseTotal, loan.packages, apost.types, apost.docs]);
 
   /* helpers */
   const upM = useCallback((patch: Partial<MobileState>) => setMobile(p => ({ ...p, ...patch })), []);

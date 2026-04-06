@@ -8,29 +8,31 @@ const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 interface ServiceLine { name: string; amount: number; }
-interface EstimateSummary { services: ServiceLine[]; total: number; hasRON: boolean; }
+interface EstimateSummary { services: ServiceLine[]; total: number; baseTotal?: number; hasRON: boolean; }
 type PromoResult = { label: string; amount: number } | null;
 
 function applyPromoCode(code: string, estimate: EstimateSummary | null): PromoResult {
   if (!estimate || !code.trim()) return null;
   const n = code.trim().toUpperCase();
-  const { services, total } = estimate;
+  const { services, baseTotal, total } = estimate;
+  const base = baseTotal ?? total; // fall back to total if baseTotal not saved yet
   const has = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
   switch (n) {
     case "HONORPASS":
-      return { label: "HonorPass — 10% Off", amount: -Math.round(total * 0.10) };
+      return { label: "HonorPass — 10% Off Base Service Fee", amount: -Math.round(base * 0.10) };
     case "WEEKENDWARRIOR": {
+      // Loan Signing packages are the full base fee — no add-ons
       const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
       return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) } : null;
     }
     case "EARLYBIRDSEAL":
-      return has("remote online") ? { label: "Early Bird Seal™ — $10 Off", amount: -10 } : null;
+      return has("remote online") ? { label: "Early Bird Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "LUNCHBREAKSEAL":
-      return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off", amount: -10 } : null;
+      return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "NIGHTSHIFTSEAL":
-      return has("remote online") ? { label: "Night Shift Seal™ — $10 Off", amount: -10 } : null;
+      return has("remote online") ? { label: "Night Shift Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "MIDDAYMILES":
-      return has("mobile notary") ? { label: "Midday Miles™ — $10 Off", amount: -10 } : null;
+      return has("mobile notary") ? { label: "Midday Miles™ — $10 Off Base Notary Fee", amount: -10 } : null;
     default:
       return null;
   }

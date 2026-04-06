@@ -27,19 +27,19 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
         name: "Early Bird Seal™",
         tag: "$10 OFF",
         window: "8:00 AM – 10:00 AM · Any day",
-        rule: "Book and confirm by 10 AM. Appointment must start between 8–10 AM. Valid on RON sessions including General Notary Work. Cannot combine with other time-window promos. Auto-applied — no code needed.",
+        rule: "Book and confirm by 10 AM. Appointment must start between 8–10 AM. Valid on RON sessions including General Notary Work. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
       {
         name: "Lunch Break Seal™",
         tag: "$10 OFF",
         window: "11:00 AM – 1:00 PM · Any day",
-        rule: "Midday RON window. Valid on Remote Online Notarization including GNW. Book in advance or same-hour. Cannot combine with other time-window promos. Auto-applied — no code needed.",
+        rule: "Midday RON window. Valid on Remote Online Notarization including GNW. Book in advance or same-hour. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
       {
         name: "Night Shift Seal™",
         tag: "$10 OFF",
         window: "9:00 PM – Midnight · Any day",
-        rule: "Late-night RON window. Remote Online Notarization only. Cannot combine with other time-window promos. Auto-applied — no code needed.",
+        rule: "Late-night RON window. Remote Online Notarization only. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
     ],
   },
@@ -110,9 +110,10 @@ export default function Promos() {
       {/* ── Auto-apply notice ── */}
       <FadeIn delay={0} threshold={0.05}>
         <div className="px-5 py-4 border-b flex items-center gap-3" style={{ borderColor: DIV }}>
-          <div className="max-w-5xl mx-auto w-full flex items-center gap-3">
-            <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>⊙ Auto-Applied</span>
+          <div className="max-w-5xl mx-auto w-full flex items-center gap-3 flex-wrap">
+            <span className="text-[10px] font-bold uppercase tracking-widest shrink-0" style={{ color: BLUE }}>⊙ Auto-Applied</span>
             <span className="text-xs text-white/35">All promotions below are applied automatically when eligibility is met. No codes. No reminders.</span>
+            <span className="text-xs text-white/20 ml-auto shrink-0">Discounts apply to base service fees only. Add-ons, travel, surcharges, and optional services are not discounted.</span>
           </div>
         </div>
       </FadeIn>
