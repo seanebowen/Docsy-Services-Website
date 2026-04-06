@@ -757,11 +757,11 @@ export default function Estimator() {
                     {/* Auto-applied promo lines */}
                     {autoPromos.map(p => (
                       <div key={p.label} className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
-                        <span className="text-sm font-light flex items-center gap-2" style={{ color: BLUE }}>
+                        <span className="text-sm font-light flex items-center gap-2" style={{ color: AMBER }}>
                           ↳ {p.label}
-                          <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.18)", color: BLUE }}>Auto</span>
+                          <span className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.18)", color: AMBER }}>Auto</span>
                         </span>
-                        <span className="text-sm font-bold" style={{ color: BLUE }}>−${Math.abs(p.amount).toFixed(2)}</span>
+                        <span className="text-sm font-bold" style={{ color: AMBER }}>−${Math.abs(p.amount).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
