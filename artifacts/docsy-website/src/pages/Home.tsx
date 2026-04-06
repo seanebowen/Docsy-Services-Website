@@ -79,46 +79,76 @@ export default function Home() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
-          <FadeIn delay={0}>
-            <Pill text="⊙ Texas Notary Services" />
-          </FadeIn>
-          <FadeIn delay={80}>
-            <h1
-              className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none mb-8"
-              style={{ letterSpacing: "-0.03em" }}
-            >
-              <span className="font-black text-black">Hand us the documents.</span>
-              <br />
-              <span className="font-light text-black/40">Walk away with</span>
-              <br />
-              <span className="font-black text-black"><H>your sanity.</H></span>
-            </h1>
-          </FadeIn>
-          <FadeIn delay={200}>
-            <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
-              Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
-            </p>
-          </FadeIn>
-          <FadeIn delay={320}>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link
-                href="/estimate"
-                className="px-8 py-4 text-sm font-bold text-center border"
-                style={{ borderColor: AMBER, color: AMBER }}
-                data-testid="btn-estimate-hero"
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+          {/* Left column */}
+          <div>
+            <FadeIn delay={0}>
+              <Pill text="⊙ Texas Notary Services" />
+            </FadeIn>
+            <FadeIn delay={80}>
+              <h1
+                className="text-[3rem] sm:text-[4rem] md:text-[5rem] leading-none mb-8"
+                style={{ letterSpacing: "-0.03em" }}
               >
-                Calculate Your Price →
-              </Link>
-              <button
-                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-                className="px-8 py-4 text-sm font-bold text-center border"
-                style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
-              >
-                Our Services
-              </button>
-            </div>
-          </FadeIn>
+                <span className="font-black text-black">Hand us the documents.</span>
+                <br />
+                <span className="font-light text-black/40">Walk away with</span>
+                <br />
+                <span className="font-black text-black"><H>your sanity.</H></span>
+              </h1>
+            </FadeIn>
+            <FadeIn delay={200}>
+              <p className="text-base sm:text-lg font-light mb-10 max-w-lg" style={{ color: "rgba(0,0,0,0.50)" }}>
+                Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
+              </p>
+            </FadeIn>
+            <FadeIn delay={320}>
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+                <Link
+                  href="/estimate"
+                  className="px-8 py-4 text-sm font-bold text-center border"
+                  style={{ borderColor: AMBER, color: AMBER }}
+                  data-testid="btn-estimate-hero"
+                >
+                  Calculate Your Price →
+                </Link>
+                <button
+                  onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
+                  className="px-8 py-4 text-sm font-bold text-center border"
+                  style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
+                >
+                  Our Services
+                </button>
+              </div>
+            </FadeIn>
+          </div>
+
+          {/* Right column — feature cards */}
+          <div className="hidden md:flex flex-col gap-3">
+            <FadeIn delay={100}>
+              <div className="p-5" style={{ backgroundColor: SLATE, borderLeft: `3px solid ${AMBER}` }}>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: AMBER }}>Same-hour available</div>
+                <div className="text-xl font-black text-white leading-tight mb-1">RON · 7 days a week</div>
+                <div className="text-sm font-light" style={{ color: "rgba(255,255,255,0.45)" }}>Legally binding notarization in under 15 min, anywhere in the US.</div>
+              </div>
+            </FadeIn>
+            <FadeIn delay={180}>
+              <div className="p-5 ml-6" style={{ backgroundColor: SLATE, borderLeft: `3px solid ${AMBER}` }}>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: AMBER }}>Transparent pricing</div>
+                <div className="text-xl font-black text-white leading-tight mb-1">Always know before you book.</div>
+                <div className="text-sm font-light" style={{ color: "rgba(255,255,255,0.45)" }}>Itemized invoices. No hidden fees. No agency markup.</div>
+              </div>
+            </FadeIn>
+            <FadeIn delay={260}>
+              <div className="p-5" style={{ backgroundColor: SLATE, borderLeft: `3px solid ${AMBER}` }}>
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: AMBER }}>Texas certified</div>
+                <div className="text-xl font-black text-white leading-tight mb-1">Mobile · RON · Apostille · Court</div>
+                <div className="text-sm font-light" style={{ color: "rgba(255,255,255,0.45)" }}>One provider for every Texas notary need, 7 days to midnight.</div>
+              </div>
+            </FadeIn>
+          </div>
+
         </div>
       </section>
 
