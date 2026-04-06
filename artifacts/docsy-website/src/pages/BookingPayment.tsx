@@ -67,6 +67,7 @@ interface BookingData {
   note:             string;
   promoCode?:       string;
   promoDiscount?:   PromoResult | null;
+  autoPromos?:      { label: string; amount: number }[];
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
   safePlusOptIn?:   boolean;
@@ -124,8 +125,9 @@ export default function BookingPayment() {
     } catch {}
   }, []);
 
-  const displayTotal = booking?.promoDiscount
-    ? (booking.discountedTotal ?? booking?.estimate?.total ?? 0)
+  const hasDiscount  = (booking?.autoPromos?.length ?? 0) > 0 || !!booking?.promoDiscount;
+  const displayTotal = hasDiscount
+    ? (booking?.discountedTotal ?? booking?.estimate?.total ?? 0)
     : (booking?.estimate?.total ?? 0);
 
   /* Validation */
@@ -306,9 +308,9 @@ export default function BookingPayment() {
                       <div className="flex justify-between items-baseline mb-6">
                         <span className="text-sm font-bold text-white">Amount due today</span>
                         <div className="text-right">
-                          {booking?.promoDiscount && (
+                          {hasDiscount && (
                             <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                              ${booking.estimate?.total.toLocaleString()}
+                              ${booking?.estimate?.total.toLocaleString()}
                             </span>
                           )}
                           <span className="text-2xl font-black" style={{ color: BLUE }}>
