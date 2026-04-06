@@ -89,11 +89,11 @@ function detectTermKeys(booking: BookingData): string[] {
   if (svcs.some(s => s.name.toLowerCase().includes("loan signing")))   keys.push("loan");
   if (svcs.some(s => s.name.toLowerCase().includes("apostille")))      keys.push("apostille");
   if (svcs.some(s => s.name.toLowerCase().includes("court reporting"))) keys.push("court");
-  if (booking.safePlusOptIn !== false)                                  keys.push("safeplus");
+  if (booking.safePlusOptIn === true)                                    keys.push("safeplus");
   return keys;
 }
 function needsUpfrontPayment(keys: string[]) {
-  return keys.some(k => k !== "court");
+  return keys.some(k => k !== "court" && k !== "safeplus");
 }
 
 export default function BookingPayment() {
