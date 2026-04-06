@@ -10,15 +10,7 @@ export function Footer() {
     <footer className="border-t" style={{ backgroundColor: SLATE, borderColor: DIV }}>
 
       <div className="px-5 py-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/">
-              <img src="/logo.png" alt="Docsy" className="h-6 w-auto brightness-0 invert mb-4" />
-            </Link>
-            <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.25)" }}>
-              Hand us the documents.<br />Walk away with your sanity.
-            </p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-12">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: "rgba(255,255,255,0.25)" }}>Services</p>
             <ul className="space-y-2">
