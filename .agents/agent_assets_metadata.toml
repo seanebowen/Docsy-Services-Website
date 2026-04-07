@@ -4,13 +4,13 @@ uploads = []
 id = "6sqs9Qs-MePXQxw_pKN3s"
 uri = "file://artifacts/docsy-website/src/assets/images/home-workspace.png"
 type = "image"
-title = "home workspace illustrated"
+title = "home workspace bright daytime illustration"
 
 [[generated]]
 id = "4bVu-g60mmgnx3QTRO3v-"
 uri = "file://artifacts/docsy-website/src/assets/images/ron-laptop.png"
 type = "image"
-title = "ron video call illustrated"
+title = "ron bright daytime illustration"
 
 [[generated]]
 id = "-niGkPgSH8TC9ciyQk-n-"
@@ -22,19 +22,19 @@ title = "mobile notary flat design"
 id = "xZ7ZjeFUoHuXU5d55uqWh"
 uri = "file://artifacts/docsy-website/src/assets/images/loan-signing-keys.png"
 type = "image"
-title = "loan signing illustrated"
+title = "loan signing bright daytime illustration"
 
 [[generated]]
 id = "gMRGqUQXcMViHJe-flWqC"
 uri = "file://artifacts/docsy-website/src/assets/images/court-reporting-mic.png"
 type = "image"
-title = "court reporter illustrated"
+title = "court reporter bright daytime illustration"
 
 [[generated]]
 id = "mTyVhVz4SlvF-p3gDOT5g"
 uri = "file://artifacts/docsy-website/src/assets/images/apostille-seal.png"
 type = "image"
-title = "apostille seal illustrated"
+title = "apostille bright daytime illustration"
 
 [[outputs]]
 id = "bdjMapL9VuYhFFBOs5Nb9"
