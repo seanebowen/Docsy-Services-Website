@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "@/components/layout/Layout";
+import { AuthProvider } from "@/context/AuthContext";
 
 import Home from "@/pages/Home";
 import RON from "@/pages/RON";
@@ -17,6 +18,7 @@ import HelpCenter from "@/pages/HelpCenter";
 import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
+import SafeVault from "@/pages/SafeVault";
 import Estimator from "@/pages/Estimator";
 import Booking from "@/pages/Booking";
 import BookingPayment from "@/pages/BookingPayment";
@@ -46,6 +48,7 @@ function Router() {
       <Route path="/promos" component={Promos} />
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
+      <Route path="/vault" component={SafeVault} />
       <Route path="/contact" component={Contact} />
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
@@ -57,11 +60,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Layout>
-            <Router />
-          </Layout>
-        </WouterRouter>
+        <AuthProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Layout>
+              <Router />
+            </Layout>
+          </WouterRouter>
+        </AuthProvider>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
