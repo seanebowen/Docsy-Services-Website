@@ -86,11 +86,22 @@ const WEEKDAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 function daysInMonth(y: number, m: number) { return new Date(y, m + 1, 0).getDate(); }
 function firstDayOf(y: number, m: number)  { return new Date(y, m, 1).getDay(); }
 
-const TIME_SLOTS = Array.from({ length: 17 }, (_, i) => {
-  const h   = i + 7;
-  const h12 = h > 12 ? h - 12 : h === 12 ? 12 : h;
-  return `${h12}:00 ${h >= 12 ? "PM" : "AM"}`;
-});
+/* Build a labelled slot. hour is 0-23. Priority = outside 9am-9pm general window. */
+function makeSlotLabel(h24: number): string {
+  const h12 = h24 === 0 ? 12 : h24 > 12 ? h24 - 12 : h24;
+  return `${h12}:00 ${h24 >= 12 && h24 < 24 ? "PM" : "AM"}`;
+}
+interface SlotInfo { label: string; priority: boolean; }
+/* General hours: 9 AM – 9 PM (visible to all) */
+const GENERAL_SLOTS: SlotInfo[] = [9,10,11,12,13,14,15,16,17,18,19,20,21].map(h => ({ label: makeSlotLabel(h), priority: false }));
+/* Member slots: add priority AM (7–8) and priority PM (10–11) around general */
+const MEMBER_SLOTS: SlotInfo[] = [
+  { label: makeSlotLabel(7),  priority: true  },
+  { label: makeSlotLabel(8),  priority: true  },
+  ...GENERAL_SLOTS,
+  { label: makeSlotLabel(22), priority: true  },
+  { label: makeSlotLabel(23), priority: true  },
+];
 
 /* ── Terms & Safe+ modal ── */
 function BookingModal({
@@ -227,6 +238,7 @@ export default function Booking() {
   const [note, setNote]               = useState("");
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
+  const [isMember,  setIsMember]      = useState(false);
 
   /* Services with deliverables — gates Safe+ trial offer */
   const hasDeliverables = estimate
@@ -263,11 +275,11 @@ export default function Booking() {
 
     if (isHoliday) result.push({ label: "Federal Holiday Surcharge", amount: 20 });
 
-    /* Timing surcharges — in-person services only, auto-apply from selected time */
+    /* Timing surcharges — in-person services only, exempt for Docsy+ members */
     const isInPerson = has("general notary work") || has("loan signing");
-    if (isInPerson && hour >= 22)
+    if (!isMember && isInPerson && hour >= 22)
       result.push({ label: "Late Night Surcharge (10 PM – midnight)", amount: 35 });
-    else if (isInPerson && hour >= 21)
+    else if (!isMember && isInPerson && hour >= 21)
       result.push({ label: "After-Hours Surcharge (9 PM – 9:59 PM)", amount: 20 });
 
     if (has("remote online")) {
@@ -291,7 +303,7 @@ export default function Booking() {
       if (docs >= 5) result.push({ label: `Apostille Bundle Rate — $90/doc (${docs} docs)`, amount: 0, rateOnly: true });
     }
     return result;
-  }, [selectedDate, selectedTime, estimate]);
+  }, [selectedDate, selectedTime, estimate, isMember]);
 
   const autoPromoTotal  = autoPromos.reduce((sum, p) => sum + p.amount, 0);
   const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos), [promoCode, estimate, autoPromos]);
@@ -454,23 +466,110 @@ export default function Booking() {
                 {/* Time slots */}
                 {selectedDate && (
                   <div className="border-t pt-6" style={{ borderColor: DIV }}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      Available times — {formatDate(selectedDate)}
-                    </p>
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                      {TIME_SLOTS.map(slot => (
-                        <button
-                          key={slot}
-                          onClick={() => setSelectedTime(slot)}
-                          className="py-2.5 text-xs font-bold border transition-colors"
-                          style={{
-                            borderColor:     selectedTime === slot ? BLUE : DIV,
-                            color:           selectedTime === slot ? BLUE : "rgba(255,255,255,0.45)",
-                            backgroundColor: selectedTime === slot ? "rgba(77,159,219,0.1)" : "transparent",
-                          }}
-                        >{slot}</button>
-                      ))}
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
+                        Available times — {formatDate(selectedDate)}
+                      </p>
+                      {/* Docsy+ member toggle */}
+                      <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={isMember}
+                          onChange={e => { setIsMember(e.target.checked); setSelectedTime(""); }}
+                          className="w-3.5 h-3.5 accent-blue-400"
+                        />
+                        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: isMember ? BLUE : "rgba(255,255,255,0.35)" }}>
+                          Docsy+ Member
+                        </span>
+                      </label>
                     </div>
+
+                    {/* Priority AM block (members only) */}
+                    {isMember && (
+                      <div className="mb-3">
+                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
+                          ◆ Priority AM — 7am–9am
+                        </p>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          {MEMBER_SLOTS.filter(s => s.priority && s.label.includes("AM") && !s.label.includes("12")).map(slot => (
+                            <button
+                              key={slot.label}
+                              onClick={() => setSelectedTime(slot.label)}
+                              className="py-2.5 text-xs font-bold border transition-colors relative"
+                              style={{
+                                borderColor:     selectedTime === slot.label ? BLUE : BLUE + "55",
+                                color:           selectedTime === slot.label ? "#000" : BLUE,
+                                backgroundColor: selectedTime === slot.label ? BLUE : "rgba(77,159,219,0.07)",
+                              }}
+                            >{slot.label}</button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* General slots */}
+                    <div className={isMember ? "mb-3" : ""}>
+                      {isMember && (
+                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                          General — 9am–9pm
+                        </p>
+                      )}
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {GENERAL_SLOTS.map(slot => (
+                          <button
+                            key={slot.label}
+                            onClick={() => setSelectedTime(slot.label)}
+                            className="py-2.5 text-xs font-bold border transition-colors"
+                            style={{
+                              borderColor:     selectedTime === slot.label ? BLUE : DIV,
+                              color:           selectedTime === slot.label ? BLUE : "rgba(255,255,255,0.45)",
+                              backgroundColor: selectedTime === slot.label ? "rgba(77,159,219,0.1)" : "transparent",
+                            }}
+                          >{slot.label}</button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Priority PM block (members only) */}
+                    {isMember && (
+                      <div>
+                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
+                          ◆ Priority PM — 10pm–midnight
+                        </p>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          {MEMBER_SLOTS.filter(s => s.priority && s.label.includes("PM")).map(slot => (
+                            <button
+                              key={slot.label}
+                              onClick={() => setSelectedTime(slot.label)}
+                              className="py-2.5 text-xs font-bold border transition-colors"
+                              style={{
+                                borderColor:     selectedTime === slot.label ? BLUE : BLUE + "55",
+                                color:           selectedTime === slot.label ? "#000" : BLUE,
+                                backgroundColor: selectedTime === slot.label ? BLUE : "rgba(77,159,219,0.07)",
+                              }}
+                            >{slot.label}</button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Non-member outside-window message */}
+                    {!isMember && (
+                      <p className="text-[10px] leading-relaxed mt-3" style={{ color: "rgba(255,255,255,0.28)" }}>
+                        Need a time before 9 AM or after 9 PM? Those slots are reserved for{" "}
+                        <Link href="/memberships" style={{ color: BLUE }}>Docsy+ members</Link>.{" "}
+                        Call or email us to discuss availability:{" "}
+                        <a href="tel:+12104179614" style={{ color: BLUE }}>210-417-9614</a> ·{" "}
+                        <a href="mailto:hello@docsynotary.com" style={{ color: BLUE }}>hello@docsynotary.com</a>
+                      </p>
+                    )}
+
+                    {/* Member surcharge exemption note */}
+                    {isMember && (
+                      <p className="text-[10px] leading-relaxed mt-3" style={{ color: BLUE + "99" }}>
+                        ✓ After-hours and late-night surcharges waived for Docsy+ members.
+                      </p>
+                    )}
                   </div>
                 )}
 

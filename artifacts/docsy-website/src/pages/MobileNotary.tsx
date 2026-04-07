@@ -91,12 +91,12 @@ export default function MobileNotary() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⏱" text="AVAILABILITY" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
-            7 AM to midnight.
+            9 AM to 9 PM.
             <br />
             <H>Every day.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            After-hours (after 9 PM) and late-night appointments carry a disclosed surcharge. Federal holidays carry a +$20 surcharge — <H>always disclosed at booking, before you confirm.</H> No surprises when we hand you the invoice.
+            General appointments run 9 AM–9 PM. <H>Docsy+ members</H> get access to priority hours — 7 AM–9 AM and 9 PM–midnight — with no after-hours surcharge. Federal holidays carry a +$20 surcharge for all clients, always disclosed at booking before you confirm.
           </p>
         </div>
       </section>
@@ -113,7 +113,7 @@ export default function MobileNotary() {
             {[
               { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
-              { title: "Timing Add-Ons", items: [{ l: "After-hours (after 9 PM)", p: "+$20" }, { l: "Late night (10 PM–midnight)", p: "+$35" }, { l: "Federal holiday", p: "+$20" }] },
+              { title: "Timing Add-Ons", items: [{ l: "After-hours (9 PM – 9:59 PM)", p: "+$20" }, { l: "Late night (10 PM–midnight)", p: "+$35" }, { l: "Federal holiday", p: "+$20" }, { l: "Docsy+ members", p: "Exempt" }] },
             ].map((col) => (
               <div key={col.title} style={{ backgroundColor: BG }}>
                 <div className="px-8 py-5 border-b border-[#1e2a3a]">
