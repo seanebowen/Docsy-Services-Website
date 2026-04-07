@@ -290,15 +290,11 @@ export default function Estimator() {
 
   /* add-on subscriptions */
   const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "express">(null);
-  const [storagePlan,    setStoragePlan]    = useState<null | "personal" | "family" | "professional">(null);
 
   const MEMBERSHIP_PRICES = { starter: 15, pro: 30, express: 49 } as const;
   const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", express: "Docsy Express Pass™" } as const;
-  const STORAGE_PRICES    = { personal: 7, family: 18, professional: 29 } as const;
-  const STORAGE_NAMES     = { personal: "Safe+ Personal", family: "Safe+ Family", professional: "Safe+ Professional" } as const;
   const membershipMonthly = membershipPlan ? MEMBERSHIP_PRICES[membershipPlan] : 0;
-  const storageMonthly    = storagePlan    ? STORAGE_PRICES[storagePlan]       : 0;
-  const monthlyTotal      = membershipMonthly + storageMonthly;
+  const monthlyTotal      = membershipMonthly;
 
   /* RON state */
   const [ron, setRon] = useState<RONState>({ docs: 1, witness: 0, signers: 1 });
@@ -370,7 +366,7 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn || membershipPlan !== null || storagePlan !== null;
+  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn || membershipPlan !== null;
 
   const [, setLocation] = useLocation();
 
@@ -385,14 +381,13 @@ export default function Estimator() {
       courtOn    && { name: "Court Reporting",                                                                              amount: courtTotal },
       travelTotal > 0 && { name: "Travel & Scheduling", amount: travelTotal },
       membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (monthly)`, amount: membershipMonthly, monthly: true },
-      storagePlan    && { name: `${STORAGE_NAMES[storagePlan]} (monthly)`,       amount: storageMonthly,    monthly: true },
     ].filter(Boolean) as { name: string; amount: number; monthly?: boolean }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({
       services, total: grandTotal, baseTotal, hasRON: ronOn,
-      membershipPlan, storagePlan,
+      membershipPlan,
     }));
     setLocation("/booking");
-  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, storagePlan, membershipMonthly, storageMonthly]);
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly]);
 
   /* helpers */
   const upG = useCallback((patch: Partial<GNWState>)      => setGnw(p    => ({ ...p, ...patch })), []);
@@ -962,28 +957,6 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
-              {/* ── Docsy Safe+ Storage ── */}
-              <FadeIn delay={60} threshold={0.05}>
-              <ServiceCard
-                num="07" title="Docsy Safe+ Storage"
-                desc="Encrypted document vault. Every deliverable from every Docsy appointment auto-uploads."
-                startingAt="$7/mo"
-                active={storagePlan !== null}
-                onToggle={() => setStoragePlan(p => p ? null : "personal")}
-              >
-                <div className="space-y-2">
-                  <RowLabel>Select a storage plan</RowLabel>
-                  <div className="border" style={{ borderColor: DIV }}>
-                    <RadioRow label="Personal — up to 50 files" price="$7/mo" selected={storagePlan === "personal"} onClick={() => setStoragePlan("personal")} />
-                    <RadioRow label="Family — up to 150 files, 4 member accounts" price="$18/mo" selected={storagePlan === "family"} onClick={() => setStoragePlan("family")} />
-                    <RadioRow label="Professional — up to 500 files, priority retrieval" price="$29/mo" selected={storagePlan === "professional"} onClick={() => setStoragePlan("professional")} />
-                  </div>
-                  <p className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
-                    First month billed at booking. Free 30-day trial starts automatically with your first service — upgrade any time.
-                  </p>
-                </div>
-              </ServiceCard>
-              </FadeIn>
 
 
             </div>{/* end left col */}
@@ -1025,17 +998,11 @@ export default function Estimator() {
                   {/* monthly add-ons */}
                   {monthlyTotal > 0 && (
                     <div className="mb-4 border-t pt-4" style={{ borderColor: DIV }}>
-                      <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Monthly subscriptions</p>
+                      <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Monthly membership</p>
                       {membershipPlan && (
                         <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
                           <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>{MEMBERSHIP_NAMES[membershipPlan]}</span>
                           <span className="text-sm font-bold" style={{ color: IVORY }}>${membershipMonthly}<span className="text-[10px] font-light">/mo</span></span>
-                        </div>
-                      )}
-                      {storagePlan && (
-                        <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
-                          <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>{STORAGE_NAMES[storagePlan]}</span>
-                          <span className="text-sm font-bold" style={{ color: IVORY }}>${storageMonthly}<span className="text-[10px] font-light">/mo</span></span>
                         </div>
                       )}
                     </div>
@@ -1051,7 +1018,7 @@ export default function Estimator() {
                     )}
                     {monthlyTotal > 0 && (
                       <div className="flex justify-between items-baseline mb-3">
-                        <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.3)" }}>Subscriptions (first month)</span>
+                        <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.3)" }}>Membership (first month)</span>
                         <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>${monthlyTotal}/mo</span>
                       </div>
                     )}
@@ -1063,7 +1030,7 @@ export default function Estimator() {
                     </p>
                     {monthlyTotal > 0 && (
                       <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                        Subscriptions renew monthly at ${monthlyTotal}/mo after today.
+                        Membership renews monthly at ${monthlyTotal}/mo after today.
                       </p>
                     )}
                   </div>

@@ -192,11 +192,11 @@ export default function Memberships() {
           <FadeIn delay={80} threshold={0.05}>
             <div className="border max-w-xl mx-auto divide-y" style={{ borderColor: DIV, "--tw-divide-opacity": 1 } as React.CSSProperties}>
               {[
-                { l: "Free Tier",           p: "Free",    note: "Up to 5 files",              planKey: null },
-                { l: "Personal",            p: "$7/mo",   note: "Up to 50 files",              planKey: "storage-personal" },
-                { l: "Family",              p: "$18/mo",  note: "Up to 150 files · 4 members", planKey: "storage-family" },
-                { l: "Professional",        p: "$29/mo",  note: "Up to 500 files",             planKey: "storage-professional" },
-                { l: "Business / Enterprise", p: "Custom", note: "Contact us",                planKey: null },
+                { l: "Free Tier",             p: "Free",    note: "Up to 5 files",               kind: "free" as const },
+                { l: "Personal",              p: "$7/mo",   note: "Up to 50 files",               kind: "paid" as const },
+                { l: "Family",                p: "$18/mo",  note: "Up to 150 files · 4 members",  kind: "paid" as const },
+                { l: "Professional",          p: "$29/mo",  note: "Up to 500 files",              kind: "paid" as const },
+                { l: "Business / Enterprise", p: "Custom",  note: "Contact us",                   kind: "contact" as const },
               ].map((row) => (
                 <div key={row.l} className="flex justify-between items-center px-6 py-4 gap-4" style={{ borderColor: DIV }}>
                   <div className="flex-1">
@@ -204,22 +204,18 @@ export default function Memberships() {
                     <p className="text-xs text-white/30">{row.note}</p>
                   </div>
                   <span className="text-sm font-bold shrink-0" style={{ color: IVORY }}>{row.p}</span>
-                  {row.planKey ? (
-                    <Link
-                      href={`/membership-checkout?plan=${row.planKey}`}
-                      className="shrink-0 px-4 py-2 text-xs font-bold text-white"
-                      style={{ backgroundColor: "#000" }}
-                    >
-                      Subscribe →
-                    </Link>
-                  ) : row.l === "Business / Enterprise" ? (
+                  {row.kind === "contact" ? (
                     <Link
                       href="/contact"
-                      className="shrink-0 px-4 py-2 text-xs font-bold text-black border border-current"
-                      style={{ color: "rgba(255,255,255,0.4)" }}
+                      className="shrink-0 px-4 py-2 text-xs font-bold border"
+                      style={{ borderColor: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.4)" }}
                     >
                       Contact →
                     </Link>
+                  ) : row.kind === "paid" ? (
+                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.2)" }}>
+                      Activates with first service
+                    </span>
                   ) : (
                     <span className="shrink-0 px-4 py-2 text-xs font-bold" style={{ color: "rgba(255,255,255,0.2)" }}>Included</span>
                   )}
