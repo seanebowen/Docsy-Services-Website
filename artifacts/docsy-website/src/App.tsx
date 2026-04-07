@@ -22,6 +22,7 @@ import Booking from "@/pages/Booking";
 import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
 import Contact from "@/pages/Contact";
+import MembershipCheckout from "@/pages/MembershipCheckout";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
       <Route path="/contact" component={Contact} />
+      <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
     </Switch>
   );

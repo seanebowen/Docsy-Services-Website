@@ -85,6 +85,7 @@ export default function Memberships() {
               {
                 name: "Docsy+ Starter",
                 price: "$15/mo",
+                planKey: "starter",
                 features: [
                   "1 free notarization/month (RON or mobile)",
                   "10% off all additional services",
@@ -97,6 +98,7 @@ export default function Memberships() {
               {
                 name: "Docsy+ Pro",
                 price: "$30/mo",
+                planKey: "pro",
                 features: [
                   "2 free notarizations/month",
                   "15% off all services",
@@ -110,6 +112,7 @@ export default function Memberships() {
               {
                 name: "Docsy Express Pass™",
                 price: "$49/mo",
+                planKey: "express",
                 features: [
                   "Unlimited RON (fair use)",
                   "Priority hours — 7am–9am & 9pm–midnight",
@@ -120,18 +123,27 @@ export default function Memberships() {
               },
             ].map((tier) => (
               <FadeIn key={tier.name} delay={80} threshold={0.05}>
-                <div className="h-full" style={{ backgroundColor: BG }}>
+                <div className="h-full flex flex-col" style={{ backgroundColor: BG }}>
                   <div className="px-8 py-6 border-b" style={{ borderColor: DIV }}>
                     <p className="text-base font-black text-white mb-1">{tier.name}</p>
                     <p className="text-2xl font-black" style={{ color: IVORY }}>{tier.price}</p>
                   </div>
-                  <ul className="px-8 py-6 space-y-3">
+                  <ul className="px-8 py-6 space-y-3 flex-1">
                     {tier.features.map((f) => (
                       <li key={f} className="text-sm text-white/50 flex items-start gap-2">
                         <span className="text-white/20 mt-0.5">—</span> {f}
                       </li>
                     ))}
                   </ul>
+                  <div className="px-8 pb-6">
+                    <Link
+                      href={`/membership-checkout?plan=${tier.planKey}`}
+                      className="block w-full py-3 text-sm font-bold text-center text-white"
+                      style={{ backgroundColor: "#000" }}
+                    >
+                      Get Started →
+                    </Link>
+                  </div>
                 </div>
               </FadeIn>
             ))}
@@ -180,18 +192,37 @@ export default function Memberships() {
           <FadeIn delay={80} threshold={0.05}>
             <div className="border max-w-xl mx-auto divide-y" style={{ borderColor: DIV, "--tw-divide-opacity": 1 } as React.CSSProperties}>
               {[
-                { l: "Free Tier", p: "Free", note: "Up to 5 files" },
-                { l: "Personal", p: "$7/mo", note: "Up to 50 files" },
-                { l: "Family", p: "$18/mo", note: "Up to 150 files · 4 members" },
-                { l: "Professional", p: "$29/mo", note: "Up to 500 files" },
-                { l: "Business / Enterprise", p: "Custom", note: "Contact us" },
+                { l: "Free Tier",           p: "Free",    note: "Up to 5 files",              planKey: null },
+                { l: "Personal",            p: "$7/mo",   note: "Up to 50 files",              planKey: "storage-personal" },
+                { l: "Family",              p: "$18/mo",  note: "Up to 150 files · 4 members", planKey: "storage-family" },
+                { l: "Professional",        p: "$29/mo",  note: "Up to 500 files",             planKey: "storage-professional" },
+                { l: "Business / Enterprise", p: "Custom", note: "Contact us",                planKey: null },
               ].map((row) => (
-                <div key={row.l} className="flex justify-between items-center px-6 py-5" style={{ borderColor: DIV }}>
-                  <div>
+                <div key={row.l} className="flex justify-between items-center px-6 py-4 gap-4" style={{ borderColor: DIV }}>
+                  <div className="flex-1">
                     <p className="text-sm font-semibold text-white">{row.l}</p>
                     <p className="text-xs text-white/30">{row.note}</p>
                   </div>
-                  <span className="text-sm font-bold" style={{ color: IVORY }}>{row.p}</span>
+                  <span className="text-sm font-bold shrink-0" style={{ color: IVORY }}>{row.p}</span>
+                  {row.planKey ? (
+                    <Link
+                      href={`/membership-checkout?plan=${row.planKey}`}
+                      className="shrink-0 px-4 py-2 text-xs font-bold text-white"
+                      style={{ backgroundColor: "#000" }}
+                    >
+                      Subscribe →
+                    </Link>
+                  ) : row.l === "Business / Enterprise" ? (
+                    <Link
+                      href="/contact"
+                      className="shrink-0 px-4 py-2 text-xs font-bold text-black border border-current"
+                      style={{ color: "rgba(255,255,255,0.4)" }}
+                    >
+                      Contact →
+                    </Link>
+                  ) : (
+                    <span className="shrink-0 px-4 py-2 text-xs font-bold" style={{ color: "rgba(255,255,255,0.2)" }}>Included</span>
+                  )}
                 </div>
               ))}
             </div>
