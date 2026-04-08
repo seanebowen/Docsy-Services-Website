@@ -147,7 +147,7 @@ function BookingModal({
                 Your calculated price is final once your confirmation email is sent and received. Any variation in document count, session duration, or additional services is always disclosed before you confirm — never applied without your knowledge.
               </p>
               <p className="mb-2">
-                Travel fees (mobile only) are based on your distance tier. After-hours, late-night, and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
+                Travel fees (mobile only) are based on your distance tier. After-hours and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
               </p>
               <p>
                 By proceeding you agree that Docsy may contact you to confirm your appointment, discuss document requirements, and send your invoice. You may cancel or reschedule at any time before confirmation.
@@ -292,10 +292,8 @@ export default function Booking() {
 
     /* Timing surcharges — in-person services only, exempt for Docsy+ members */
     const isInPerson = has("general notary work") || has("loan signing");
-    if (!isMember && isInPerson && hour >= 22)
-      result.push({ label: "Late Night Surcharge (10 PM – midnight)", amount: 35 });
-    else if (!isMember && isInPerson && hour >= 21)
-      result.push({ label: "After-Hours Surcharge (9 PM – 9:59 PM)", amount: 20 });
+    if (!isMember && isInPerson && hour >= 21)
+      result.push({ label: "After-Hours Surcharge (9 PM – midnight)", amount: 20 });
 
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
@@ -656,7 +654,7 @@ export default function Booking() {
                     {/* Member surcharge exemption note */}
                     {isMember && !slotsLoading && (
                       <p className="text-[10px] leading-relaxed mt-3" style={{ color: BLUE + "99" }}>
-                        ✓ After-hours and late-night surcharges waived for Docsy+ members.
+                        ✓ After-hours surcharges waived for Docsy+ members.
                       </p>
                     )}
                   </div>

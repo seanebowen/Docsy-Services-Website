@@ -39,7 +39,7 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
         name: "Night Shift Seal™",
         tag: "$10 OFF",
         window: "9:00 PM – Midnight · Any day",
-        rule: "Late-night RON window. Remote Online Notarization only. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
+        rule: "After-hours RON window. Remote Online Notarization only. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
     ],
   },

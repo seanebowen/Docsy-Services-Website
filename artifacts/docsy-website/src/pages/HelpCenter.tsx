@@ -71,7 +71,7 @@ const guides = [
       { heading: "Statutory Notary Fee", body: "This is the state-regulated notary fee: $10 for the first notarized signature, $1 for each additional signature on the same document. These are set by Texas law and cannot be waived." },
       { heading: "Service Fee", body: "Docsy's fee for the service type: RON session fee, mobile visit coordination, apostille processing, loan signing fee, court reporting appearance fee, etc. This is what varies by service and is itemized separately from the statutory notary fee, as required by law." },
       { heading: "Travel Fee (mobile only)", body: "Based on your distance tier from the notary. Listed at booking before you confirm." },
-      { heading: "Timing Add-Ons", body: "Rush, after-hours, and late-night surcharges — only if applicable. Always disclosed at booking. Never added after the fact." },
+      { heading: "Timing Add-Ons", body: "Rush and after-hours surcharges — only if applicable. Always disclosed at booking. Never added after the fact." },
       { heading: "Discounts Applied", body: "If you booked with a promotion (Early Bird, HonorPass, etc.), it appears as a line item discount. The final total matches the price you saw before booking." },
     ],
   },
