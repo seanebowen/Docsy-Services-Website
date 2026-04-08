@@ -79,16 +79,19 @@ export default function Login() {
       <div className="w-full max-w-md">
 
         <div className="mb-10 text-center">
-          <div className="flex justify-center mb-6">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
-              ◎ DOCSY SAFE+
+          <div className="flex justify-center gap-2 mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
+              ◎ Docsy+
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
+              ◎ Safe+
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
             Sign in.
           </h1>
           <p className="text-white/40 text-base">
-            Enter your email or phone — we'll send a one-time code.
+            Members and Safe+ subscribers — enter your email or phone to receive a one-time code.
           </p>
         </div>
 
