@@ -77,18 +77,6 @@ export function Navbar() {
             </Link>
           ))}
 
-          {/* Safe+ Vault — only shown when signed in */}
-          {user?.safePlusActive && (
-            <Link
-              href="/vault"
-              className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-              style={{ color: location === "/vault" ? AMBER : "rgba(77,159,219,0.7)" }}
-            >
-              <Archive className="h-3.5 w-3.5" />
-              Safe+
-            </Link>
-          )}
-
           {/* More dropdown */}
           <div className="relative">
             <button
@@ -116,7 +104,18 @@ export function Navbar() {
         </nav>
 
         {/* Desktop right side */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
+          {/* Safe+ Vault button — only when signed in */}
+          {user && (
+            <Link
+              href="/vault"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-90"
+              style={{ backgroundColor: AMBER, color: "#fff" }}
+            >
+              <Archive className="h-3 w-3" /> Safe+
+            </Link>
+          )}
+
           {user ? (
             /* ── Signed-in account widget ── */
             <div className="relative" ref={accountRef}>
@@ -141,15 +140,13 @@ export function Navbar() {
                     <p className="text-xs font-bold text-white truncate">{user.name}</p>
                     <p className="text-[10px] truncate mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>{user.email}</p>
                   </div>
-                  {user.safePlusActive && (
-                    <Link
-                      href="/vault"
-                      className="flex items-center gap-3 px-4 py-3 text-sm transition-colors border-b"
-                      style={{ color: AMBER, borderColor: DIV }}
-                    >
-                      <Archive className="h-3.5 w-3.5" /> My Safe+ Vault
-                    </Link>
-                  )}
+                  <Link
+                    href="/vault"
+                    className="flex items-center gap-3 px-4 py-3 text-sm transition-colors border-b"
+                    style={{ color: AMBER, borderColor: DIV }}
+                  >
+                    <Archive className="h-3.5 w-3.5" /> My Safe+ Vault
+                  </Link>
                   <button
                     onClick={() => signOut()}
                     className="w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors text-left"
@@ -197,8 +194,8 @@ export function Navbar() {
               </Link>
             ))}
 
-            {/* Safe+ Vault in mobile nav */}
-            {user?.safePlusActive && (
+            {/* Safe+ Vault in mobile nav — shown whenever signed in */}
+            {user && (
               <Link
                 href="/vault"
                 className="py-3 text-sm font-medium border-b flex items-center gap-2"
