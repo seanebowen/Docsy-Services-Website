@@ -19,7 +19,7 @@ function fmtExpiry(v: string) {
 }
 
 type PlanKey =
-  | "starter" | "pro" | "express"
+  | "starter" | "pro" | "elite"
   | "storage-personal" | "storage-family" | "storage-professional";
 
 interface PlanInfo {
@@ -38,12 +38,11 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     priceLabel: "$15/mo",
     type: "membership",
     features: [
-      "1 free notarization/month (RON or mobile)",
-      "10% off all additional services",
-      "Priority hours — 7am–9am & 9pm–midnight",
-      "No after-hours or late-night surcharges",
-      "30-day rollover on unused notarization",
-      "20% off Docsy Safe+ subscription",
+      "Free Docsy Safe+ subscription",
+      "Fee-free priority bookings",
+      "50% off 1 notarization/month (RON or mobile)",
+      "10% off mobile fees",
+      "30-day rollover on unused notarization credit",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -53,27 +52,28 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     priceLabel: "$30/mo",
     type: "membership",
     features: [
-      "2 free notarizations/month",
-      "15% off all services",
-      "50% off travel fees",
-      "Priority hours — 7am–9am & 9pm–midnight",
-      "No after-hours or late-night surcharges",
-      "Transcript deposit waived",
-      "35% off Safe+ subscription",
+      "Free Docsy Safe+ subscription",
+      "Fee-free priority bookings",
+      "1 free notarization/month (RON or mobile)",
+      "15% off mobile fees",
+      "30-day rollover on unused notarization",
+      "Birthday notarization — 1 bonus free notarization in your birth month",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
-  express: {
-    name: "Docsy Express Pass™",
+  elite: {
+    name: "Docsy+ Elite",
     price: 49,
     priceLabel: "$49/mo",
     type: "membership",
     features: [
-      "Unlimited RON (fair use)",
-      "Priority hours — 7am–9am & 9pm–midnight",
-      "No after-hours or late-night surcharges",
-      "1 free mobile travel/month",
-      "Best value for frequent RON signers",
+      "Free Docsy Safe+ subscription",
+      "Fee-free priority bookings",
+      "2 free notarizations/month (RON or mobile)",
+      "20% off mobile fees",
+      "30-day rollover on unused notarizations",
+      "Birthday notarization — 1 bonus free notarization in your birth month",
+      "1 free mobile travel waiver/month",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },

@@ -302,15 +302,15 @@ export default function Estimator() {
   const [courtOn, setCourtOn] = useState(false);
 
   /* add-on subscriptions */
-  const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "express">(null);
+  const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "elite">(null);
 
   /* Language Line interpreter state */
   const [llOn,       setLlOn]       = useState(false);
   const [llTier,     setLlTier]     = useState<LLTier>("t1");
   const [llDuration, setLlDuration] = useState<LLDuration>(15);
 
-  const MEMBERSHIP_PRICES = { starter: 15, pro: 30, express: 49 } as const;
-  const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", express: "Docsy Express Pass™" } as const;
+  const MEMBERSHIP_PRICES = { starter: 15, pro: 30, elite: 49 } as const;
+  const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", elite: "Docsy+ Elite" } as const;
   const membershipMonthly = membershipPlan ? MEMBERSHIP_PRICES[membershipPlan] : 0;
   const monthlyTotal      = membershipMonthly;
 
@@ -1039,9 +1039,9 @@ export default function Estimator() {
                 <div className="space-y-2">
                   <RowLabel>Select a membership tier</RowLabel>
                   <div className="border" style={{ borderColor: DIV }}>
-                    <RadioRow label="Docsy+ Starter — 1 free notarization/mo, 10% off services, priority hours" price="$15/mo" selected={membershipPlan === "starter"} onClick={() => setMembershipPlan("starter")} />
-                    <RadioRow label="Docsy+ Pro — 2 free notarizations/mo, 15% off, 50% off travel, priority hours" price="$30/mo" selected={membershipPlan === "pro"} onClick={() => setMembershipPlan("pro")} />
-                    <RadioRow label="Docsy Express Pass™ — Unlimited RON, 1 free mobile travel/mo, priority hours" price="$49/mo" selected={membershipPlan === "express"} onClick={() => setMembershipPlan("express")} />
+                    <RadioRow label="Docsy+ Starter — 50% off 1 notarization/mo, 10% off mobile fees, Safe+ included" price="$15/mo" selected={membershipPlan === "starter"} onClick={() => setMembershipPlan("starter")} />
+                    <RadioRow label="Docsy+ Pro — 1 free notarization/mo, 15% off mobile fees, birthday notarization" price="$30/mo" selected={membershipPlan === "pro"} onClick={() => setMembershipPlan("pro")} />
+                    <RadioRow label="Docsy+ Elite — 2 free notarizations/mo, 20% off mobile fees, 1 free travel waiver/mo" price="$49/mo" selected={membershipPlan === "elite"} onClick={() => setMembershipPlan("elite")} />
                   </div>
                   <p className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
                     First month billed at booking. Renews monthly — cancel any time.
