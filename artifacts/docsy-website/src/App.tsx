@@ -26,6 +26,7 @@ import BookingConfirmation from "@/pages/BookingConfirmation";
 import Contact from "@/pages/Contact";
 import MembershipCheckout from "@/pages/MembershipCheckout";
 import About from "@/pages/About";
+import LanguageLine from "@/pages/LanguageLine";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ function Router() {
       <Route path="/vault" component={SafeVault} />
       <Route path="/contact" component={Contact} />
       <Route path="/about" component={About} />
+      <Route path="/language-line" component={LanguageLine} />
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
     </Switch>

@@ -122,6 +122,19 @@ type ApostilleTurnaround = "standard" | "nextday" | "sameday";
 type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
 type TranscriptSpeed = "14day" | "7day" | "3day" | "sameday";
+type LLTier     = "t1" | "t2" | "t3";
+type LLDuration = 15 | 30 | 60;
+
+const LL_PRICES: Record<LLTier, Record<LLDuration, number>> = {
+  t1: { 15: 32,  30: 62,  60: 125 },
+  t2: { 15: 45,  30: 88,  60: 175 },
+  t3: { 15: 68,  30: 135, 60: 275 },
+};
+const LL_TIER_LABELS: Record<LLTier, string> = {
+  t1: "Spanish",
+  t2: "Common Languages",
+  t3: "Premium Languages",
+};
 
 interface RONState   { docs: number; witness: number; signers: number; }
 interface GNWState   { seals: number; witness: number; signers: number; address: string; }
@@ -291,6 +304,11 @@ export default function Estimator() {
   /* add-on subscriptions */
   const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "express">(null);
 
+  /* Language Line interpreter state */
+  const [llOn,       setLlOn]       = useState(false);
+  const [llTier,     setLlTier]     = useState<LLTier>("t1");
+  const [llDuration, setLlDuration] = useState<LLDuration>(15);
+
   const MEMBERSHIP_PRICES = { starter: 15, pro: 30, express: 49 } as const;
   const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", express: "Docsy Express Pass™" } as const;
   const membershipMonthly = membershipPlan ? MEMBERSHIP_PRICES[membershipPlan] : 0;
@@ -351,7 +369,8 @@ export default function Estimator() {
   const loanTotal  = loanOn  ? calcLoan(loan)      : 0;
   const apostTotal = apostOn ? calcApostille(apost) : 0;
   const courtTotal = courtOn ? calcCourt(court)    : 0;
-  const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal;
+  const llTotal       = llOn ? LL_PRICES[llTier][llDuration] : 0;
+  const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
   const grandTotal    = servicesTotal + monthlyTotal;
 
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
@@ -366,7 +385,8 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = ronOn || gnwOn || loanOn || apostOn || courtOn || membershipPlan !== null;
+  const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
+  const anySelected = anyServiceActive || membershipPlan !== null || llOn;
 
   const [, setLocation] = useLocation();
 
@@ -381,13 +401,16 @@ export default function Estimator() {
       courtOn    && { name: "Court Reporting",                                                                              amount: courtTotal },
       travelTotal > 0 && { name: "Travel & Scheduling", amount: travelTotal },
       membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (monthly)`, amount: membershipMonthly, monthly: true },
+      llOn && { name: `Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} × ${llDuration} min`, amount: llTotal },
     ].filter(Boolean) as { name: string; amount: number; monthly?: boolean }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({
       services, total: grandTotal, baseTotal, hasRON: ronOn,
       membershipPlan,
+      interpreterTier: llOn ? llTier : null,
+      interpreterMinutes: llOn ? llDuration : null,
     }));
     setLocation("/booking");
-  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly]);
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly, llOn, llTier, llDuration, llTotal]);
 
   /* helpers */
   const upG = useCallback((patch: Partial<GNWState>)      => setGnw(p    => ({ ...p, ...patch })), []);
@@ -920,6 +943,70 @@ export default function Estimator() {
               </ServiceCard>
               </FadeIn>
 
+              {/* ── Language Line Interpreter Add-On ── */}
+              {anyServiceActive && (
+                <>
+                  <FadeIn delay={0} threshold={0.01}>
+                    <div className="px-6 py-4 border-b border-t mt-2" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[ADD-ON]</span>
+                        <span className="text-sm font-black text-white">Interpreter / Language Line</span>
+                        <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>On demand</span>
+                      </div>
+                      <p className="text-xs font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.3)" }}>
+                        Real-time interpreter support via Language Line Solutions — available for any service.{" "}
+                        <Link href="/language-line" style={{ color: AMBER, textDecoration: "underline" }}>Learn more →</Link>
+                      </p>
+                    </div>
+                  </FadeIn>
+                  <FadeIn delay={0} threshold={0.05}>
+                  <ServiceCard
+                    num="06" title="Interpreter Service"
+                    desc="Real-time Language Line interpreter — Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. No advance notice required."
+                    startingAt="$32"
+                    active={llOn} onToggle={() => setLlOn(o => !o)}
+                  >
+                    <div className="space-y-5">
+                      <div>
+                        <RowLabel>Language tier</RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          <RadioRow
+                            label="Tier 1 — Spanish"
+                            price={`$${LL_PRICES.t1[llDuration]}`}
+                            selected={llTier === "t1"}
+                            onClick={() => setLlTier("t1")}
+                          />
+                          <RadioRow
+                            label="Tier 2 — Common Languages (French, Portuguese, Vietnamese, Tagalog, Korean, German, Italian, Russian)"
+                            price={`$${LL_PRICES.t2[llDuration]}`}
+                            selected={llTier === "t2"}
+                            onClick={() => setLlTier("t2")}
+                          />
+                          <RadioRow
+                            label="Tier 3 — Premium Languages (Mandarin, Cantonese, Arabic, Japanese, Hindi, and all others)"
+                            price={`$${LL_PRICES.t3[llDuration]}`}
+                            selected={llTier === "t3"}
+                            onClick={() => setLlTier("t3")}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <RowLabel>Block duration <span style={{ color: "rgba(255,255,255,0.3)", fontWeight: 300 }}>(sold in fixed blocks — no partial blocks)</span></RowLabel>
+                        <div className="border" style={{ borderColor: DIV }}>
+                          <RadioRow label="15 minutes" price={`$${LL_PRICES[llTier][15]}`} selected={llDuration === 15} onClick={() => setLlDuration(15)} />
+                          <RadioRow label="30 minutes" price={`$${LL_PRICES[llTier][30]}`} selected={llDuration === 30} onClick={() => setLlDuration(30)} />
+                          <RadioRow label="60 minutes" price={`$${LL_PRICES[llTier][60]}`} selected={llDuration === 60} onClick={() => setLlDuration(60)} />
+                        </div>
+                        <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          Minimum 15 minutes. Overage billed in 15-min increments at the applicable tier rate. Collected upfront alongside your service fee.
+                        </p>
+                      </div>
+                    </div>
+                  </ServiceCard>
+                  </FadeIn>
+                </>
+              )}
+
               {/* ── Add-Ons Header ── */}
               <FadeIn delay={0} threshold={0.01}>
                 <div className="px-6 py-4 border-b border-t mt-2" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
@@ -937,7 +1024,7 @@ export default function Estimator() {
               {/* ── Docsy+ Membership ── */}
               <FadeIn delay={0} threshold={0.05}>
               <ServiceCard
-                num="06" title="Docsy+ Membership"
+                num="07" title="Docsy+ Membership"
                 desc="Monthly membership with free notarizations, service discounts, and priority scheduling."
                 startingAt="$15/mo"
                 active={membershipPlan !== null}
@@ -986,6 +1073,7 @@ export default function Estimator() {
                     {courtOn           && <SummaryLine label="Court Reporting" amount={courtTotal} />}
                     {gnwTierTotal > 0  && <SummaryLine label="↳ GNW Travel" amount={gnwTierTotal} />}
                     {extendedFee > 0   && <SummaryLine label="↳ Extended Distance (40+ mi)" amount={extendedFee} />}
+                    {llOn && <SummaryLine label={`↳ Interpreter — ${LL_TIER_LABELS[llTier]} (${llDuration} min)`} amount={llTotal} />}
 
                     {gnwTravelWaived && travel.tier < 4 && gnwOn && (
                       <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>

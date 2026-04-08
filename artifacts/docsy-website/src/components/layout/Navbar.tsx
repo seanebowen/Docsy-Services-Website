@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, HelpCircle, MessageSquare, Tag, Calculator, ChevronDown, Phone, Archive, LogOut, User, Info } from "lucide-react";
+import { Menu, X, HelpCircle, MessageSquare, Tag, Calculator, ChevronDown, Phone, Archive, LogOut, User, Info, Languages } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const SLATE = "#131929";
@@ -22,7 +22,8 @@ const moreLinks = [
   { href: "/faq",         label: "FAQ",              icon: HelpCircle },
   { href: "/help-center", label: "Help Center",      icon: MessageSquare },
   { href: "/promos",      label: "Promotions",       icon: Tag },
-  { href: "/contact",     label: "Contact Us",       icon: Phone },
+  { href: "/language-line", label: "Language Line",   icon: Languages },
+  { href: "/contact",       label: "Contact Us",       icon: Phone },
 ];
 
 export function Navbar() {
