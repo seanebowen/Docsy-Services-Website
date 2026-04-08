@@ -820,7 +820,7 @@ export default function Estimator() {
                       )}
                       {apost.turnaround === "sameday" && (
                         <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Mobile pickup required and included — Docsy comes to you before 9 AM. No inbound label. Drives to Austin immediately. FedEx overnight return. A free pre-check is required before this order is confirmed.
+                          Mobile pickup required and included — Docsy comes to you before 9 AM. No inbound label. Drives to Austin immediately. Return: FedEx overnight (next business day) or same-day in-person pickup from Docsy. A free pre-check is required before this order is confirmed.
                         </p>
                       )}
                     </div>
