@@ -137,21 +137,78 @@ export default function BookingPayment() {
   const cvvOk    = cvv.length >= 3;
   const formOk   = nameOk && numOk && expOk && cvvOk;
 
+  /* ── Build Zapier webhook payload from booking + form state ── */
+  function buildZapierPayload(b: BookingData, cardName: string, cardLast4: string | null) {
+    const svcNames = (b.estimate?.services ?? []).map(s => s.name.toLowerCase()).join(" ");
+    const inferDivision = () => {
+      if (svcNames.includes("remote online"))  return "RON";
+      if (svcNames.includes("loan signing"))   return "Loan Signing";
+      if (svcNames.includes("general notary")) return "Mobile Notary";
+      if (svcNames.includes("apostille"))      return "Apostille";
+      if (svcNames.includes("court"))          return "Court Reporting";
+      return "General";
+    };
+    const inferDuration = () => {
+      if (svcNames.includes("remote online"))  return 30;
+      if (svcNames.includes("loan signing"))   return 90;
+      if (svcNames.includes("general notary")) return 60;
+      if (svcNames.includes("apostille"))      return 30;
+      if (svcNames.includes("court"))          return 240;
+      return 60;
+    };
+    const inferLocationType = () => {
+      if (svcNames.includes("remote online") || svcNames.includes("apostille")) return "remote";
+      if (svcNames.includes("travel"))  return "inperson_travel";
+      return "inperson_local";
+    };
+    const nightShift = (b.autoPromos ?? []).some(p => p.label.toLowerCase().includes("night shift"));
+    const honorPass  = (b.promoCode ?? "").toUpperCase() === "HONORPASS";
+    const division   = inferDivision();
+
+    return {
+      client_name:       cardName || "(not provided)",
+      client_email:      "",   // collected via follow-up contact form
+      client_phone:      "",
+      division,
+      service_type:      division,
+      job_date:          b.date ? new Date(b.date).toLocaleDateString("en-US") : "",
+      job_time:          b.time ?? "",
+      duration_min:      inferDuration(),
+      location_type:     inferLocationType(),
+      location_address:  b.note ?? "",
+      amount_charged:    b.discountedTotal ?? b.estimate?.total ?? 0,
+      stripe_payment_id: cardLast4 ? `mock_${cardLast4}` : "deferred_invoice",
+      booking_source:    "Replit Form" as const,
+      night_shift_seal:  nightShift,
+      honor_pass:        honorPass,
+    };
+  }
+
   const handlePay = useCallback(() => {
     if (upfront && !formOk) { setTouched(true); return; }
     setSubmitting(true);
+
+    const last4 = upfront ? number.replace(/\s/g, "").slice(-4) : null;
+
     setTimeout(() => {
       try {
         const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
-        sessionStorage.setItem("docsy_booking", JSON.stringify({
-          ...current,
-          paymentCompleted: true,
-          cardLast4: upfront ? number.replace(/\s/g, "").slice(-4) : null,
-        }));
+        const updated = { ...current, paymentCompleted: true, cardLast4: last4 };
+        sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
+
+        /* ── Fire Zapier webhook (fire-and-forget; never blocks the UI) ── */
+        if (booking) {
+          const payload = buildZapierPayload(booking, name, last4);
+          fetch("/api/zapier/booking-confirmed", {
+            method:  "POST",
+            headers: { "Content-Type": "application/json" },
+            body:    JSON.stringify(payload),
+          }).catch(() => { /* webhook failure must never affect the booking UX */ });
+        }
       } catch {}
       setLocation("/booking/confirmation");
     }, 900);
-  }, [upfront, formOk, number, setLocation]);
+  }, [upfront, formOk, number, name, booking, setLocation]);
 
   const fieldBorder = (ok: boolean) =>
     touched && !ok ? RED : DIV;

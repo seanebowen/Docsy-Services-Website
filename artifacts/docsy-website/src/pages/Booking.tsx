@@ -229,6 +229,16 @@ function BookingModal({
   );
 }
 
+/* ── Slot formatting helpers ──────────────────────────────── */
+function hhmm24to12(hhmm: string): string {
+  const [h, m] = hhmm.split(":").map(Number);
+  const period = h >= 12 ? "PM" : "AM";
+  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return `${h12}:${String(m).padStart(2, "0")} ${period}`;
+}
+
+function slotHour(hhmm: string): number { return Number(hhmm.split(":")[0]); }
+
 /* ── Main page ── */
 export default function Booking() {
   const [, setLocation] = useLocation();
@@ -239,6 +249,11 @@ export default function Booking() {
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
   const [isMember,  setIsMember]      = useState(false);
+
+  /* ── Live slot state (fetched from API) ── */
+  const [apiSlots,     setApiSlots]     = useState<string[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [slotsError,   setSlotsError]   = useState<string | null>(null);
 
   /* Services with deliverables — gates Safe+ trial offer */
   const hasDeliverables = estimate
@@ -322,6 +337,46 @@ export default function Booking() {
       if (stored) setEstimate(JSON.parse(stored));
     } catch {}
   }, []);
+
+  /* ── Fetch available slots whenever date, service, or member status changes ── */
+  useEffect(() => {
+    if (!selectedDate) { setApiSlots([]); return; }
+
+    const yyyy = selectedDate.getFullYear();
+    const mm   = String(selectedDate.getMonth() + 1).padStart(2, "0");
+    const dd   = String(selectedDate.getDate()).padStart(2, "0");
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    const serviceNames = estimate?.services.map(s => s.name) ?? [];
+    const params = new URLSearchParams({
+      date:         dateStr,
+      serviceNames: serviceNames.join(","),
+      isMember:     String(isMember),
+    });
+
+    let cancelled = false;
+    setSlotsLoading(true);
+    setSlotsError(null);
+    setApiSlots([]);
+
+    fetch(`/api/slots?${params.toString()}`)
+      .then(r => r.json() as Promise<{ ok: boolean; slots?: string[]; error?: string; warning?: string }>)
+      .then(data => {
+        if (cancelled) return;
+        if (data.ok) {
+          setApiSlots(data.slots ?? []);
+          setSlotsError(null);
+        } else {
+          setSlotsError(data.error ?? "Failed to load available times.");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setSlotsError("Network error loading available times.");
+      })
+      .finally(() => { if (!cancelled) setSlotsLoading(false); });
+
+    return () => { cancelled = true; };
+  }, [selectedDate, estimate, isMember]);
 
   const prevMonth = () => {
     if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1); }
@@ -484,77 +539,111 @@ export default function Booking() {
                       </label>
                     </div>
 
-                    {/* Priority AM block (members only) */}
-                    {isMember && (
+                    {/* Loading spinner */}
+                    {slotsLoading && (
+                      <div className="flex items-center gap-3 py-6">
+                        <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: BLUE, borderTopColor: "transparent" }} />
+                        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
+                          Checking availability…
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Error state */}
+                    {!slotsLoading && slotsError && (
+                      <p className="text-xs py-4" style={{ color: "#e05252" }}>{slotsError}</p>
+                    )}
+
+                    {/* No slots available */}
+                    {!slotsLoading && !slotsError && apiSlots.length === 0 && (
+                      <p className="text-[10px] leading-relaxed py-4" style={{ color: "rgba(255,255,255,0.28)" }}>
+                        No availability found for this date. Try a different day or{" "}
+                        <a href="tel:+12104179614" style={{ color: BLUE }}>call us</a> to discuss options.
+                      </p>
+                    )}
+
+                    {/* Priority AM block (members only, hours 7–8) */}
+                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) < 9) && (
                       <div className="mb-3">
                         <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
-                          ◆ Priority AM — 7am–9am
+                          ◆ Priority AM — Early Hours
                         </p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {MEMBER_SLOTS.filter(s => s.priority && s.label.includes("AM") && !s.label.includes("12")).map(slot => (
-                            <button
-                              key={slot.label}
-                              onClick={() => setSelectedTime(slot.label)}
-                              className="py-2.5 text-xs font-bold border transition-colors relative"
-                              style={{
-                                borderColor:     selectedTime === slot.label ? BLUE : BLUE + "55",
-                                color:           selectedTime === slot.label ? "#000" : BLUE,
-                                backgroundColor: selectedTime === slot.label ? BLUE : "rgba(77,159,219,0.07)",
-                              }}
-                            >{slot.label}</button>
-                          ))}
+                          {apiSlots.filter(s => slotHour(s) < 9).map(slot => {
+                            const label = hhmm24to12(slot);
+                            return (
+                              <button
+                                key={slot}
+                                onClick={() => setSelectedTime(label)}
+                                className="py-2.5 text-xs font-bold border transition-colors"
+                                style={{
+                                  borderColor:     selectedTime === label ? BLUE : BLUE + "55",
+                                  color:           selectedTime === label ? "#000" : BLUE,
+                                  backgroundColor: selectedTime === label ? BLUE : "rgba(77,159,219,0.07)",
+                                }}
+                              >{label}</button>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
 
-                    {/* General slots */}
-                    <div className={isMember ? "mb-3" : ""}>
-                      {isMember && (
-                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                          General — 9am–9pm
-                        </p>
-                      )}
-                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                        {GENERAL_SLOTS.map(slot => (
-                          <button
-                            key={slot.label}
-                            onClick={() => setSelectedTime(slot.label)}
-                            className="py-2.5 text-xs font-bold border transition-colors"
-                            style={{
-                              borderColor:     selectedTime === slot.label ? BLUE : DIV,
-                              color:           selectedTime === slot.label ? BLUE : "rgba(255,255,255,0.45)",
-                              backgroundColor: selectedTime === slot.label ? "rgba(77,159,219,0.1)" : "transparent",
-                            }}
-                          >{slot.label}</button>
-                        ))}
+                    {/* General slots (hours 9–21) */}
+                    {!slotsLoading && apiSlots.some(s => slotHour(s) >= 9 && slotHour(s) <= 21) && (
+                      <div className={isMember ? "mb-3" : ""}>
+                        {isMember && (
+                          <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                            General — Standard Hours
+                          </p>
+                        )}
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          {apiSlots.filter(s => slotHour(s) >= 9 && slotHour(s) <= 21).map(slot => {
+                            const label = hhmm24to12(slot);
+                            return (
+                              <button
+                                key={slot}
+                                onClick={() => setSelectedTime(label)}
+                                className="py-2.5 text-xs font-bold border transition-colors"
+                                style={{
+                                  borderColor:     selectedTime === label ? BLUE : DIV,
+                                  color:           selectedTime === label ? BLUE : "rgba(255,255,255,0.45)",
+                                  backgroundColor: selectedTime === label ? "rgba(77,159,219,0.1)" : "transparent",
+                                }}
+                              >{label}</button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Priority PM block (members only) */}
-                    {isMember && (
+                    {/* Priority PM block (members only, hours 22–23) */}
+                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) >= 22) && (
                       <div>
                         <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
-                          ◆ Priority PM — 10pm–midnight
+                          ◆ Priority PM — Late Hours
                         </p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {MEMBER_SLOTS.filter(s => s.priority && s.label.includes("PM")).map(slot => (
-                            <button
-                              key={slot.label}
-                              onClick={() => setSelectedTime(slot.label)}
-                              className="py-2.5 text-xs font-bold border transition-colors"
-                              style={{
-                                borderColor:     selectedTime === slot.label ? BLUE : BLUE + "55",
-                                color:           selectedTime === slot.label ? "#000" : BLUE,
-                                backgroundColor: selectedTime === slot.label ? BLUE : "rgba(77,159,219,0.07)",
-                              }}
-                            >{slot.label}</button>
-                          ))}
+                          {apiSlots.filter(s => slotHour(s) >= 22).map(slot => {
+                            const label = hhmm24to12(slot);
+                            return (
+                              <button
+                                key={slot}
+                                onClick={() => setSelectedTime(label)}
+                                className="py-2.5 text-xs font-bold border transition-colors"
+                                style={{
+                                  borderColor:     selectedTime === label ? BLUE : BLUE + "55",
+                                  color:           selectedTime === label ? "#000" : BLUE,
+                                  backgroundColor: selectedTime === label ? BLUE : "rgba(77,159,219,0.07)",
+                                }}
+                              >{label}</button>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
 
-                    {/* Non-member outside-window message */}
-                    {!isMember && (
+                    {/* Non-member outside-window note */}
+                    {!isMember && !slotsLoading && (
                       <p className="text-[10px] leading-relaxed mt-3" style={{ color: "rgba(255,255,255,0.28)" }}>
                         Need a time before 9 AM or after 9 PM? Those slots are reserved for{" "}
                         <Link href="/memberships" style={{ color: BLUE }}>Docsy+ members</Link>.{" "}
@@ -565,7 +654,7 @@ export default function Booking() {
                     )}
 
                     {/* Member surcharge exemption note */}
-                    {isMember && (
+                    {isMember && !slotsLoading && (
                       <p className="text-[10px] leading-relaxed mt-3" style={{ color: BLUE + "99" }}>
                         ✓ After-hours and late-night surcharges waived for Docsy+ members.
                       </p>
