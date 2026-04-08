@@ -47,8 +47,6 @@ const TIERS = [
     personal: "$215",
     business: "$240",
     note: "Must be received by Docsy by 11 AM. Apostilled same day in Austin. FedEx overnight return.",
-    featured: true,
-    includedLabel: "Fastest available",
     included: [
       "TX SOS filing fee",
       "In-person Austin submission",
@@ -60,6 +58,8 @@ const TIERS = [
   },
   {
     name: "Same-Day Sprint",
+    featured: true,
+    includedLabel: "Fastest available",
     subtitle: "Docsy mobile pickup before 9 AM",
     personal: "$240",
     business: "$265",
