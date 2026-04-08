@@ -57,11 +57,11 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
   const autoHas = (kw: string) => appliedAuto.some(p => p.label.toLowerCase().includes(kw.toLowerCase()));
   switch (n) {
     case "HONORPASS":
-      return { label: "HonorPass — 10% Off Base Service Fee", amount: -Math.round(base * 0.10) };
+      return { label: "HonorPass — 10% Off Base Service Fee", amount: -(Math.round(base * 0.10 * 100) / 100) };
     case "WEEKENDWARRIOR": {
       if (autoHas("weekend warrior")) return null;
       const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
-      return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) } : null;
+      return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) } : null;
     }
     case "EARLYBIRDSEAL":
       if (autoHas("early bird")) return null;
@@ -306,7 +306,7 @@ export default function Booking() {
       result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });
     if (has("loan signing") && isWeekend) {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
-      if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -Math.round(ln.amount * 0.20) });
+      if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) });
     }
     // Apostille bundle — rate already baked in, show as applied note
     const apostSvc = estimate.services.find(s =>
