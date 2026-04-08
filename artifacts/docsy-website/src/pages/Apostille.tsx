@@ -63,13 +63,13 @@ const TIERS = [
     subtitle: "Docsy mobile pickup before 9 AM",
     personal: "$240",
     business: "$265",
-    note: "Mobile pickup only. Docsy picks up before 9 AM, drives to Austin immediately. Return: FedEx overnight (24 hrs) or same-day in-person pickup from Docsy.",
+    note: "Mobile pickup only. Docsy picks up before 9 AM, drives to Austin immediately. Return: FedEx overnight (24 hrs) or same-day drop-off by Docsy.",
     included: [
       "Mobile pickup (SA metro, before 9 AM)",
       "TX SOS filing fee",
       "In-person Austin submission",
       "FedEx overnight return (tracked) — 24 hrs",
-      "OR same-day in-person pickup from Docsy",
+      "OR same-day drop-off by Docsy",
       "Digital certified scan",
       "30-day Safe+ vault trial",
     ],
@@ -114,8 +114,8 @@ const TIMELINE_ROWS = [
     method: "Mobile Pickup (before 9 AM)",
     inbound: "Same day receipt",
     sos: "Same day in Austin",
-    returnShip: "FedEx Overnight (24 hrs) or same-day pickup",
-    total: "Same day (pickup) or next day (FedEx)",
+    returnShip: "FedEx Overnight (24 hrs) or same-day drop-off by Docsy",
+    total: "Same day (Docsy drop-off) or next day (FedEx)",
   },
 ];
 
@@ -260,8 +260,8 @@ export default function Apostille() {
                   },
                   {
                     label: "Same-Day Sprint",
-                    desc: "Docsy mobile pickup Monday before 9 AM → Drives to Austin Monday → Apostilled Monday → FedEx overnight or you pick it up from Docsy same day.",
-                    result: "You receive: Monday (in-person pickup) or Tuesday (FedEx overnight).",
+                    desc: "Docsy mobile pickup Monday before 9 AM → Drives to Austin Monday → Apostilled Monday → FedEx overnight (Tuesday) or Docsy drops it off to you same day (Monday).",
+                    result: "You receive: Monday (Docsy drops it off) or Tuesday (FedEx overnight).",
                   },
                 ].map((ex) => (
                   <div key={ex.label} className="flex gap-4 border-l-2 pl-5" style={{ borderColor: DIV }}>
