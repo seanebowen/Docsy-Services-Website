@@ -151,8 +151,11 @@ export default function Promos() {
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.3)" }}
               >Verification Required</span>
             </div>
-            <p className="text-[11px] text-white/20 mb-8 max-w-xl">
+            <p className="text-[11px] text-white/20 mb-2 max-w-xl">
               HonorPass is not a promotion — it is a permanent discount for those who have served. It does not expire and is not time-limited. Verification is required once per client account.
+            </p>
+            <p className="text-[11px] font-bold mb-8 max-w-xl" style={{ color: BLUE }}>
+              ★ HonorPass stacks with every other Docsy promotion. Verified members and Safe+ holders have it saved and auto-applied on every future transaction — no code needed.
             </p>
           </FadeIn>
 
@@ -166,9 +169,15 @@ export default function Promos() {
                 >10% OFF</span>
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Military & Those Who Served · All services</p>
-              <p className="text-sm text-white/40 leading-relaxed">
-                For those who have served in the US military. Valid military ID or DD-214 required — verified once, applied permanently to your account. Applies to base service fees on any Docsy service. Cannot combine with time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) or any other discount on the same appointment. One discount per appointment.
+              <p className="text-sm text-white/40 leading-relaxed mb-4">
+                For those who have served in the US military. Valid military ID or DD-214 required — verified once, applied permanently to your account. Applies to base service fees on any Docsy service.
               </p>
+              <div className="border px-5 py-4" style={{ borderColor: BLUE + "55", backgroundColor: BLUE + "0d" }}>
+                <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: BLUE }}>Stackable — unlike any other discount</p>
+                <p className="text-sm leading-relaxed" style={{ color: IVORY }}>
+                  HonorPass combines with every Docsy promotion — time-window promos, Weekend Warrior, everything. Subject to one-time eligibility verification. Once verified, Docsy+ members and Safe+ holders have it saved and auto-applied on all future transactions. No code ever needed again.
+                </p>
+              </div>
             </div>
           </FadeIn>
         </div>
@@ -213,7 +222,7 @@ export default function Promos() {
               One time-window promo<br />per appointment.
             </h2>
             <p className="text-lg font-light text-white/50 leading-relaxed">
-              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass does not stack with time-window promos or any other discount — it applies alone, one discount per appointment.
+              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass is the exception — it stacks with every other promotion on the same appointment, subject to one-time eligibility verification.
             </p>
           </FadeIn>
         </div>

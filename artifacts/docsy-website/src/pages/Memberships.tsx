@@ -236,7 +236,8 @@ export default function Memberships() {
                   <p className="text-base font-black text-white">HonorPass™</p>
                   <p className="text-sm font-bold" style={{ color: IVORY }}>10% off — always</p>
                 </div>
-                <p className="text-sm text-white/40">For those who have served in the US military. No monthly fee. Valid ID or DD-214 required. Applies to base service fees.</p>
+                <p className="text-sm text-white/40 mb-3">For those who have served in the US military. No monthly fee. Valid ID or DD-214 required. Applies to base service fees.</p>
+                <p className="text-xs font-bold" style={{ color: BLUE }}>★ Stacks with all promos. Verified members and Safe+ holders have it saved and auto-applied — no code needed.</p>
               </div>
             </div>
           </FadeIn>
