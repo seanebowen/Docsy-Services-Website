@@ -377,7 +377,7 @@ export default function Estimator() {
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
     ? (apost.turnaround === "nextday" ? 50 : 75)
     : 0;
-  const apostilleAddonLabel = apost.turnaround === "nextday" ? "Next-Day Turnaround" : "Same-Day Rush Turnaround";
+  const apostilleAddonLabel = apost.turnaround === "nextday" ? "Next-Day Rush" : "Same-Day Sprint";
 
   const baseTotal = (ronOn         ? calcRONBase(ron)        : 0)
                   + (gnwOn         ? calcGNWBase(gnw)        : 0)
@@ -392,6 +392,13 @@ export default function Estimator() {
   React.useEffect(() => {
     if (!anyServiceActive) setLlOn(false);
   }, [anyServiceActive]);
+
+  /* Same-Day Sprint is drop-off only — clear mobile pickup if selected */
+  React.useEffect(() => {
+    if (apost.turnaround === "sameday" && apost.mobile) {
+      upA({ mobile: false });
+    }
+  }, [apost.turnaround, apost.mobile]);
 
   const [, setLocation] = useLocation();
 
@@ -789,21 +796,31 @@ export default function Estimator() {
                           onClick={() => upA({ turnaround: "standard" })}
                         />
                         <RadioRow
-                          label="Next-Day"
-                          price="+$50 add-on"
+                          label="Next-Day Rush — Docsy drives to Austin same day (11 AM receipt cutoff)"
+                          price="+$50"
                           selected={apost.turnaround === "nextday"}
                           onClick={() => upA({ turnaround: "nextday" })}
                         />
                         <RadioRow
-                          label="Same-Day Rush (order before 10 AM)"
-                          price="+$75 add-on"
+                          label="Same-Day Sprint — drop-off by 9 AM only, FedEx overnight return"
+                          price="+$75"
                           selected={apost.turnaround === "sameday"}
                           onClick={() => upA({ turnaround: "sameday" })}
                         />
                       </div>
                       {apost.turnaround === "standard" && (
                         <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Standard turnaround is subject to the Texas Secretary of State's processing times and is processed by mail. Turnaround can vary and is not guaranteed. Choose Next-Day or Same-Day if your timeline is firm.
+                          Turnaround subject to TX SOS processing (typically 5–10 business days). Not guaranteed. Choose Next-Day Rush or Same-Day Sprint if your timeline is firm.
+                        </p>
+                      )}
+                      {apost.turnaround === "nextday" && (
+                        <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          Docsy hand-delivers to TX SOS in Austin on receipt day. Document must reach Docsy by 11 AM. A free pre-check is required before any Rush order is confirmed. FedEx overnight return.
+                        </p>
+                      )}
+                      {apost.turnaround === "sameday" && (
+                        <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
+                          Drop-off only — document must be in hand at Docsy by 9 AM. No inbound label. Docsy drives to Austin immediately. FedEx overnight return. A free pre-check is required before this order is confirmed.
                         </p>
                       )}
                     </div>
@@ -823,26 +840,28 @@ export default function Estimator() {
                     </div>
                   </div>
 
+                  {apost.turnaround !== "sameday" && (
                   <div>
                     <RowLabel>Document delivery method</RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
                       <RadioRow label="Mail-in / drop-off" price="no travel fee" selected={!apost.mobile} onClick={() => upA({ mobile: false })} />
-                      <RadioRow label="Mobile pickup — notary comes to you" price="base travel included" selected={apost.mobile} onClick={() => upA({ mobile: true })} />
+                      <RadioRow label="Mobile pickup (SA metro) — Docsy picks up from you" price="included" selected={apost.mobile} onClick={() => upA({ mobile: true })} />
                     </div>
                     <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
-                      Mobile pickup includes base travel. Extended distance (40+ miles) billed separately.
+                      Mobile pickup covers SA metro. Extended radius (21–40 mi) is +$30 — add that to your quote.
                     </p>
                   </div>
+                  )}
 
                   <div>
                     <RowLabel>
-                      {apost.mobile ? "Pickup address" : "Mailing / drop-off address"}
+                      {apost.mobile && apost.turnaround !== "sameday" ? "Pickup address" : "Mailing / drop-off address"}
                     </RowLabel>
                     <input
                       type="text"
                       value={apost.address}
                       onChange={e => upA({ address: e.target.value })}
-                      placeholder={apost.mobile ? "Your address for mobile pickup" : "Mailing address or drop-off location"}
+                      placeholder={apost.mobile && apost.turnaround !== "sameday" ? "Your address for mobile pickup" : "Mailing address or drop-off location"}
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
                     />
