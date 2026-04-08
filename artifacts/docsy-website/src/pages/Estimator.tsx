@@ -167,13 +167,13 @@ function calcLoan(s: LoanState): number {
 
 function calcApostille(s: ApostilleState): number {
   if (s.types.length === 0) return 0;
-  const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
+  const standardBase: Record<ApostilleType, number> = { personal: 165, business: 190, federal: 275 };
   const turnaroundAddon: Record<ApostilleTurnaround, number> = { standard: 0, nextday: 50, sameday: 75 };
   const hasFederal = s.types.includes("federal");
   const nonFederal = s.types.filter(t => t !== "federal");
   let base = hasFederal ? 275 : 0;
   base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
-  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
+  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 65 : 75);
   return base + turnaroundAddon[s.turnaround];
 }
 
@@ -197,12 +197,12 @@ function calcLoanBase(s: LoanState): number { return calcLoan(s); }
 function calcApostilleBase(s: ApostilleState): number {
   // base service fee only — excludes next-day / same-day turnaround add-ons
   if (s.types.length === 0) return 0;
-  const standardBase: Record<ApostilleType, number> = { personal: 150, business: 175, federal: 275 };
+  const standardBase: Record<ApostilleType, number> = { personal: 165, business: 190, federal: 275 };
   const hasFederal = s.types.includes("federal");
   const nonFederal = s.types.filter(t => t !== "federal");
   let base = hasFederal ? 275 : 0;
   base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
-  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 90 : 100);
+  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 65 : 75);
   return base;
 }
 function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
@@ -762,8 +762,8 @@ export default function Estimator() {
               <FadeIn delay={180} threshold={0.05}>
               <ServiceCard
                 num="04" title="Apostille Services"
-                desc="Texas apostille filing. State fee, digital scan, and return shipping prep all included."
-                startingAt="$150"
+                desc="Texas apostille filing. State fee, digital scan, and tracked return shipping all included."
+                startingAt="$165"
                 active={apostOn} onToggle={() => setApostOn(o => !o)}
               >
                 <div className="space-y-6">
@@ -771,8 +771,8 @@ export default function Estimator() {
                   <div>
                     <RowLabel>Document types (select all that apply)</RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
-                      <CheckRow label="Personal document" price="from $150" checked={apost.types.includes("personal")} onChange={() => toggleApostType("personal")} />
-                      <CheckRow label="Business document" price="from $175" checked={apost.types.includes("business")} onChange={() => toggleApostType("business")} />
+                      <CheckRow label="Personal document" price="from $165" checked={apost.types.includes("personal")} onChange={() => toggleApostType("personal")} />
+                      <CheckRow label="Business document" price="from $190" checked={apost.types.includes("business")} onChange={() => toggleApostType("business")} />
                       <CheckRow label="Federal / USDOS" price="$275 flat" checked={apost.types.includes("federal")} onChange={() => toggleApostType("federal")} />
                     </div>
                     <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>Federal documents are always standard turnaround at $275 flat.</p>
@@ -815,9 +815,9 @@ export default function Estimator() {
                       <Stepper value={apost.docs} onChange={v => upA({ docs: v })} />
                       <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
                         {apost.docs >= 5
-                          ? "Bundle rate — $90 each for 5+"
+                          ? "Bundle rate — $65 each for 5+"
                           : apost.docs > 1
-                            ? `+$100 each additional`
+                            ? `+$75 each additional`
                             : "First document"}
                       </span>
                     </div>
