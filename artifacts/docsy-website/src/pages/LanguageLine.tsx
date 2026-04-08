@@ -208,13 +208,13 @@ export default function LanguageLine() {
                 className="px-8 py-4 text-base font-bold text-white text-center"
                 style={{ backgroundColor: "#000" }}
               >
-                Book a service
+                Book a service →
               </Link>
               <Link
                 href="/"
                 className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black"
               >
-                View services
+                View services →
               </Link>
             </div>
           </FadeIn>

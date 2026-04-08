@@ -1079,7 +1079,7 @@ export default function Estimator() {
                     {courtOn           && <SummaryLine label="Court Reporting" amount={courtTotal} />}
                     {gnwTierTotal > 0  && <SummaryLine label="↳ GNW Travel" amount={gnwTierTotal} />}
                     {extendedFee > 0   && <SummaryLine label="↳ Extended Distance (40+ mi)" amount={extendedFee} />}
-                    {llOn && <SummaryLine label={`↳ Interpreter — ${LL_TIER_LABELS[llTier]} (${llDuration} min)`} amount={llTotal} />}
+                    {llOn && <SummaryLine label={`↳ Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} ${llDuration} min`} amount={llTotal} />}
 
                     {gnwTravelWaived && travel.tier < 4 && gnwOn && (
                       <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
