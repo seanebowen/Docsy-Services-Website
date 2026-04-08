@@ -369,6 +369,7 @@ export default function Estimator() {
   const loanTotal  = loanOn  ? calcLoan(loan)      : 0;
   const apostTotal = apostOn ? calcApostille(apost) : 0;
   const courtTotal = courtOn ? calcCourt(court)    : 0;
+  const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
   const llTotal       = (llOn && anyServiceActive) ? LL_PRICES[llTier][llDuration] : 0;
   const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
   const grandTotal    = servicesTotal + monthlyTotal;
@@ -385,7 +386,6 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
   const anySelected = anyServiceActive || membershipPlan !== null;
 
   /* Reset interpreter add-on when all services are turned off */
@@ -450,6 +450,7 @@ export default function Estimator() {
 
   const toggleLoanPkg = useCallback((key: LoanPackage) => {
     setLoan(prev => ({
+      ...prev,
       packages: prev.packages.includes(key)
         ? prev.packages.filter(k => k !== key)
         : [...prev.packages, key],
