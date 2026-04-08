@@ -22,8 +22,8 @@ const moreLinks = [
   { href: "/faq",         label: "FAQ",              icon: HelpCircle },
   { href: "/help-center", label: "Help Center",      icon: MessageSquare },
   { href: "/promos",      label: "Promotions",       icon: Tag },
-  { href: "/language-line", label: "Language Line",   icon: Languages },
-  { href: "/contact",       label: "Contact Us",       icon: Phone },
+  { href: "/contact",        label: "Contact Us",       icon: Phone },
+  { href: "/language-line",  label: "Language Line",    icon: Languages },
 ];
 
 export function Navbar() {

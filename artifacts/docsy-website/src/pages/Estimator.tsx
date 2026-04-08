@@ -369,7 +369,7 @@ export default function Estimator() {
   const loanTotal  = loanOn  ? calcLoan(loan)      : 0;
   const apostTotal = apostOn ? calcApostille(apost) : 0;
   const courtTotal = courtOn ? calcCourt(court)    : 0;
-  const llTotal       = llOn ? LL_PRICES[llTier][llDuration] : 0;
+  const llTotal       = (llOn && anyServiceActive) ? LL_PRICES[llTier][llDuration] : 0;
   const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
   const grandTotal    = servicesTotal + monthlyTotal;
 
@@ -386,7 +386,12 @@ export default function Estimator() {
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
   const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
-  const anySelected = anyServiceActive || membershipPlan !== null || llOn;
+  const anySelected = anyServiceActive || membershipPlan !== null;
+
+  /* Reset interpreter add-on when all services are turned off */
+  React.useEffect(() => {
+    if (!anyServiceActive) setLlOn(false);
+  }, [anyServiceActive]);
 
   const [, setLocation] = useLocation();
 
