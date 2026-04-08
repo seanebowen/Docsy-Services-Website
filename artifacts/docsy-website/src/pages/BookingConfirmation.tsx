@@ -19,6 +19,9 @@ interface BookingData {
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
   safePlusOptIn?:   boolean;
+  clientName?:      string;
+  clientEmail?:     string;
+  clientPhone?:     string;
 }
 
 export default function BookingConfirmation() {
@@ -88,6 +91,24 @@ export default function BookingConfirmation() {
                 {booking.promoCode && (
                   <p className="text-xs mt-2 font-bold uppercase tracking-widest" style={{ color: BLUE }}>
                     Promo: {booking.promoCode}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Contact info */}
+            {(booking?.clientName || booking?.clientEmail) && (
+              <div className="px-8 py-6 border-b" style={{ borderColor: DIV }}>
+                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>Contact</p>
+                {booking.clientName && (
+                  <p className="text-sm font-bold text-white">{booking.clientName}</p>
+                )}
+                {booking.clientEmail && (
+                  <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>{booking.clientEmail}</p>
+                )}
+                {booking.clientPhone && (
+                  <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.35)" }}>
+                    ({booking.clientPhone.slice(0,3)}) {booking.clientPhone.slice(3,6)}-{booking.clientPhone.slice(6)}
                   </p>
                 )}
               </div>

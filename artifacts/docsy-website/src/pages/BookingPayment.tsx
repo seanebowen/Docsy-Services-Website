@@ -73,7 +73,13 @@ interface BookingData {
   safePlusOptIn?:   boolean;
 }
 
-/* ── Card helpers ── */
+/* ── Contact + Card helpers ── */
+function fmtPhone(v: string) {
+  const d = v.replace(/\D/g, "").slice(0, 10);
+  if (d.length > 6) return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+  if (d.length > 3) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return d.length ? `(${d}` : "";
+}
 function fmtCardNumber(v: string) {
   const d = v.replace(/\D/g, "").slice(0, 16);
   return d.replace(/(.{4})(?=.)/g, "$1 ");
@@ -103,6 +109,12 @@ export default function BookingPayment() {
   const [termKeys, setTermKeys] = useState<string[]>([]);
   const [upfront, setUpfront]   = useState(false);
 
+  /* contact info state */
+  const [clientName,  setClientName]  = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [contactTouched, setContactTouched] = useState(false);
+
   /* card form state */
   const [name,    setName]    = useState("");
   const [number,  setNumber]  = useState("");
@@ -130,7 +142,13 @@ export default function BookingPayment() {
     ? (booking?.discountedTotal ?? booking?.estimate?.total ?? 0)
     : (booking?.estimate?.total ?? 0);
 
-  /* Validation */
+  /* Contact validation */
+  const contactNameOk  = clientName.trim().length > 1;
+  const contactEmailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail.trim());
+  const contactPhoneOk = clientPhone.replace(/\D/g, "").length === 10;
+  const contactOk      = contactNameOk && contactEmailOk && contactPhoneOk;
+
+  /* Card validation */
   const nameOk   = name.trim().length > 2;
   const numOk    = number.replace(/\s/g, "").length === 16;
   const expOk    = /^\d{2}\/\d{2}$/.test(expiry);
@@ -138,7 +156,7 @@ export default function BookingPayment() {
   const formOk   = nameOk && numOk && expOk && cvvOk;
 
   /* ── Build Zapier webhook payload from booking + form state ── */
-  function buildZapierPayload(b: BookingData, cardName: string, cardLast4: string | null) {
+  function buildZapierPayload(b: BookingData, cardLast4: string | null) {
     const svcNames = (b.estimate?.services ?? []).map(s => s.name.toLowerCase()).join(" ");
     const inferDivision = () => {
       if (svcNames.includes("remote online"))  return "RON";
@@ -166,9 +184,9 @@ export default function BookingPayment() {
     const division   = inferDivision();
 
     return {
-      client_name:       cardName || "(not provided)",
-      client_email:      "",   // collected via follow-up contact form
-      client_phone:      "",
+      client_name:       clientName.trim(),
+      client_email:      clientEmail.trim(),
+      client_phone:      clientPhone.replace(/\D/g, ""),
       division,
       service_type:      division,
       job_date:          b.date ? new Date(b.date).toLocaleDateString("en-US") : "",
@@ -185,6 +203,9 @@ export default function BookingPayment() {
   }
 
   const handlePay = useCallback(() => {
+    /* Validate contact info first */
+    if (!contactOk) { setContactTouched(true); return; }
+    /* Then validate card if upfront payment required */
     if (upfront && !formOk) { setTouched(true); return; }
     setSubmitting(true);
 
@@ -193,12 +214,19 @@ export default function BookingPayment() {
     setTimeout(() => {
       try {
         const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
-        const updated = { ...current, paymentCompleted: true, cardLast4: last4 };
+        const updated = {
+          ...current,
+          paymentCompleted: true,
+          cardLast4: last4,
+          clientName:  clientName.trim(),
+          clientEmail: clientEmail.trim(),
+          clientPhone: clientPhone.replace(/\D/g, ""),
+        };
         sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
 
         /* ── Fire Zapier webhook (fire-and-forget; never blocks the UI) ── */
         if (booking) {
-          const payload = buildZapierPayload(booking, name, last4);
+          const payload = buildZapierPayload(booking, last4);
           fetch("/api/zapier/booking-confirmed", {
             method:  "POST",
             headers: { "Content-Type": "application/json" },
@@ -208,7 +236,7 @@ export default function BookingPayment() {
       } catch {}
       setLocation("/booking/confirmation");
     }, 900);
-  }, [upfront, formOk, number, name, booking, setLocation]);
+  }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation]);
 
   const fieldBorder = (ok: boolean) =>
     touched && !ok ? RED : DIV;
@@ -263,6 +291,93 @@ export default function BookingPayment() {
                   <p className="text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>No payment terms applicable.</p>
                 </div>
               )}
+            </div>
+          </FadeIn>
+
+          {/* ── Contact Information ── */}
+          <FadeIn delay={40}>
+            <div className="border-2 border-black overflow-hidden" style={{ backgroundColor: BG }}>
+              <div className="px-8 py-5 border-b" style={{ borderColor: DIV }}>
+                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
+                  Contact Information
+                </p>
+              </div>
+              <div className="px-8 py-6 space-y-5">
+
+                {/* Full Name */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={clientName}
+                    onChange={e => setClientName(e.target.value)}
+                    placeholder="Jane Smith"
+                    autoComplete="name"
+                    className="w-full px-4 py-3 text-sm bg-transparent border outline-none font-medium"
+                    style={{
+                      borderColor: contactTouched && !contactNameOk ? RED : contactNameOk ? BLUE : DIV,
+                      color:       contactTouched && !contactNameOk ? RED : IVORY,
+                      caretColor:  BLUE,
+                    } as React.CSSProperties}
+                    data-testid="input-client-name"
+                  />
+                  {contactTouched && !contactNameOk && (
+                    <p className="text-[10px] mt-1.5" style={{ color: RED }}>Please enter your full name.</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={clientEmail}
+                    onChange={e => setClientEmail(e.target.value)}
+                    placeholder="jane@example.com"
+                    autoComplete="email"
+                    className="w-full px-4 py-3 text-sm bg-transparent border outline-none font-medium"
+                    style={{
+                      borderColor: contactTouched && !contactEmailOk ? RED : contactEmailOk ? BLUE : DIV,
+                      color:       contactTouched && !contactEmailOk ? RED : IVORY,
+                      caretColor:  BLUE,
+                    } as React.CSSProperties}
+                    data-testid="input-client-email"
+                  />
+                  {contactTouched && !contactEmailOk && (
+                    <p className="text-[10px] mt-1.5" style={{ color: RED }}>Please enter a valid email address.</p>
+                  )}
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    value={clientPhone}
+                    onChange={e => setClientPhone(fmtPhone(e.target.value))}
+                    placeholder="(210) 555-1234"
+                    autoComplete="tel"
+                    className="w-full px-4 py-3 text-sm bg-transparent border outline-none font-medium"
+                    style={{
+                      borderColor: contactTouched && !contactPhoneOk ? RED : contactPhoneOk ? BLUE : DIV,
+                      color:       contactTouched && !contactPhoneOk ? RED : IVORY,
+                      caretColor:  BLUE,
+                    } as React.CSSProperties}
+                    data-testid="input-client-phone"
+                  />
+                  {contactTouched && !contactPhoneOk && (
+                    <p className="text-[10px] mt-1.5" style={{ color: RED }}>Please enter a valid 10-digit phone number.</p>
+                  )}
+                </div>
+
+              </div>
             </div>
           </FadeIn>
 
