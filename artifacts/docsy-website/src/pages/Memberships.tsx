@@ -75,7 +75,7 @@ export default function Memberships() {
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
             <div className="text-center mb-14">
-              <Label icon="⊟" text="DOCSY+ MEMBERSHIPS" />
+              <Label icon="⊟" text="PLANS" />
               <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>Docsy+ Membership Tiers</h2>
               <p className="text-base text-white/40 mt-3">Perks included. Cancel any time.</p>
             </div>
@@ -168,7 +168,7 @@ export default function Memberships() {
       <section className="py-20 sm:py-24 px-5 border-t" style={{ borderColor: DIV }}>
         <div className="max-w-2xl mx-auto text-center">
           <FadeIn delay={0}>
-            <Label icon="◎" text="STORAGE SUBSCRIPTION" />
+            <Label icon="◎" text="STORAGE" />
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
               No more lost documents.
             </h2>

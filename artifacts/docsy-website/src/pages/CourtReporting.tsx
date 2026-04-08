@@ -61,7 +61,7 @@ export default function CourtReporting() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
-          <Label icon="⊙" text="THE PROBLEM" />
+          <Label icon="⊙" text="THE ISSUE" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             What agencies don't want
             <br />
@@ -75,7 +75,7 @@ export default function CourtReporting() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
-          <Label icon="⊞" text="DOCSY RATE" />
+          <Label icon="⊞" text="PRICING" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
             <H>$4.75</H>
           </h2>

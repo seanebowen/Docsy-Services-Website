@@ -61,7 +61,7 @@ export default function RON() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
-          <Label icon="⊙" text="RON EXPLAINED" />
+          <Label icon="⊙" text="HOW IT WORKS" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             What is RON — and <H>when can you use it?</H>
           </h2>
@@ -139,7 +139,7 @@ export default function RON() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
-          <Label icon="⊙" text="TECH REQUIREMENTS" />
+          <Label icon="⊙" text="REQUIREMENTS" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             What you <H>need.</H>
           </h2>

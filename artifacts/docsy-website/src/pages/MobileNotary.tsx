@@ -75,7 +75,7 @@ export default function MobileNotary() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
-          <Label icon="✕" text="WHAT NOT TO DO" />
+          <Label icon="✕" text="HEADS UP" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             Don't sign it
             <br />

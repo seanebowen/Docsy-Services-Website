@@ -64,12 +64,12 @@ export default function Apostille() {
 
       {[
         {
-          icon: "⊙", label: "WHAT IS AN APOSTILLE",
+          icon: "⊙", label: "THE BASICS",
           heading: "The certificate that\nmakes your document\nwork abroad.",
           body: "An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille.",
         },
         {
-          icon: "⊟", label: "WHAT DOCSY HANDLES",
+          icon: "⊟", label: "COVERAGE",
           heading: "Everything.",
           body: "You send us the original certified document. We review it before filing (our free Pre-Check makes sure it qualifies before we submit anything), file it at the Texas Secretary of State, email you a digital certified scan the moment it's done, and send the original back to you. All fees are included in the flat rate — state filing fee, scan, and return shipping prep.",
         },
