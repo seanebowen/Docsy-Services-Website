@@ -314,18 +314,18 @@ export default function Memberships() {
           <FadeIn delay={80} threshold={0.05}>
             <div className="border max-w-xl mx-auto divide-y" style={{ borderColor: DIV, "--tw-divide-opacity": 1 } as React.CSSProperties}>
               {[
-                { l: "Free Tier",             p: "Free",    note: "Up to 5 files",               kind: "free" as const },
-                { l: "Personal",              p: "$7/mo",   note: "Up to 50 files",               kind: "paid" as const },
-                { l: "Family",                p: "$18/mo",  note: "Up to 150 files · 4 members",  kind: "paid" as const },
-                { l: "Professional",          p: "$29/mo",  note: "Up to 500 files",              kind: "paid" as const },
-                { l: "Business / Enterprise", p: "Custom",  note: "Contact us",                   kind: "contact" as const },
+                { l: "Free Tier",             p: "Free",    note: "Up to 5 files",               badge: "30-day trial included", kind: "free" as const },
+                { l: "Personal",              p: "$5/mo",   note: "Up to 50 files",               badge: "Activates with first service", kind: "paid" as const },
+                { l: "Family",                p: "$15/mo",  note: "Up to 150 files · 4 members",  badge: "Activates with first service", kind: "paid" as const },
+                { l: "Professional",          p: "$25/mo",  note: "Up to 500 files",              badge: "Activates with first service", kind: "paid" as const },
+                { l: "Business / Enterprise", p: "Custom",  note: "Contact us",                   badge: "",                             kind: "contact" as const },
               ].map((row) => (
                 <div key={row.l} className="flex justify-between items-center px-6 py-4 gap-4" style={{ borderColor: DIV }}>
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-white">{row.l}</p>
                     <p className="text-xs text-white/30">{row.note}</p>
                   </div>
-                  <span className="text-sm font-bold shrink-0" style={{ color: IVORY }}>{row.p}</span>
+                  <span className="text-sm font-bold shrink-0 w-20 text-right" style={{ color: IVORY }}>{row.p}</span>
                   {row.kind === "contact" ? (
                     <Link
                       href="/contact"
@@ -334,12 +334,10 @@ export default function Memberships() {
                     >
                       Contact →
                     </Link>
-                  ) : row.kind === "paid" ? (
-                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.2)" }}>
-                      Activates with first service
-                    </span>
                   ) : (
-                    <span className="shrink-0 px-4 py-2 text-xs font-bold" style={{ color: "rgba(255,255,255,0.2)" }}>Included</span>
+                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-right" style={{ color: "rgba(255,255,255,0.2)", minWidth: "9rem" }}>
+                      {row.badge}
+                    </span>
                   )}
                 </div>
               ))}
@@ -349,7 +347,7 @@ export default function Memberships() {
           <FadeIn delay={0} threshold={0.05}>
             <div className="mt-10 max-w-xl mx-auto border px-6 py-5" style={{ borderColor: DIV }}>
               <p className="text-sm font-bold text-white mb-1">Free 30-day trial — auto-starts with your first service</p>
-              <p className="text-sm text-white/40">No signup. No credit card. Docsy Safe+ activates automatically when your first service completes — unless you opt out. 30 days free, then $7/month if you choose to continue.</p>
+              <p className="text-sm text-white/40">No signup. No credit card. Docsy Safe+ activates automatically when your first service completes — unless you opt out. 30 days free, then $5/month (Personal) if you choose to continue.</p>
             </div>
           </FadeIn>
         </div>

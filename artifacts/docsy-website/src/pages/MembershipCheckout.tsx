@@ -79,8 +79,8 @@ const PLANS: Record<PlanKey, PlanInfo> = {
   },
   "storage-personal": {
     name: "Safe+ Personal",
-    price: 7,
-    priceLabel: "$7/mo",
+    price: 5,
+    priceLabel: "$5/mo",
     type: "storage",
     features: [
       "Up to 50 files",
@@ -92,8 +92,8 @@ const PLANS: Record<PlanKey, PlanInfo> = {
   },
   "storage-family": {
     name: "Safe+ Family",
-    price: 18,
-    priceLabel: "$18/mo",
+    price: 15,
+    priceLabel: "$15/mo",
     type: "storage",
     features: [
       "Up to 150 files",
@@ -106,8 +106,8 @@ const PLANS: Record<PlanKey, PlanInfo> = {
   },
   "storage-professional": {
     name: "Safe+ Professional",
-    price: 29,
-    priceLabel: "$29/mo",
+    price: 25,
+    priceLabel: "$25/mo",
     type: "storage",
     features: [
       "Up to 500 files",

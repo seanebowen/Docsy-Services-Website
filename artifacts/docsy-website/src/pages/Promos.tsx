@@ -206,7 +206,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Offered at booking — services with deliverables only</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue for $7/month or stop — no automatic charge.
+                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue from $5/month or stop — no automatic charge.
               </p>
             </div>
           </FadeIn>
