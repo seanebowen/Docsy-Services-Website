@@ -148,12 +148,12 @@ export default function BookingConfirmation() {
                   <span className="text-sm font-bold text-white">Calculated Total</span>
                   <div className="text-right">
                     {((booking.autoPromos?.length ?? 0) > 0 || booking.promoDiscount) && (
-                      <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${booking.estimate.total.toLocaleString()}</span>
+                      <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${booking.estimate.total.toFixed(2)}</span>
                     )}
                     <span className="text-2xl font-black" style={{ color: BLUE }}>
                       ${((booking.autoPromos?.length ?? 0) > 0 || booking.promoDiscount) && booking.discountedTotal != null
-                        ? booking.discountedTotal.toLocaleString()
-                        : booking.estimate.total.toLocaleString()}
+                        ? booking.discountedTotal.toFixed(2)
+                        : booking.estimate.total.toFixed(2)}
                     </span>
                   </div>
                 </div>

@@ -482,11 +482,11 @@ export default function BookingPayment() {
                         <div className="text-right">
                           {hasDiscount && (
                             <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                              ${booking?.estimate?.total.toLocaleString()}
+                              ${booking?.estimate?.total.toFixed(2)}
                             </span>
                           )}
                           <span className="text-2xl font-black" style={{ color: BLUE }}>
-                            ${displayTotal.toLocaleString()}
+                            ${displayTotal.toFixed(2)}
                           </span>
                         </div>
                       </div>
@@ -496,7 +496,7 @@ export default function BookingPayment() {
                         className="w-full py-4 text-base font-bold text-white transition-opacity"
                         style={{ backgroundColor: "#000", opacity: submitting ? 0.5 : 1, cursor: submitting ? "wait" : "pointer" }}
                       >
-                        {submitting ? "Processing…" : `Pay $${displayTotal.toLocaleString()}`}
+                        {submitting ? "Processing…" : `Pay $${displayTotal.toFixed(2)}`}
                       </button>
                       <p className="text-[10px] mt-4 leading-relaxed text-center" style={{ color: "rgba(255,255,255,0.2)" }}>
                         Your payment is processed securely. Docsy does not store your card details.

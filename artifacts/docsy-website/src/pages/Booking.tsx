@@ -735,10 +735,10 @@ export default function Booking() {
                       <span className="text-sm font-bold text-white">Calculated Total</span>
                       <div className="text-right">
                         {(autoPromos.length > 0 || promoDiscount) && (
-                          <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toLocaleString()}</span>
+                          <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toFixed(2)}</span>
                         )}
                         <span className="text-2xl font-black" style={{ color: BLUE }}>
-                          ${(autoPromos.length > 0 || promoDiscount) ? discountedTotal.toLocaleString() : estimate.total.toLocaleString()}
+                          ${(autoPromos.length > 0 || promoDiscount) ? discountedTotal.toFixed(2) : estimate.total.toFixed(2)}
                         </span>
                       </div>
                     </div>
