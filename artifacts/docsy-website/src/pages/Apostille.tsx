@@ -60,11 +60,12 @@ const TIERS = [
   },
   {
     name: "Same-Day Sprint",
-    subtitle: "Drop off to Docsy before 9 AM",
+    subtitle: "Docsy mobile pickup before 9 AM",
     personal: "$240",
     business: "$265",
-    note: "Drop-off only. Document must be in hand at Docsy by 9 AM. No inbound label.",
+    note: "Mobile pickup only. Docsy picks up before 9 AM, drives to Austin immediately. No inbound label.",
     included: [
+      "Mobile pickup (SA metro, before 9 AM)",
       "TX SOS filing fee",
       "In-person Austin submission",
       "FedEx overnight return (tracked)",
@@ -85,14 +86,6 @@ const TIMELINE_ROWS = [
   },
   {
     tier: "Standard",
-    method: "Drop-off (SA)",
-    inbound: "Same day receipt",
-    sos: "5–10 business days",
-    returnShip: "USPS Priority · 2–3 days",
-    total: "~1.5–2.5 weeks from drop-off",
-  },
-  {
-    tier: "Standard",
     method: "Docsy Mobile Pickup",
     inbound: "Same day receipt",
     sos: "5–10 business days",
@@ -109,7 +102,7 @@ const TIMELINE_ROWS = [
   },
   {
     tier: "Next-Day Rush",
-    method: "Drop-off by 11 AM",
+    method: "Mobile Pickup (before 11 AM)",
     inbound: "Same day receipt",
     sos: "Same day in Austin",
     returnShip: "FedEx Overnight · 1 day",
@@ -117,7 +110,7 @@ const TIMELINE_ROWS = [
   },
   {
     tier: "Same-Day Sprint",
-    method: "Drop-off by 9 AM only",
+    method: "Mobile Pickup (before 9 AM)",
     inbound: "Same day receipt",
     sos: "Same day in Austin",
     returnShip: "FedEx Overnight · 1 day",
@@ -266,7 +259,7 @@ export default function Apostille() {
                   },
                   {
                     label: "Same-Day Sprint",
-                    desc: "You drop off Monday by 9 AM → Docsy drives to Austin Monday → Apostilled Monday → FedEx overnight.",
+                    desc: "Docsy mobile pickup Monday before 9 AM → Drives to Austin Monday → Apostilled Monday → FedEx overnight.",
                     result: "You receive: Tuesday.",
                   },
                 ].map((ex) => (

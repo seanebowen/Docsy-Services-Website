@@ -393,10 +393,10 @@ export default function Estimator() {
     if (!anyServiceActive) setLlOn(false);
   }, [anyServiceActive]);
 
-  /* Same-Day Sprint is drop-off only — clear mobile pickup if selected */
+  /* Same-Day Sprint requires mobile pickup — auto-enable it */
   React.useEffect(() => {
-    if (apost.turnaround === "sameday" && apost.mobile) {
-      upA({ mobile: false });
+    if (apost.turnaround === "sameday" && !apost.mobile) {
+      upA({ mobile: true });
     }
   }, [apost.turnaround, apost.mobile]);
 
@@ -820,7 +820,7 @@ export default function Estimator() {
                       )}
                       {apost.turnaround === "sameday" && (
                         <p className="text-xs font-light mt-2 leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Drop-off only — document must be in hand at Docsy by 9 AM. No inbound label. Docsy drives to Austin immediately. FedEx overnight return. A free pre-check is required before this order is confirmed.
+                          Mobile pickup required and included — Docsy comes to you before 9 AM. No inbound label. Drives to Austin immediately. FedEx overnight return. A free pre-check is required before this order is confirmed.
                         </p>
                       )}
                     </div>
@@ -840,28 +840,33 @@ export default function Estimator() {
                     </div>
                   </div>
 
-                  {apost.turnaround !== "sameday" && (
+                  {apost.turnaround !== "sameday" ? (
                   <div>
                     <RowLabel>Document delivery method</RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
-                      <RadioRow label="Mail-in / drop-off" price="no travel fee" selected={!apost.mobile} onClick={() => upA({ mobile: false })} />
+                      <RadioRow label="Mail-in" price="no travel fee" selected={!apost.mobile} onClick={() => upA({ mobile: false })} />
                       <RadioRow label="Mobile pickup (SA metro) — Docsy picks up from you" price="included" selected={apost.mobile} onClick={() => upA({ mobile: true })} />
                     </div>
                     <p className="text-xs font-light mt-1.5" style={{ color: "rgba(255,255,255,0.22)" }}>
                       Mobile pickup covers SA metro. Extended radius (21–40 mi) is +$30 — add that to your quote.
                     </p>
                   </div>
+                  ) : (
+                  <div className="flex items-start gap-2 px-4 py-3 border" style={{ borderColor: DIV }}>
+                    <span className="text-xs font-bold shrink-0 mt-0.5" style={{ color: AMBER }}>✓</span>
+                    <p className="text-sm text-white/50">Mobile pickup is required and included for Same-Day Sprint — Docsy comes to you before 9 AM.</p>
+                  </div>
                   )}
 
                   <div>
                     <RowLabel>
-                      {apost.mobile && apost.turnaround !== "sameday" ? "Pickup address" : "Mailing / drop-off address"}
+                      {(apost.mobile || apost.turnaround === "sameday") ? "Pickup address" : "Mailing address"}
                     </RowLabel>
                     <input
                       type="text"
                       value={apost.address}
                       onChange={e => upA({ address: e.target.value })}
-                      placeholder={apost.mobile && apost.turnaround !== "sameday" ? "Your address for mobile pickup" : "Mailing address or drop-off location"}
+                      placeholder={(apost.mobile || apost.turnaround === "sameday") ? "Your address for pickup" : "Mailing address"}
                       className="w-full px-4 py-3 text-sm font-light bg-transparent border outline-none"
                       style={{ borderColor: DIV, color: IVORY, caretColor: AMBER }}
                     />
