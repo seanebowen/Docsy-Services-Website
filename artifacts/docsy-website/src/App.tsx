@@ -25,6 +25,7 @@ import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
 import Contact from "@/pages/Contact";
 import MembershipCheckout from "@/pages/MembershipCheckout";
+import About from "@/pages/About";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ function Router() {
       <Route path="/verify" component={Verify} />
       <Route path="/vault" component={SafeVault} />
       <Route path="/contact" component={Contact} />
+      <Route path="/about" component={About} />
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
     </Switch>
