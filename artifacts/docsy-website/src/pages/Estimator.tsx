@@ -173,7 +173,7 @@ function calcApostille(s: ApostilleState): number {
   const nonFederal = s.types.filter(t => t !== "federal");
   let base = hasFederal ? 275 : 0;
   base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
-  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 65 : 75);
+  if (s.docs > 1) base += (s.docs - 1) * 75;
   return base + turnaroundAddon[s.turnaround];
 }
 
@@ -202,7 +202,7 @@ function calcApostilleBase(s: ApostilleState): number {
   const nonFederal = s.types.filter(t => t !== "federal");
   let base = hasFederal ? 275 : 0;
   base += nonFederal.reduce((sum, t) => sum + standardBase[t], 0);
-  if (s.docs > 1) base += (s.docs - 1) * (s.docs >= 5 ? 65 : 75);
+  if (s.docs > 1) base += (s.docs - 1) * 75;
   return base;
 }
 function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
@@ -831,11 +831,7 @@ export default function Estimator() {
                     <div className="flex items-center gap-4">
                       <Stepper value={apost.docs} onChange={v => upA({ docs: v })} />
                       <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
-                        {apost.docs >= 5
-                          ? "Bundle rate — $65 each for 5+"
-                          : apost.docs > 1
-                            ? `+$75 each additional`
-                            : "First document"}
+                        {apost.docs > 1 ? `+$75 each additional` : "First document"}
                       </span>
                     </div>
                   </div>

@@ -67,18 +67,6 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
       },
     ],
   },
-  {
-    label: "04",
-    service: "Apostille Services",
-    promos: [
-      {
-        name: "Bundle 5+ Apostilles",
-        tag: "$90/DOC",
-        window: "5 or more documents · Single filing batch",
-        rule: "Flat rate of $90 per document when 5 or more apostilles are submitted in a single order. All documents must be submitted at once. Cannot be split across multiple orders. Contact Docsy for corporate apostille packages with higher volume. Auto-applied — no code needed.",
-      },
-    ],
-  },
 ];
 
 export default function Promos() {
@@ -225,7 +213,7 @@ export default function Promos() {
               One time-window promo<br />per appointment.
             </h2>
             <p className="text-lg font-light text-white/50 leading-relaxed">
-              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass does not stack with time-window promos or any other discount — it applies alone, one discount per appointment. Apostille Bundle pricing replaces per-document rates — it does not combine with other apostille discounts.
+              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass does not stack with time-window promos or any other discount — it applies alone, one discount per appointment.
             </p>
           </FadeIn>
         </div>

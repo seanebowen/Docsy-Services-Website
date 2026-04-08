@@ -268,16 +268,6 @@ export default function Booking() {
   /* Auto-promos: computed from the selected appointment date + time */
   const autoPromos = useMemo((): { label: string; amount: number; rateOnly?: boolean }[] => {
     if (!selectedDate || !selectedTime || !estimate) {
-      // Apostille bundle applies regardless of time — compute it even without a time slot
-      if (!estimate) return [];
-      const apostSvc = estimate.services.find(s =>
-        s.name.toLowerCase().includes("apostille") && !s.name.toLowerCase().includes("turnaround")
-      );
-      if (apostSvc) {
-        const m = apostSvc.name.match(/\((\d+) doc/);
-        const docs = m ? parseInt(m[1], 10) : 1;
-        if (docs >= 5) return [{ label: `Apostille Bundle Rate — $90/doc (${docs} docs)`, amount: 0, rateOnly: true }];
-      }
       return [];
     }
     const day  = selectedDate.getDay();
@@ -305,15 +295,6 @@ export default function Booking() {
     if (has("loan signing") && isWeekend) {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
       if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) });
-    }
-    // Apostille bundle — rate already baked in, show as applied note
-    const apostSvc = estimate.services.find(s =>
-      s.name.toLowerCase().includes("apostille") && !s.name.toLowerCase().includes("turnaround")
-    );
-    if (apostSvc) {
-      const m = apostSvc.name.match(/\((\d+) doc/);
-      const docs = m ? parseInt(m[1], 10) : 1;
-      if (docs >= 5) result.push({ label: `Apostille Bundle Rate — $90/doc (${docs} docs)`, amount: 0, rateOnly: true });
     }
     return result;
   }, [selectedDate, selectedTime, estimate, isMember]);

@@ -380,7 +380,6 @@ export default function Apostille() {
                 </div>
                 {[
                   { l: "Each additional (same order)", p: "+$75", note: "" },
-                  { l: "Bundle — 5+ documents same order", p: "$65 each", note: "" },
                   { l: "Shipping insurance", p: "+$20", note: "$500 declared value on return shipment" },
                   { l: "Extended mobile radius (21–40 mi)", p: "+$30", note: "Pickup or delivery beyond SA metro" },
                   { l: "Free pre-check", p: "Always free", note: "" },
