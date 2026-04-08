@@ -28,10 +28,10 @@ export default function About() {
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-6" style={{ letterSpacing: "-0.03em" }}>
-              About Docsy.
+              About Docsy
             </h1>
           </FadeIn>
-          <FadeIn delay={120}>
+          <FadeIn delay={80}>
             <p className="text-xl sm:text-2xl text-black/50 max-w-2xl font-medium leading-snug">
               Short for document sanity — and yes, we named it that on purpose.
             </p>
@@ -44,15 +44,14 @@ export default function About() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <Label icon="⊙" text="OUR STORY" />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-8" style={{ letterSpacing: "-0.02em" }}>
-              Show up. Do the work right.<br />Make it feel less like a nightmare.
-            </h2>
           </FadeIn>
           <FadeIn delay={80}>
-            <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
               Docsy exists because legal and professional documents are stressful enough without adding confusion, delays, or a notary who ghosts you. We built a multi-division document services operation around one idea: show up, do the work right, and make the whole thing feel less like a nightmare.
             </p>
-            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
               We handle Remote Online Notarization, mobile notary and general notary work, loan signings, apostille processing, and digital court reporting — all under one roof, all with the same standard of care.
             </p>
           </FadeIn>
@@ -64,15 +63,14 @@ export default function About() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <Label icon="⊙" text="WHO'S BEHIND IT" />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-8" style={{ letterSpacing: "-0.02em" }}>
-              One operator.<br />A real business behind it.
-            </h2>
           </FadeIn>
           <FadeIn delay={80}>
-            <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
               Sean Bowen is the owner and sole operator of Docsy LLC, a Texas-based professional services company. He holds a Texas notary commission, AAERT CER certification as a digital court reporter, and operates as a licensed loan signing agent and apostille specialist.
             </p>
-            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
               Docsy is structured as a professional services brand — not a one-off freelancer. That means documented processes, consistent pricing, and accountability baked into how the business runs.
             </p>
           </FadeIn>
@@ -84,12 +82,9 @@ export default function About() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <Label icon="⊙" text="WHY WE'RE BUILT THIS WAY" />
-            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-8" style={{ letterSpacing: "-0.02em" }}>
-              Our clients deserve more<br />than improvisation.
-            </h2>
           </FadeIn>
           <FadeIn delay={80}>
-            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
               Most document professionals are solo operators with no infrastructure behind them. Docsy was built differently — with a formal operating structure, defined service divisions, and professional-grade systems — because the clients we serve (title companies, attorneys, lenders, and individuals navigating serious legal matters) deserve more than improvisation.
             </p>
           </FadeIn>
@@ -101,12 +96,9 @@ export default function About() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <Label icon="⊙" text="SERVICE AREA" />
-            <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
-              Texas.
-            </h2>
           </FadeIn>
           <FadeIn delay={80}>
-            <p className="text-lg font-light" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
               Based in Texas. RON services available nationwide.
             </p>
           </FadeIn>
@@ -118,8 +110,10 @@ export default function About() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-8" style={{ letterSpacing: "-0.02em" }}>
-              Ready to hand off<br />the documents?
+              Ready to hand off the documents?
             </h2>
+          </FadeIn>
+          <FadeIn delay={80}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/estimate"
