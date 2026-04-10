@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link, useSearch } from "wouter";
 import { Phone, Mail, MessageSquare, Clock, AlertTriangle, FileText, Receipt, Package, Building2, Users, HelpCircle } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 
@@ -47,6 +47,7 @@ interface Reason {
   include: string;
   method: Method;
   urgent: boolean;
+  id?: string;
 }
 
 const reasons: Reason[] = [
@@ -81,6 +82,7 @@ const reasons: Reason[] = [
     include: "A photo or clear scan of the document. We'll confirm it qualifies, identify the correct apostille type, and give you a total price before you send anything.",
     method: "either",
     urgent: false,
+    id: "apostille-precheck",
   },
   {
     icon: Receipt,
@@ -133,9 +135,19 @@ const reasons: Reason[] = [
 ];
 
 export default function Contact() {
+  const search = useSearch();
+  const inquiryType = new URLSearchParams(search).get("inquiry");
+  const highlightId = inquiryType ?? null;
+
   React.useEffect(() => {
     document.title = "Contact | Docsy Services";
-  }, []);
+    if (highlightId) {
+      setTimeout(() => {
+        const el = document.getElementById(highlightId);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 400);
+    }
+  }, [highlightId]);
 
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
@@ -206,9 +218,18 @@ export default function Contact() {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: DIV }}>
-            {reasons.map((r, i) => (
+            {reasons.map((r, i) => {
+              const isHighlighted = highlightId && r.id === highlightId;
+              return (
               <FadeIn key={r.title} delay={i * 40} threshold={0.04}>
-                <div className="p-8 h-full" style={{ backgroundColor: BG }}>
+                <div
+                  id={r.id}
+                  className="p-8 h-full transition-all duration-500"
+                  style={{
+                    backgroundColor: isHighlighted ? `${BLUE}14` : BG,
+                    outline: isHighlighted ? `1px solid ${BLUE}55` : "none",
+                  }}
+                >
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
                       <UrgencyDot urgent={r.urgent} />
@@ -223,7 +244,8 @@ export default function Contact() {
                   </p>
                 </div>
               </FadeIn>
-            ))}
+              );
+            })}
           </div>
 
         </div>
