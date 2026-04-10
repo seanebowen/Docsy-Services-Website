@@ -19,6 +19,7 @@ import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
 import SafeVault from "@/pages/SafeVault";
+import VaultInfo from "@/pages/VaultInfo";
 import Estimator from "@/pages/Estimator";
 import Booking from "@/pages/Booking";
 import BookingPayment from "@/pages/BookingPayment";
@@ -51,6 +52,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
       <Route path="/vault" component={SafeVault} />
+      <Route path="/vault-info" component={VaultInfo} />
       <Route path="/contact" component={Contact} />
       <Route path="/about" component={About} />
       <Route path="/language-line" component={LanguageLine} />

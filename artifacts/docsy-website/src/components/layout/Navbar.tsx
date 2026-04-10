@@ -105,16 +105,14 @@ export function Navbar() {
 
         {/* Desktop right side */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Safe+ Vault button — only when signed in */}
-          {user && (
-            <Link
-              href="/vault"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-90"
-              style={{ backgroundColor: AMBER, color: "#fff" }}
-            >
-              <Archive className="h-3 w-3" /> Safe+
-            </Link>
-          )}
+          {/* Safe+ Vault button — always visible; routes to info page for guests */}
+          <Link
+            href={user ? "/vault" : "/vault-info"}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] transition-opacity hover:opacity-90"
+            style={{ backgroundColor: AMBER, color: "#fff" }}
+          >
+            <Archive className="h-3 w-3" /> Safe+
+          </Link>
 
           {user ? (
             /* ── Signed-in account widget ── */
@@ -194,16 +192,14 @@ export function Navbar() {
               </Link>
             ))}
 
-            {/* Safe+ Vault in mobile nav — shown whenever signed in */}
-            {user && (
-              <Link
-                href="/vault"
-                className="py-3 text-sm font-medium border-b flex items-center gap-2"
-                style={{ color: AMBER, borderColor: DIV }}
-              >
-                <Archive className="h-3.5 w-3.5" /> My Safe+ Vault
-              </Link>
-            )}
+            {/* Safe+ Vault in mobile nav — always visible */}
+            <Link
+              href={user ? "/vault" : "/vault-info"}
+              className="py-3 text-sm font-medium border-b flex items-center gap-2"
+              style={{ color: AMBER, borderColor: DIV }}
+            >
+              <Archive className="h-3.5 w-3.5" /> {user ? "My Safe+ Vault" : "Safe+ Vault"}
+            </Link>
 
             {moreLinks.map((link) => (
               <Link
