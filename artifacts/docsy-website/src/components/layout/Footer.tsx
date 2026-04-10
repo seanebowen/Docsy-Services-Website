@@ -38,10 +38,10 @@ export function Footer() {
         </div>
         <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-start gap-4" style={{ borderColor: DIV }}>
           <p className="text-xs font-light leading-relaxed max-w-2xl" style={{ color: "rgba(255,255,255,0.18)" }}>
-            <strong className="font-medium" style={{ color: "rgba(255,255,255,0.28)" }}>Legal Notice:</strong> Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
+            <strong className="font-medium" style={{ color: "rgba(255,255,255,0.28)" }}>Legal Notice:</strong> Docsy Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
           </p>
           <p className="text-xs font-light whitespace-nowrap" style={{ color: "rgba(255,255,255,0.18)" }}>
-            &copy; {new Date().getFullYear()} Docsy Notary Services
+            &copy; {new Date().getFullYear()} Docsy Services
           </p>
         </div>
       </div>

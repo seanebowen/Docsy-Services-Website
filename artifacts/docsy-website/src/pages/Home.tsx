@@ -57,7 +57,7 @@ const STATS = [
   { value: "< 15 min", label: "Average RON session" },
   { value: "7 days",   label: "Every week, 7AM–midnight" },
   { value: "$0",       label: "Hidden fees, ever" },
-  { value: "Midnight", label: "Latest available appointment" },
+  { value: "Midnight", label: "Latest RON appointment" },
 ];
 
 const NUM_CARDS = [
@@ -73,8 +73,8 @@ const NUM_CARDS = [
   },
   {
     num: "03",
-    title: "Mobile notary to midnight, 7 days a week.",
-    body: "We come to you — home, office, hospital, hospice, curbside. Any day of the week, up to midnight. Same-day availability in most of the San Antonio metro area.",
+    title: "Mobile notary across San Antonio, 7 days a week.",
+    body: "We come to you — home, office, hospital, hospice, curbside. Any day of the week. Docsy+ members get priority early-morning and late-evening slots. Same-day availability in most of the San Antonio metro area.",
   },
   {
     num: "04",
@@ -95,15 +95,15 @@ const NUM_CARDS = [
 
 const SERVICES = [
   { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding. Same-hour available. Anywhere in the US.", href: "/ron" },
-  { icon: MapPin,      label: "Mobile Notary",              desc: "Home, office, hospital — we come to you. 7 days to midnight.", href: "/mobile-notary" },
+  { icon: MapPin,      label: "Mobile Notary",              desc: "Home, office, hospital — we come to you. 7 days a week, San Antonio metro.", href: "/mobile-notary" },
   { icon: FileText,    label: "Loan Signing",               desc: "Flat rates. Scanbacks included. Texas HELOC compliant.", href: "/loan-signing" },
   { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
   { icon: Briefcase,   label: "Court Reporting",            desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
-  { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted file storage for all appointment deliverables. 30-day free trial.", href: "/memberships" },
+  { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted file storage for all appointment deliverables. 30-day free trial.", href: "/memberships#storage" },
 ];
 
 export default function Home() {
-  useEffect(() => { document.title = "Docsy Notary Services | Texas Remote & Mobile Notary"; }, []);
+  useEffect(() => { document.title = "Docsy Services | Texas Document Services"; }, []);
 
   return (
     <div className="w-full" style={{ backgroundColor: SLATE }}>
@@ -113,7 +113,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center">
           <div>
             <FadeIn delay={0}>
-              <Pill text="⊙ Texas Notary Services" />
+              <Pill text="⊙ Texas Document Services" />
             </FadeIn>
             <FadeIn delay={80}>
               <h1
@@ -129,7 +129,7 @@ export default function Home() {
             </FadeIn>
             <FadeIn delay={200}>
               <p className="text-base sm:text-lg font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-                Texas-based full-service notary. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
+                Texas document services — RON, mobile notary, loan signing, apostille, and court reporting. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
               </p>
             </FadeIn>
             <FadeIn delay={320}>

@@ -130,7 +130,7 @@ const POLICIES = [
 
 export default function Apostille() {
   React.useEffect(() => {
-    document.title = "Apostille Services | Docsy Notary Services";
+    document.title = "Apostille Services | Docsy Services";
   }, []);
 
   return (

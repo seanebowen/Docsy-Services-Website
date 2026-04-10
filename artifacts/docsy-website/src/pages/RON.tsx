@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function RON() {
   React.useEffect(() => {
-    document.title = "Remote Online Notarization (RON) | Docsy Notary Services";
+    document.title = "Remote Online Notarization (RON) | Docsy Services";
   }, []);
 
   return (

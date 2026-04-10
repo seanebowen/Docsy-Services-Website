@@ -28,7 +28,7 @@ export default function BookingConfirmation() {
   const [booking, setBooking] = useState<BookingData | null>(null);
 
   useEffect(() => {
-    document.title = "Booking Submitted | Docsy Notary Services";
+    document.title = "Booking Submitted | Docsy Services";
     try {
       const stored = sessionStorage.getItem("docsy_booking");
       if (stored) setBooking(JSON.parse(stored));

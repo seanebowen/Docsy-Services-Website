@@ -58,7 +58,7 @@ const TC_SECTIONS = [
 
 export default function LanguageLine() {
   React.useEffect(() => {
-    document.title = "Language Line Interpreter Services | Docsy Notary Services";
+    document.title = "Language Line Interpreter Services | Docsy Services";
   }, []);
 
   return (

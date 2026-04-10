@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function LoanSigning() {
   React.useEffect(() => {
-    document.title = "Loan Signing Agent | Docsy Notary Services";
+    document.title = "Loan Signing Agent | Docsy Services";
   }, []);
 
   return (

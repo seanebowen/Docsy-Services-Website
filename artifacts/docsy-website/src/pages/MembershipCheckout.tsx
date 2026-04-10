@@ -121,7 +121,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
 };
 
 export default function MembershipCheckout() {
-  React.useEffect(() => { document.title = "Checkout | Docsy Notary Services"; }, []);
+  React.useEffect(() => { document.title = "Checkout | Docsy Services"; }, []);
 
   const search = window.location.search;
   const params = new URLSearchParams(search);

@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function MobileNotary() {
   React.useEffect(() => {
-    document.title = "Mobile Notary | Docsy Notary Services";
+    document.title = "Mobile Notary | Docsy Services";
   }, []);
 
   return (

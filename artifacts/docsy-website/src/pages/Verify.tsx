@@ -22,7 +22,7 @@ export default function Verify() {
   const inputs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    document.title = "Verify | Docsy Notary Services";
+    document.title = "Verify | Docsy Services";
     if (!identifier) setLocation("/login");
     inputs.current[0]?.focus();
   }, []);

@@ -17,7 +17,7 @@ const Label = ({ icon, text }: { icon: string; text: string }) => (
 
 export default function About() {
   React.useEffect(() => {
-    document.title = "About | Docsy Notary Services";
+    document.title = "About | Docsy Services";
   }, []);
 
   return (
@@ -66,7 +66,7 @@ export default function About() {
           </FadeIn>
           <FadeIn delay={80}>
             <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Sean Bowen is the owner and sole operator of Docsy LLC, a Texas-based professional services company. He holds a Texas notary commission, AAERT CER certification as a digital court reporter, and operates as a licensed loan signing agent and apostille specialist.
+              Sean Bowen is the owner and sole operator of Docsy Services LLC, a Texas-based professional services company. He holds a Texas notary commission, AAERT CER certification as a digital court reporter, and operates as a licensed loan signing agent and apostille specialist.
             </p>
           </FadeIn>
           <FadeIn delay={160}>

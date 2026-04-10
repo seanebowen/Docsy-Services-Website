@@ -38,8 +38,8 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
       {
         name: "Night Shift Seal™",
         tag: "$10 OFF",
-        window: "9:00 PM – Midnight · Any day",
-        rule: "After-hours RON window. Remote Online Notarization only. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
+        window: "6:00 PM – 9:00 PM · Any day",
+        rule: "Evening RON window. Remote Online Notarization only. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
     ],
   },
@@ -50,7 +50,7 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
       {
         name: "Midday Miles™",
         tag: "$10 OFF",
-        window: "12:00 PM – 6:00 PM · Mon – Fri",
+        window: "12:00 PM – 4:00 PM · Mon – Fri",
         rule: "Weekday midday mobile notary visits only. Applies to the base mobile notary service fee. Does not apply to travel fee, timing surcharges, or additional services. Auto-applied — no code needed.",
       },
     ],
@@ -71,7 +71,7 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
 
 export default function Promos() {
   React.useEffect(() => {
-    document.title = "Promotions | Docsy Notary Services";
+    document.title = "Promotions | Docsy Services";
   }, []);
 
   return (

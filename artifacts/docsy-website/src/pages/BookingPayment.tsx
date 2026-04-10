@@ -124,7 +124,7 @@ export default function BookingPayment() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    document.title = "Payment | Docsy Notary Services";
+    document.title = "Payment | Docsy Services";
     try {
       const stored = sessionStorage.getItem("docsy_booking");
       if (stored) {

@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function CourtReporting() {
   React.useEffect(() => {
-    document.title = "Digital Court Reporting | Docsy Notary Services";
+    document.title = "Digital Court Reporting | Docsy Services";
   }, []);
 
   return (

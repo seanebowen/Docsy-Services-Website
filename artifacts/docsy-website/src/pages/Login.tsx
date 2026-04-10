@@ -28,7 +28,7 @@ export default function Login() {
   const [loading,  setLoading]  = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  React.useEffect(() => { document.title = "Sign In | Docsy Notary Services"; }, []);
+  React.useEffect(() => { document.title = "Sign In | Docsy Services"; }, []);
 
   const type    = detectType(raw);
   const isEmpty = raw.trim() === "";

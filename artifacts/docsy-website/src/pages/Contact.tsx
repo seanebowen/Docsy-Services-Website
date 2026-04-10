@@ -134,7 +134,7 @@ const reasons: Reason[] = [
 
 export default function Contact() {
   React.useEffect(() => {
-    document.title = "Contact | Docsy Notary Services";
+    document.title = "Contact | Docsy Services";
   }, []);
 
   return (

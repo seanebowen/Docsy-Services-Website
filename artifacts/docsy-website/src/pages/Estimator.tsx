@@ -292,7 +292,7 @@ function SummaryLine({ label, amount }: { label: string; amount: number }) {
 
 /* ════════════════════════════════════════════════════════ */
 export default function Estimator() {
-  React.useEffect(() => { document.title = "Price Calculator | Docsy Notary Services"; }, []);
+  React.useEffect(() => { document.title = "Price Calculator | Docsy Services"; }, []);
 
   /* active service toggles */
   const [ronOn,   setRonOn]   = useState(false);

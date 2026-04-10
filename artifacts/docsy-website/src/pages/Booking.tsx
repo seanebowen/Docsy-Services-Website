@@ -288,9 +288,9 @@ export default function Booking() {
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
       else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
-      else if (hour >= 21)              result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
+      else if (hour >= 18 && hour < 21) result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
     }
-    if (has("general notary work") && !has("remote online") && isWeekday && hour >= 12 && hour < 18)
+    if (has("general notary work") && !has("remote online") && isWeekday && hour >= 12 && hour < 16)
       result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });
     if (has("loan signing") && isWeekend) {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
@@ -310,7 +310,7 @@ export default function Booking() {
   const [viewYear,  setViewYear]  = useState(today.getFullYear());
 
   useEffect(() => {
-    document.title = "Book Your Appointment | Docsy Notary Services";
+    document.title = "Book Your Appointment | Docsy Services";
     try {
       const stored = sessionStorage.getItem("docsy_estimate");
       if (stored) setEstimate(JSON.parse(stored));

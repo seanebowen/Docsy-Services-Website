@@ -133,7 +133,7 @@ These terms are governed by the laws of the State of Texas. Any disputes arising
 
 export default function Memberships() {
   React.useEffect(() => {
-    document.title = "Memberships & Storage | Docsy Notary Services";
+    document.title = "Memberships & Storage | Docsy Services";
   }, []);
 
   return (

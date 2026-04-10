@@ -154,7 +154,7 @@ const faqs = [
     items: [
       {
         q: "Are you a lawyer?",
-        a: "No. Docsy Notary Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only. For questions about what a document means, whether it's legally sufficient, or whether it meets a specific requirement — consult a licensed attorney.",
+        a: "No. Docsy Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only. For questions about what a document means, whether it's legally sufficient, or whether it meets a specific requirement — consult a licensed attorney.",
       },
       {
         q: "What if my document is rejected after apostille?",
