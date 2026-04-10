@@ -55,9 +55,9 @@ function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) 
 
 const STATS = [
   { value: "< 15 min", label: "Average RON session" },
-  { value: "7 days",   label: "Every week — RON 7AM–midnight" },
+  { value: "7 days",   label: "Every week — 7 AM to 11 PM" },
   { value: "$0",       label: "Hidden fees, ever" },
-  { value: "Midnight", label: "Latest RON appointment" },
+  { value: "11 PM",   label: "Latest available appointment" },
 ];
 
 const NUM_CARDS = [

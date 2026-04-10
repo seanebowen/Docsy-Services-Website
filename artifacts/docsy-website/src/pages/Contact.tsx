@@ -170,7 +170,7 @@ export default function Contact() {
                 <a href={`tel:${PHONE.replace(/\D/g, "")}`} className="hover:opacity-80 transition-opacity">{PHONE}</a>
               </p>
               <p className="text-sm text-white/45 leading-relaxed">
-                Use for anything time-sensitive: cancellations, reschedules, same-day bookings, urgent questions, and special accommodations. Fastest response. Available 7 days, early morning to midnight.
+                Use for anything time-sensitive: cancellations, reschedules, same-day bookings, urgent questions, and special accommodations. Fastest response. Available 7 days, 7 AM to 11 PM.
               </p>
             </div>
           </FadeIn>

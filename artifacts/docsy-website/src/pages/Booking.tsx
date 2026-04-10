@@ -283,7 +283,7 @@ export default function Booking() {
     /* Timing surcharges — in-person services only, exempt for Docsy+ members */
     const isInPerson = has("general notary work") || has("loan signing");
     if (!isMember && isInPerson && hour >= 21)
-      result.push({ label: "After-Hours Surcharge (9 PM – midnight)", amount: 20 });
+      result.push({ label: "After-Hours Surcharge (9 PM – 11 PM)", amount: 20 });
 
     if (has("remote online")) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });

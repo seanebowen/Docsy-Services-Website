@@ -96,7 +96,7 @@ export default function MobileNotary() {
             <H>Every day.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            General appointments run 9 AM–9 PM. <H>Docsy+ members</H> get access to priority hours — 7 AM–9 AM and 9 PM–midnight — with no after-hours surcharge. After-hours bookings (9 PM–midnight) carry a +$20 surcharge for non-members, always disclosed at booking before you confirm. Federal holidays carry an additional +$20 surcharge for all clients.
+            General appointments run 9 AM–9 PM. <H>Docsy+ members</H> get access to priority hours — 7 AM–9 AM and 9 PM–11 PM — with no after-hours surcharge. After-hours bookings (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking before you confirm. Federal holidays carry an additional +$20 surcharge for all clients.
           </p>
         </div>
       </section>
@@ -113,7 +113,7 @@ export default function MobileNotary() {
             {[
               { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
-              { title: "Timing Add-Ons", items: [{ l: "After-hours (9 PM – midnight)", p: "+$20" }, { l: "Federal holiday", p: "+$20" }, { l: "Docsy+ members", p: "Exempt" }] },
+              { title: "Timing Add-Ons", items: [{ l: "After-hours (9 PM – 11 PM)", p: "+$20" }, { l: "Federal holiday", p: "+$20" }, { l: "Docsy+ members", p: "Exempt" }] },
             ].map((col) => (
               <div key={col.title} style={{ backgroundColor: BG }}>
                 <div className="px-8 py-5 border-b border-[#1e2a3a]">
@@ -139,7 +139,7 @@ export default function MobileNotary() {
               <span style={{ color: "#4D9FDB" }}>Wherever that is.</span>
             </h2>
             <div className="flex flex-wrap gap-x-8 gap-y-2">
-              {["7 days · 7AM–midnight", "Know your price before you book", "No hidden fees"].map(t => (
+              {["7 days · 7AM–11PM", "Know your price before you book", "No hidden fees"].map(t => (
                 <span key={t} className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.50)" }}>
                   <span style={{ color: "#4D9FDB" }}>✓</span> {t}
                 </span>

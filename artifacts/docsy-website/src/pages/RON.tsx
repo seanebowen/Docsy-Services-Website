@@ -158,7 +158,7 @@ export default function RON() {
             <H>Every day.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            RON is available same-hour, <H>7 days a week.</H> Midnight appointments are a real thing. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard.
+            RON is available same-hour, <H>7 days a week,</H> from 7 AM to 11 PM. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard.
           </p>
         </div>
       </section>
