@@ -24,7 +24,7 @@ const faqs = [
       },
       {
         q: "Are you available on weekends and after hours?",
-        a: "Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply automatically: Early Bird Seal (8–10 AM, $10 off RON), Lunch Break Seal (11 AM–1 PM, $10 off RON), Night Shift Seal (6–9 PM, $10 off RON), and Midday Miles (12–4 PM weekdays, $10 off mobile notary). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking.",
+        a: "Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply on weekdays automatically: Early Bird Seal (8–10 AM, $10 off RON), Lunch Break Seal (11 AM–1 PM, $10 off RON), Night Shift Seal (6–9 PM, $10 off RON), and Midday Miles (12–4 PM, $10 off mobile notary). Weekend Warrior applies on Saturdays and Sundays for loan signing appointments (20% off). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking.",
       },
       {
         q: "Do I get a receipt or invoice?",

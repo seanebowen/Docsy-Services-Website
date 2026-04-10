@@ -48,13 +48,14 @@ function parseHour(timeStr: string): number {
   return h;
 }
 
-function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedAuto: { label: string; amount: number }[] = []): PromoResult {
+function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedAuto: { label: string; amount: number }[] = [], day: number = -1): PromoResult {
   if (!estimate || !code.trim()) return null;
   const n = code.trim().toUpperCase();
   const { services, baseTotal, total } = estimate;
   const base = baseTotal ?? total;
   const has    = (kw: string) => services.some(s => s.name.toLowerCase().includes(kw.toLowerCase()));
   const autoHas = (kw: string) => appliedAuto.some(p => p.label.toLowerCase().includes(kw.toLowerCase()));
+  const isWeekday = day === -1 || (day >= 1 && day <= 5);
   switch (n) {
     case "HONORPASS":
       return { label: "HonorPass — 10% Off Base Service Fee", amount: -(Math.round(base * 0.10 * 100) / 100) };
@@ -65,15 +66,19 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
     }
     case "EARLYBIRDSEAL":
       if (autoHas("early bird")) return null;
+      if (!isWeekday) return null;
       return has("remote online") ? { label: "Early Bird Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "LUNCHBREAKSEAL":
       if (autoHas("lunch break")) return null;
+      if (!isWeekday) return null;
       return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "NIGHTSHIFTSEAL":
       if (autoHas("night shift")) return null;
+      if (!isWeekday) return null;
       return has("remote online") ? { label: "Night Shift Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "MIDDAYMILES":
       if (autoHas("midday miles")) return null;
+      if (!isWeekday) return null;
       return (has("general notary work") && !has("remote online")) ? { label: "Midday Miles™ — $10 Off Base Notary Fee", amount: -10 } : null;
     default:
       return null;
@@ -285,7 +290,7 @@ export default function Booking() {
     if (!isMember && isInPerson && hour >= 21)
       result.push({ label: "After-Hours Surcharge (9 PM – 11 PM)", amount: 20 });
 
-    if (has("remote online")) {
+    if (has("remote online") && isWeekday) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
       else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
       else if (hour >= 18 && hour < 21) result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
@@ -300,7 +305,7 @@ export default function Booking() {
   }, [selectedDate, selectedTime, estimate, isMember]);
 
   const autoPromoTotal  = autoPromos.reduce((sum, p) => sum + p.amount, 0);
-  const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos), [promoCode, estimate, autoPromos]);
+  const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos, selectedDate?.getDay() ?? -1), [promoCode, estimate, autoPromos, selectedDate]);
   const promoInvalid    = promoCode.trim().length > 0 && promoDiscount === null;
   const discountedTotal = estimate ? Math.max(0, estimate.total + autoPromoTotal + (promoDiscount?.amount ?? 0)) : 0;
 
