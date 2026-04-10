@@ -121,7 +121,7 @@ const guides = [
       { heading: "Booking", body: "Contact Docsy at least 48 hours before the deposition when possible. Provide: case name, deposition date and time, location or video platform (Zoom, Teams, etc.), names of witnesses, estimated duration, and whether you need a transcript." },
       { heading: "Appearance", body: "The certified digital reporter arrives at least 10 minutes before the scheduled start. For remote depositions, a tech check is included at no charge. The reporter administers the oath, marks exhibits, and manages the transcript record." },
       { heading: "Transcript delivery", body: "Ordinary (30-day) transcripts are $4.75/page. Rush options available. Word index, certified PDF, and e-transcript are always included. No separate line items for these. Transcripts are delivered via secure portal." },
-      { heading: "Payment", body: "Appearance-only: NET 14, no deposit required. Transcript orders: 50% deposit at scheduling, balance on delivery. Corporate accounts: NET 30 available, contact Docsy." },
+      { heading: "Payment", body: "All orders: NET-14. Appearance-only orders: no deposit required. Transcript orders: 50% deposit at scheduling, balance due within 14 days of completion. Corporate accounts: NET-30 available upon request." },
     ],
   },
   {
@@ -158,7 +158,7 @@ const guides = [
       { heading: "Payment methods", body: "Check (personal or business), ACH/wire transfer (preferred — no processing fee), credit or debit card (3% processing fee, disclosed before charging), and Zelle (no fee)." },
       { heading: "Know your price before you book", body: "Every appointment is priced before you confirm. The invoice total will match what you saw at booking. If it doesn't, call us." },
       { heading: "Deposit policy", body: "Court reporting transcript orders: 50% deposit at scheduling. All other services: no deposit required unless specified." },
-      { heading: "When is payment due?", body: "For most services: at or immediately after completion. Court reporting appearances: NET 14. Corporate accounts: NET 30 available upon request." },
+      { heading: "When is payment due?", body: "For most services: at or immediately after completion. Court reporting (all orders): NET-14. Corporate accounts: NET-30 available upon request." },
       { heading: "Itemized invoices", body: "Every invoice separates the statutory notary fee from the service fee, as required by Texas law. All other charges (travel, rush, timing) are listed separately. No bundled mystery fees." },
     ],
   },
@@ -208,6 +208,15 @@ export default function HelpCenter() {
   const id = params?.id;
 
   const guide = id ? guides.find((g) => g.id === id) : null;
+
+  React.useEffect(() => {
+    if (guide) {
+      document.title = `${guide.title} | Help Center | Docsy Services`;
+    } else {
+      document.title = "Help Center | Docsy Services";
+    }
+  }, [guide]);
+
   if (guide) return <GuideDetail guide={guide} />;
 
   return (
