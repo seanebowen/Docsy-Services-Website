@@ -52,7 +52,6 @@ export default function SafeVault() {
 
   useEffect(() => {
     document.title = "My Safe+ Vault | Docsy Services";
-    if (!token) { setLocation("/vault-info"); return; }
     fetchVault();
   }, [token]);
 

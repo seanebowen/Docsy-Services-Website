@@ -1,10 +1,10 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, Redirect } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "@/components/layout/Layout";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 import Home from "@/pages/Home";
 import RON from "@/pages/RON";
@@ -31,6 +31,12 @@ import LanguageLine from "@/pages/LanguageLine";
 
 const queryClient = new QueryClient();
 
+function VaultGuard() {
+  const { token } = useAuth();
+  if (!token) return <Redirect to="/vault-info" />;
+  return <SafeVault />;
+}
+
 function Router() {
   return (
     <Switch>
@@ -51,7 +57,7 @@ function Router() {
       <Route path="/promos" component={Promos} />
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
-      <Route path="/vault" component={SafeVault} />
+      <Route path="/vault" component={VaultGuard} />
       <Route path="/vault-info" component={VaultInfo} />
       <Route path="/contact" component={Contact} />
       <Route path="/about" component={About} />
