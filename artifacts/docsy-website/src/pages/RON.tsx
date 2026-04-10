@@ -108,6 +108,7 @@ export default function RON() {
             {[
               { l: "First notarization", p: "$25" },
               { l: "Each additional signature (same session)", p: "$10" },
+              { l: "In-person GNW (no video required)", p: "$10 + travel" },
               { l: "Same-hour availability", p: "Included" },
               { l: "Docsy Safe+ 30-day trial", p: "Included" },
               { l: "Digital certified copy", p: "Included" },
@@ -158,8 +159,31 @@ export default function RON() {
             <H>Every day.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            RON is available same-hour, <H>7 days a week,</H> from 7 AM to 11 PM. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard.
+            RON is available same-hour, <H>7 days a week,</H> from 7 AM to 11 PM. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard. In the rare event of a scheduling conflict, you'll be notified immediately and not charged.
           </p>
+        </div>
+      </section>
+
+      {/* RON vs. Mobile comparison callout */}
+      <section className="py-12 px-5 border-t border-[#1e2a3a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a]">
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#4D9FDB" }}>⊙ RON — Remote Online</p>
+              <p className="text-2xl font-black text-white mb-2">$25 flat. No travel fee.</p>
+              <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Fully remote — you connect via video, sign digitally, and get a certified copy emailed. No one comes to you. No mileage. Best for documents that don't require physical presence.
+              </p>
+            </div>
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.30)" }}>⊙ Mobile Notary — In-Person</p>
+              <p className="text-2xl font-black text-white mb-2">$10 + $30–$85 travel.</p>
+              <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Docsy comes to your location — home, office, hospital, or law firm. Required for documents that must be signed in front of a notary in person (HELOCs, some court filings, physical seal required).
+              </p>
+              <a href="/mobile-notary" className="inline-block mt-4 text-xs font-bold underline underline-offset-2" style={{ color: "rgba(255,255,255,0.40)" }}>View Mobile Notary →</a>
+            </div>
+          </div>
         </div>
       </section>
 

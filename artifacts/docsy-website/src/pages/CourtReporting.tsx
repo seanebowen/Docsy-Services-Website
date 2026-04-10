@@ -150,7 +150,7 @@ export default function CourtReporting() {
               ))}
             </div>
           </div>
-          <p className="text-sm text-white/30 text-center mt-6">50% deposit required at scheduling for all transcript orders. Appearance-only: NET 14, no deposit.</p>
+          <p className="text-sm text-white/30 text-center mt-6">All orders: NET-14. A 50% deposit is required at scheduling for transcript orders.</p>
         </div>
       </section>
 

@@ -44,7 +44,7 @@ export default function MobileNotary() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Docsy mobile notary serves the Texas area. Home, office, hospital, nursing home, hospice — wherever you need us. <strong className="text-black">Available 7 days a week, early morning to late at night.</strong>
+              Docsy mobile notary serves the San Antonio metro area. Home, office, hospital, nursing home, hospice — wherever you need us. <strong className="text-black">General hours 9 AM–9 PM, 7 days a week. Docsy+ members get 7 AM–11 PM priority access.</strong>
             </p>
           </FadeIn>
           <FadeIn delay={300}>
@@ -70,6 +70,52 @@ export default function MobileNotary() {
             <br /><br />
             Bedside notarizations for power of attorney, healthcare directives, and urgent documents are one of the most important services we provide. We don't charge extra just because it's a hospital.
           </p>
+        </div>
+      </section>
+
+      {/* ── Service Area ── */}
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <Label icon="⊟" text="SERVICE AREA" />
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
+              <HI>San Antonio metro</HI><br />
+              <span className="font-light text-white/40">and beyond.</span>
+            </h2>
+            <p className="text-base text-white/35 mt-4 max-w-md mx-auto">Travel fees are based on distance from the SA city center. Not sure which tier you're in? The Estimator will calculate it exactly.</p>
+          </div>
+          <div className="border border-[#1e2a3a] overflow-hidden">
+            <div className="grid grid-cols-[80px_1fr_auto] md:grid-cols-[100px_1fr_220px_80px] gap-px bg-[#1e2a3a]">
+              {/* Header */}
+              <div className="px-4 py-3" style={{ backgroundColor: "#0d1521" }}><p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.25)" }}>Tier</p></div>
+              <div className="px-4 py-3" style={{ backgroundColor: "#0d1521" }}><p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.25)" }}>Cities / Areas</p></div>
+              <div className="hidden md:block px-4 py-3" style={{ backgroundColor: "#0d1521" }}><p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.25)" }}>Distance</p></div>
+              <div className="px-4 py-3 text-right" style={{ backgroundColor: "#0d1521" }}><p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.25)" }}>Fee</p></div>
+              {/* Rows */}
+              {[
+                { tier: "Tier 1", cities: "San Antonio core, Alamo Heights, Terrell Hills, Castle Hills, Converse", distance: "0 – 10 mi", fee: "$30" },
+                { tier: "Tier 2", cities: "Universal City, Schertz, Live Oak, Leon Valley, Balcones Heights", distance: "11 – 25 mi", fee: "$45" },
+                { tier: "Tier 3", cities: "New Braunfels, Seguin, Boerne, Helotes, Pleasanton", distance: "26 – 40 mi", fee: "$65" },
+                { tier: "Tier 4", cities: "Beyond 40 miles — quote required. Contact us before booking.", distance: "40+ mi", fee: "$85+" },
+              ].map((row) => (
+                <React.Fragment key={row.tier}>
+                  <div className="px-4 py-4" style={{ backgroundColor: BG }}>
+                    <span className="text-xs font-black" style={{ color: "#4D9FDB" }}>{row.tier}</span>
+                  </div>
+                  <div className="px-4 py-4" style={{ backgroundColor: BG }}>
+                    <span className="text-sm text-white/55">{row.cities}</span>
+                  </div>
+                  <div className="hidden md:block px-4 py-4" style={{ backgroundColor: BG }}>
+                    <span className="text-sm text-white/35">{row.distance}</span>
+                  </div>
+                  <div className="px-4 py-4 text-right" style={{ backgroundColor: BG }}>
+                    <span className="text-sm font-bold" style={{ color: "#F5EFE6" }}>{row.fee}</span>
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-white/25 mt-4 text-center">Distance calculated from downtown San Antonio. The Estimator calculates your tier automatically.</p>
         </div>
       </section>
 
@@ -127,6 +173,29 @@ export default function MobileNotary() {
                 ))}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RON vs. Mobile comparison callout */}
+      <section className="py-12 px-5 border-t border-[#1e2a3a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a]">
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.30)" }}>⊙ RON — Remote Online</p>
+              <p className="text-2xl font-black text-white mb-2">$25 flat. No travel fee.</p>
+              <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Fully remote — you connect via video, sign digitally, and get a certified copy emailed. Best when your document doesn't require physical presence.
+              </p>
+              <a href="/ron" className="inline-block mt-4 text-xs font-bold underline underline-offset-2" style={{ color: "rgba(255,255,255,0.40)" }}>View RON →</a>
+            </div>
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "#4D9FDB" }}>⊙ Mobile Notary — In-Person</p>
+              <p className="text-2xl font-black text-white mb-2">$10 + $30–$85 travel.</p>
+              <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Docsy comes to you. Required for documents that need a physical notary present — HELOCs, court filings, physical seal documents, and anything you can't sign over video.
+              </p>
+            </div>
           </div>
         </div>
       </section>

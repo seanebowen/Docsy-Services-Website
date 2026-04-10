@@ -158,10 +158,13 @@ export default function Apostille() {
               <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille">
                 Book Now →
               </Link>
-              <Link href="/help-center/how-to-send-apostille" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
+              <Link href="/contact" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
               </Link>
             </div>
+            <p className="text-sm text-black/45 mt-4 max-w-sm">
+              The free pre-check confirms your document type, destination country, and eligibility before anything is submitted. No charge, no commitment.
+            </p>
           </FadeIn>
         </div>
       </section>
