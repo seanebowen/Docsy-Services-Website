@@ -16,7 +16,9 @@ const items = [
   "·",
   "SAME-HOUR RON AVAILABLE",
   "·",
-  "7 DAYS · 7AM TO MIDNIGHT",
+  "RON: 7AM–MIDNIGHT DAILY",
+  "·",
+  "MOBILE NOTARY: 9AM–9PM · MEMBERS GET EXTENDED HOURS",
   "·",
 ];
 

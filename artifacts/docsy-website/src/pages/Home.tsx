@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck } from "lucide-react";
+import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck, Languages } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
 import homeImg from "@/assets/images/home-workspace.png";
@@ -55,7 +55,7 @@ function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) 
 
 const STATS = [
   { value: "< 15 min", label: "Average RON session" },
-  { value: "7 days",   label: "Every week, 7AM–midnight" },
+  { value: "7 days",   label: "Every week — RON 7AM–midnight" },
   { value: "$0",       label: "Hidden fees, ever" },
   { value: "Midnight", label: "Latest RON appointment" },
 ];
@@ -100,6 +100,15 @@ const SERVICES = [
   { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
   { icon: Briefcase,   label: "Court Reporting",            desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
   { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted file storage for all appointment deliverables. 30-day free trial.", href: "/memberships#storage" },
+  { icon: Languages,   label: "Language Line",              desc: "Live interpreter add-on for any session. 200+ languages, same-hour available.", href: "/language-line" },
+];
+
+const TESTIMONIALS = [
+  { quote: "The RON session took nine minutes. I signed my power of attorney from a coffee shop in Austin. Easiest notary experience I've ever had.", name: "K. Mitchell", loc: "Austin, TX" },
+  { quote: "We had to close on a Friday evening. Docsy showed up on time, had everything organized, and the scanbacks were back to our title office before I left the parking lot.", name: "R. Salazar", loc: "San Antonio, TX" },
+  { quote: "I needed an apostille for a work visa and didn't know where to start. The pre-check saved me from sending the wrong document. Everything was handled in three days.", name: "A. Nguyen", loc: "Houston, TX" },
+  { quote: "Every court reporter I've used charges extra for the word index. Docsy just includes it. The invoice was exactly what I expected.", name: "T. Perkins", loc: "San Antonio, TX" },
+  { quote: "I've booked four appointments through Docsy — RON, mobile, loan signing, and an apostille. Same clear pricing, same invoice format, same follow-through every time.", name: "M. Okafor", loc: "Dallas, TX" },
 ];
 
 export default function Home() {
@@ -142,13 +151,13 @@ export default function Home() {
                 >
                   Calculate Your Price →
                 </Link>
-                <button
-                  onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
+                <a
+                  href="#services"
                   className="px-8 py-4 text-sm font-bold text-center border"
                   style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
                 >
                   Our Services
-                </button>
+                </a>
               </div>
             </FadeIn>
           </div>
@@ -219,7 +228,7 @@ export default function Home() {
             <div className="text-center mb-14">
               <Pill text="⊟ Services" dark />
               <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
-                Six divisions. <H>One call.</H>
+                Seven divisions. <H>One call.</H>
               </h2>
             </div>
           </FadeIn>
@@ -238,6 +247,35 @@ export default function Home() {
                     Learn more →
                   </p>
                 </Link>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ─────────────────────────────────── */}
+      <section className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
+          <FadeIn delay={0}>
+            <div className="text-center mb-14">
+              <Pill text="⊙ Client Notes" dark />
+              <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
+                What people say.
+              </h2>
+            </div>
+          </FadeIn>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
+            {TESTIMONIALS.map((t, i) => (
+              <FadeIn key={t.name} delay={i * 70} threshold={0.04}>
+                <div className="p-8 h-full flex flex-col justify-between" style={{ backgroundColor: SLATE }}>
+                  <p className="text-sm font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <div>
+                    <p className="text-xs font-bold text-white">{t.name}</p>
+                    <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.28)" }}>{t.loc}</p>
+                  </div>
+                </div>
               </FadeIn>
             ))}
           </div>
@@ -285,7 +323,7 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={200}>
             <p className="text-base font-light mb-10 max-w-lg mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-              Docsy+ memberships from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month.</strong> Free notarizations, priority scheduling, and discounts across every service division.
+              Docsy+ memberships from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month</strong> — or <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$150/year</strong> and save 15%. Free notarizations, priority scheduling, and discounts across every service division.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
