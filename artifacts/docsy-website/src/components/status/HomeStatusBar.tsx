@@ -34,7 +34,7 @@ export function HomeStatusBar() {
 
   const next = getNextTimeLabel(state);
 
-  let dotColor = BLUE;
+  let dotColor = "#22c55e";
   let pulse = true;
   let headline = "";
   let sub = "";
@@ -59,7 +59,7 @@ export function HomeStatusBar() {
 
   return (
     <div
-      className="block w-full border-b"
+      className="block w-full border-b sticky top-0 z-40"
       style={{ backgroundColor: SLATE, borderColor: DIV }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -92,7 +92,7 @@ export function HomeStatusBar() {
           </span>
           <span
             className="hidden lg:inline text-[11px] font-bold whitespace-nowrap"
-            style={{ color: "rgba(77,159,219,0.7)" }}
+            style={{ color: dotColor }}
           >
             {next.prefix}{next.value}
           </span>

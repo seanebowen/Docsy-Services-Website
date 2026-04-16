@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
-import { DivisionStatusBar } from "@/components/status/DivisionStatusBar";
-import { useAvailability } from "@/hooks/useAvailability";
 import ronImg from "@/assets/images/ron-laptop.png";
 import mobileImg from "@/assets/images/mobile-notary-folio.png";
 
@@ -43,7 +41,6 @@ const SectionDivider = ({ id, kicker, title }: { id: string; kicker: string; tit
 
 export default function NotaryServices() {
   const [location] = useLocation();
-  const { state } = useAvailability();
 
   useEffect(() => {
     document.title = "Notary Services — RON & Mobile/GNW | Docsy Services";
@@ -63,7 +60,6 @@ export default function NotaryServices() {
     <div className="w-full" style={{ backgroundColor: BG }}>
 
       {/* ── Top Hero ── */}
-      <DivisionStatusBar divisionId="ron" state={state} />
 
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
@@ -201,7 +197,6 @@ export default function NotaryServices() {
       {/* ───────────────────────── MOBILE / GNW SECTION ───────────────────────── */}
       <SectionDivider id="mobile" kicker="Mobile Notary & GNW" title="We come to you. Not the other way around." />
 
-      <DivisionStatusBar divisionId="mobile" state={state} />
 
       <ImageBand src={mobileImg} alt="Mobile notary with document folio" />
 

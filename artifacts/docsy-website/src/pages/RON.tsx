@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
-import { DivisionStatusBar } from "@/components/status/DivisionStatusBar";
-import { useAvailability } from "@/hooks/useAvailability";
 import ronImg from "@/assets/images/ron-laptop.png";
 
 const IVORY = "#F5EFE6";
@@ -30,12 +28,10 @@ export default function RON() {
     document.title = "Remote Online Notarization (RON) | Docsy Services";
   }, []);
 
-  const { state } = useAvailability();
 
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <DivisionStatusBar divisionId="ron" state={state} />
 
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">

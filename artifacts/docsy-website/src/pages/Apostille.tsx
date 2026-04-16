@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
-import { DivisionStatusBar } from "@/components/status/DivisionStatusBar";
-import { useAvailability } from "@/hooks/useAvailability";
 import apostilleImg from "@/assets/images/apostille-seal.png";
 
 const IVORY = "#F5EFE6";
@@ -135,12 +133,10 @@ export default function Apostille() {
     document.title = "Apostille Services | Docsy Services";
   }, []);
 
-  const { state } = useAvailability();
 
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <DivisionStatusBar divisionId="apostille" state={state} />
 
       {/* ── Hero ── */}
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
