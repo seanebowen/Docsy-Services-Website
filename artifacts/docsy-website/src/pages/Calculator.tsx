@@ -386,7 +386,20 @@ export default function Calculator() {
   const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
   const llTotal       = (llOn && anyServiceActive) ? LL_PRICES[llTier][llDuration] : 0;
   const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
-  const honorPassDiscount = honorPass && anyServiceActive ? -Math.round((ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal) * 0.10 * 100) / 100 : 0;
+
+  /* HonorPass — 10% off BASE service fees only (excludes travel, turnaround
+     surcharges, extra docs/witnesses/signers, transcript, interpreter).
+     Sums across every active service so the discount grows as more
+     services are added. */
+  const honorPassBaseSum =
+      (ronOn   ? calcRONBase(ron)         : 0)
+    + (gnwOn   ? calcGNWBase(gnw)         : 0)
+    + (loanOn  ? calcLoanBase(loan)       : 0)
+    + (apostOn ? calcApostilleBase(apost) : 0)
+    + (courtOn ? calcCourtBase(court)     : 0);
+  const honorPassDiscount = honorPass && anyServiceActive
+    ? -Math.round(honorPassBaseSum * 0.10 * 100) / 100
+    : 0;
   const grandTotal    = Math.max(0, servicesTotal + honorPassDiscount);
 
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
