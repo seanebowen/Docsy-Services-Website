@@ -10,11 +10,15 @@ import {
   BOOKING_HREF,
 } from "@/lib/statusBar";
 
-const STATE_STYLES = {
-  available: { dot: "#22c55e", time: "#16a34a", pulse: true, primary: true },
-  busy: { dot: "#eab308", time: "#92400e", pulse: true, primary: false },
-  closed: { dot: "#ef4444", time: "#991b1b", pulse: false, primary: false },
-} as const;
+const SLATE = "#131929";
+const BLUE  = "#4D9FDB";
+const DIV   = "#1e2a3a";
+
+const DOT_COLOR: Record<StatusState, string> = {
+  available: "#22c55e",
+  busy: "#eab308",
+  closed: "#ef4444",
+};
 
 interface Props {
   divisionId?: DivisionId;
@@ -35,68 +39,63 @@ export function DivisionStatusBar({
   if (!d) return null;
 
   const copy = d[state];
-  const styles = STATE_STYLES[state];
+  const dot = DOT_COLOR[state];
+  const pulse = state !== "closed";
   const next = getNextTimeLabel(state);
 
   return (
     <div
-      className="bg-white border border-gray-200 rounded-xl px-5 py-4"
+      className="block w-full border-b"
+      style={{ backgroundColor: SLATE, borderColor: DIV }}
       role="status"
       aria-live="polite"
       data-testid={`status-bar-${d.id}`}
     >
-      {showPill && (
-        <div className="mb-2">
+      <div className="max-w-7xl mx-auto px-5 py-2.5 flex items-center gap-3">
+        <span
+          className={`block w-[10px] h-[10px] rounded-full shrink-0 ${pulse ? "animate-pulse" : ""}`}
+          style={{
+            backgroundColor: dot,
+            boxShadow: `0 0 0 3px ${dot}33`,
+          }}
+          aria-hidden="true"
+        />
+        {showPill && (
           <span
-            className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide border"
+            className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold tracking-wide border whitespace-nowrap shrink-0 uppercase"
             style={{
-              backgroundColor: d.color + "18",
-              color: d.color,
-              borderColor: d.color + "33",
+              backgroundColor: "transparent",
+              color: BLUE,
+              borderColor: BLUE + "55",
             }}
           >
             {d.pill}
           </span>
-        </div>
-      )}
-      <div className="flex items-center gap-3">
-        <span
-          className="relative inline-flex shrink-0"
-          aria-hidden="true"
-        >
+        )}
+        <div className="flex-1 min-w-0 flex items-center gap-3 overflow-hidden">
           <span
-            className={`block w-[11px] h-[11px] rounded-full ${
-              styles.pulse ? "animate-pulse" : ""
-            }`}
-            style={{
-              backgroundColor: styles.dot,
-              boxShadow: `0 0 0 3px ${styles.dot}28`,
-            }}
-          />
-        </span>
-        <div className="flex-1 min-w-0">
-          <div className="text-[15px] font-semibold text-gray-900 leading-tight">
-            {applyTokens(copy.h)}
-          </div>
-          <div className="text-xs text-gray-500 mt-0.5 leading-snug">
-            {applyTokens(copy.s)}
-          </div>
-          <div
-            className="text-xs font-semibold mt-1"
-            style={{ color: styles.time }}
+            className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] whitespace-nowrap truncate"
+            style={{ color: BLUE }}
           >
-            {next.prefix}
-            {next.value}
-          </div>
+            {applyTokens(copy.h)}
+          </span>
+          <span
+            className="hidden md:inline text-[11px] font-medium truncate"
+            style={{ color: "rgba(77,159,219,0.55)" }}
+          >
+            {applyTokens(copy.s)}
+          </span>
+          <span
+            className="hidden lg:inline text-[11px] font-bold whitespace-nowrap"
+            style={{ color: "rgba(77,159,219,0.7)" }}
+          >
+            {next.prefix}{next.value}
+          </span>
         </div>
         <Link
           href={BOOKING_HREF}
-          className={
-            "ml-auto rounded-lg px-4 py-2 text-xs font-semibold whitespace-nowrap shrink-0 transition-colors " +
-            (styles.primary
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200")
-          }
+          className="ml-auto text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-3 py-1.5 border transition-colors hover:bg-white/[0.05]"
+          style={{ borderColor: BLUE, color: BLUE }}
           data-testid={`status-cta-${d.id}`}
         >
           {copy.btn} →

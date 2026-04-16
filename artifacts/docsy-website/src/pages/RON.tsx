@@ -35,11 +35,7 @@ export default function RON() {
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
-          <DivisionStatusBar divisionId="ron" state={state} />
-        </div>
-      </section>
+      <DivisionStatusBar divisionId="ron" state={state} />
 
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">

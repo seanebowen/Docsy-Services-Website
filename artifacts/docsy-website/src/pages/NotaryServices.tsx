@@ -63,11 +63,7 @@ export default function NotaryServices() {
     <div className="w-full" style={{ backgroundColor: BG }}>
 
       {/* ── Top Hero ── */}
-      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
-          <DivisionStatusBar divisionId="ron" state={state} />
-        </div>
-      </section>
+      <DivisionStatusBar divisionId="ron" state={state} />
 
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
@@ -205,11 +201,7 @@ export default function NotaryServices() {
       {/* ───────────────────────── MOBILE / GNW SECTION ───────────────────────── */}
       <SectionDivider id="mobile" kicker="Mobile Notary & GNW" title="We come to you. Not the other way around." />
 
-      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
-          <DivisionStatusBar divisionId="mobile" state={state} />
-        </div>
-      </section>
+      <DivisionStatusBar divisionId="mobile" state={state} />
 
       <ImageBand src={mobileImg} alt="Mobile notary with document folio" />
 
