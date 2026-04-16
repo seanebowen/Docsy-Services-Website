@@ -20,7 +20,7 @@ export default function NotFound() {
         <Link href="/" className="px-8 py-4 text-sm font-bold text-black" style={{ backgroundColor: IVORY }}>
           Back to Home
         </Link>
-        <Link href="/help-center" className="px-8 py-4 text-sm font-bold text-white border border-[#222]">
+        <Link href="/faq" className="px-8 py-4 text-sm font-bold text-white border border-[#222]">
           Help Center
         </Link>
       </div>

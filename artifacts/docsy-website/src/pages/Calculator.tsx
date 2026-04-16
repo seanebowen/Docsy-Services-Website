@@ -993,7 +993,7 @@ export default function Calculator() {
                       </div>
                       <p className="text-xs font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.3)" }}>
                         Real-time interpreter support via Language Line Solutions — available for any service.{" "}
-                        <Link href="/language-line" style={{ color: AMBER, textDecoration: "underline" }}>Learn more →</Link>
+                        <Link href="/#language-line" style={{ color: AMBER, textDecoration: "underline" }}>Learn more →</Link>
                       </p>
                     </div>
                   </FadeIn>

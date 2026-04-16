@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck, Languages } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
-import { HomeStatusBar } from "@/components/status/HomeStatusBar";
 import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
@@ -114,13 +113,6 @@ export default function Home() {
 
   return (
     <div className="w-full" style={{ backgroundColor: SLATE }}>
-
-      {/* ── STATUS BAR ─────────────────────────────────────── */}
-      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
-        <div className="max-w-5xl mx-auto">
-          <HomeStatusBar />
-        </div>
-      </section>
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
@@ -312,6 +304,67 @@ export default function Home() {
           >
             Book Now →
           </Link>
+        </div>
+      </section>
+
+      {/* ── LANGUAGE LINE ─────────────────────────────────── */}
+      <section id="language-line" className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
+          <FadeIn delay={0}>
+            <div className="text-center mb-12">
+              <Pill text="⊕ Language Line" dark />
+              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
+                Need an interpreter?<br />
+                <span className="font-light text-white/40">We've got you covered.</span>
+              </h2>
+              <p className="text-base font-light max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
+                Real-time interpreter support via Language Line Solutions — available on demand across all service divisions. Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. No advance notice required.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={80}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
+              {[
+                { label: "Tier 1 — Spanish", langs: "On-demand. Most common.", prices: { 15: 32, 30: 62, 60: 125 } },
+                { label: "Tier 2 — Common Languages", langs: "French, Portuguese, Vietnamese, Tagalog, Korean, German, Italian, Russian", prices: { 15: 45, 30: 88, 60: 175 } },
+                { label: "Tier 3 — Premium Languages", langs: "Mandarin, Cantonese, Arabic, Japanese, Hindi, and all others", prices: { 15: 68, 30: 135, 60: 275 } },
+              ].map((tier, i) => (
+                <div key={i} className="flex flex-col" style={{ backgroundColor: SLATE }}>
+                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV }}>
+                    <p className="text-sm font-black text-white mb-1">{tier.label}</p>
+                    <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>{tier.langs}</p>
+                  </div>
+                  <div className="flex-1 divide-y" style={{ borderColor: DIV }}>
+                    {([15, 30, 60] as const).map(min => (
+                      <div key={min} className="flex justify-between items-center px-6 py-3" style={{ borderColor: DIV }}>
+                        <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.5)" }}>{min} minutes</span>
+                        <span className="text-sm font-bold" style={{ color: AMBER }}>${tier.prices[min as 15 | 30 | 60]}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={160}>
+            <p className="text-center text-xs font-light mt-6" style={{ color: "rgba(255,255,255,0.35)" }}>
+              Minimum 15 minutes. Sold in 15/30/60-minute blocks. Overage billed in 15-min increments at the applicable tier rate. Interpreter fees are collected upfront alongside the base service fee.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={240}>
+            <div className="text-center mt-8">
+              <Link
+                href="/calculate"
+                className="inline-block px-8 py-4 text-sm font-bold text-white"
+                style={{ backgroundColor: AMBER }}
+              >
+                Add an interpreter to your booking →
+              </Link>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

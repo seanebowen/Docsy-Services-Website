@@ -25,10 +25,8 @@ import InternalBook from "@/pages/InternalBook";
 import Booking from "@/pages/Booking";
 import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
-import Contact from "@/pages/Contact";
 import MembershipCheckout from "@/pages/MembershipCheckout";
 import About from "@/pages/About";
-import LanguageLine from "@/pages/LanguageLine";
 
 const queryClient = new QueryClient();
 
@@ -56,16 +54,17 @@ function Router() {
       <Route path="/court-reporting" component={CourtReporting} />
       <Route path="/memberships" component={Memberships} />
       <Route path="/faq" component={FAQ} />
-      <Route path="/help-center" component={HelpCenter} />
-      <Route path="/help-center/:id" component={HelpCenter} />
+      <Route path="/faq/:id" component={FAQ} />
+      <Route path="/help-center"><Redirect to="/faq" /></Route>
+      <Route path="/help-center/:id">{(p: any) => <Redirect to={`/faq/${p.id}`} />}</Route>
       <Route path="/promos" component={Promos} />
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
       <Route path="/vault" component={VaultGuard} />
       <Route path="/vault-info" component={VaultInfo} />
-      <Route path="/contact" component={Contact} />
+      <Route path="/contact"><Redirect to="/about#contact" /></Route>
       <Route path="/about" component={About} />
-      <Route path="/language-line" component={LanguageLine} />
+      <Route path="/language-line"><Redirect to="/#language-line" /></Route>
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
     </Switch>

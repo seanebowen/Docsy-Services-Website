@@ -17,14 +17,12 @@ const allLinks = [
 ];
 
 const moreLinks = [
-  { href: "/calculate",    label: "Price Calculator", icon: Calculator },
-  { href: "/about",       label: "About",            icon: Info },
-  { href: "/faq",         label: "FAQ",              icon: HelpCircle },
-  { href: "/help-center", label: "Help Center",      icon: MessageSquare },
-  { href: "/promos",      label: "Promotions",       icon: Tag },
-  { href: "/contact",        label: "Contact Us",       icon: Phone },
-  { href: "/language-line",  label: "Language Line",    icon: Languages },
-  { href: "/vault-info",     label: "Docsy Safe+",      icon: Archive },
+  { href: "/calculate",     label: "Price Calculator", icon: Calculator },
+  { href: "/about",         label: "About & Contact",  icon: Info },
+  { href: "/faq",           label: "FAQ & Guides",     icon: HelpCircle },
+  { href: "/promos",        label: "Promotions",       icon: Tag },
+  { href: "/#language-line",label: "Language Line",    icon: Languages },
+  { href: "/vault-info",    label: "Docsy Safe+",      icon: Archive },
 ];
 
 export function Navbar() {

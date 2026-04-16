@@ -11,6 +11,9 @@ import {
 import { useAvailability } from "@/hooks/useAvailability";
 
 const ROTATE_MS = 4000;
+const SLATE = "#131929";
+const BLUE  = "#4D9FDB";
+const DIV   = "#1e2a3a";
 
 export function HomeStatusBar() {
   const { state } = useAvailability();
@@ -31,100 +34,78 @@ export function HomeStatusBar() {
 
   const next = getNextTimeLabel(state);
 
-  let dotColor = "#22c55e";
-  let timeColor = "#16a34a";
+  let dotColor = BLUE;
   let pulse = true;
   let headline = "";
   let sub = "";
   let btnText = "Book now";
-  let primary = true;
 
   if (state === "busy") {
     dotColor = "#eab308";
-    timeColor = "#92400e";
     headline = HOME_BUSY.h;
     sub = HOME_BUSY.s;
     btnText = HOME_BUSY.btn;
-    primary = false;
   } else if (state === "closed") {
     dotColor = "#ef4444";
-    timeColor = "#991b1b";
     pulse = false;
     headline = applyTokens(HOME_CLOSED.h);
     sub = HOME_CLOSED.s;
     btnText = HOME_CLOSED.btn;
-    primary = false;
   } else {
     const d = DIVISIONS[idx];
     headline = d.home.h;
     sub = d.home.s;
-    btnText = "Book now";
   }
 
   return (
     <div
-      className="bg-white border border-gray-200 rounded-xl px-5 py-4"
+      className="block w-full border-b"
+      style={{ backgroundColor: SLATE, borderColor: DIV }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       role="status"
       aria-live="polite"
       data-testid="home-status-bar"
     >
-      <div className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-5 py-2.5 flex items-center gap-3">
         <span
-          className={`block w-[11px] h-[11px] rounded-full shrink-0 ${
-            pulse ? "animate-pulse" : ""
-          }`}
+          className={`block w-[10px] h-[10px] rounded-full shrink-0 ${pulse ? "animate-pulse" : ""}`}
           style={{
             backgroundColor: dotColor,
-            boxShadow: `0 0 0 3px ${dotColor}28`,
+            boxShadow: `0 0 0 3px ${dotColor}33`,
           }}
           aria-hidden="true"
         />
-        <div className="flex-1 min-w-0">
-          <div
+        <div className="flex-1 min-w-0 flex items-center gap-3 overflow-hidden">
+          <span
             key={state === "available" ? `h-${idx}` : `h-${state}`}
-            className="text-[15px] font-semibold text-gray-900 leading-tight"
-            style={{ animation: "fadeUp .35s ease" }}
+            className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] whitespace-nowrap truncate"
+            style={{ color: BLUE, animation: "fadeUp .35s ease" }}
           >
             {headline}
-          </div>
-          <div className="text-xs text-gray-500 mt-0.5 leading-snug">{sub}</div>
-          <div className="text-xs font-semibold mt-1" style={{ color: timeColor }}>
-            {next.prefix}
-            {next.value}
-          </div>
+          </span>
+          <span
+            className="hidden md:inline text-[11px] font-medium truncate"
+            style={{ color: "rgba(77,159,219,0.55)" }}
+          >
+            {sub}
+          </span>
+          <span
+            className="hidden lg:inline text-[11px] font-bold whitespace-nowrap"
+            style={{ color: "rgba(77,159,219,0.7)" }}
+          >
+            {next.prefix}{next.value}
+          </span>
         </div>
         <Link
           href={BOOKING_HREF}
-          className={
-            "ml-auto rounded-lg px-4 py-2 text-xs font-semibold whitespace-nowrap shrink-0 transition-colors " +
-            (primary
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200")
-          }
+          className="ml-auto text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-3 py-1.5 border transition-colors hover:bg-white/[0.05]"
+          style={{ borderColor: BLUE, color: BLUE }}
           data-testid="home-status-cta"
         >
           {btnText} →
         </Link>
       </div>
-      {state === "available" && (
-        <div className="flex items-center gap-1.5 mt-2.5" role="tablist" aria-label="Division rotation">
-          {DIVISIONS.map((d, i) => (
-            <button
-              key={d.id}
-              type="button"
-              onClick={() => setIdx(i)}
-              aria-label={`Show ${d.label}`}
-              aria-selected={i === idx}
-              role="tab"
-              className="w-1.5 h-1.5 rounded-full transition-colors"
-              style={{ backgroundColor: i === idx ? "#374151" : "#e5e7eb" }}
-              data-testid={`home-status-dot-${d.id}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

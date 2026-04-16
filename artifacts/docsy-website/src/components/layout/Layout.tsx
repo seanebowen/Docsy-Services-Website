@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { PromotionTicker } from "./PromotionTicker";
+import { HomeStatusBar } from "@/components/status/HomeStatusBar";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -18,6 +19,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ScrollToTop />
       <Navbar />
       <PromotionTicker />
+      <HomeStatusBar />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

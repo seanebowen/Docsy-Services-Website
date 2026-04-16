@@ -328,7 +328,7 @@ export default function Memberships() {
                   <span className="text-sm font-bold shrink-0 w-20 text-right" style={{ color: IVORY }}>{row.p}</span>
                   {row.kind === "contact" ? (
                     <Link
-                      href="/contact"
+                      href="/about"
                       className="shrink-0 px-4 py-2 text-xs font-bold border"
                       style={{ borderColor: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.4)" }}
                     >
