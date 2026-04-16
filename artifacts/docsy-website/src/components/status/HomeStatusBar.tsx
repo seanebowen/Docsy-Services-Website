@@ -76,22 +76,22 @@ export function HomeStatusBar() {
           }}
           aria-hidden="true"
         />
-        <div className="flex-1 min-w-0 flex items-center gap-3.5 overflow-hidden">
+        <div className="flex-1 min-w-0 flex items-center gap-3.5 flex-wrap">
           <span
             key={state === "available" ? `h-${idx}` : `h-${state}`}
-            className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.12em] whitespace-nowrap truncate"
+            className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.12em] whitespace-nowrap"
             style={{ color: BLUE, animation: "fadeUp .35s ease" }}
           >
             {headline}
           </span>
           <span
-            className="hidden md:inline text-[12px] sm:text-[13px] font-medium truncate"
+            className="hidden lg:inline text-[12px] sm:text-[13px] font-medium whitespace-nowrap"
             style={{ color: "rgba(77,159,219,0.55)" }}
           >
             {sub}
           </span>
           <span
-            className="hidden lg:inline text-[12px] sm:text-[13px] font-bold whitespace-nowrap"
+            className="hidden md:inline text-[12px] sm:text-[13px] font-bold whitespace-nowrap"
             style={{ color: dotColor }}
           >
             {next.prefix}{next.value}
