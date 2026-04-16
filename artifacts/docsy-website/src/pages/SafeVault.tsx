@@ -46,7 +46,7 @@ export default function SafeVault() {
   const [apiError, setApiError] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = "My Safe+ Vault | Docsy Services";
+    document.title = "My Safe+ | Docsy Services";
     fetchVault();
   }, [token]);
 

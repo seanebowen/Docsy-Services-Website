@@ -74,7 +74,7 @@ Docsy Services reserves the right to update membership pricing with 30 days writ
   },
   {
     heading: "Cancellation",
-    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to membership perks — priority booking, member discounts, free/discounted notarizations, and travel-fee waivers — remains active through the end of the current billing cycle. Safe+ Vault access is unaffected by cancellation; it remains free for every Docsy client. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
+    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to membership perks — priority booking, member discounts, free/discounted notarizations, and travel-fee waivers — remains active through the end of the current billing cycle. Safe+ access is unaffected by cancellation; it remains free for every Docsy client. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
 
 Docsy Services reserves the right to cancel any membership immediately and without refund in cases of abuse, fraud, misuse of perks, or violation of these terms.`,
   },
@@ -112,8 +112,8 @@ All RON or mobile sessions beyond the monthly credit allotment are billed at sta
     body: `All members receive fee-free priority booking across all service divisions. Priority booking places members ahead of non-member scheduling requests. It does not guarantee same-day or next-day availability. Priority status is tied to the active membership account and is non-transferable unless approved under the Transfer Policy below.`,
   },
   {
-    heading: "Safe+ Vault Access",
-    body: `Safe+ Vault is included free with every Docsy service for every client — members and non-members alike. Docsy+ members receive extended retention windows and priority support on vault issues. Vault access is tied to your registered Docsy account and remains available as long as the account is in good standing.`,
+    heading: "Safe+ Access",
+    body: `Safe+ is included free with every Docsy service for every client — members and non-members alike. Docsy+ members receive extended retention windows and priority support on vault issues. Vault access is tied to your registered Docsy account and remains available as long as the account is in good standing.`,
   },
   {
     heading: "Transfer Policy",
@@ -150,7 +150,7 @@ export default function Memberships() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Docsy+ is a membership — free notarizations every month, priority scheduling, and discounts across every service. The more you use Docsy, the more you save. Looking for document storage? <Link href="/vault-info" className="underline font-bold text-black">See Safe+ Vault →</Link>
+              Docsy+ is a membership — free notarizations every month, priority scheduling, and discounts across every service. The more you use Docsy, the more you save. Looking for document storage? <Link href="/vault-info" className="underline font-bold text-black">See Safe+ →</Link>
             </p>
           </FadeIn>
           <FadeIn delay={260}>
@@ -159,7 +159,7 @@ export default function Memberships() {
                 View Membership Plans
               </Link>
               <Link href="/vault-info" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black">
-                Visit Safe+ Vault →
+                Visit Safe+ →
               </Link>
             </div>
           </FadeIn>

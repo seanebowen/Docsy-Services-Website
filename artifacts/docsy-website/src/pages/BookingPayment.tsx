@@ -522,7 +522,7 @@ export default function BookingPayment() {
                         {createAccount && <span className="text-black text-[11px] font-black leading-none">✓</span>}
                       </div>
                       <span className="text-sm font-medium leading-snug" style={{ color: createAccount ? IVORY : "rgba(255,255,255,0.5)" }}>
-                        Create my Docsy account so I can access my Safe+ Vault and track this booking.
+                        Create my Docsy account so I can access my Safe+ and track this booking.
                       </span>
                     </label>
                     <p className="text-[10px] mt-2 ml-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
