@@ -105,15 +105,15 @@ function makeSlotLabel(h24: number): string {
   return `${h12}:00 ${h24 >= 12 && h24 < 24 ? "PM" : "AM"}`;
 }
 interface SlotInfo { label: string; priority: boolean; }
-/* General hours: 9 AM – 9 PM (visible to all) */
-const GENERAL_SLOTS: SlotInfo[] = [9,10,11,12,13,14,15,16,17,18,19,20,21].map(h => ({ label: makeSlotLabel(h), priority: false }));
-/* Member slots: add priority AM (7–8) and priority PM (10–11) around general */
+/* General hours: 9 AM – 9 PM (last general start hour is 8 PM; 9 PM is priority) */
+const GENERAL_SLOTS: SlotInfo[] = [9,10,11,12,13,14,15,16,17,18,19,20].map(h => ({ label: makeSlotLabel(h), priority: false }));
+/* Member slots: add priority AM (7–8) and priority PM (9 PM – 11 PM, start hours 21–22) around general */
 const MEMBER_SLOTS: SlotInfo[] = [
   { label: makeSlotLabel(7),  priority: true  },
   { label: makeSlotLabel(8),  priority: true  },
   ...GENERAL_SLOTS,
+  { label: makeSlotLabel(21), priority: true  },
   { label: makeSlotLabel(22), priority: true  },
-  { label: makeSlotLabel(23), priority: true  },
 ];
 
 /* ── Terms modal ── */
@@ -579,8 +579,8 @@ export default function Booking() {
                       </div>
                     )}
 
-                    {/* General slots (hours 9–21) */}
-                    {!slotsLoading && apiSlots.some(s => slotHour(s) >= 9 && slotHour(s) <= 21) && (
+                    {/* General slots (hours 9–20, ending by 9 PM) */}
+                    {!slotsLoading && apiSlots.some(s => slotHour(s) >= 9 && slotHour(s) <= 20) && (
                       <div className={isMember ? "mb-3" : ""}>
                         {isMember && (
                           <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
@@ -588,7 +588,7 @@ export default function Booking() {
                           </p>
                         )}
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {apiSlots.filter(s => slotHour(s) >= 9 && slotHour(s) <= 21).map(slot => {
+                          {apiSlots.filter(s => slotHour(s) >= 9 && slotHour(s) <= 20).map(slot => {
                             const label = hhmm24to12(slot);
                             return (
                               <button
@@ -607,14 +607,14 @@ export default function Booking() {
                       </div>
                     )}
 
-                    {/* Priority PM block (members only, hours 22–23) */}
-                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) >= 22) && (
+                    {/* Priority PM block (members only, hours 21–22 — 9 PM & 10 PM start, ending by 11 PM) */}
+                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) >= 21 && slotHour(s) <= 22) && (
                       <div>
                         <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
-                          ◆ Priority PM — Late Hours
+                          ◆ Priority PM — 9 PM – 11 PM
                         </p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {apiSlots.filter(s => slotHour(s) >= 22).map(slot => {
+                          {apiSlots.filter(s => slotHour(s) >= 21 && slotHour(s) <= 22).map(slot => {
                             const label = hhmm24to12(slot);
                             return (
                               <button
