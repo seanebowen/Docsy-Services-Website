@@ -194,7 +194,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>No paid tiers. No trials. No upsells.</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Every deliverable from every appointment uploads to your encrypted Safe+ automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. An account is created for you at booking; sign in any time to download or share. Docsy+ members get extended retention windows and priority vault support.
+                Every deliverable from every appointment uploads to your encrypted Safe+ automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. An account is created for you at booking; sign in any time to download or share. Docsy+ members get extended retention windows and priority Safe+ support.
               </p>
             </div>
           </FadeIn>

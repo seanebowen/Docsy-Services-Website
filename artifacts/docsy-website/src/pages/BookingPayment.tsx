@@ -526,7 +526,7 @@ export default function BookingPayment() {
                       </span>
                     </label>
                     <p className="text-[10px] mt-2 ml-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      Free, no card. Your vault is included with every Docsy service. We'll email you a one-time verification code so you can sign in from any device.
+                      Free, no card. Your Safe+ is included with every Docsy service. We'll email you a one-time verification code so you can sign in from any device.
                     </p>
                   </div>
                 )}

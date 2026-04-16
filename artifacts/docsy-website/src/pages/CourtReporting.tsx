@@ -88,7 +88,7 @@ export default function CourtReporting() {
             you to <H>compare.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            Agencies charge $8.50–$12+ per page for ordinary transcripts, then add <H>word index fees</H>, litigation package fees, e-delivery surcharges, vault hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying <H>2–3× the advertised page rate.</H>
+            Agencies charge $8.50–$12+ per page for ordinary transcripts, then add <H>word index fees</H>, litigation package fees, e-delivery surcharges, cloud hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying <H>2–3× the advertised page rate.</H>
           </p>
         </div>
       </section>
@@ -120,7 +120,7 @@ export default function CourtReporting() {
             <div className="p-10" style={{ backgroundColor: BG }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-6 text-white/40">✕ Agencies charge extra for</p>
               <ul className="space-y-3 text-sm text-white/60">
-                {["Word index (10–15 pages at full rate)", "Litigation package ($40–$150 elsewhere)", "E-transcript formats ($25–$75 elsewhere)", "E-delivery fee", "Deposition officer fee", "Vault hosting"].map((item) => (
+                {["Word index (10–15 pages at full rate)", "Litigation package ($40–$150 elsewhere)", "E-transcript formats ($25–$75 elsewhere)", "E-delivery fee", "Deposition officer fee", "Cloud hosting"].map((item) => (
                   <li key={item} className="flex items-start gap-2"><span className="text-white/20">—</span> {item}</li>
                 ))}
               </ul>

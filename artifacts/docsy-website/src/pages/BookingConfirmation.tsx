@@ -188,7 +188,7 @@ export default function BookingConfirmation() {
                           ? <>Your Docsy account was created and you're signed in. We also emailed a welcome verification code so you can sign in from any other device at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link>.</>
                           : booking.accountExisting
                           ? <>We matched your booking to your existing Docsy account and signed you in for this session.</>
-                          : <>You're signed in — head to your vault any time to view this booking's deliverables.</>}
+                          : <>You're signed in — head to your Safe+ any time to view this booking's deliverables.</>}
                       </span>
                     </p>
                   )}

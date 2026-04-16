@@ -113,7 +113,7 @@ All RON or mobile sessions beyond the monthly credit allotment are billed at sta
   },
   {
     heading: "Safe+ Access",
-    body: `Safe+ is included free with every Docsy service for every client — members and non-members alike. Docsy+ members receive extended retention windows and priority support on vault issues. Vault access is tied to your registered Docsy account and remains available as long as the account is in good standing.`,
+    body: `Safe+ is included free with every Docsy service for every client — members and non-members alike. Docsy+ members receive extended retention windows and priority support on Safe+ issues. Safe+ access is tied to your registered Docsy account and remains available as long as the account is in good standing.`,
   },
   {
     heading: "Transfer Policy",

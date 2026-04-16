@@ -184,7 +184,7 @@ function BookingModal({
                 02 — Safe+ Included
               </p>
               <div className="border p-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-                Every deliverable from this appointment — notarized documents, apostille certificates, signed loan packages, transcripts, recordings — uploads automatically to your Safe+. <strong className="text-white/60">Free for everyone, no signup required.</strong> Your vault is ready when your appointment is confirmed.
+                Every deliverable from this appointment — notarized documents, apostille certificates, signed loan packages, transcripts, recordings — uploads automatically to your Safe+. <strong className="text-white/60">Free for everyone, no signup required.</strong> Your Safe+ is ready when your appointment is confirmed.
               </div>
             </div>
           )}

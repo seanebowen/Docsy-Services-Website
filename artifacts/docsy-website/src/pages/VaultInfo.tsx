@@ -16,17 +16,17 @@ const FEATURES = [
   {
     icon: Lock,
     title: "End-to-end encrypted",
-    body: "Every file stored in your vault is encrypted at rest and in transit. Docsy staff cannot read your documents — only you and people you authorize can access them.",
+    body: "Every file stored in your Safe+ is encrypted at rest and in transit. Docsy staff cannot read your documents — only you and people you authorize can access them.",
   },
   {
     icon: Upload,
     title: "Auto-uploads after every appointment",
-    body: "You don't do anything. After every completed service — RON, mobile notary, loan signing, apostille, or electronic reporting — your deliverables upload to your vault automatically.",
+    body: "You don't do anything. After every completed service — RON, mobile notary, loan signing, apostille, or electronic reporting — your deliverables upload to your Safe+ automatically.",
   },
   {
     icon: CheckCircle2,
     title: "Free with every Docsy service",
-    body: "Your Safe+ vault is included with every booking — no signup, no card, no tiers, no fine print. Book a service and your vault is ready the moment your appointment is confirmed.",
+    body: "Your Safe+ is included with every booking — no signup, no card, no tiers, no fine print. Book a service and your Safe+ is ready the moment your appointment is confirmed.",
   },
   {
     icon: ShieldCheck,
@@ -59,7 +59,7 @@ export default function VaultInfo() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium mb-10">
-              Safe+ is an encrypted file vault that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings. It is <strong>free for everyone who books with Docsy.</strong> No tier, no trial, no card.
+              Safe+ is an encrypted document storage that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings. It is <strong>free for everyone who books with Docsy.</strong> No tier, no trial, no card.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
@@ -69,14 +69,14 @@ export default function VaultInfo() {
                 className="px-8 py-4 text-base font-bold text-white text-center"
                 style={{ backgroundColor: "#F5A623" }}
               >
-                Book a Service — Vault Included →
+                Book a Service — Safe+ Included →
               </Link>
               <Link
                 href="/login"
                 className="px-8 py-4 text-base font-bold text-center border"
                 style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
               >
-                Sign In to Your Vault
+                Sign In to Your Safe+
               </Link>
             </div>
           </FadeIn>
@@ -146,7 +146,7 @@ export default function VaultInfo() {
               <div>
                 <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>Docsy+ Member Bonus</p>
                 <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-                  Docsy+ members get extended retention, priority support on vault issues, and early access to new vault features as we roll them out. See <Link href="/memberships" className="underline" style={{ color: BLUE }}>Docsy+ Memberships →</Link>
+                  Docsy+ members get extended retention, priority support on Safe+ issues, and early access to new Safe+ features as we roll them out. See <Link href="/memberships" className="underline" style={{ color: BLUE }}>Docsy+ Memberships →</Link>
                 </p>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function VaultInfo() {
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
             <h2 className="text-4xl sm:text-5xl font-black leading-tight text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
-              Already have a vault?
+              Already have a Safe+?
             </h2>
           </FadeIn>
           <FadeIn delay={80}>
@@ -174,13 +174,13 @@ export default function VaultInfo() {
                 className="inline-block px-10 py-4 text-base font-bold text-white"
                 style={{ backgroundColor: "#000" }}
               >
-                Sign In to Your Vault →
+                Sign In to Your Safe+ →
               </Link>
               <Link
                 href="/calculate"
                 className="inline-block px-10 py-4 text-base font-bold text-black border border-black"
               >
-                Book a Service — Vault Included
+                Book a Service — Safe+ Included
               </Link>
             </div>
           </FadeIn>

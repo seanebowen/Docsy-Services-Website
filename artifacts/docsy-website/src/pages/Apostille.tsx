@@ -38,7 +38,7 @@ const TIERS = [
       "USPS Priority return (tracked)",
       "Mobile pickup + delivery (SA metro)",
       "Digital certified scan",
-      "30-day Safe+ vault trial",
+      "30-day Safe+ trial",
     ],
   },
   {
@@ -53,7 +53,7 @@ const TIERS = [
       "Mobile pickup + delivery (SA metro)",
       "FedEx overnight return (tracked)",
       "Digital certified scan",
-      "30-day Safe+ vault trial",
+      "30-day Safe+ trial",
     ],
   },
   {
@@ -71,7 +71,7 @@ const TIERS = [
       "FedEx overnight return (tracked) — 24 hrs",
       "OR same-day drop-off by Docsy",
       "Digital certified scan",
-      "30-day Safe+ vault trial",
+      "30-day Safe+ trial",
     ],
   },
 ];

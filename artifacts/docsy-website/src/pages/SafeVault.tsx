@@ -61,7 +61,7 @@ export default function SafeVault() {
       if (data.ok) {
         setFiles(data.files ?? []);
       } else {
-        setApiError(data.error ?? "Failed to load vault.");
+        setApiError(data.error ?? "Failed to load Safe+.");
         if (res.status === 401) { signOut(); setLocation("/login"); }
       }
     } catch {
@@ -88,7 +88,7 @@ export default function SafeVault() {
                   ◎ DOCSY SAFE+
                 </span>
                 <h1 className="text-4xl sm:text-5xl font-black text-white mb-2" style={{ letterSpacing: "-0.02em" }}>
-                  {firstName}'s Vault
+                  {firstName}'s Safe+
                 </h1>
                 <p className="text-white/40 text-sm">
                   {user.email}
@@ -126,7 +126,7 @@ export default function SafeVault() {
 
           {loading && (
             <div className="py-20 text-center">
-              <p className="text-white/30 text-sm animate-pulse">Loading your vault…</p>
+              <p className="text-white/30 text-sm animate-pulse">Loading your Safe+…</p>
             </div>
           )}
 
