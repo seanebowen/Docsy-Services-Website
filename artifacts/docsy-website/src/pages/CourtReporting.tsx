@@ -97,9 +97,9 @@ export default function CourtReporting() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="PRICING" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
-            <H>$8.50</H>
+            <H>$7.50</H>
           </h2>
-          <p className="text-xl font-bold text-white/50 mb-6">per page — Standard transcript</p>
+          <p className="text-xl font-bold text-white/50 mb-6">per page — Standard transcript (10 business days)</p>
           <p className="text-lg text-white/40">
             Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. <H>That's the standard rate.</H> PDF-only delivery is always free.
           </p>
