@@ -30,13 +30,13 @@ export const MOCK_NEXT_TIMES: Record<StatusState, string> = {
 };
 
 export const HOME_BUSY = {
-  h: "Currently In Session — Docsy Services",
+  h: "In Session",
   s: "Our specialist is with a client right now",
   btn: "Schedule ahead",
 };
 
 export const HOME_CLOSED = {
-  h: "Docsy Services Closed — Opens at {OPEN}",
+  h: "Closed",
   s: "Book tonight and secure your spot for tomorrow",
   btn: "Book for tomorrow",
 };
@@ -48,21 +48,21 @@ export const DIVISIONS: Division[] = [
     pill: "RON",
     color: "#7c3aed",
     home: {
-      h: "Texas RON Specialist Ready & Available",
+      h: "Available Now",
       s: "Sign securely from anywhere in Texas · No travel required",
     },
     available: {
-      h: "Texas RON Specialist Ready & Available",
+      h: "Available Now",
       s: "Secure remote session · No travel · Sign from anywhere in Texas",
       btn: "Start your session",
     },
     busy: {
-      h: "Currently In a RON Session",
+      h: "In Session",
       s: "Remote sessions fill fast — secure your slot now",
       btn: "Reserve your slot",
     },
     closed: {
-      h: "RON Services Closed — Opens at {OPEN}",
+      h: "Closed",
       s: "Book tonight and lock in your remote session for tomorrow",
       btn: "Book tomorrow's slot",
     },
@@ -73,21 +73,21 @@ export const DIVISIONS: Division[] = [
     pill: "MOBILE",
     color: "#0891b2",
     home: {
-      h: "Mobile Notary Ready & Available",
+      h: "Available Now",
       s: "We come to you · Same-day dispatch · San Antonio",
     },
     available: {
-      h: "Mobile Notary Ready & Available — San Antonio",
+      h: "Available Now",
       s: "Mobile notary comes to you · Same-day dispatch available",
       btn: "Schedule your visit",
     },
     busy: {
-      h: "Currently On Location",
+      h: "In Session",
       s: "Leave your address — your stop will be confirmed",
       btn: "Reserve your stop",
     },
     closed: {
-      h: "Mobile Routes Closed — Start at {OPEN}",
+      h: "Closed",
       s: "Book tonight and secure your morning stop before routes fill",
       btn: "Book your stop",
     },
@@ -98,21 +98,21 @@ export const DIVISIONS: Division[] = [
     pill: "LOAN SIGNING",
     color: "#059669",
     home: {
-      h: "Loan Signing Agent Ready & Available",
+      h: "Available Now",
       s: "Accurate, professional closings · San Antonio",
     },
     available: {
-      h: "Certified Loan Signing Agent Ready & Available",
+      h: "Available Now",
       s: "Closings handled accurately and professionally · San Antonio & surrounding areas",
       btn: "Confirm your closing",
     },
     busy: {
-      h: "Currently At a Closing",
+      h: "In Session",
       s: "Don't let your closing date slip — hold the next slot now",
       btn: "Hold my next slot",
     },
     closed: {
-      h: "Signing Services Closed — Back at {OPEN}",
+      h: "Closed",
       s: "Schedule tonight to protect your closing date",
       btn: "Schedule your closing",
     },
@@ -123,21 +123,21 @@ export const DIVISIONS: Division[] = [
     pill: "ELECTRONIC REPORTING",
     color: "#d97706",
     home: {
-      h: "Certified Electronic Reporter Ready & Available",
+      h: "Available Now",
       s: "Depositions · Remote & on-site · San Antonio",
     },
     available: {
-      h: "AAERT Certified Electronic Reporter Ready & Available",
+      h: "Available Now",
       s: "Digital proceedings · Depositions · Remote & on-site · San Antonio",
       btn: "Reserve your proceeding",
     },
     busy: {
-      h: "Currently In a Proceeding",
+      h: "In Session",
       s: "Calendar fills fast — secure your date before it closes",
       btn: "Book next opening",
     },
     closed: {
-      h: "Electronic Reporting Closed — Resumes at {OPEN}",
+      h: "Closed",
       s: "Proceedings book out quickly — reserve your date tonight",
       btn: "Reserve your date",
     },
@@ -148,21 +148,21 @@ export const DIVISIONS: Division[] = [
     pill: "APOSTILLE",
     color: "#be185d",
     home: {
-      h: "Texas Apostille Specialist Ready & Available",
+      h: "Available Now",
       s: "International documents · Fast turnaround",
     },
     available: {
-      h: "Texas Apostille Specialist Ready & Available",
+      h: "Available Now",
       s: "Texas apostille processing · International documents · Fast turnaround",
       btn: "Start your apostille",
     },
     busy: {
-      h: "Currently Processing Documents",
+      h: "In Session",
       s: "Orders processed in sequence — submit now to hold your place",
       btn: "Submit your documents",
     },
     closed: {
-      h: "Apostille Services Closed — Resumes at {OPEN}",
+      h: "Closed",
       s: "International deadlines don't wait — submit your request tonight",
       btn: "Submit tonight",
     },
