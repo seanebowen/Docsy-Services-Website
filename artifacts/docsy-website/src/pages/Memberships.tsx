@@ -207,6 +207,15 @@ export default function Memberships() {
                       </li>
                     ))}
                   </ul>
+                  <div className="px-8 pb-6">
+                    <Link
+                      href={`/membership-checkout?plan=${tier.planKey}`}
+                      className="block w-full py-3 text-sm font-bold text-center text-white"
+                      style={{ backgroundColor: "#000" }}
+                    >
+                      Get Started →
+                    </Link>
+                  </div>
                 </div>
               </FadeIn>
             ))}
