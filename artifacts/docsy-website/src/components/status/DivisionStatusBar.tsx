@@ -85,7 +85,7 @@ export function DivisionStatusBar({
           </span>
           <span
             className="hidden lg:inline text-[11px] font-bold whitespace-nowrap ml-auto"
-            style={{ color: "rgba(77,159,219,0.7)" }}
+            style={{ color: dot }}
           >
             {next.prefix}{next.value}
           </span>

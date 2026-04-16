@@ -303,24 +303,12 @@ export default function Calculator() {
   const [courtOn, setCourtOn] = useState(false);
 
   /* add-on subscriptions */
-  const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "elite">(null);
-  const [membershipBilling, setMembershipBilling] = useState<"monthly" | "annual">("monthly");
   const [honorPass, setHonorPass] = useState(false);
 
   /* Language Line interpreter state */
   const [llOn,       setLlOn]       = useState(false);
   const [llTier,     setLlTier]     = useState<LLTier>("t1");
   const [llDuration, setLlDuration] = useState<LLDuration>(15);
-
-  const MEMBERSHIP_PRICES = { starter: 15, pro: 30, elite: 49 } as const;
-  const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", elite: "Docsy+ Elite" } as const;
-  const membershipMonthly = membershipPlan ? MEMBERSHIP_PRICES[membershipPlan] : 0;
-  // Annual = 12 months × 0.85 (15% off), billed once
-  const membershipAnnualBilled = membershipPlan ? Math.round(MEMBERSHIP_PRICES[membershipPlan] * 12 * 0.85) : 0;
-  const membershipChargeNow = membershipPlan
-    ? (membershipBilling === "annual" ? membershipAnnualBilled : membershipMonthly)
-    : 0;
-  const monthlyTotal      = membershipChargeNow;
 
   /* RON state */
   const [ron, setRon] = useState<RONState>({ docs: 1, witness: 0, signers: 1 });
@@ -381,7 +369,7 @@ export default function Calculator() {
   const llTotal       = (llOn && anyServiceActive) ? LL_PRICES[llTier][llDuration] : 0;
   const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
   const honorPassDiscount = honorPass && anyServiceActive ? -Math.round((ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal) * 0.10 * 100) / 100 : 0;
-  const grandTotal    = Math.max(0, servicesTotal + honorPassDiscount + monthlyTotal);
+  const grandTotal    = Math.max(0, servicesTotal + honorPassDiscount);
 
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
     ? (apost.turnaround === "nextday" ? 50 : 75)
@@ -395,7 +383,7 @@ export default function Calculator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = anyServiceActive || membershipPlan !== null || honorPass;
+  const anySelected = anyServiceActive || honorPass;
 
   /* Reset interpreter add-on when all services are turned off */
   React.useEffect(() => {
@@ -422,17 +410,16 @@ export default function Calculator() {
       courtOn    && { name: "Electronic Reporting",                                                          amount: courtTotal },
       travelTotal > 0 && { name: "Travel & Scheduling", amount: travelTotal },
       honorPassDiscount < 0 && { name: "HonorPass™ — 10% off base service fees", amount: honorPassDiscount },
-      membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (${membershipBilling})`, amount: membershipChargeNow, monthly: true },
       llOn && { name: `Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} × ${llDuration} min`, amount: llTotal },
     ].filter(Boolean) as { name: string; amount: number; monthly?: boolean }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({
       services, total: grandTotal, baseTotal, hasRON: ronOn,
-      membershipPlan,
+      membershipPlan: null,
       interpreterTier: llOn ? llTier : null,
       interpreterMinutes: llOn ? llDuration : null,
     }));
     setLocation("/booking");
-  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly, membershipBilling, membershipChargeNow, honorPass, honorPassDiscount, llOn, llTier, llDuration, llTotal]);
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, honorPass, honorPassDiscount, llOn, llTier, llDuration, llTotal]);
 
   /* helpers */
   const upG = useCallback((patch: Partial<GNWState>)      => setGnw(p    => ({ ...p, ...patch })), []);
@@ -1048,42 +1035,10 @@ export default function Calculator() {
                 </FadeIn>
               )}
 
-              {/* ── Docsy+ Membership ── */}
-              <FadeIn delay={0} threshold={0.05}>
-              <ServiceCard
-                num="A2" title="Docsy+ Membership"
-                desc="Monthly membership with free notarizations, service discounts, and priority scheduling."
-                startingAt="$15/mo"
-                active={membershipPlan !== null}
-                onToggle={() => setMembershipPlan(p => p ? null : "starter")}
-              >
-                <div className="space-y-2">
-                  <RowLabel>Select a membership tier</RowLabel>
-                  <div className="border" style={{ borderColor: DIV }}>
-                    <RadioRow label="Docsy+ Starter — 50% off 1 notarization/mo, 10% off mobile fees, Safe+ included" price="$15/mo" selected={membershipPlan === "starter"} onClick={() => setMembershipPlan("starter")} />
-                    <RadioRow label="Docsy+ Pro — 1 free notarization/mo, 15% off mobile fees, birthday notarization" price="$30/mo" selected={membershipPlan === "pro"} onClick={() => setMembershipPlan("pro")} />
-                    <RadioRow label="Docsy+ Elite — 2 free notarizations/mo, 20% off mobile fees, 1 free travel waiver/mo" price="$49/mo" selected={membershipPlan === "elite"} onClick={() => setMembershipPlan("elite")} />
-                  </div>
-                  <div className="pt-2">
-                    <RowLabel>Billing cycle</RowLabel>
-                    <div className="border" style={{ borderColor: DIV }}>
-                      <RadioRow label="Monthly billing" price="" selected={membershipBilling === "monthly"} onClick={() => setMembershipBilling("monthly")} />
-                      <RadioRow label="Annual billing — save 15%" price="ANNUAL · 15% OFF" selected={membershipBilling === "annual"} onClick={() => setMembershipBilling("annual")} />
-                    </div>
-                  </div>
-                  <p className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
-                    {membershipBilling === "annual"
-                      ? "Annual plans billed in full at signup. Refundable if cancelled more than 30 days before contract end."
-                      : "First month billed at booking. Renews monthly — cancel any time."}
-                  </p>
-                </div>
-              </ServiceCard>
-              </FadeIn>
-
               {/* ── HonorPass™ ── */}
               <FadeIn delay={0} threshold={0.05}>
               <ServiceCard
-                num="A3" title="HonorPass™ — Veterans & Active Military"
+                num="A2" title="HonorPass™ — Veterans & Active Military"
                 desc="10% off base service fees on every appointment, always. Stacks with all other promos. Valid ID or DD-214 required at first appointment."
                 startingAt="10% OFF"
                 active={honorPass}
@@ -1144,50 +1099,20 @@ export default function Calculator() {
                     )}
                   </div>
 
-                  {/* monthly add-ons */}
-                  {monthlyTotal > 0 && (
-                    <div className="mb-4 border-t pt-4" style={{ borderColor: DIV }}>
-                      <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Monthly membership</p>
-                      {membershipPlan && (
-                        <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
-                          <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>
-                            {MEMBERSHIP_NAMES[membershipPlan]}
-                            {membershipBilling === "annual" && <span className="ml-2 text-[9px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>· ANNUAL · 15% OFF</span>}
-                          </span>
-                          <span className="text-sm font-bold" style={{ color: IVORY }}>
-                            ${membershipChargeNow}
-                            <span className="text-[10px] font-light">{membershipBilling === "annual" ? "/yr" : "/mo"}</span>
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
                   {/* grand total */}
                   <div className="border-t pt-5 mb-4" style={{ borderColor: DIV }}>
-                    {servicesTotal > 0 && monthlyTotal > 0 && (
+                    {false && (
                       <div className="flex justify-between items-baseline mb-1">
                         <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.3)" }}>Services</span>
                         <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>${servicesTotal.toLocaleString()}</span>
                       </div>
                     )}
-                    {monthlyTotal > 0 && (
-                      <div className="flex justify-between items-baseline mb-3">
-                        <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.3)" }}>Membership (first month)</span>
-                        <span className="text-sm font-bold" style={{ color: "rgba(255,255,255,0.5)" }}>${monthlyTotal}/mo</span>
-                      </div>
-                    )}
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      {monthlyTotal > 0 ? "Today's Total" : "Your Price"}
+                      Your Price
                     </p>
                     <p className="font-black leading-none" style={{ fontSize: "clamp(2.5rem,6vw,3.5rem)", color: AMBER, letterSpacing: "-0.03em" }}>
                       ${grandTotal % 1 === 0 ? grandTotal.toLocaleString() : grandTotal.toFixed(2)}
                     </p>
-                    {monthlyTotal > 0 && (
-                      <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                        Membership renews monthly at ${monthlyTotal}/mo after today.
-                      </p>
-                    )}
                   </div>
 
                   {/* CTA buttons */}

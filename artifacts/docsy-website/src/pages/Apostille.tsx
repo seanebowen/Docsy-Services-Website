@@ -160,9 +160,6 @@ export default function Apostille() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille">
-                Get Your Price →
-              </Link>
               <Link href="/about?inquiry=apostille-precheck#apostille-precheck" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
               </Link>
@@ -459,7 +456,7 @@ export default function Apostille() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille-cta">
-              Get Your Price →
+              Book Now →
             </Link>
           </div>
         </div>

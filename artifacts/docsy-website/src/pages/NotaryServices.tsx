@@ -83,9 +83,6 @@ export default function NotaryServices() {
               <a href="#mobile" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black">
                 Jump to Mobile / GNW →
               </a>
-              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-notary">
-                Get Your Price →
-              </Link>
             </div>
           </FadeIn>
         </div>
@@ -374,7 +371,7 @@ export default function NotaryServices() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-notary-cta">
-              Get Your Price →
+              Book Now →
             </Link>
           </div>
         </div>

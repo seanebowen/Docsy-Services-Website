@@ -49,13 +49,6 @@ export default function LoanSigning() {
               Certified loan signing agent for refinance, buyer, seller, HELOC, reverse mortgage, and commercial packages. Texas-compliant. Reliable.
             </p>
           </FadeIn>
-          <FadeIn delay={300}>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-signing">
-                Get Your Price →
-              </Link>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
@@ -163,7 +156,7 @@ export default function LoanSigning() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-signing-cta">
-              Get Your Price →
+              Book Now →
             </Link>
           </div>
         </div>

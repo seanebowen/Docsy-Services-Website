@@ -207,15 +207,6 @@ export default function Memberships() {
                       </li>
                     ))}
                   </ul>
-                  <div className="px-8 pb-6">
-                    <Link
-                      href={`/membership-checkout?plan=${tier.planKey}`}
-                      className="block w-full py-3 text-sm font-bold text-center text-white"
-                      style={{ backgroundColor: "#000" }}
-                    >
-                      Get Started →
-                    </Link>
-                  </div>
                 </div>
               </FadeIn>
             ))}
@@ -295,7 +286,7 @@ export default function Memberships() {
             <p className="text-lg text-black/60 mb-8">Pick a tier above, or check out the calculator first to see how memberships change your price.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/calculate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }}>
-                Get Your Price →
+                Book Now →
               </Link>
               <Link href="/promos" className="px-10 py-4 text-base font-bold text-center border" style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}>
                 View Promotions

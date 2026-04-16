@@ -49,13 +49,6 @@ export default function CourtReporting() {
               <strong className="text-black">Electronic Reporting</strong> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT certified. Below agency rates. Word index, certified PDF, and digital delivery always included.
             </p>
           </FadeIn>
-          <FadeIn delay={300}>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court">
-                Get Your Price →
-              </Link>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
@@ -233,7 +226,7 @@ export default function CourtReporting() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court-cta">
-              Get Your Price →
+              Book Now →
             </Link>
           </div>
         </div>

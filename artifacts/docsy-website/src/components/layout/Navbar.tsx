@@ -107,7 +107,7 @@ export function Navbar() {
             style={{ backgroundColor: AMBER, color: "#fff" }}
             data-testid="nav-get-price"
           >
-            Get a Price
+            Book Now
           </Link>
           {user ? (
             /* ── Signed-in account widget ── */
@@ -209,7 +209,7 @@ export function Navbar() {
 
             <div className="pt-4 flex flex-col gap-3">
               <Link href="/calculate" className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center" style={{ backgroundColor: "#4D9FDB", color: "#fff" }}>
-                Get Your Price →
+                Book Now →
               </Link>
               {user ? (
                 <button

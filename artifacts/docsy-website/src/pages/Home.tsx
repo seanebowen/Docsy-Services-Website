@@ -117,14 +117,6 @@ export default function Home() {
             </FadeIn>
             <FadeIn delay={320}>
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-                <Link
-                  href="/calculate"
-                  className="px-8 py-4 text-sm font-bold text-white text-center"
-                  style={{ backgroundColor: AMBER }}
-                  data-testid="btn-estimate-hero"
-                >
-                  Calculate Your Price →
-                </Link>
                 <a
                   href="#services"
                   className="px-8 py-4 text-sm font-bold text-center border"
@@ -298,7 +290,7 @@ export default function Home() {
                 style={{ backgroundColor: AMBER }}
                 data-testid="btn-book-footer"
               >
-                Get Your Price →
+                Book Now →
               </Link>
               <Link
                 href="/memberships"
