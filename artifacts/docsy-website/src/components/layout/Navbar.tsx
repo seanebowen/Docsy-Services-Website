@@ -8,12 +8,12 @@ const DIV   = "#1e2a3a";
 const AMBER = "#4D9FDB";
 
 const allLinks = [
-  { href: "/ron",            label: "RON" },
-  { href: "/mobile-notary",  label: "Mobile/GNW" },
-  { href: "/loan-signing",   label: "Loan Signing" },
-  { href: "/apostille",      label: "Apostille" },
+  { href: "/notary-services",     label: "Notary Services" },
+  { href: "/loan-signing",        label: "Loan Signing" },
+  { href: "/apostille",           label: "Apostille" },
   { href: "/electronic-reporting",label: "E-Reporting" },
-  { href: "/memberships",    label: "Memberships" },
+  { href: "/memberships",         label: "Memberships" },
+  { href: "/vault-info",          label: "Safe+" },
 ];
 
 const moreLinks = [
@@ -22,7 +22,6 @@ const moreLinks = [
   { href: "/faq",           label: "FAQ & Guides",     icon: HelpCircle },
   { href: "/promos",        label: "Promotions",       icon: Tag },
   { href: "/#language-line",label: "Language Line",    icon: Languages },
-  { href: "/vault-info",    label: "Docsy Safe+",      icon: Archive },
 ];
 
 export function Navbar() {

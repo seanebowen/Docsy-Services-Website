@@ -114,7 +114,7 @@ export default function CourtReporting() {
             <div className="p-10" style={{ backgroundColor: BG }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: IVORY }}>✓ Always included at Docsy</p>
               <ul className="space-y-3 text-sm text-white/60">
-                {["Word index", "Certified PDF", "E-transcript ASCII file", "Digital delivery via portal", "Oath administration", "Exhibit marking and logging", "Pre-deposition tech check (remote)"].map((item) => (
+                {["Word index", "Certified PDF", "PDF delivery (always included)", "E-transcript ASCII file", "Digital delivery via portal", "Oath administration", "Exhibit marking and logging", "Pre-deposition tech check (remote)"].map((item) => (
                   <li key={item} className="flex items-start gap-2"><span className="text-white/20">—</span> {item}</li>
                 ))}
               </ul>
@@ -166,7 +166,6 @@ export default function CourtReporting() {
                 { l: "Extended (15+ business days)", p: "$7.50" },
                 { l: "Rush (next business day)", p: "$12.00" },
                 { l: "Certified Copy (per copy/page)", p: "$2.50" },
-                { l: "PDF-only delivery", p: "Free" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
@@ -175,7 +174,11 @@ export default function CourtReporting() {
               ))}
             </div>
           </div>
-          <p className="text-sm text-white/30 text-center mt-6">All orders: NET-14. A 50% deposit is required at scheduling for transcript orders.</p>
+          <div className="text-sm text-white/40 text-center mt-6 max-w-2xl mx-auto leading-relaxed space-y-1">
+            <p><strong className="text-white/70">All payments: NET-14.</strong></p>
+            <p>Appearance-only orders: NET-14 from the date of appearance.</p>
+            <p>Transcript orders: 50% deposit required at scheduling; balance due upon transcript delivery. <strong className="text-white/60">Transcripts are not released until payment is complete.</strong></p>
+          </div>
         </div>
       </section>
 
@@ -195,15 +198,16 @@ export default function CourtReporting() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a]">
             <div className="p-8" style={{ backgroundColor: BG }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#4D9FDB" }}>Half-Day</p>
-              <p className="text-4xl font-black text-white mb-2">$150</p>
+              <p className="text-4xl font-black text-white mb-1">$150<span className="text-base font-medium text-white/40 ml-2">starting</span></p>
               <p className="text-sm text-white/40">Up to 4 hours. Conference table, AV, secure Wi-Fi, exhibit display, and refreshments included.</p>
             </div>
             <div className="p-8" style={{ backgroundColor: BG }}>
               <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#4D9FDB" }}>Full-Day</p>
-              <p className="text-4xl font-black text-white mb-2">$175</p>
+              <p className="text-4xl font-black text-white mb-1">$175<span className="text-base font-medium text-white/40 ml-2">starting</span></p>
               <p className="text-sm text-white/40">Up to 8 hours. All half-day amenities plus extended setup, lunch coordination, and on-site tech support.</p>
             </div>
           </div>
+          <p className="text-xs text-white/30 text-center mt-4">★ Starting rates. Final pricing depends on group size, AV needs, hybrid setup, and add-ons — confirmed at booking.</p>
         </div>
       </section>
 

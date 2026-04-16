@@ -7,8 +7,7 @@ import { Layout } from "@/components/layout/Layout";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 import Home from "@/pages/Home";
-import RON from "@/pages/RON";
-import MobileNotary from "@/pages/MobileNotary";
+import NotaryServices from "@/pages/NotaryServices";
 import Apostille from "@/pages/Apostille";
 import LoanSigning from "@/pages/LoanSigning";
 import CourtReporting from "@/pages/CourtReporting";
@@ -47,8 +46,9 @@ function Router() {
       <Route path="/booking/confirmation" component={BookingConfirmation} />
       <Route path="/booking/payment" component={BookingPayment} />
       <Route path="/booking" component={Booking} />
-      <Route path="/ron" component={RON} />
-      <Route path="/mobile-notary" component={MobileNotary} />
+      <Route path="/notary-services" component={NotaryServices} />
+      <Route path="/ron"><Redirect to="/notary-services#ron" /></Route>
+      <Route path="/mobile-notary"><Redirect to="/notary-services#mobile" /></Route>
       <Route path="/apostille" component={Apostille} />
       <Route path="/loan-signing" component={LoanSigning} />
       <Route path="/court-reporting" component={CourtReporting} />

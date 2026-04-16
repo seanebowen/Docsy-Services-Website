@@ -126,11 +126,9 @@ export default function Home() {
                 className="text-[3rem] sm:text-[4rem] md:text-[5rem] leading-none mb-8"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                <span className="font-black text-black">Texas Notary &</span>
+                <span className="font-black text-black">Hand us the documents.</span>
                 <br />
-                <span className="font-light text-black/40">Document Services —</span>
-                <br />
-                <span className="font-black text-black"><H>done right.</H></span>
+                <span className="font-black text-black"><H>Walk away with your sanity.</H></span>
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
