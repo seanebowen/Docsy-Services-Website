@@ -56,7 +56,7 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/faq/:id" component={FAQ} />
       <Route path="/help-center"><Redirect to="/faq" /></Route>
-      <Route path="/help-center/:id">{(p: any) => <Redirect to={`/faq/${p.id}`} />}</Route>
+      <Route path="/help-center/:id">{(p: { id: string }) => <Redirect to={`/faq/${p.id}`} />}</Route>
       <Route path="/promos" component={Promos} />
       <Route path="/login" component={Login} />
       <Route path="/verify" component={Verify} />
