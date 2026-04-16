@@ -126,16 +126,16 @@ export default function Home() {
                 className="text-[3rem] sm:text-[4rem] md:text-[5rem] leading-none mb-8"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                <span className="font-black text-black">Texas Notary &</span>
+                <span className="font-black text-black">Hand us the documents.</span>
                 <br />
-                <span className="font-light text-black/40">Document Services —</span>
+                <span className="font-light text-black/40">Walk away with</span>
                 <br />
-                <span className="font-black text-black"><H>done right.</H></span>
+                <span className="font-black text-black"><H>your sanity.</H></span>
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
               <p className="text-base sm:text-lg font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-                A premium, all-in-one provider for Remote Online Notarization, mobile notary &amp; loan signing, apostille services, and electronic reporting &amp; transcription. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
+                Texas notary &amp; document services — RON, mobile notary &amp; loan signing, apostille, and electronic reporting &amp; transcription. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
               </p>
             </FadeIn>
             <FadeIn delay={320}>
