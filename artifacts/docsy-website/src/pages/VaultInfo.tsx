@@ -249,10 +249,10 @@ export default function VaultInfo() {
               { svc: "Mobile Notary", items: "Notarized document, executed copy" },
               { svc: "Loan Signing", items: "Signed loan package, scanback confirmation" },
               { svc: "Apostille", items: "Apostille certificate, document scan" },
-              { svc: "Electronic Reporting", items: "Certified transcript, word index, e-transcript ASCII" },
+              { svc: "Electronic Reporting", items: "Certified transcript, word index, e-transcript ASCII", wide: true },
             ].map((row) => (
-              <FadeIn key={row.svc} delay={0} threshold={0.04}>
-                <div className="p-6 text-left" style={{ backgroundColor: BG }}>
+              <FadeIn key={row.svc} delay={0} threshold={0.04} className={`h-full ${row.wide ? "sm:col-span-2" : ""}`}>
+                <div className="p-6 text-left h-full" style={{ backgroundColor: BG }}>
                   <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>{row.svc}</p>
                   <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{row.items}</p>
                 </div>
