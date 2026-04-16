@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { IdMeButton } from "@/components/ui/IdMeButton";
+import { getIdMeVerification, isHonorPassEligible, groupLabel, type IdMeVerification } from "@/lib/idme";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -58,8 +60,11 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
 ];
 
 export default function Promos() {
-  React.useEffect(() => {
+  const [idMeVerif, setIdMeVerif] = useState<IdMeVerification | null>(null);
+
+  useEffect(() => {
     document.title = "Promotions | Docsy Services";
+    setIdMeVerif(getIdMeVerification());
   }, []);
 
   return (
@@ -158,8 +163,29 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Military & Those Who Served · All services</p>
               <p className="text-sm text-white/40 leading-relaxed mb-4">
-                For those who have served in the US military. Valid military ID or DD-214 required — verified once, applied permanently to your account. Applies to base service fees on any Docsy service.
+                For those who have served in the US military. Verify in seconds through ID.me — the same federal credential service trusted by the VA &amp; IRS. Applies to base service fees on any Docsy service.
               </p>
+
+              {isHonorPassEligible(idMeVerif) ? (
+                <div className="border px-5 py-4 mb-4 flex items-center justify-between gap-3" style={{ borderColor: "#76b900", backgroundColor: "rgba(118,185,0,0.08)" }}>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "#76b900" }}>✓ You're verified via ID.me</p>
+                    <p className="text-sm font-bold" style={{ color: IVORY }}>{groupLabel(idMeVerif!.group)} — HonorPass active on every booking</p>
+                  </div>
+                  <Link href="/calculate" className="px-4 py-2 text-xs font-bold text-black whitespace-nowrap" style={{ backgroundColor: IVORY }}>
+                    Book Now →
+                  </Link>
+                </div>
+              ) : (
+                <div className="border px-5 py-4 mb-4 flex items-center justify-between gap-4 flex-wrap" style={{ borderColor: "#76b900" + "55", backgroundColor: "rgba(118,185,0,0.05)" }}>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: "#76b900" }}>One-tap verification</p>
+                    <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Verified once. Auto-applied forever. Zero paperwork at the door.</p>
+                  </div>
+                  <IdMeButton returnTo="/promos" />
+                </div>
+              )}
+
               <div className="border px-5 py-4" style={{ borderColor: BLUE + "55", backgroundColor: BLUE + "0d" }}>
                 <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: BLUE }}>Stackable — unlike any other discount</p>
                 <p className="text-sm leading-relaxed" style={{ color: IVORY }}>

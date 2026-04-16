@@ -26,6 +26,7 @@ import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
 import MembershipCheckout from "@/pages/MembershipCheckout";
 import About from "@/pages/About";
+import IdMeCallback from "@/pages/IdMeCallback";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/language-line"><Redirect to="/calculate" /></Route>
       <Route path="/membership-checkout" component={MembershipCheckout} />
+      <Route path="/idme/callback" component={IdMeCallback} />
       <Route component={NotFound} />
     </Switch>
   );

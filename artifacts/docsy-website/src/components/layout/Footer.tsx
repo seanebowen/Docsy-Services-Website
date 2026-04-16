@@ -36,6 +36,16 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        <div className="border-t pt-6 pb-6 flex items-center gap-3 flex-wrap" style={{ borderColor: DIV }}>
+          <span className="inline-flex items-center gap-2 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] border" style={{ borderColor: "#76b900", color: "#76b900" }}>
+            <span style={{ letterSpacing: "-0.02em" }}>ID.me</span>
+            <span style={{ opacity: 0.6 }}>·</span>
+            <span>Trusted Partner</span>
+          </span>
+          <p className="text-[11px] font-light" style={{ color: "rgba(255,255,255,0.32)" }}>
+            Military, veteran, and first responder verification powered by <Link href="/promos" className="underline hover:text-white">ID.me</Link>. The same federal credential service used by the VA &amp; IRS.
+          </p>
+        </div>
         <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-start gap-4" style={{ borderColor: DIV }}>
           <p className="text-xs font-light leading-relaxed max-w-2xl" style={{ color: "rgba(255,255,255,0.18)" }}>
             <strong className="font-medium" style={{ color: "rgba(255,255,255,0.28)" }}>Legal Notice:</strong> Docsy Services is not a law firm and does not provide legal advice. All notarial acts are performed in a ministerial capacity only.
