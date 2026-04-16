@@ -1,14 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { IdMeButton } from "@/components/ui/IdMeButton";
-import {
-  resolveIdMeVerification,
-  isHonorPassEligible,
-  clearPendingIdMeVerification,
-  clearIdMeOnAccount,
-  groupLabel,
-} from "@/lib/idme";
+import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
 import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
@@ -312,7 +305,7 @@ export default function Calculator() {
   const [courtOn, setCourtOn] = useState(false);
 
   /* add-on subscriptions */
-  const { user, token, updateUser } = useAuth();
+  const { user } = useAuth();
   const [honorPass, setHonorPass] = useState(false);
   const idMeVerif = resolveIdMeVerification(user?.idMeVerification ?? null);
 
@@ -1011,7 +1004,7 @@ export default function Calculator() {
                       <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.5)" }}>Optional extras</span>
                     </div>
                     <p className="text-sm font-light mt-2" style={{ color: "rgba(255,255,255,0.45)" }}>
-                      These aren't services — they're optional extras you can attach to your booking. Interpreter support, memberships, and HonorPass.
+                      These aren't services — they're optional extras you can attach to your booking, like interpreter support.
                     </p>
                   </div>
                 </FadeIn>
@@ -1066,60 +1059,6 @@ export default function Calculator() {
                 </FadeIn>
               )}
 
-              {/* ── HonorPass™ ── */}
-              <FadeIn delay={0} threshold={0.05}>
-              <ServiceCard
-                num="A2" title="HonorPass™ — Veterans & Active Military"
-                desc="10% off base service fees on every appointment, always. Stacks with all other promos. One-tap verification through ID.me."
-                startingAt="10% OFF"
-                active={honorPass}
-                onToggle={() => {
-                  if (isHonorPassEligible(idMeVerif)) return;
-                  setHonorPass(o => !o);
-                }}
-              >
-                <div className="space-y-4">
-                  <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                    HonorPass applies a 10% discount to your base service fees (RON, GNW, Loan Signing, Apostille, and Electronic Reporting appearance). Travel fees, surcharges, and add-ons are billed at standard rates.
-                  </p>
-
-                  {isHonorPassEligible(idMeVerif) ? (
-                    <div className="border px-4 py-3 flex items-center justify-between gap-3" style={{ borderColor: "#76b900", backgroundColor: "rgba(118,185,0,0.06)" }}>
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "#76b900" }}>✓ Verified via ID.me</p>
-                        <p className="text-sm font-bold text-white mt-0.5">{groupLabel(idMeVerif!.group)} — HonorPass auto-applied</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          if (token && user?.idMeVerification) {
-                            await clearIdMeOnAccount(token);
-                            updateUser({ ...user, idMeVerification: null });
-                          }
-                          clearPendingIdMeVerification();
-                          setHonorPass(false);
-                        }}
-                        className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white/80 underline"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="border px-4 py-4" style={{ borderColor: DIV, backgroundColor: "rgba(118,185,0,0.04)" }}>
-                      <p className="text-xs font-bold mb-1" style={{ color: "#76b900" }}>FASTEST: One-tap verification</p>
-                      <p className="text-xs font-light mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>
-                        Verify your military or veteran status securely through ID.me — the same federal credential service used by the VA &amp; IRS. Verified once, auto-applied forever.
-                      </p>
-                      <IdMeButton returnTo="/calculate" />
-                    </div>
-                  )}
-
-                  <p className="text-[11px] font-light" style={{ color: "rgba(255,255,255,0.3)" }}>
-                    Prefer to verify in person? Bring a valid military ID or DD-214 to your first appointment and we'll save it to your account.
-                  </p>
-                </div>
-              </ServiceCard>
-              </FadeIn>
 
 
             </div>{/* end left col */}
