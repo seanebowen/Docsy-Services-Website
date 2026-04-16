@@ -73,8 +73,8 @@ export const DIVISIONS: Division[] = [
     pill: "MOBILE",
     color: "#0891b2",
     home: {
-      h: "Mobile Notary Ready & Available — San Antonio",
-      s: "Comes to you · Same-day dispatch · No office visit needed",
+      h: "Mobile Notary Ready & Available",
+      s: "We come to you · Same-day dispatch · San Antonio",
     },
     available: {
       h: "Mobile Notary Ready & Available — San Antonio",
@@ -98,8 +98,8 @@ export const DIVISIONS: Division[] = [
     pill: "LOAN SIGNING",
     color: "#059669",
     home: {
-      h: "Certified Loan Signing Agent Ready & Available",
-      s: "Closings handled accurately and professionally · San Antonio",
+      h: "Loan Signing Agent Ready & Available",
+      s: "Accurate, professional closings · San Antonio",
     },
     available: {
       h: "Certified Loan Signing Agent Ready & Available",
@@ -123,8 +123,8 @@ export const DIVISIONS: Division[] = [
     pill: "COURT REPORTING",
     color: "#d97706",
     home: {
-      h: "AAERT Certified Electronic Reporter Ready & Available",
-      s: "Digital proceedings · Depositions · Remote & on-site · San Antonio",
+      h: "Certified E-Reporter Ready & Available",
+      s: "Depositions · Remote & on-site · San Antonio",
     },
     available: {
       h: "AAERT Certified Electronic Reporter Ready & Available",
@@ -149,7 +149,7 @@ export const DIVISIONS: Division[] = [
     color: "#be185d",
     home: {
       h: "Texas Apostille Specialist Ready & Available",
-      s: "Texas apostille processing · International documents · Fast turnaround",
+      s: "International documents · Fast turnaround",
     },
     available: {
       h: "Texas Apostille Specialist Ready & Available",
