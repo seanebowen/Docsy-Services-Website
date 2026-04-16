@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useLocation } from "wouter";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import { PromotionTicker } from "./PromotionTicker";
 import { HomeStatusBar } from "@/components/status/HomeStatusBar";
 
 function ScrollToTop() {
@@ -19,7 +18,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <ScrollToTop />
       <div className="sticky top-0 z-50">
         <Navbar />
-        <PromotionTicker />
         <HomeStatusBar />
       </div>
       <main className="flex-1">{children}</main>
