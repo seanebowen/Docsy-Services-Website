@@ -177,14 +177,14 @@ function BookingModal({
             </label>
           </div>
 
-          {/* ── 2. Safe+ note (auto-included, no opt-in) ── */}
+          {/* ── 2. Safe+ Vault note (auto-included, no opt-in) ── */}
           {hasDeliverables && (
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
-                02 — Safe+ Included
+                02 — Safe+ Vault Included
               </p>
               <div className="border p-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-                Every deliverable from this appointment — notarized documents, apostille certificates, signed loan packages, transcripts, recordings — uploads automatically to your Safe+. <strong className="text-white/60">Free for everyone, no signup required.</strong> Your vault is ready when your appointment is confirmed.
+                Every deliverable from this appointment — notarized documents, apostille certificates, signed loan packages, transcripts, recordings — uploads automatically to your Safe+ Vault. <strong className="text-white/60">Free for everyone, no signup required.</strong> Your vault is ready when your appointment is confirmed.
               </div>
             </div>
           )}
@@ -243,7 +243,7 @@ export default function Booking() {
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [slotsError,   setSlotsError]   = useState<string | null>(null);
 
-  /* Services with deliverables — gates Safe+ trial offer */
+  /* Services with deliverables — gates Safe+ Vault trial offer */
   const hasDeliverables = estimate
     ? estimate.services.some(s => {
         const n = s.name.toLowerCase();

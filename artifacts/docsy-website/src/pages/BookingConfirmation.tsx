@@ -164,7 +164,7 @@ export default function BookingConfirmation() {
               </div>
             )}
 
-            {/* Safe+ — always included, with link when an account exists */}
+            {/* Safe+ Vault — always included, with link when an account exists */}
             {booking && (
               <div className="px-8 py-5 border-b flex items-start gap-4" style={{ borderColor: DIV }}>
                 <div
@@ -175,14 +175,14 @@ export default function BookingConfirmation() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white mb-0.5">
-                    Safe+ — Included Free
+                    Safe+ Vault — Included Free
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
-                    Every deliverable from this appointment — documents, transcripts, and recordings — will upload automatically to your encrypted Safe+.
+                    Every deliverable from this appointment — documents, transcripts, and recordings — will upload automatically to your encrypted Safe+ Vault.
                   </p>
                   {(booking.accountCreated || booking.accountExisting || user) && (
                     <p className="text-xs mt-3 font-bold">
-                      <Link href="/vault" style={{ color: BLUE }} className="underline">Open your Safe+ →</Link>
+                      <Link href="/vault" style={{ color: BLUE }} className="underline">Open your Safe+ Vault →</Link>
                       <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
                         {booking.accountCreated
                           ? <>Your Docsy account was created and you're signed in. We also emailed a welcome verification code so you can sign in from any other device at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link>.</>

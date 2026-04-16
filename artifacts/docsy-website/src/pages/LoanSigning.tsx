@@ -128,7 +128,7 @@ export default function LoanSigning() {
               { l: "Reverse Mortgage", p: "$225" },
               { l: "Loan Modification", p: "$100" },
               { l: "Scanbacks (refinance + buyer)", p: "Included" },
-              { l: "Docsy Safe+ 30-day trial", p: "Included" },
+              { l: "Docsy Safe+ Vault 30-day trial", p: "Included" },
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4">
                 <span className="text-sm text-white/60">{row.l}</span>

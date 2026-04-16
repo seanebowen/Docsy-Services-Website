@@ -41,7 +41,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
       "50% off 1 notarization/month (RON or mobile)",
       "10% off mobile fees",
       "30-day rollover on unused notarization credit",
-      "Safe+ included free for everyone — extended retention for members",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -57,7 +57,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
       "15% off mobile fees",
       "30-day rollover on unused notarization",
       "Birthday notarization — 1 bonus free notarization in your birth month",
-      "Safe+ included free for everyone — extended retention for members",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -74,7 +74,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
       "30-day rollover on unused notarizations",
       "Birthday notarization — 1 bonus free notarization in your birth month",
       "1 free mobile travel waiver/month",
-      "Safe+ included free for everyone — extended retention for members",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -203,7 +203,7 @@ export default function MembershipCheckout() {
             <div className="border-2 border-black overflow-hidden" style={{ backgroundColor: BG }}>
               <div className="px-8 py-5 border-b flex items-center justify-between" style={{ borderColor: DIV }}>
                 <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  {plan.type === "membership" ? "Docsy+ Membership" : "Docsy Safe+ Storage"}
+                  {plan.type === "membership" ? "Docsy+ Membership" : "Docsy Safe+ Vault Storage"}
                 </p>
                 <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: BLUE }}>
                   Monthly Subscription

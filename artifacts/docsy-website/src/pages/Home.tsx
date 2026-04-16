@@ -65,7 +65,7 @@ const NUM_CARDS = [
   {
     num: "06",
     title: "Encrypted file vault — included free with every service.",
-    body: "Every document, recording, and transcript from every appointment uploads automatically to your Safe+. No action required. Free for every Docsy client — no paid tiers, no trial countdown, no upsells.",
+    body: "Every document, recording, and transcript from every appointment uploads automatically to your Safe+ Vault. No action required. Free for every Docsy client — no paid tiers, no trial countdown, no upsells.",
   },
 ];
 

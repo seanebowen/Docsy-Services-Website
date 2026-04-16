@@ -26,7 +26,7 @@ const FEATURES = [
   {
     icon: CheckCircle2,
     title: "Free with every Docsy service",
-    body: "Your Safe+ vault is included with every booking — no signup, no card, no tiers, no fine print. Book a service and your vault is ready the moment your appointment is confirmed.",
+    body: "Your Safe+ Vault vault is included with every booking — no signup, no card, no tiers, no fine print. Book a service and your vault is ready the moment your appointment is confirmed.",
   },
   {
     icon: ShieldCheck,
@@ -37,7 +37,7 @@ const FEATURES = [
 
 export default function VaultInfo() {
   React.useEffect(() => {
-    document.title = "Safe+ | Docsy Services";
+    document.title = "Safe+ Vault | Docsy Services";
   }, []);
 
   return (
@@ -49,7 +49,7 @@ export default function VaultInfo() {
           <FadeIn delay={0}>
             <div className="flex justify-start mb-8">
               <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.40)" }}>
-                <Archive className="h-3 w-3" /> Safe+ — Free Benefit
+                <Archive className="h-3 w-3" /> Safe+ Vault — Free Benefit
               </span>
             </div>
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
@@ -59,7 +59,7 @@ export default function VaultInfo() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium mb-10">
-              Safe+ is an encrypted file vault that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings. It is <strong>free for everyone who books with Docsy.</strong> No tier, no trial, no card.
+              Safe+ Vault is an encrypted file vault that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings. It is <strong>free for everyone who books with Docsy.</strong> No tier, no trial, no card.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
