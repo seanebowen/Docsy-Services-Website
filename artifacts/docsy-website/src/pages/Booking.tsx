@@ -76,10 +76,6 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
       const ln = services.find(s => s.name.toLowerCase().includes("loan signing"));
       return ln ? { label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) } : null;
     }
-    case "EARLYBIRDSEAL":
-      if (autoHas("early bird")) return null;
-      if (!isWeekday) return null;
-      return has("remote online") ? { label: "Early Bird Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "NIGHTSHIFTSEAL":
       if (autoHas("night shift")) return null;
       if (!isWeekday) return null;
@@ -283,9 +279,8 @@ export default function Booking() {
       }
     }
 
-    if (has("remote online") && isWeekday) {
-      if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
-      else if (hour >= 18 && hour < 21) result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
+    if (has("remote online") && isWeekday && hour >= 18 && hour < 21) {
+      result.push({ label: "Night Shift Seal™ — $10 Off", amount: -10 });
     }
     if (has("general notary work") && !has("remote online") && isWeekday && hour >= 12 && hour < 16)
       result.push({ label: "Midday Miles™ — $10 Off", amount: -10 });

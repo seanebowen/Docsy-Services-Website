@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "wouter";
 import {
   DIVISIONS,
   HOME_BUSY,
   HOME_CLOSED,
   applyTokens,
   getNextTimeLabel,
-  BOOKING_HREF,
 } from "@/lib/statusBar";
 import { useAvailability } from "@/hooks/useAvailability";
 
@@ -38,7 +36,6 @@ export function HomeStatusBar() {
   let pulse = true;
   let headline = "";
   let sub = "";
-  const btnText = "Get Your Price";
 
   if (state === "busy") {
     dotColor = "#eab308";
@@ -89,20 +86,12 @@ export function HomeStatusBar() {
             {sub}
           </span>
           <span
-            className="hidden md:inline text-[12px] sm:text-[13px] font-bold whitespace-nowrap"
+            className="hidden md:inline text-[12px] sm:text-[13px] font-bold whitespace-nowrap ml-auto"
             style={{ color: dotColor }}
           >
             {next.prefix}{next.value}
           </span>
         </div>
-        <Link
-          href={BOOKING_HREF}
-          className="ml-auto text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-4 py-2 border transition-colors hover:bg-white/[0.05]"
-          style={{ borderColor: BLUE, color: BLUE }}
-          data-testid="home-status-cta"
-        >
-          {btnText} →
-        </Link>
       </div>
     </div>
   );

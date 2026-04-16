@@ -24,12 +24,6 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
     service: "Remote Online Notarization",
     promos: [
       {
-        name: "Early Bird Seal™",
-        tag: "$10 OFF",
-        window: "8:00 AM – 10:00 AM · Mon – Fri",
-        rule: "Weekday mornings only. Appointment must start between 8–10 AM. Valid on RON sessions including General Notary Work. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
-      },
-      {
         name: "Night Shift Seal™",
         tag: "$10 OFF",
         window: "6:00 PM – 9:00 PM · Mon – Fri",

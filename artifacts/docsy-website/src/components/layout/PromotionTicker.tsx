@@ -8,8 +8,6 @@ const items = [
   "·",
   "KNOW YOUR PRICE BEFORE YOU BOOK — ALWAYS",
   "·",
-  "EARLY BIRD SEAL — $10 OFF · 8AM–10AM MON–FRI",
-  "·",
   "NIGHT SHIFT SEAL — $10 OFF · 6PM–9PM MON–FRI",
   "·",
   "MIDDAY MILES — $10 OFF · 12PM–4PM MON–FRI",

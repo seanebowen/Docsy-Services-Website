@@ -70,10 +70,10 @@ const NUM_CARDS = [
 ];
 
 const SERVICES = [
-  { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding RON. Same-hour available. Anywhere in the US.", href: "/ron" },
-  { icon: MapPin,      label: "Mobile Notary & Loan Signing", desc: "We come to you across the SA metro — home, office, hospital, title company. Loan signings included.", href: "/mobile-notary" },
-  { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive Texas apostille. State fee in. Scan emailed. Tracked return shipping.", href: "/apostille" },
-  { icon: Briefcase,   label: "Electronic Reporting", desc: "Depositions, EUOs, meetings, arbitrations. Below-agency rates. Word index always included.", href: "/electronic-reporting" },
+  { icon: Video,       label: "Notary Services",     desc: "Remote Online Notarization (RON) and mobile notary across the SA metro — home, office, hospital, hospice, curbside. Same-hour available.", href: "/notary-services" },
+  { icon: PenLine,     label: "Loan Signing",        desc: "Certified loan signing agent — refinance, buyer, seller, HELOC, reverse mortgage. Flat rates. Scanbacks included.", href: "/loan-signing" },
+  { icon: Globe,       label: "Apostille Services",  desc: "All-inclusive Texas apostille. State fee in. Scan emailed. Tracked return shipping.", href: "/apostille" },
+  { icon: Briefcase,   label: "Electronic Reporting",desc: "Depositions, EUOs, meetings, arbitrations. Below-agency rates. Word index always included.", href: "/electronic-reporting" },
 ];
 
 const TESTIMONIALS = [
@@ -271,28 +271,6 @@ export default function Home() {
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── LANGUAGE LINE (teaser) ─────────────────────────── */}
-      <section id="language-line" className="py-16 sm:py-20 px-5 border-b" style={{ borderColor: DIV }}>
-        <div className="max-w-3xl mx-auto text-center">
-          <FadeIn delay={0}>
-            <Pill text="⊕ Language Line" dark />
-            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
-              Need an interpreter?
-            </h2>
-            <p className="text-base font-light mb-8 max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
-              Real-time interpreter support via Language Line Solutions — Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. Available on demand across every service. Tier pricing is shown when you add an interpreter in the calculator.
-            </p>
-            <Link
-              href="/calculate"
-              className="inline-block px-8 py-4 text-sm font-bold text-white"
-              style={{ backgroundColor: AMBER }}
-            >
-              Add an interpreter to your booking →
-            </Link>
-          </FadeIn>
         </div>
       </section>
 

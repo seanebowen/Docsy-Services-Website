@@ -981,25 +981,29 @@ export default function Calculator() {
               </ServiceCard>
               </FadeIn>
 
-              {/* ── Language Line Interpreter Add-On ── */}
-              {anyServiceActive && (
-                <>
-                  <FadeIn delay={0} threshold={0.01}>
-                    <div className="px-6 py-4 border-b border-t mt-2" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[ADD-ON]</span>
-                        <span className="text-sm font-black text-white">Interpreter / Language Line</span>
-                        <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>On demand</span>
-                      </div>
-                      <p className="text-xs font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.3)" }}>
-                        Real-time interpreter support via Language Line Solutions — available for any service.{" "}
-                        <Link href="/#language-line" style={{ color: AMBER, textDecoration: "underline" }}>Learn more →</Link>
-                      </p>
+              {/* ═══════════════════════════════════════════════════════════
+                   ADD-ONS SECTION — visually distinct from services above.
+                   Unified header + tinted background for every add-on card.
+                  ═══════════════════════════════════════════════════════════ */}
+              {(anyServiceActive || true) && (
+                <FadeIn delay={0} threshold={0.01}>
+                  <div className="mt-10 mb-2 px-6 py-6 border-y-2" style={{ borderColor: AMBER, backgroundColor: "rgba(77,159,219,0.06)" }}>
+                    <div className="flex items-baseline gap-3 flex-wrap">
+                      <span className="text-[10px] font-black font-mono tracking-[0.25em]" style={{ color: AMBER }}>━━━ ADD-ONS ━━━</span>
+                      <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.5)" }}>Optional extras</span>
                     </div>
-                  </FadeIn>
-                  <FadeIn delay={0} threshold={0.05}>
+                    <p className="text-sm font-light mt-2" style={{ color: "rgba(255,255,255,0.45)" }}>
+                      These aren't services — they're optional extras you can attach to your booking. Interpreter support, memberships, and HonorPass.
+                    </p>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* ── Interpreter Service Add-On ── */}
+              {anyServiceActive && (
+                <FadeIn delay={0} threshold={0.05}>
                   <ServiceCard
-                    num="06" title="Interpreter Service"
+                    num="A1" title="Interpreter Service"
                     desc="Real-time Language Line interpreter — Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. No advance notice required."
                     startingAt="$32"
                     active={llOn} onToggle={() => setLlOn(o => !o)}
@@ -1041,28 +1045,13 @@ export default function Calculator() {
                       </div>
                     </div>
                   </ServiceCard>
-                  </FadeIn>
-                </>
+                </FadeIn>
               )}
-
-              {/* ── Add-Ons Header ── */}
-              <FadeIn delay={0} threshold={0.01}>
-                <div className="px-6 py-4 border-b border-t mt-2" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-bold font-mono" style={{ color: AMBER }}>[ADD-ONS]</span>
-                    <span className="text-sm font-black text-white">Memberships &amp; Storage</span>
-                    <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>Monthly subscriptions</span>
-                  </div>
-                  <p className="text-xs font-light mt-1 ml-7" style={{ color: "rgba(255,255,255,0.3)" }}>
-                    Add to this booking or purchase separately from the Memberships page.
-                  </p>
-                </div>
-              </FadeIn>
 
               {/* ── Docsy+ Membership ── */}
               <FadeIn delay={0} threshold={0.05}>
               <ServiceCard
-                num="07" title="Docsy+ Membership"
+                num="A2" title="Docsy+ Membership"
                 desc="Monthly membership with free notarizations, service discounts, and priority scheduling."
                 startingAt="$15/mo"
                 active={membershipPlan !== null}
@@ -1094,7 +1083,7 @@ export default function Calculator() {
               {/* ── HonorPass™ ── */}
               <FadeIn delay={0} threshold={0.05}>
               <ServiceCard
-                num="08" title="HonorPass™ — Veterans & Active Military"
+                num="A3" title="HonorPass™ — Veterans & Active Military"
                 desc="10% off base service fees on every appointment, always. Stacks with all other promos. Valid ID or DD-214 required at first appointment."
                 startingAt="10% OFF"
                 active={honorPass}

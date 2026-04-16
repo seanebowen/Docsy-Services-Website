@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "wouter";
 import {
   Division,
   DivisionId,
@@ -7,7 +6,6 @@ import {
   applyTokens,
   getDivision,
   getNextTimeLabel,
-  BOOKING_HREF,
 } from "@/lib/statusBar";
 
 const SLATE = "#131929";
@@ -86,20 +84,12 @@ export function DivisionStatusBar({
             {applyTokens(copy.s)}
           </span>
           <span
-            className="hidden lg:inline text-[11px] font-bold whitespace-nowrap"
+            className="hidden lg:inline text-[11px] font-bold whitespace-nowrap ml-auto"
             style={{ color: "rgba(77,159,219,0.7)" }}
           >
             {next.prefix}{next.value}
           </span>
         </div>
-        <Link
-          href={BOOKING_HREF}
-          className="ml-auto text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-3 py-1.5 border transition-colors hover:bg-white/[0.05]"
-          style={{ borderColor: BLUE, color: BLUE }}
-          data-testid={`status-cta-${d.id}`}
-        >
-          {copy.btn} →
-        </Link>
       </div>
       {rotateIndicator}
     </div>

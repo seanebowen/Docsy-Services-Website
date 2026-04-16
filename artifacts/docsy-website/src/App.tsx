@@ -64,7 +64,7 @@ function Router() {
       <Route path="/vault-info" component={VaultInfo} />
       <Route path="/contact"><Redirect to="/about#contact" /></Route>
       <Route path="/about" component={About} />
-      <Route path="/language-line"><Redirect to="/#language-line" /></Route>
+      <Route path="/language-line"><Redirect to="/calculate" /></Route>
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route component={NotFound} />
     </Switch>
