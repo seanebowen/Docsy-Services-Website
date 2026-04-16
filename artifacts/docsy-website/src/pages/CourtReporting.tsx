@@ -154,8 +154,8 @@ export default function CourtReporting() {
               </div>
               {[
                 { l: "Rough Draft (uncertified)", p: "$0.75" },
+                { l: "Expedited (15+ business days)", p: "$7.50" },
                 { l: "Standard (10 business days)", p: "$8.50" },
-                { l: "Extended (15+ business days)", p: "$7.50" },
                 { l: "Rush (next business day)", p: "$12.00" },
                 { l: "Certified Copy (per copy/page)", p: "$2.50" },
               ].map((r) => (

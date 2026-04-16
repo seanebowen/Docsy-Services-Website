@@ -495,7 +495,7 @@ export default function Calculator() {
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
     ["pdf",       "PDF-only delivery",                    "Free"],
     ["rough",     "Rough Draft (uncertified)",            "$0.75/pg"],
-    ["extended",  "Extended (15+ business days)",         "$7.50/pg"],
+    ["extended",  "Expedited (15+ business days)",        "$7.50/pg"],
     ["standard",  "Standard (10 business days)",          "$8.50/pg"],
     ["rush",      "Rush (next business day)",             "$12.00/pg"],
     ["certified", "Certified Copy (per copy/page)",       "$2.50/pg"],
