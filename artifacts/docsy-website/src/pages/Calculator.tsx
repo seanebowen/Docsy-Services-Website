@@ -565,7 +565,7 @@ export default function Calculator() {
                   </div>
 
                   <div className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
-                    Same-hour availability, digital certified copy, and 30-day Safe+ Vault trial included at no extra charge.
+                    Same-hour availability, digital certified copy, and 30-day Safe+ trial included at no extra charge.
                   </div>
                 </div>
               </ServiceCard>
@@ -742,7 +742,7 @@ export default function Calculator() {
                       ))}
                     </div>
                     <p className="text-xs font-light mt-3" style={{ color: "rgba(255,255,255,0.2)" }}>
-                      Scanbacks included with Refinance and Buyer Purchase packages. Docsy Safe+ Vault 30-day trial included. Base travel included in pricing — extended distance (40+ miles) billed separately.
+                      Scanbacks included with Refinance and Buyer Purchase packages. Docsy Safe+ 30-day trial included. Base travel included in pricing — extended distance (40+ miles) billed separately.
                     </p>
                   </div>
                   <div>

@@ -143,7 +143,7 @@ export default function Promos() {
               HonorPass is not a promotion — it is a permanent discount for those who have served. It does not expire and is not time-limited. Verification is required once per client account.
             </p>
             <p className="text-[11px] font-bold mb-8 max-w-xl" style={{ color: BLUE }}>
-              ★ HonorPass stacks with every other Docsy promotion. Verified members and Safe+ Vault holders have it saved and auto-applied on every future transaction — no code needed.
+              ★ HonorPass stacks with every other Docsy promotion. Verified members and Safe+ holders have it saved and auto-applied on every future transaction — no code needed.
             </p>
           </FadeIn>
 
@@ -163,7 +163,7 @@ export default function Promos() {
               <div className="border px-5 py-4" style={{ borderColor: BLUE + "55", backgroundColor: BLUE + "0d" }}>
                 <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: BLUE }}>Stackable — unlike any other discount</p>
                 <p className="text-sm leading-relaxed" style={{ color: IVORY }}>
-                  HonorPass combines with every Docsy promotion — time-window promos, Weekend Warrior, everything. Subject to one-time eligibility verification. Once verified, Docsy+ members and Safe+ Vault holders have it saved and auto-applied on all future transactions. No code ever needed again.
+                  HonorPass combines with every Docsy promotion — time-window promos, Weekend Warrior, everything. Subject to one-time eligibility verification. Once verified, Docsy+ members and Safe+ holders have it saved and auto-applied on all future transactions. No code ever needed again.
                 </p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function Promos() {
         </div>
       </section>
 
-      {/* ── Safe+ Vault — always free ── */}
+      {/* ── Safe+ — always free ── */}
       <section className="py-14 px-5 border-b" style={{ borderColor: DIV }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0} threshold={0.05}>
@@ -186,7 +186,7 @@ export default function Promos() {
           <FadeIn delay={60} threshold={0.05}>
             <div className="max-w-2xl border p-8" style={{ borderColor: DIV, backgroundColor: BG }}>
               <div className="flex items-start justify-between gap-4 mb-3">
-                <h3 className="text-xl font-black text-white leading-tight">Docsy Safe+ Vault</h3>
+                <h3 className="text-xl font-black text-white leading-tight">Docsy Safe+</h3>
                 <span
                   className="shrink-0 px-2 py-1 text-xs font-bold tracking-wider border"
                   style={{ borderColor: BLUE, color: BLUE }}
@@ -194,7 +194,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>No paid tiers. No trials. No upsells.</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Every deliverable from every appointment uploads to your encrypted Safe+ Vault automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. An account is created for you at booking; sign in any time to download or share. Docsy+ members get extended retention windows and priority vault support.
+                Every deliverable from every appointment uploads to your encrypted Safe+ automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. An account is created for you at booking; sign in any time to download or share. Docsy+ members get extended retention windows and priority vault support.
               </p>
             </div>
           </FadeIn>

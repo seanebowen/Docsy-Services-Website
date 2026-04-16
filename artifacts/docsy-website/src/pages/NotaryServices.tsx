@@ -152,7 +152,7 @@ export default function NotaryServices() {
               { l: "First notarization", p: "$25" },
               { l: "Each additional signature (same session)", p: "$10" },
               { l: "Same-hour availability", p: "Included" },
-              { l: "Docsy Safe+ Vault 30-day trial", p: "Included" },
+              { l: "Docsy Safe+ 30-day trial", p: "Included" },
               { l: "Digital certified copy", p: "Included" },
             ].map((row) => (
               <div key={row.l} className="flex justify-between items-center px-6 py-4" style={{ borderColor: DIV }}>

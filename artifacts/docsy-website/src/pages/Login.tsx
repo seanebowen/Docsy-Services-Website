@@ -84,14 +84,14 @@ export default function Login() {
               ◎ Docsy+
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
-              ◎ Safe+ Vault
+              ◎ Safe+
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
             Sign in.
           </h1>
           <p className="text-white/40 text-base">
-            Members and Safe+ Vault subscribers — enter your email or phone to receive a one-time code.
+            Members and Safe+ subscribers — enter your email or phone to receive a one-time code.
           </p>
         </div>
 

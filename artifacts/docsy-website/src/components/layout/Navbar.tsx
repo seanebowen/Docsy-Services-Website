@@ -13,7 +13,7 @@ const allLinks = [
   { href: "/apostille",           label: "Apostille" },
   { href: "/electronic-reporting",label: "Electronic Reporting" },
   { href: "/memberships",         label: "Memberships" },
-  { href: "/vault-info",          label: "Safe+ Vault" },
+  { href: "/vault-info",          label: "Safe+" },
 ];
 
 const moreLinks = [
@@ -146,7 +146,7 @@ export function Navbar() {
                     className="flex items-center gap-3 px-4 py-3 text-sm transition-colors border-b"
                     style={{ color: AMBER, borderColor: DIV }}
                   >
-                    <Archive className="h-3.5 w-3.5" /> My Safe+ Vault
+                    <Archive className="h-3.5 w-3.5" /> My Safe+
                   </Link>
                   <button
                     onClick={() => signOut()}
@@ -187,13 +187,13 @@ export function Navbar() {
               </Link>
             ))}
 
-            {/* Safe+ Vault in mobile nav — always visible */}
+            {/* Safe+ in mobile nav — always visible */}
             <Link
               href={user ? "/vault" : "/vault-info"}
               className="py-3 text-sm font-medium border-b flex items-center gap-2"
               style={{ color: AMBER, borderColor: DIV }}
             >
-              <Archive className="h-3.5 w-3.5" /> {user ? "My Safe+ Vault" : "Safe+ Vault"}
+              <Archive className="h-3.5 w-3.5" /> {user ? "My Safe+" : "Safe+"}
             </Link>
 
             {moreLinks.map((link) => (
