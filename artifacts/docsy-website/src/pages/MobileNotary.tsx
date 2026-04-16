@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
+import { DivisionStatusBar } from "@/components/status/DivisionStatusBar";
+import { useAvailability } from "@/hooks/useAvailability";
 import mobileImg from "@/assets/images/mobile-notary-folio.png";
 
 const IVORY = "#F5EFE6";
@@ -28,10 +30,18 @@ export default function MobileNotary() {
     document.title = "Mobile Notary | Docsy Services";
   }, []);
 
+  const { state } = useAvailability();
+
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
 
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
+      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
+        <div className="max-w-5xl mx-auto">
+          <DivisionStatusBar divisionId="mobile" state={state} />
+        </div>
+      </section>
+
+      <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>

@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck, Languages } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
+import { HomeStatusBar } from "@/components/status/HomeStatusBar";
 import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
@@ -114,8 +115,15 @@ export default function Home() {
   return (
     <div className="w-full" style={{ backgroundColor: SLATE }}>
 
+      {/* ── STATUS BAR ─────────────────────────────────────── */}
+      <section className="px-5 pt-6 pb-2" style={{ backgroundColor: IVORY }}>
+        <div className="max-w-5xl mx-auto">
+          <HomeStatusBar />
+        </div>
+      </section>
+
       {/* ── HERO ───────────────────────────────────────────── */}
-      <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
+      <section className="px-5 pt-10 pb-14 sm:pt-12 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto text-center">
           <div>
             <FadeIn delay={0}>
@@ -126,11 +134,11 @@ export default function Home() {
                 className="text-[3rem] sm:text-[4rem] md:text-[5rem] leading-none mb-8"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                <span className="font-black text-black">Hand us the documents.</span>
+                <span className="font-black text-black">Texas Notary &</span>
                 <br />
-                <span className="font-light text-black/40">Walk away with</span>
+                <span className="font-light text-black/40">Document Services —</span>
                 <br />
-                <span className="font-black text-black"><H>your sanity.</H></span>
+                <span className="font-black text-black"><H>done right.</H></span>
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
