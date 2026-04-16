@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { saveIdMeVerification, type IdMeGroup } from "@/lib/idme";
+import { useAuth } from "@/context/AuthContext";
+import {
+  attachIdMeToAccount,
+  setPendingIdMeVerification,
+  clearPendingIdMeVerification,
+  type IdMeGroup,
+} from "@/lib/idme";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -12,9 +18,11 @@ const GREEN = "#76b900";
 const VALID: IdMeGroup[] = ["military", "veteran", "responder", "nurse", "teacher"];
 
 export default function IdMeCallback() {
-  const [, setLocation] = useLocation();
-  const [status, setStatus] = useState<"working" | "ok" | "error">("working");
-  const [group,  setGroup]  = useState<IdMeGroup>("veteran");
+  const [, setLocation]          = useLocation();
+  const { user, token, updateUser } = useAuth();
+  const [status, setStatus]      = useState<"working" | "ok" | "error">("working");
+  const [group,  setGroup]       = useState<IdMeGroup>("veteran");
+  const [attached, setAttached]  = useState<boolean>(false);
 
   useEffect(() => {
     document.title = "Verifying… | Docsy Services";
@@ -23,10 +31,30 @@ export default function IdMeCallback() {
     const code   = params.get("code");
     const grp    = (params.get("group") as IdMeGroup | null) ?? "veteran";
 
-    const finish = () => {
+    const finish = async () => {
       const safeGroup: IdMeGroup = VALID.includes(grp) ? grp : "veteran";
-      saveIdMeVerification(safeGroup);
       setGroup(safeGroup);
+
+      if (token && user) {
+        /* Signed in → attach the verification straight to the account.
+           No pending-local record is needed. */
+        const record = await attachIdMeToAccount(token, safeGroup);
+        if (record) {
+          updateUser({ ...user, idMeVerification: record });
+          clearPendingIdMeVerification();
+          setAttached(true);
+        } else {
+          /* Fallback: if the API call fails, at least park it locally so
+             the user isn't stranded — it will migrate on next sign-in. */
+          setPendingIdMeVerification(safeGroup);
+          setAttached(false);
+        }
+      } else {
+        /* Signed out → park locally; AuthContext migrates it up once the
+           user signs in or completes the checkout-upsert flow. */
+        setPendingIdMeVerification(safeGroup);
+        setAttached(false);
+      }
       setStatus("ok");
     };
 
@@ -40,7 +68,8 @@ export default function IdMeCallback() {
     }
     setStatus("error");
     return;
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, user?.id]);
 
   const returnTo = sessionStorage.getItem("docsy_idme_return_to") ?? "/calculate";
 
@@ -49,6 +78,18 @@ export default function IdMeCallback() {
     sessionStorage.removeItem("docsy_idme_state");
     setLocation(returnTo);
   };
+
+  const goSignIn = () => {
+    sessionStorage.removeItem("docsy_idme_state");
+    setLocation("/login");
+  };
+
+  const goCheckout = () => {
+    sessionStorage.removeItem("docsy_idme_state");
+    setLocation(returnTo);
+  };
+
+  const signedIn = !!token && !!user;
 
   return (
     <div className="w-full min-h-[80vh] flex flex-col items-center justify-center px-5 py-20" style={{ backgroundColor: BG }}>
@@ -76,7 +117,7 @@ export default function IdMeCallback() {
               </>
             )}
 
-            {status === "ok" && (
+            {status === "ok" && signedIn && attached && (
               <>
                 <h1 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
                   You're verified.
@@ -85,7 +126,7 @@ export default function IdMeCallback() {
                   Thank you for your service.
                 </p>
                 <p className="text-white/40 text-sm mb-8">
-                  HonorPass™ — 10% off every Docsy service — is now permanently saved to this device. It auto-applies on every quote and booking.
+                  HonorPass™ — 10% off every Docsy service — is now permanently saved to your Docsy account. It auto-applies on every quote and booking, on any device you sign in on.
                 </p>
                 <button
                   type="button"
@@ -99,6 +140,62 @@ export default function IdMeCallback() {
                 <p className="text-[11px] text-white/25">
                   Verified group: <span className="font-bold" style={{ color: BLUE }}>{group}</span>
                 </p>
+              </>
+            )}
+
+            {status === "ok" && !signedIn && (
+              <>
+                <h1 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
+                  You're verified.
+                </h1>
+                <p className="text-white/50 text-sm mb-2">
+                  Thank you for your service.
+                </p>
+                <p className="text-white/40 text-sm mb-8">
+                  Sign in or create your Docsy account to lock HonorPass™ to your profile — once attached, 10% off auto-applies on every quote and booking, on any device you sign in on. If you continue to booking without signing in, your account is created at checkout and HonorPass is attached automatically.
+                </p>
+                <div className="flex flex-col gap-3 mb-4">
+                  <button
+                    type="button"
+                    onClick={goSignIn}
+                    className="w-full px-5 py-4 text-base font-bold text-black"
+                    style={{ backgroundColor: IVORY }}
+                    data-testid="btn-idme-signin"
+                  >
+                    Sign in to attach HonorPass →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goCheckout}
+                    className="w-full px-5 py-3 text-sm font-bold border"
+                    style={{ borderColor: DIV, color: "rgba(255,255,255,0.6)" }}
+                    data-testid="btn-idme-continue-booking"
+                  >
+                    Continue to booking (account created at checkout)
+                  </button>
+                </div>
+                <p className="text-[11px] text-white/25">
+                  Verified group: <span className="font-bold" style={{ color: BLUE }}>{group}</span>
+                </p>
+              </>
+            )}
+
+            {status === "ok" && signedIn && !attached && (
+              <>
+                <h1 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
+                  You're verified.
+                </h1>
+                <p className="text-white/40 text-sm mb-8">
+                  We couldn't attach HonorPass to your account right now, but your verification is safely saved. It'll attach automatically the next time you open the site.
+                </p>
+                <button
+                  type="button"
+                  onClick={goBack}
+                  className="w-full px-5 py-4 text-base font-bold text-black mb-4"
+                  style={{ backgroundColor: IVORY }}
+                >
+                  Continue →
+                </button>
               </>
             )}
 

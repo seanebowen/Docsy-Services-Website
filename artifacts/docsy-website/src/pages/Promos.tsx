@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { IdMeButton } from "@/components/ui/IdMeButton";
-import { getIdMeVerification, isHonorPassEligible, groupLabel, type IdMeVerification } from "@/lib/idme";
+import { resolveIdMeVerification, isHonorPassEligible, groupLabel, type IdMeVerification } from "@/lib/idme";
+import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -60,11 +61,11 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
 ];
 
 export default function Promos() {
-  const [idMeVerif, setIdMeVerif] = useState<IdMeVerification | null>(null);
+  const { user } = useAuth();
+  const idMeVerif: IdMeVerification | null = resolveIdMeVerification(user?.idMeVerification ?? null);
 
   useEffect(() => {
     document.title = "Promotions | Docsy Services";
-    setIdMeVerif(getIdMeVerification());
   }, []);
 
   return (

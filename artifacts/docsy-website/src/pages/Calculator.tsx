@@ -2,7 +2,14 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { IdMeButton } from "@/components/ui/IdMeButton";
-import { getIdMeVerification, isHonorPassEligible, clearIdMeVerification, groupLabel } from "@/lib/idme";
+import {
+  resolveIdMeVerification,
+  isHonorPassEligible,
+  clearPendingIdMeVerification,
+  clearIdMeOnAccount,
+  groupLabel,
+} from "@/lib/idme";
+import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -305,14 +312,16 @@ export default function Calculator() {
   const [courtOn, setCourtOn] = useState(false);
 
   /* add-on subscriptions */
+  const { user, token, updateUser } = useAuth();
   const [honorPass, setHonorPass] = useState(false);
-  const [idMeVerif, setIdMeVerif] = useState(() => getIdMeVerification());
+  const idMeVerif = resolveIdMeVerification(user?.idMeVerification ?? null);
 
   useEffect(() => {
-    const v = getIdMeVerification();
-    setIdMeVerif(v);
-    if (isHonorPassEligible(v)) setHonorPass(true);
-  }, []);
+    /* Track the active verification: auto-apply when eligible, clear
+       the line item when the user signs out (HonorPass lives on the
+       account, so sign-out removes it from this device's quote). */
+    setHonorPass(isHonorPassEligible(idMeVerif));
+  }, [idMeVerif?.group]);
 
   /* Language Line interpreter state */
   const [llOn,       setLlOn]       = useState(false);
@@ -1069,7 +1078,14 @@ export default function Calculator() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => { clearIdMeVerification(); setIdMeVerif(null); setHonorPass(false); }}
+                        onClick={async () => {
+                          if (token && user?.idMeVerification) {
+                            await clearIdMeOnAccount(token);
+                            updateUser({ ...user, idMeVerification: null });
+                          }
+                          clearPendingIdMeVerification();
+                          setHonorPass(false);
+                        }}
                         className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white/80 underline"
                       >
                         Remove

@@ -1,9 +1,17 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 
 const router = Router();
 
 /* ── Types ─────────────────────────────────────────────── */
 export type MembershipTier = "starter" | "pro" | "elite" | null;
+
+export type IdMeGroup = "military" | "veteran" | "responder" | "nurse" | "teacher";
+const VALID_IDME_GROUPS: IdMeGroup[] = ["military", "veteran", "responder", "nurse", "teacher"];
+
+export interface IdMeVerificationRecord {
+  group:      IdMeGroup;
+  verifiedAt: string;
+}
 
 export interface MockUser {
   id:         string;
@@ -11,6 +19,7 @@ export interface MockUser {
   email:      string;
   phone:      string; // normalized digits only, e.g. "2105551001"
   membership: MembershipTier;
+  idMeVerification?: IdMeVerificationRecord | null;
 }
 
 /* ── Cycle credits per user (in-memory; mutated on use) ── */
@@ -85,8 +94,27 @@ function randomId(): string    { return "u" + crypto.randomUUID().slice(0, 8); }
 
 export function publicUser(u: MockUser) {
   return {
-    id: u.id, name: u.name, email: u.email, phone: u.phone, membership: u.membership,
+    id:               u.id,
+    name:             u.name,
+    email:            u.email,
+    phone:            u.phone,
+    membership:       u.membership,
+    idMeVerification: u.idMeVerification ?? null,
   };
+}
+
+/* ── Middleware: verify Bearer token ─────────────────────
+   Inlined here to avoid circular imports with vault.ts.
+*/
+function requireAuth(req: Request, res: Response, next: () => void): void {
+  const header = req.headers["authorization"] ?? "";
+  const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!token || !SESSION_STORE.has(token)) {
+    res.status(401).json({ ok: false, error: "Unauthorized. Please sign in." });
+    return;
+  }
+  (req as Request & { userId: string }).userId = SESSION_STORE.get(token)!;
+  next();
 }
 
 /* ── POST /api/auth/request ─────────────────────────────── */
@@ -200,6 +228,58 @@ router.post("/upsert", (req, res): void => {
   }
 
   res.json({ ok: true, created, existing: !created, token, user: publicUser(user) });
+});
+
+/* ── GET /api/auth/me ───────────────────────────────────
+   Returns the currently signed-in user's public profile, including
+   account-scoped HonorPass (ID.me) verification state.
+*/
+router.get("/me", requireAuth as never, (req: Request, res: Response): void => {
+  const userId = (req as Request & { userId: string }).userId;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user) {
+    res.status(404).json({ ok: false, error: "Account not found." });
+    return;
+  }
+  res.json({ ok: true, user: publicUser(user) });
+});
+
+/* ── POST /api/auth/idme ────────────────────────────────
+   Attach an ID.me verification (group + verifiedAt) to the current
+   session's user. Persists on the account so it follows the user to
+   every device they sign in on.
+*/
+router.post("/idme", requireAuth as never, (req: Request, res: Response): void => {
+  const userId = (req as Request & { userId: string }).userId;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user) {
+    res.status(404).json({ ok: false, error: "Account not found." });
+    return;
+  }
+  const { group } = req.body as { group?: string };
+  if (!group || !VALID_IDME_GROUPS.includes(group as IdMeGroup)) {
+    res.status(400).json({ ok: false, error: "A valid ID.me verification group is required." });
+    return;
+  }
+  user.idMeVerification = {
+    group:      group as IdMeGroup,
+    verifiedAt: user.idMeVerification?.verifiedAt ?? new Date().toISOString(),
+  };
+  res.json({ ok: true, user: publicUser(user) });
+});
+
+/* ── DELETE /api/auth/idme ──────────────────────────────
+   Clear the current user's ID.me verification from their account.
+*/
+router.delete("/idme", requireAuth as never, (req: Request, res: Response): void => {
+  const userId = (req as Request & { userId: string }).userId;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user) {
+    res.status(404).json({ ok: false, error: "Account not found." });
+    return;
+  }
+  user.idMeVerification = null;
+  res.json({ ok: true, user: publicUser(user) });
 });
 
 export default router;
