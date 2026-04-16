@@ -143,10 +143,6 @@ export default function BookingPayment() {
   /* Explicitly applied credits — only these are consumed on confirm */
   const [applyNotarization, setApplyNotarization] = useState(false);
   const [applyTravelWaiver, setApplyTravelWaiver] = useState(false);
-  /* Existing-account-detected state (when /api/auth/upsert reports an
-     account already exists for the supplied email/phone). The user is
-     NOT signed in automatically — they must verify via OTP/login. */
-  const [existingAccount, setExistingAccount] = useState<null | { masked: string; identifier: string }>(null);
 
   /* card form state */
   const [name,    setName]    = useState("");
@@ -282,10 +278,9 @@ export default function BookingPayment() {
 
     const last4 = upfront ? number.replace(/\s/g, "").slice(-4) : null;
 
-    /* Step 1 — auto-create account when opted in and no signed-in user.
-       The server only issues a session for *new* accounts. If an account
-       already exists, we surface that to the user (no auto-signin) and
-       prompt them to verify via the existing OTP flow. */
+    /* Step 1 — reuse-or-create the user's Docsy account when opted in.
+       The /upsert endpoint returns a session token for both newly-created
+       and existing accounts so the user is signed in immediately. */
     let accountCreated  = false;
     let accountExisting = false;
     if (!user && createAccount) {
@@ -300,14 +295,10 @@ export default function BookingPayment() {
           }),
         });
         const data = await res.json();
-        if (data?.ok) {
-          if (data.created && data.token && data.user) {
-            signIn(data.token, data.user);
-            accountCreated = true;
-          } else if (data.existing) {
-            accountExisting = true;
-            setExistingAccount({ masked: data.masked ?? clientEmail.trim(), identifier: data.identifier ?? clientEmail.trim() });
-          }
+        if (data?.ok && data.token && data.user) {
+          signIn(data.token, data.user);
+          accountCreated  = !!data.created;
+          accountExisting = !!data.existing;
         }
       } catch {
         /* non-blocking — booking still proceeds even if account creation fails */
@@ -643,20 +634,6 @@ export default function BookingPayment() {
                     Credits are only consumed when you complete the booking. Toggle off to keep them for a future appointment.
                   </p>
                 </div>
-              </div>
-            </FadeIn>
-          )}
-
-          {/* ── Existing-account notice (post-attempt) ── */}
-          {existingAccount && !user && (
-            <FadeIn delay={50}>
-              <div className="border-2 p-5 text-xs" style={{ borderColor: BLUE, backgroundColor: "rgba(77,159,219,0.08)", color: IVORY }}>
-                <p className="font-bold mb-1">A Docsy account already exists for {existingAccount.masked}.</p>
-                <p style={{ color: "rgba(255,255,255,0.6)" }}>
-                  Your booking will still be confirmed. To access your Safe+ Vault, please {" "}
-                  <Link href="/login" style={{ color: BLUE }} className="underline font-bold">sign in to your existing account</Link>
-                  {" "} — we just sent a verification code to your email.
-                </p>
               </div>
             </FadeIn>
           )}

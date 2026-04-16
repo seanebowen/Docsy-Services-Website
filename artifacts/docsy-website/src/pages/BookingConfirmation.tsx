@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -28,6 +29,7 @@ interface BookingData {
 
 export default function BookingConfirmation() {
   const [booking, setBooking] = useState<BookingData | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     document.title = "Booking Submitted | Docsy Services";
@@ -178,19 +180,15 @@ export default function BookingConfirmation() {
                   <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
                     Every deliverable from this appointment — documents, transcripts, and recordings — will upload automatically to your encrypted Safe+ Vault.
                   </p>
-                  {booking.accountCreated && (
+                  {(booking.accountCreated || booking.accountExisting || user) && (
                     <p className="text-xs mt-3 font-bold">
                       <Link href="/vault" style={{ color: BLUE }} className="underline">Open your Safe+ Vault →</Link>
                       <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
-                        Your account was created automatically. Sign in any time at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link> with this email — we just sent you a sign-in link.
-                      </span>
-                    </p>
-                  )}
-                  {!booking.accountCreated && booking.accountExisting && (
-                    <p className="text-xs mt-3 font-bold">
-                      <Link href="/login" style={{ color: BLUE }} className="underline">Sign in to access your Safe+ Vault →</Link>
-                      <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
-                        We found an existing Docsy account for {booking.clientEmail}. We've sent a verification code to that email — sign in to find this booking's deliverables in your vault.
+                        {booking.accountCreated
+                          ? <>Your Docsy account was created and you're signed in. We also emailed a welcome verification code so you can sign in from any other device at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link>.</>
+                          : booking.accountExisting
+                          ? <>We matched your booking to your existing Docsy account and signed you in for this session.</>
+                          : <>You're signed in — head to your vault any time to view this booking's deliverables.</>}
                       </span>
                     </p>
                   )}
