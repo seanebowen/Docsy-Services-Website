@@ -74,7 +74,7 @@ Docsy Services reserves the right to update membership pricing with 30 days writ
   },
   {
     heading: "Cancellation",
-    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to all membership perks — including Safe+ Vault, priority booking, and discounts — remains active through the end of the current billing cycle. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
+    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to membership perks — priority booking, member discounts, free/discounted notarizations, and travel-fee waivers — remains active through the end of the current billing cycle. Safe+ Vault access is unaffected by cancellation; it remains free for every Docsy client. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
 
 Docsy Services reserves the right to cancel any membership immediately and without refund in cases of abuse, fraud, misuse of perks, or violation of these terms.`,
   },
