@@ -25,7 +25,7 @@ const TIERS = [
     price: "$15/mo",
     planKey: "starter",
     features: [
-      "Free Safe+ Vault subscription",
+      "Auto-applied 5% discount on every booking",
       "Fee-free priority bookings",
       "50% off 1 notarization/month (RON or mobile)",
       "10% off mobile fees",
@@ -37,7 +37,7 @@ const TIERS = [
     price: "$30/mo",
     planKey: "pro",
     features: [
-      "Free Safe+ Vault subscription",
+      "Auto-applied 10% discount on every booking",
       "Fee-free priority bookings",
       "1 free notarization/month (RON or mobile)",
       "15% off mobile fees",
@@ -50,7 +50,7 @@ const TIERS = [
     price: "$49/mo",
     planKey: "elite",
     features: [
-      "Free Safe+ Vault subscription",
+      "Auto-applied 15% discount on every booking",
       "Fee-free priority bookings",
       "2 free notarizations/month (RON or mobile)",
       "20% off mobile fees",
@@ -112,8 +112,8 @@ All RON or mobile sessions beyond the monthly credit allotment are billed at sta
     body: `All members receive fee-free priority booking across all service divisions. Priority booking places members ahead of non-member scheduling requests. It does not guarantee same-day or next-day availability. Priority status is tied to the active membership account and is non-transferable unless approved under the Transfer Policy below.`,
   },
   {
-    heading: "Safe+ Vault Inclusion",
-    body: `All active Docsy+ members receive a complimentary Safe+ Vault subscription included with their plan. Safe+ access is contingent on active membership status. Cancellation or lapse of membership results in loss of Safe+ access at the end of the billing cycle. Members wishing to retain Safe+ after cancellation may subscribe independently at the standard rate.`,
+    heading: "Safe+ Vault Access",
+    body: `Safe+ Vault is included free with every Docsy service for every client — members and non-members alike. Docsy+ members receive extended retention windows and priority support on vault issues. Vault access is tied to your registered Docsy account and remains available as long as the account is in good standing.`,
   },
   {
     heading: "Transfer Policy",

@@ -125,6 +125,14 @@ export function Navbar() {
                   {initials}
                 </span>
                 {firstName}
+                {user.membership && (
+                  <span
+                    className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5"
+                    style={{ backgroundColor: "rgba(77,159,219,0.2)", color: "#4D9FDB" }}
+                  >
+                    Docsy+ {user.membership === "starter" ? "Starter" : user.membership === "pro" ? "Pro" : "Elite"}
+                  </span>
+                )}
                 <ChevronDown className={`h-3 w-3 transition-transform ${accountOpen ? "rotate-180" : ""}`} />
               </button>
 

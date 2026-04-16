@@ -1,12 +1,25 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
 const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 const RED   = "#e05252";
+
+const MEMBERSHIP_LABELS: Record<string, string> = {
+  starter: "Docsy+ Starter",
+  pro:     "Docsy+ Pro",
+  elite:   "Docsy+ Elite",
+};
+
+interface MemberCreditsState {
+  membership: string | null;
+  notarizationCredits: number;
+  travelWaiverAvailable: boolean;
+}
 
 /* ── Payment Terms copy (one block per division) ── */
 const TERMS: Record<string, { heading: string; body: string[] }> = {
@@ -70,7 +83,7 @@ interface BookingData {
   autoPromos?:      { label: string; amount: number }[];
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
-  safePlusOptIn?:   boolean;
+  memberTier?:      string | null;
 }
 
 /* ── Contact + Card helpers ── */
@@ -96,24 +109,30 @@ function detectTermKeys(booking: BookingData): string[] {
   if (svcs.some(s => s.name.toLowerCase().includes("loan signing")))   keys.push("loan");
   if (svcs.some(s => s.name.toLowerCase().includes("apostille")))      keys.push("apostille");
   if (svcs.some(s => s.name.toLowerCase().includes("court reporting"))) keys.push("court");
-  if (booking.safePlusOptIn === true)                                    keys.push("safeplus");
   return keys;
 }
 function needsUpfrontPayment(keys: string[]) {
-  return keys.some(k => k !== "court" && k !== "safeplus");
+  return keys.some(k => k !== "court");
 }
 
 export default function BookingPayment() {
   const [, setLocation] = useLocation();
+  const { user, token, signIn } = useAuth();
   const [booking, setBooking] = useState<BookingData | null>(null);
   const [termKeys, setTermKeys] = useState<string[]>([]);
   const [upfront, setUpfront]   = useState(false);
 
-  /* contact info state */
+  /* contact info state — prefilled from signed-in user when available */
   const [clientName,  setClientName]  = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [contactTouched, setContactTouched] = useState(false);
+
+  /* Account-creation opt-in (default ON, hidden when already signed in) */
+  const [createAccount, setCreateAccount] = useState(true);
+
+  /* Member credits (loaded for signed-in members) */
+  const [credits, setCredits] = useState<MemberCreditsState | null>(null);
 
   /* card form state */
   const [name,    setName]    = useState("");
@@ -136,6 +155,36 @@ export default function BookingPayment() {
       }
     } catch {}
   }, []);
+
+  /* Prefill contact info from authenticated user */
+  useEffect(() => {
+    if (user) {
+      if (!clientName)  setClientName(user.name);
+      if (!clientEmail) setClientEmail(user.email);
+      if (!clientPhone) {
+        const d = user.phone.replace(/\D/g, "");
+        setClientPhone(d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : user.phone);
+      }
+    }
+  /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [user]);
+
+  /* Load member credits for signed-in members */
+  useEffect(() => {
+    if (!token || !user?.membership) { setCredits(null); return; }
+    fetch("/api/vault/credits", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => {
+        if (data?.ok) {
+          setCredits({
+            membership: data.membership,
+            notarizationCredits: data.notarizationCredits,
+            travelWaiverAvailable: data.travelWaiverAvailable,
+          });
+        }
+      })
+      .catch(() => { /* non-blocking */ });
+  }, [token, user]);
 
   const hasDiscount  = (booking?.autoPromos?.length ?? 0) > 0 || !!booking?.promoDiscount;
   const displayTotal = hasDiscount
@@ -202,7 +251,7 @@ export default function BookingPayment() {
     };
   }
 
-  const handlePay = useCallback(() => {
+  const handlePay = useCallback(async () => {
     /* Validate contact info first */
     if (!contactOk) { setContactTouched(true); return; }
     /* Then validate card if upfront payment required */
@@ -211,32 +260,68 @@ export default function BookingPayment() {
 
     const last4 = upfront ? number.replace(/\s/g, "").slice(-4) : null;
 
-    setTimeout(() => {
+    /* Step 1 — auto-create account when opted in and no signed-in user */
+    let accountCreated = false;
+    if (!user && createAccount) {
       try {
-        const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
-        const updated = {
-          ...current,
-          paymentCompleted: true,
-          cardLast4: last4,
-          clientName:  clientName.trim(),
-          clientEmail: clientEmail.trim(),
-          clientPhone: clientPhone.replace(/\D/g, ""),
-        };
-        sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
-
-        /* ── Fire Zapier webhook (fire-and-forget; never blocks the UI) ── */
-        if (booking) {
-          const payload = buildZapierPayload(booking, last4);
-          fetch("/api/zapier/booking-confirmed", {
-            method:  "POST",
-            headers: { "Content-Type": "application/json" },
-            body:    JSON.stringify(payload),
-          }).catch(() => { /* webhook failure must never affect the booking UX */ });
+        const res = await fetch("/api/auth/upsert", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({
+            name:  clientName.trim(),
+            email: clientEmail.trim(),
+            phone: clientPhone.replace(/\D/g, ""),
+          }),
+        });
+        const data = await res.json();
+        if (data?.ok && data.token && data.user) {
+          signIn(data.token, data.user);
+          accountCreated = !!data.created;
         }
-      } catch {}
-      setLocation("/booking/confirmation");
-    }, 900);
-  }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation]);
+      } catch {
+        /* non-blocking — booking still proceeds even if account creation fails */
+      }
+    }
+
+    /* Step 2 — consume any auto-applied member credits (best-effort) */
+    if (token && user?.membership && booking) {
+      const usedTravelWaiver = (booking.autoPromos ?? []).some(p => p.label.toLowerCase().includes("travel waiver"));
+      const usedNotarization = (booking.autoPromos ?? []).some(p => p.label.toLowerCase().includes("free notarization"));
+      if (usedTravelWaiver || usedNotarization) {
+        fetch("/api/vault/credits/consume", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body:    JSON.stringify({ useNotarization: usedNotarization, useTravelWaiver: usedTravelWaiver }),
+        }).catch(() => { /* non-blocking */ });
+      }
+    }
+
+    /* Step 3 — persist booking + fire Zapier (fire-and-forget) */
+    try {
+      const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
+      const updated = {
+        ...current,
+        paymentCompleted: true,
+        cardLast4: last4,
+        clientName:  clientName.trim(),
+        clientEmail: clientEmail.trim(),
+        clientPhone: clientPhone.replace(/\D/g, ""),
+        accountCreated,
+      };
+      sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
+
+      if (booking) {
+        const payload = buildZapierPayload(booking, last4);
+        fetch("/api/zapier/booking-confirmed", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify(payload),
+        }).catch(() => { /* webhook failure must never affect the booking UX */ });
+      }
+    } catch {}
+
+    setTimeout(() => setLocation("/booking/confirmation"), 600);
+  }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation, user, token, createAccount, signIn]);
 
   const fieldBorder = (ok: boolean) =>
     touched && !ok ? RED : DIV;
@@ -259,6 +344,11 @@ export default function BookingPayment() {
             <h1 className="text-[2.8rem] sm:text-[4rem] font-black leading-none text-black" style={{ letterSpacing: "-0.03em" }}>
               {upfront ? "Review & pay." : "Review & confirm."}
             </h1>
+            {user?.membership && (
+              <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.65)", backgroundColor: "rgba(77,159,219,0.12)" }}>
+                ◆ {MEMBERSHIP_LABELS[user.membership]} — Perks Auto-Applied
+              </div>
+            )}
           </FadeIn>
         </div>
       </section>
@@ -377,9 +467,79 @@ export default function BookingPayment() {
                   )}
                 </div>
 
+                {/* Account-creation opt-in (only when not signed in) */}
+                {!user && (
+                  <div className="border-t pt-5" style={{ borderColor: DIV }}>
+                    <label className="flex items-start gap-3 cursor-pointer group" onClick={() => setCreateAccount(v => !v)}>
+                      <div
+                        className="mt-0.5 w-5 h-5 shrink-0 border-2 flex items-center justify-center transition-colors"
+                        style={{
+                          borderColor:     createAccount ? BLUE : "rgba(255,255,255,0.2)",
+                          backgroundColor: createAccount ? BLUE : "transparent",
+                        }}
+                      >
+                        {createAccount && <span className="text-black text-[11px] font-black leading-none">✓</span>}
+                      </div>
+                      <span className="text-sm font-medium leading-snug" style={{ color: createAccount ? IVORY : "rgba(255,255,255,0.5)" }}>
+                        Create my Docsy account so I can access my Safe+ Vault and track this booking.
+                      </span>
+                    </label>
+                    <p className="text-[10px] mt-2 ml-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
+                      Free, no card. Your vault is included with every Docsy service. We'll email you a sign-in link.
+                    </p>
+                  </div>
+                )}
+                {user && (
+                  <div className="border-t pt-4 flex items-center gap-2" style={{ borderColor: DIV }}>
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>✓ Signed in</span>
+                    <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                      as {user.name}
+                    </span>
+                  </div>
+                )}
+
               </div>
             </div>
           </FadeIn>
+
+          {/* ── Available Member Credits panel ── */}
+          {credits && credits.membership && (credits.notarizationCredits > 0 || credits.travelWaiverAvailable) && (
+            <FadeIn delay={50}>
+              <div className="border-2 border-black overflow-hidden" style={{ backgroundColor: BG }}>
+                <div className="px-8 py-5 border-b flex items-center justify-between" style={{ borderColor: DIV }}>
+                  <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    Available Member Credits — This Cycle
+                  </p>
+                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>
+                    ◆ {MEMBERSHIP_LABELS[credits.membership] ?? credits.membership}
+                  </span>
+                </div>
+                <div className="px-8 py-5 space-y-3">
+                  {credits.notarizationCredits > 0 && (
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-sm font-medium" style={{ color: IVORY }}>
+                        {credits.membership === "starter" ? "50% off notarization" : `Free notarization${credits.notarizationCredits > 1 ? "s" : ""}`}
+                      </span>
+                      <span className="text-sm font-black" style={{ color: BLUE }}>
+                        {credits.membership === "starter"
+                          ? `${credits.notarizationCredits >= 0.5 ? "1" : "0"} available`
+                          : `${credits.notarizationCredits} available`}
+                      </span>
+                    </div>
+                  )}
+                  {credits.travelWaiverAvailable && (
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-sm font-medium" style={{ color: IVORY }}>Mobile travel waiver</span>
+                      <span className="text-sm font-black" style={{ color: BLUE }}>1 available</span>
+                    </div>
+                  )}
+                  <p className="text-[10px] leading-relaxed pt-2 border-t" style={{ color: "rgba(255,255,255,0.3)", borderColor: DIV }}>
+                    Eligible perks were applied to your estimate automatically. Credits roll over once before expiring.
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+          )}
 
           {/* ── Card form or court-only message ── */}
           <FadeIn delay={80}>

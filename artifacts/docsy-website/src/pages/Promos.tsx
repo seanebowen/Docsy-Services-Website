@@ -177,12 +177,12 @@ export default function Promos() {
         </div>
       </section>
 
-      {/* ── Safe+ Trial ── */}
+      {/* ── Safe+ Vault — always free ── */}
       <section className="py-14 px-5 border-b" style={{ borderColor: DIV }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0} threshold={0.05}>
             <div className="flex items-center gap-4 mb-8">
-              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)" }}>Included With Every First Deliverable Service</p>
+              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.4)" }}>Included With Every Docsy Service</p>
               <span
                 className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest border"
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.3)" }}
@@ -192,15 +192,15 @@ export default function Promos() {
           <FadeIn delay={60} threshold={0.05}>
             <div className="max-w-2xl border p-8" style={{ borderColor: DIV, backgroundColor: BG }}>
               <div className="flex items-start justify-between gap-4 mb-3">
-                <h3 className="text-xl font-black text-white leading-tight">Docsy Safe+ Trial</h3>
+                <h3 className="text-xl font-black text-white leading-tight">Docsy Safe+ Vault</h3>
                 <span
                   className="shrink-0 px-2 py-1 text-xs font-bold tracking-wider border"
                   style={{ borderColor: BLUE, color: BLUE }}
-                >FREE 30 DAYS</span>
+                >ALWAYS FREE</span>
               </div>
-              <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Offered at booking — services with deliverables only</p>
+              <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>No paid tiers. No trials. No upsells.</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue from $5/month or stop — no automatic charge.
+                Every deliverable from every appointment uploads to your encrypted Safe+ Vault automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. An account is created for you at booking; sign in any time to download or share. Docsy+ members get extended retention windows and priority vault support.
               </p>
             </div>
           </FadeIn>

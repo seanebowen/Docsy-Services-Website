@@ -1,6 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { useAuth } from "@/context/AuthContext";
+
+const MEMBERSHIP_LABELS: Record<string, string> = {
+  starter: "Docsy+ Starter",
+  pro:     "Docsy+ Pro",
+  elite:   "Docsy+ Elite",
+};
+const MEMBER_DISCOUNT_PCT: Record<string, number> = {
+  starter: 0.05, // modest auto-applied discount on eligible base fees
+  pro:     0.10,
+  elite:   0.15,
+};
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -104,18 +116,17 @@ const MEMBER_SLOTS: SlotInfo[] = [
   { label: makeSlotLabel(23), priority: true  },
 ];
 
-/* ── Terms & Safe+ modal ── */
+/* ── Terms modal ── */
 function BookingModal({
   onConfirm,
   onCancel,
   hasDeliverables,
 }: {
-  onConfirm: (safePlus: boolean) => void;
+  onConfirm: () => void;
   onCancel: () => void;
   hasDeliverables: boolean;
 }) {
   const [termsAgreed, setTermsAgreed] = useState(false);
-  const [safePlus,    setSafePlus]    = useState<"in" | "out">("in");
 
   return (
     <div
@@ -170,37 +181,14 @@ function BookingModal({
             </label>
           </div>
 
-          {/* ── 2. Safe+ — only if booking includes deliverable services ── */}
+          {/* ── 2. Safe+ note (auto-included, no opt-in) ── */}
           {hasDeliverables && (
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: "rgba(255,255,255,0.3)" }}>
-                02 — Docsy Safe+ File Vault
+                02 — Safe+ Vault Included
               </p>
-              <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, signed loan packages, and deposition transcripts — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $5/month (Personal plan) if you choose to continue. You can cancel anytime.
-              </div>
-              <div className="space-y-2">
-                {([
-                  ["in",  "Yes — enroll me in the free 30-day Safe+ trial"],
-                  ["out", "No thanks — I'll opt out of Safe+"],
-                ] as ["in" | "out", string][]).map(([val, label]) => (
-                  <label key={val} className="flex items-center gap-3 cursor-pointer" onClick={() => setSafePlus(val)}>
-                    <div
-                      className="w-4 h-4 shrink-0 border-2 flex items-center justify-center"
-                      style={{
-                        borderColor:     safePlus === val ? BLUE : "rgba(255,255,255,0.2)",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      {safePlus === val && (
-                        <div className="w-2 h-2" style={{ backgroundColor: BLUE }} />
-                      )}
-                    </div>
-                    <span className="text-sm font-medium" style={{ color: safePlus === val ? IVORY : "rgba(255,255,255,0.45)" }}>
-                      {label}
-                    </span>
-                  </label>
-                ))}
+              <div className="border p-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
+                Every deliverable from this appointment — notarized documents, apostille certificates, signed loan packages, transcripts, recordings — uploads automatically to your Safe+ Vault. <strong className="text-white/60">Free for everyone, no signup required.</strong> Your vault is ready when your appointment is confirmed.
               </div>
             </div>
           )}
@@ -209,7 +197,7 @@ function BookingModal({
         {/* Footer */}
         <div className="px-7 py-5 border-t flex flex-col sm:flex-row gap-3" style={{ borderColor: DIV }}>
           <button
-            onClick={() => onConfirm(hasDeliverables ? safePlus === "in" : false)}
+            onClick={() => onConfirm()}
             disabled={!termsAgreed}
             className="flex-1 py-3.5 text-sm font-bold text-white transition-opacity"
             style={{ backgroundColor: "#000", opacity: termsAgreed ? 1 : 0.3, cursor: termsAgreed ? "pointer" : "not-allowed" }}
@@ -243,13 +231,16 @@ function slotHour(hhmm: string): number { return Number(hhmm.split(":")[0]); }
 /* ── Main page ── */
 export default function Booking() {
   const [, setLocation] = useLocation();
+  const { user } = useAuth();
+  const isMember     = !!user?.membership;
+  const memberTier   = user?.membership ?? null;
+  const memberLabel  = memberTier ? MEMBERSHIP_LABELS[memberTier] : null;
   const [estimate, setEstimate]       = useState<EstimateSummary | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [note, setNote]               = useState("");
   const [promoCode, setPromoCode]     = useState("");
   const [showModal, setShowModal]     = useState(false);
-  const [isMember,  setIsMember]      = useState(false);
 
   /* ── Live slot state (fetched from API) ── */
   const [apiSlots,     setApiSlots]     = useState<string[]>([]);
@@ -296,8 +287,21 @@ export default function Booking() {
       const ln = estimate.services.find(s => s.name.toLowerCase().includes("loan signing"));
       if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) });
     }
+
+    /* ── Auto-applied Docsy+ member perk: percent off base service total ── */
+    if (memberTier && estimate.baseTotal) {
+      const pct = MEMBER_DISCOUNT_PCT[memberTier] ?? 0;
+      if (pct > 0) {
+        const off = Math.round(estimate.baseTotal * pct * 100) / 100;
+        result.push({
+          label:  `${memberLabel} Discount — ${Math.round(pct * 100)}% Off Base`,
+          amount: -off,
+        });
+      }
+    }
+
     return result;
-  }, [selectedDate, selectedTime, estimate, isMember]);
+  }, [selectedDate, selectedTime, estimate, isMember, memberTier, memberLabel]);
 
   const autoPromoTotal  = autoPromos.reduce((sum, p) => sum + p.amount, 0);
   const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos, selectedDate?.getDay() ?? -1), [promoCode, estimate, autoPromos, selectedDate]);
@@ -395,7 +399,7 @@ export default function Booking() {
   };
 
   /* Step 2 — modal confirmed, save & navigate */
-  const handleModalConfirm = (safePlusOptIn: boolean) => {
+  const handleModalConfirm = () => {
     sessionStorage.setItem("docsy_booking", JSON.stringify({
       date: selectedDate!.toISOString(),
       time: selectedTime,
@@ -405,7 +409,7 @@ export default function Booking() {
       autoPromos,
       discountedTotal,
       estimate,
-      safePlusOptIn,
+      memberTier,
     }));
     setShowModal(false);
     setLocation("/booking/payment");
@@ -504,18 +508,20 @@ export default function Booking() {
                       <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
                         Available times — {formatDate(selectedDate)}
                       </p>
-                      {/* Docsy+ member toggle */}
-                      <label className="flex items-center gap-2 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={isMember}
-                          onChange={e => { setIsMember(e.target.checked); setSelectedTime(""); }}
-                          className="w-3.5 h-3.5 accent-blue-400"
-                        />
-                        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: isMember ? BLUE : "rgba(255,255,255,0.35)" }}>
-                          Docsy+ Member
+                      {/* Docsy+ member status (auto-detected from sign-in) */}
+                      {isMember ? (
+                        <span className="inline-flex items-center gap-1.5 px-2 py-1 text-[10px] font-bold uppercase tracking-widest border" style={{ borderColor: BLUE, color: BLUE }}>
+                          ◆ {memberLabel}
                         </span>
-                      </label>
+                      ) : (
+                        <Link
+                          href="/login"
+                          className="text-[10px] font-bold uppercase tracking-widest underline"
+                          style={{ color: "rgba(255,255,255,0.45)" }}
+                        >
+                          Sign in to apply Docsy+ perks
+                        </Link>
+                      )}
                     </div>
 
                     {/* Loading spinner */}

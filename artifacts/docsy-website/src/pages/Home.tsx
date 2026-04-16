@@ -64,8 +64,8 @@ const NUM_CARDS = [
   },
   {
     num: "06",
-    title: "Encrypted file vault — auto-started, 30 days free.",
-    body: "Every document, recording, and transcript from every appointment uploads automatically to your Safe+ Vault. No action required. It starts the day of your first service — no card, no signup.",
+    title: "Encrypted file vault — included free with every service.",
+    body: "Every document, recording, and transcript from every appointment uploads automatically to your Safe+ Vault. No action required. Free for every Docsy client — no paid tiers, no trial countdown, no upsells.",
   },
 ];
 

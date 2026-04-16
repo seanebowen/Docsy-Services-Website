@@ -18,10 +18,11 @@ interface BookingData {
   autoPromos?:      { label: string; amount: number; rateOnly?: boolean }[];
   discountedTotal?: number;
   estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
-  safePlusOptIn?:   boolean;
   clientName?:      string;
   clientEmail?:     string;
   clientPhone?:     string;
+  accountCreated?:  boolean;
+  memberTier?:      string | null;
 }
 
 export default function BookingConfirmation() {
@@ -160,29 +161,30 @@ export default function BookingConfirmation() {
               </div>
             )}
 
-            {/* Safe+ status */}
+            {/* Safe+ Vault — always included, with link when an account exists */}
             {booking && (
               <div className="px-8 py-5 border-b flex items-start gap-4" style={{ borderColor: DIV }}>
                 <div
                   className="mt-0.5 w-5 h-5 shrink-0 border-2 flex items-center justify-center"
-                  style={{
-                    borderColor:     booking.safePlusOptIn !== false ? BLUE : "rgba(255,255,255,0.2)",
-                    backgroundColor: booking.safePlusOptIn !== false ? BLUE : "transparent",
-                  }}
+                  style={{ borderColor: BLUE, backgroundColor: BLUE }}
                 >
-                  {booking.safePlusOptIn !== false && (
-                    <span className="text-black text-[11px] font-black leading-none">✓</span>
-                  )}
+                  <span className="text-black text-[11px] font-black leading-none">✓</span>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white mb-0.5">
-                    Docsy Safe+{booking.safePlusOptIn !== false ? " — 30-Day Free Trial Enrolled" : " — Opted Out"}
+                    Safe+ Vault — Included Free
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>
-                    {booking.safePlusOptIn !== false
-                      ? "All your appointment files — documents, transcripts, and recordings — will upload automatically. No charge for 30 days. Cancel anytime."
-                      : "You opted out of Safe+. You can enroll at any time through your account or on your next booking."}
+                    Every deliverable from this appointment — documents, transcripts, and recordings — will upload automatically to your encrypted Safe+ Vault.
                   </p>
+                  {booking.accountCreated && (
+                    <p className="text-xs mt-3 font-bold">
+                      <Link href="/vault" style={{ color: BLUE }} className="underline">Open your Safe+ Vault →</Link>
+                      <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
+                        Your account was created automatically. Sign in any time at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link> with this email — we just sent you a sign-in link.
+                      </span>
+                    </p>
+                  )}
                 </div>
               </div>
             )}

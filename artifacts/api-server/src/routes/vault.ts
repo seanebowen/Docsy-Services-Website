@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import { SESSION_STORE, USERS } from "./auth.js";
+import { SESSION_STORE, USERS, USER_CREDITS, publicUser } from "./auth.js";
 
 const router = Router();
 
@@ -33,15 +33,13 @@ const VAULT_FILES: Record<string, VaultFile[]> = {
 };
 
 /* ── Middleware: verify Bearer token ────────────────────── */
-function requireAuth(req: Request, res: Response, next: () => void): void {
+export function requireAuth(req: Request, res: Response, next: () => void): void {
   const header = req.headers["authorization"] ?? "";
   const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
-
   if (!token || !SESSION_STORE.has(token)) {
     res.status(401).json({ ok: false, error: "Unauthorized. Please sign in." });
     return;
   }
-
   (req as Request & { userId: string }).userId = SESSION_STORE.get(token)!;
   next();
 }
@@ -50,22 +48,61 @@ function requireAuth(req: Request, res: Response, next: () => void): void {
 router.get("/", requireAuth as never, (req: Request, res: Response): void => {
   const userId = (req as Request & { userId: string }).userId;
   const user   = USERS.find(u => u.id === userId);
-
   if (!user) {
     res.status(404).json({ ok: false, error: "Account not found." });
     return;
   }
-
   res.json({
     ok:    true,
-    user: {
-      id:           user.id,
-      name:         user.name,
-      email:        user.email,
-      safePlusTier: user.safePlusTier,
-      membership:   user.membership,
-    },
+    user:  publicUser(user),
     files: VAULT_FILES[userId] ?? [],
+  });
+});
+
+/* ── GET /api/vault/credits ─────────────────────────────── */
+router.get("/credits", requireAuth as never, (req: Request, res: Response): void => {
+  const userId = (req as Request & { userId: string }).userId;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user || !user.membership) {
+    res.json({ ok: true, membership: null, notarizationCredits: 0, travelWaiverAvailable: false });
+    return;
+  }
+  const credits = USER_CREDITS.get(userId) ?? { notarizationCredits: 0, travelWaiverAvailable: false };
+  res.json({
+    ok: true,
+    membership: user.membership,
+    notarizationCredits:   credits.notarizationCredits,
+    travelWaiverAvailable: credits.travelWaiverAvailable,
+  });
+});
+
+/* ── POST /api/vault/credits/consume ─────────────────────
+   Body: { useNotarization?: boolean, useTravelWaiver?: boolean }
+   Decrements credits in-memory when a booking that consumed them is confirmed.
+*/
+router.post("/credits/consume", requireAuth as never, (req: Request, res: Response): void => {
+  const userId = (req as Request & { userId: string }).userId;
+  const user   = USERS.find(u => u.id === userId);
+  const body   = req.body as { useNotarization?: boolean; useTravelWaiver?: boolean };
+  if (!user || !user.membership) {
+    res.status(400).json({ ok: false, error: "Member-only operation." });
+    return;
+  }
+  const credits = USER_CREDITS.get(userId);
+  if (!credits) {
+    res.status(404).json({ ok: false, error: "No credit record found." });
+    return;
+  }
+  if (body.useNotarization && credits.notarizationCredits > 0) {
+    credits.notarizationCredits = Math.max(0, credits.notarizationCredits - (user.membership === "starter" ? 0.5 : 1));
+  }
+  if (body.useTravelWaiver && credits.travelWaiverAvailable) {
+    credits.travelWaiverAvailable = false;
+  }
+  res.json({
+    ok: true,
+    notarizationCredits:   credits.notarizationCredits,
+    travelWaiverAvailable: credits.travelWaiverAvailable,
   });
 });
 

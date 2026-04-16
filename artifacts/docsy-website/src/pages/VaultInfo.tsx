@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { Lock, Upload, Clock, ShieldCheck, Archive } from "lucide-react";
+import { Lock, Upload, ShieldCheck, Archive, CheckCircle2, Sparkles } from "lucide-react";
 
 const BG    = "#131929";
 const BLUE  = "#4D9FDB";
@@ -12,61 +12,6 @@ const H = ({ children }: { children: React.ReactNode }) => (
   <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
-const TIERS = [
-  {
-    name: "30-Day Trial",
-    price: "Free",
-    sub: "Included with every first service",
-    highlight: true,
-    features: [
-      "Auto-upload after every appointment",
-      "All service types supported",
-      "Secure encrypted storage",
-      "Download anytime",
-      "No credit card required",
-    ],
-  },
-  {
-    name: "Personal",
-    price: "$5",
-    sub: "per month",
-    highlight: false,
-    features: [
-      "Everything in the trial",
-      "Unlimited document storage",
-      "Single account holder",
-      "Email delivery receipts",
-      "Cancel anytime",
-    ],
-  },
-  {
-    name: "Family",
-    price: "$15",
-    sub: "per month",
-    highlight: false,
-    features: [
-      "Everything in Personal",
-      "Up to 5 account members",
-      "Shared document access",
-      "Named beneficiary access",
-      "Priority vault support",
-    ],
-  },
-  {
-    name: "Professional",
-    price: "$25",
-    sub: "per month",
-    highlight: false,
-    features: [
-      "Everything in Family",
-      "Business entity documents",
-      "NET-14 invoice portal",
-      "Dedicated account contact",
-      "API access (coming soon)",
-    ],
-  },
-];
-
 const FEATURES = [
   {
     icon: Lock,
@@ -76,16 +21,16 @@ const FEATURES = [
   {
     icon: Upload,
     title: "Auto-uploads after every appointment",
-    body: "You don't do anything. After every completed service — RON, mobile notary, loan signing, apostille, or court reporting — your deliverables upload to your vault automatically.",
+    body: "You don't do anything. After every completed service — RON, mobile notary, loan signing, apostille, or electronic reporting — your deliverables upload to your vault automatically.",
   },
   {
-    icon: Clock,
-    title: "Starts the day of your first service",
-    body: "Your 30-day free trial begins on the date of your first Docsy service. No signup, no card, no action required. It just starts.",
+    icon: CheckCircle2,
+    title: "Free with every Docsy service",
+    body: "Your Safe+ vault is included with every booking — no signup, no card, no tiers, no fine print. Book a service and your vault is ready the moment your appointment is confirmed.",
   },
   {
     icon: ShieldCheck,
-    title: "Your documents, forever accessible",
+    title: "Your documents, always accessible",
     body: "Need your apostille certificate six months later? Your signed loan package? Your deposition transcript? Log in and download it — no calls, no waiting.",
   },
 ];
@@ -104,7 +49,7 @@ export default function VaultInfo() {
           <FadeIn delay={0}>
             <div className="flex justify-start mb-8">
               <span className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.40)" }}>
-                <Archive className="h-3 w-3" /> Safe+ Vault
+                <Archive className="h-3 w-3" /> Safe+ Vault — Free Benefit
               </span>
             </div>
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] font-black leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
@@ -114,24 +59,24 @@ export default function VaultInfo() {
           </FadeIn>
           <FadeIn delay={100}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium mb-10">
-              Safe+ Vault is an encrypted file vault that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings.
+              Safe+ Vault is an encrypted file vault that automatically receives every deliverable from every Docsy appointment — notarized documents, apostille certificates, loan packages, transcripts, and recordings. It is <strong>free for everyone who books with Docsy.</strong> No tier, no trial, no card.
             </p>
           </FadeIn>
           <FadeIn delay={200}>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/login"
+                href="/calculate"
                 className="px-8 py-4 text-base font-bold text-white text-center"
-                style={{ backgroundColor: "#000" }}
+                style={{ backgroundColor: "#F5A623" }}
               >
-                Sign In to Your Vault →
+                Book a Service — Vault Included →
               </Link>
               <Link
-                href="/calculate"
+                href="/login"
                 className="px-8 py-4 text-base font-bold text-center border"
                 style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
               >
-                Book a Service — Vault Included Free
+                Sign In to Your Vault
               </Link>
             </div>
           </FadeIn>
@@ -164,76 +109,6 @@ export default function VaultInfo() {
         </div>
       </section>
 
-      {/* ── Pricing tiers ── */}
-      <section className="py-20 sm:py-24 px-5 border-t" style={{ borderColor: DIV }}>
-        <div className="max-w-5xl mx-auto">
-          <FadeIn delay={0}>
-            <div className="text-center mb-14">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: BLUE }}>⊞ Storage Plans</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
-                Start free. Stay as long as you need.
-              </h2>
-            </div>
-          </FadeIn>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ backgroundColor: DIV }}>
-            {TIERS.map((tier, i) => (
-              <FadeIn key={tier.name} delay={i * 60} threshold={0.04}>
-                <div
-                  className="p-8 h-full flex flex-col"
-                  style={{
-                    backgroundColor: tier.highlight ? `${BLUE}18` : BG,
-                    outline: tier.highlight ? `1px solid ${BLUE}44` : "none",
-                  }}
-                >
-                  {tier.highlight && (
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: BLUE }}>
-                      ★ Included with every service
-                    </span>
-                  )}
-                  <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "rgba(255,255,255,0.4)" }}>
-                    {tier.name}
-                  </p>
-                  <div className="mb-1">
-                    <span className="text-4xl font-black text-white" style={{ letterSpacing: "-0.03em" }}>{tier.price}</span>
-                  </div>
-                  <p className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.30)" }}>{tier.sub}</p>
-                  <ul className="space-y-2.5 flex-1 mb-8">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>
-                        <span className="mt-0.5 shrink-0 text-xs" style={{ color: BLUE }}>✓</span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  {tier.highlight ? (
-                    <Link
-                      href="/calculate"
-                      className="block text-center py-3 text-xs font-bold text-white"
-                      style={{ backgroundColor: BLUE }}
-                    >
-                      Book a Service →
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="block text-center py-3 text-xs font-bold border transition-colors"
-                      style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}
-                    >
-                      Sign In to Upgrade →
-                    </Link>
-                  )}
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-          <FadeIn delay={0} threshold={0.05}>
-            <p className="text-center text-xs mt-8" style={{ color: "rgba(255,255,255,0.25)" }}>
-              All plans billed monthly. Cancel anytime — your documents are always downloadable before cancellation.
-            </p>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* ── What gets stored ── */}
       <section className="py-20 sm:py-24 px-5 border-t text-center" style={{ borderColor: DIV }}>
         <div className="max-w-2xl mx-auto">
@@ -259,6 +134,23 @@ export default function VaultInfo() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Members-extra note ── */}
+      <section className="py-16 sm:py-20 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-3xl mx-auto">
+          <FadeIn delay={0}>
+            <div className="border p-8 flex items-start gap-5" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
+              <Sparkles className="h-5 w-5 shrink-0 mt-1" style={{ color: BLUE }} />
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>Docsy+ Member Bonus</p>
+                <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  Docsy+ members get extended retention, priority support on vault issues, and early access to new vault features as we roll them out. See <Link href="/memberships" className="underline" style={{ color: BLUE }}>Docsy+ Memberships →</Link>
+                </p>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -288,7 +180,7 @@ export default function VaultInfo() {
                 href="/calculate"
                 className="inline-block px-10 py-4 text-base font-bold text-black border border-black"
               >
-                Book a Service — Vault Included Free
+                Book a Service — Vault Included
               </Link>
             </div>
           </FadeIn>

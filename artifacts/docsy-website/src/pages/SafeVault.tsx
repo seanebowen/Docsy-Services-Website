@@ -8,15 +8,10 @@ const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 const IVORY = "#F5EFE6";
 
-const TIER_LABELS: Record<string, string> = {
-  personal:     "Safe+ Personal",
-  family:       "Safe+ Family",
-  professional: "Safe+ Professional",
-};
 const MEMBERSHIP_LABELS: Record<string, string> = {
   starter: "Docsy+ Starter",
   pro:     "Docsy+ Pro",
-  express: "Docsy Express Pass™",
+  elite:   "Docsy+ Elite",
 };
 const SERVICE_COLORS: Record<string, string> = {
   ron:       "#4D9FDB",
@@ -97,14 +92,13 @@ export default function SafeVault() {
                 </h1>
                 <p className="text-white/40 text-sm">
                   {user.email}
-                  {user.safePlusTier && (
+                  {user.membership ? (
                     <span className="ml-3 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: BLUE }}>
-                      {TIER_LABELS[user.safePlusTier]}
+                      {MEMBERSHIP_LABELS[user.membership] ?? "Docsy+"}
                     </span>
-                  )}
-                  {user.membership && (
-                    <span className="ml-2 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5" style={{ backgroundColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }}>
-                      {MEMBERSHIP_LABELS[user.membership]}
+                  ) : (
+                    <span className="ml-3 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5" style={{ backgroundColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }}>
+                      Free Account
                     </span>
                   )}
                 </p>

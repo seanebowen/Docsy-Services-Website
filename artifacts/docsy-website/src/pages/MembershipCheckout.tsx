@@ -18,15 +18,13 @@ function fmtExpiry(v: string) {
   return d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
 }
 
-type PlanKey =
-  | "starter" | "pro" | "elite"
-  | "storage-personal" | "storage-family" | "storage-professional";
+type PlanKey = "starter" | "pro" | "elite";
 
 interface PlanInfo {
   name: string;
   price: number;
   priceLabel: string;
-  type: "membership" | "storage";
+  type: "membership";
   features: string[];
   terms: string;
 }
@@ -38,11 +36,12 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     priceLabel: "$15/mo",
     type: "membership",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Auto-applied 5% discount on every booking",
       "Fee-free priority bookings",
       "50% off 1 notarization/month (RON or mobile)",
       "10% off mobile fees",
       "30-day rollover on unused notarization credit",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -52,12 +51,13 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     priceLabel: "$30/mo",
     type: "membership",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Auto-applied 10% discount on every booking",
       "Fee-free priority bookings",
       "1 free notarization/month (RON or mobile)",
       "15% off mobile fees",
       "30-day rollover on unused notarization",
       "Birthday notarization — 1 bonus free notarization in your birth month",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
@@ -67,56 +67,16 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     priceLabel: "$49/mo",
     type: "membership",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Auto-applied 15% discount on every booking",
       "Fee-free priority bookings",
       "2 free notarizations/month (RON or mobile)",
       "20% off mobile fees",
       "30-day rollover on unused notarizations",
       "Birthday notarization — 1 bonus free notarization in your birth month",
       "1 free mobile travel waiver/month",
+      "Safe+ Vault included free for everyone — extended retention for members",
     ],
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
-  },
-  "storage-personal": {
-    name: "Safe+ Personal",
-    price: 5,
-    priceLabel: "$5/mo",
-    type: "storage",
-    features: [
-      "Up to 50 files",
-      "Encrypted document vault",
-      "Auto-uploads from every Docsy appointment",
-      "Access from any device, any time",
-    ],
-    terms: "Your Safe+ subscription renews automatically each month. You will receive a receipt at enrollment and at each renewal. Cancel any time before your next billing date.",
-  },
-  "storage-family": {
-    name: "Safe+ Family",
-    price: 15,
-    priceLabel: "$15/mo",
-    type: "storage",
-    features: [
-      "Up to 150 files",
-      "4 member accounts",
-      "Encrypted document vault",
-      "Auto-uploads from every Docsy appointment",
-      "Access from any device, any time",
-    ],
-    terms: "Your Safe+ subscription renews automatically each month. You will receive a receipt at enrollment and at each renewal. Cancel any time before your next billing date.",
-  },
-  "storage-professional": {
-    name: "Safe+ Professional",
-    price: 25,
-    priceLabel: "$25/mo",
-    type: "storage",
-    features: [
-      "Up to 500 files",
-      "Encrypted document vault",
-      "Auto-uploads from every Docsy appointment",
-      "Priority file retrieval",
-      "Access from any device, any time",
-    ],
-    terms: "Your Safe+ subscription renews automatically each month. You will receive a receipt at enrollment and at each renewal. Cancel any time before your next billing date.",
   },
 };
 

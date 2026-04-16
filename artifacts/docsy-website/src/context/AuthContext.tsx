@@ -1,13 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface AuthUser {
-  id:             string;
-  name:           string;
-  email:          string;
-  phone:          string;
-  safePlusActive: boolean;
-  safePlusTier:   "personal" | "family" | "professional" | null;
-  membership:     "starter" | "pro" | "express" | null;
+  id:         string;
+  name:       string;
+  email:      string;
+  phone:      string;
+  membership: "starter" | "pro" | "elite" | null;
 }
 
 interface AuthContextValue {

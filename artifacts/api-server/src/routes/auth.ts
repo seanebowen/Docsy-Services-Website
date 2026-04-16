@@ -3,48 +3,54 @@ import { Router } from "express";
 const router = Router();
 
 /* ── Types ─────────────────────────────────────────────── */
-interface MockUser {
-  id:             string;
-  name:           string;
-  email:          string;
-  phone:          string; // normalized digits only, e.g. "2105551001"
-  safePlusActive: boolean;
-  safePlusTier:   "personal" | "family" | "professional" | null;
-  membership:     "starter" | "pro" | "express" | null;
+export type MembershipTier = "starter" | "pro" | "elite" | null;
+
+export interface MockUser {
+  id:         string;
+  name:       string;
+  email:      string;
+  phone:      string; // normalized digits only, e.g. "2105551001"
+  membership: MembershipTier;
 }
 
+/* ── Cycle credits per user (in-memory; mutated on use) ── */
+export interface MemberCredits {
+  /* Remaining free notarizations for the current billing cycle. Starter grants a 50% discount credit (0.5). */
+  notarizationCredits: number;
+  /* Whether a free travel waiver is still available this cycle (Elite only). */
+  travelWaiverAvailable: boolean;
+}
+const CREDITS_BY_TIER: Record<Exclude<MembershipTier, null>, MemberCredits> = {
+  starter: { notarizationCredits: 0.5, travelWaiverAvailable: false },
+  pro:     { notarizationCredits: 1,   travelWaiverAvailable: false },
+  elite:   { notarizationCredits: 2,   travelWaiverAvailable: true  },
+};
+
 /* ── Seeded demo accounts ───────────────────────────────── */
-const USERS: MockUser[] = [
-  {
-    id: "u1", name: "Jordan Williams",
-    email: "jordan@example.com", phone: "2105551001",
-    safePlusActive: true, safePlusTier: "personal", membership: "starter",
-  },
-  {
-    id: "u2", name: "Maria Rodriguez",
-    email: "maria@example.com", phone: "2105551002",
-    safePlusActive: true, safePlusTier: "family", membership: "pro",
-  },
-  {
-    id: "u3", name: "Devon Carter",
-    email: "devon@example.com", phone: "2105551003",
-    safePlusActive: true, safePlusTier: "professional", membership: "express",
-  },
+export const USERS: MockUser[] = [
+  { id: "u1", name: "Jordan Williams",   email: "jordan@example.com", phone: "2105551001", membership: "starter" },
+  { id: "u2", name: "Maria Rodriguez",   email: "maria@example.com",  phone: "2105551002", membership: "pro"     },
+  { id: "u3", name: "Devon Carter",      email: "devon@example.com",  phone: "2105551003", membership: "elite"   },
 ];
 
+/* Per-user mutable credits (seeded from tier defaults) */
+export const USER_CREDITS = new Map<string, MemberCredits>();
+USERS.forEach(u => {
+  if (u.membership) USER_CREDITS.set(u.id, { ...CREDITS_BY_TIER[u.membership] });
+});
+
 /* Index by email and normalized phone for O(1) lookup */
-const BY_EMAIL = new Map(USERS.map(u => [u.email.toLowerCase(), u]));
-const BY_PHONE = new Map(USERS.map(u => [u.phone, u]));
+const BY_EMAIL = new Map<string, MockUser>(USERS.map(u => [u.email.toLowerCase(), u]));
+const BY_PHONE = new Map<string, MockUser>(USERS.map(u => [u.phone, u]));
 
 /* ── In-memory OTP and session stores ──────────────────── */
 interface OTPRecord { userId: string; code: string; expiresAt: number; }
-const OTP_STORE     = new Map<string, OTPRecord>();   // key: normalized identifier
-const SESSION_STORE = new Map<string, string>();       // token → userId
+const OTP_STORE     = new Map<string, OTPRecord>();
+export const SESSION_STORE = new Map<string, string>(); // token → userId
 
 /* ── Helpers ────────────────────────────────────────────── */
 function normalizePhone(raw: string): string {
   const digits = raw.replace(/\D/g, "");
-  // strip leading country code 1 if present and result is 11 digits
   return digits.length === 11 && digits[0] === "1" ? digits.slice(1) : digits;
 }
 
@@ -73,109 +79,115 @@ function mask(raw: string, type: "email" | "phone"): string {
   return `(***) ***-${n.slice(-4)}`;
 }
 
-function randomCode(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
+function randomCode(): string  { return Math.floor(100000 + Math.random() * 900000).toString(); }
+function randomToken(): string { return crypto.randomUUID().replace(/-/g, ""); }
+function randomId(): string    { return "u" + crypto.randomUUID().slice(0, 8); }
 
-function randomToken(): string {
-  return crypto.randomUUID().replace(/-/g, "");
+export function publicUser(u: MockUser) {
+  return {
+    id: u.id, name: u.name, email: u.email, phone: u.phone, membership: u.membership,
+  };
 }
 
 /* ── POST /api/auth/request ─────────────────────────────── */
 router.post("/request", (req, res): void => {
   const { identifier } = req.body as { identifier?: string };
-
   if (!identifier || typeof identifier !== "string" || !identifier.trim()) {
     res.status(400).json({ ok: false, error: "Please enter an email address or phone number." });
     return;
   }
-
   const type = detectType(identifier.trim());
   if (!type) {
     res.status(400).json({ ok: false, error: "Enter a valid email address or 10-digit phone number." });
     return;
   }
-
   const { user, key } = lookupUser(identifier.trim());
-
   if (!user) {
-    // Return same-shape response to prevent account enumeration in production.
-    // For the demo we surface a clear message.
     res.status(404).json({ ok: false, error: "No account found with that email or phone number." });
     return;
   }
-
   const code    = randomCode();
-  const expires = Date.now() + 15 * 60 * 1000; // 15 minutes
+  const expires = Date.now() + 15 * 60 * 1000;
   OTP_STORE.set(key, { userId: user.id, code, expiresAt: expires });
-
-  // In production: send real email / SMS here.
-  // For the demo we log the code so it's visible in the server console.
   console.info(`[AUTH] OTP for ${key}: ${code}`);
-
-  res.json({
-    ok:     true,
-    method: type,
-    masked: mask(identifier.trim(), type),
-  });
+  res.json({ ok: true, method: type, masked: mask(identifier.trim(), type) });
 });
 
 /* ── POST /api/auth/verify ──────────────────────────────── */
 router.post("/verify", (req, res): void => {
   const { identifier, code } = req.body as { identifier?: string; code?: string };
-
   if (!identifier || !code) {
     res.status(400).json({ ok: false, error: "Identifier and code are both required." });
     return;
   }
-
   const type = detectType(identifier.trim());
   if (!type) {
     res.status(400).json({ ok: false, error: "Invalid identifier." });
     return;
   }
-
   const { key } = lookupUser(identifier.trim());
   const record  = OTP_STORE.get(key);
-
   if (!record) {
     res.status(401).json({ ok: false, error: "No active code found. Please request a new one." });
     return;
   }
-
   if (Date.now() > record.expiresAt) {
     OTP_STORE.delete(key);
     res.status(401).json({ ok: false, error: "Code expired. Please request a new one." });
     return;
   }
-
-  // Accept the exact code OR "000000" as a universal demo fallback
   if (code !== record.code && code !== "000000") {
     res.status(401).json({ ok: false, error: "Incorrect code. Please try again." });
     return;
   }
-
   OTP_STORE.delete(key);
-
   const user  = USERS.find(u => u.id === record.userId)!;
   const token = randomToken();
   SESSION_STORE.set(token, user.id);
-
-  res.json({
-    ok:    true,
-    token,
-    user: {
-      id:             user.id,
-      name:           user.name,
-      email:          user.email,
-      phone:          user.phone,
-      safePlusActive: user.safePlusActive,
-      safePlusTier:   user.safePlusTier,
-      membership:     user.membership,
-    },
-  });
+  res.json({ ok: true, token, user: publicUser(user) });
 });
 
-/* ── Export session store (used by vault route) ─────────── */
-export { SESSION_STORE, USERS };
+/* ── POST /api/auth/upsert ──────────────────────────────────
+   Creates (or reuses) an account from checkout booking data and
+   returns a session token. Triggers a welcome OTP (console-log demo).
+*/
+router.post("/upsert", (req, res): void => {
+  const { name, email, phone } = req.body as { name?: string; email?: string; phone?: string };
+  const cleanName  = (name ?? "").trim();
+  const cleanEmail = (email ?? "").trim().toLowerCase();
+  const cleanPhone = normalizePhone(phone ?? "");
+
+  if (!cleanName || !cleanEmail.includes("@") || cleanPhone.length !== 10) {
+    res.status(400).json({ ok: false, error: "Valid name, email, and 10-digit phone are required." });
+    return;
+  }
+
+  /* Look up by email first, phone second */
+  let user = BY_EMAIL.get(cleanEmail) ?? BY_PHONE.get(cleanPhone) ?? null;
+  let created = false;
+
+  if (!user) {
+    user = {
+      id:         randomId(),
+      name:       cleanName,
+      email:      cleanEmail,
+      phone:      cleanPhone,
+      membership: null,
+    };
+    USERS.push(user);
+    BY_EMAIL.set(cleanEmail, user);
+    BY_PHONE.set(cleanPhone, user);
+    created = true;
+  }
+
+  /* Create a session and log a welcome OTP (demo fallback) */
+  const token       = randomToken();
+  SESSION_STORE.set(token, user.id);
+  const welcomeCode = randomCode();
+  OTP_STORE.set(cleanEmail, { userId: user.id, code: welcomeCode, expiresAt: Date.now() + 24 * 60 * 60 * 1000 });
+  console.info(`[AUTH] Welcome OTP for ${cleanEmail}: ${welcomeCode} (account ${created ? "created" : "reused"})`);
+
+  res.json({ ok: true, created, token, user: publicUser(user) });
+});
+
 export default router;
