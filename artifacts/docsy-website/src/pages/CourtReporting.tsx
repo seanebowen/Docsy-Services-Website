@@ -160,9 +160,9 @@ export default function CourtReporting() {
               </div>
               {[
                 { l: "Rough Draft (uncertified)", p: "$0.75" },
-                { l: "Expedited (15+ business days)", p: "$7.50" },
-                { l: "Standard (10 business days)", p: "$8.50" },
-                { l: "Rush (next business day)", p: "$12.00" },
+                { l: "Standard (10 business days)", p: "$7.50" },
+                { l: "Expedited (5 business days)", p: "$8.50" },
+                { l: "Rush (3 business days)", p: "$12.00" },
                 { l: "Certified Copy (per copy/page)", p: "$2.50" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">

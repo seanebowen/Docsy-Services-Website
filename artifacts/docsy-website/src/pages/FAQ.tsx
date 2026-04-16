@@ -154,7 +154,7 @@ const guides = [
     content: [
       { heading: "Booking", body: "Contact Docsy at least 48 hours before the deposition when possible. Provide: case name, deposition date and time, location or video platform (Zoom, Teams, etc.), names of witnesses, estimated duration, and whether you need a transcript." },
       { heading: "Appearance", body: "The certified digital reporter arrives at least 10 minutes before the scheduled start. For remote depositions, a tech check is included at no charge. The reporter administers the oath, marks exhibits, and manages the transcript record." },
-      { heading: "Transcript delivery", body: "Standard (10-business-day) transcripts are $8.50/page. Rough Draft is $0.75/page, Expedited (15+ business days) is $7.50/page, Rush (next business day) is $12.00/page, certified copies are $2.50/page. Word index, certified PDF, PDF delivery, and e-transcript are always included on certified orders — no separate line items. Transcripts are delivered via secure portal once payment is complete." },
+      { heading: "Transcript delivery", body: "Standard (10-business-day) transcripts are $7.50/page. Rough Draft is $0.75/page, Expedited (5 business days) is $8.50/page, Rush (3 business days) is $12.00/page, certified copies are $2.50/page. Word index, certified PDF, PDF delivery, and e-transcript are always included on certified orders — no separate line items. Transcripts are delivered via secure portal once payment is complete." },
       { heading: "Payment", body: "All payments are NET-14. Appearance-only orders: NET-14 from the date of appearance. Transcript orders: 50% deposit at scheduling; balance due upon transcript delivery. Transcripts are not released until payment is complete." },
     ],
   },

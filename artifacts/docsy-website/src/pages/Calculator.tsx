@@ -186,7 +186,7 @@ function calcCourt(s: CourtState): number {
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    rough: 0.75, extended: 7.5, standard: 8.5, rush: 12, certified: 2.5, pdf: 0,
+    rough: 0.75, extended: 8.5, standard: 7.5, rush: 12, certified: 2.5, pdf: 0,
   };
   return appear + s.pages * ratePerPage[s.speed];
 }
@@ -482,9 +482,9 @@ export default function Calculator() {
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
     ["pdf",       "PDF-only delivery",                    "Free"],
     ["rough",     "Rough Draft (uncertified)",            "$0.75/pg"],
-    ["extended",  "Expedited (15+ business days)",        "$7.50/pg"],
-    ["standard",  "Standard (10 business days)",          "$8.50/pg"],
-    ["rush",      "Rush (next business day)",             "$12.00/pg"],
+    ["standard",  "Standard (10 business days)",          "$7.50/pg"],
+    ["extended",  "Expedited (5 business days)",          "$8.50/pg"],
+    ["rush",      "Rush (3 business days)",               "$12.00/pg"],
     ["certified", "Certified Copy (per copy/page)",       "$2.50/pg"],
   ];
 
@@ -876,7 +876,7 @@ export default function Calculator() {
               <FadeIn delay={240} threshold={0.05}>
               <ServiceCard
                 num="05" title="Electronic Reporting"
-                desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $8.50/page standard — below agency rates."
+                desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $7.50/page standard — below agency rates."
                 startingAt="$150"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
