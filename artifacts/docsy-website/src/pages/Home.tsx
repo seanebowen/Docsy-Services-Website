@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck, Languages } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
+import { PromotionTicker } from "@/components/layout/PromotionTicker";
 import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
@@ -163,16 +164,8 @@ export default function Home() {
       {/* ── IMAGE BAND ──────────────────────────────────────── */}
       <ImageBand src={homeImg} alt="Texas legal workspace" />
 
-      {/* ── TYPEWRITER STRIP ────────────────────────────────── */}
-      <div className="px-5 py-3 border-b" style={{ backgroundColor: "#0b1220", borderColor: DIV }}>
-        <div className="max-w-5xl mx-auto flex items-center gap-3 font-mono text-xs" style={{ color: "rgba(255,255,255,0.30)" }}>
-          <span style={{ color: AMBER }}>→</span>
-          <TypewriterLine
-            text="Transparent pricing · Same-hour RON available · Always know your price before you book · 7 days a week"
-            speed={36}
-          />
-        </div>
-      </div>
+      {/* ── PROMOTION TICKER ───────────────────────────────── */}
+      <PromotionTicker />
 
       {/* ── NUMBERED FEATURES ───────────────────────────────── */}
       <section className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
