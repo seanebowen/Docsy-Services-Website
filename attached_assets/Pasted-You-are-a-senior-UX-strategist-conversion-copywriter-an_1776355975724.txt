@@ -1,0 +1,132 @@
+You are a senior UX strategist, conversion copywriter, and web operations expert. Your task is to fully audit, refine, and optimize the Docsy website to ensure it is clean, accurate, high-converting, and operationally efficient.
+
+🎯 Primary Goal:
+Improve clarity, eliminate redundancy, update services and pricing, and ensure the site reflects a premium, transparent, tech-enabled document service brand.
+
+🏠 Homepage Updates
+Top headline MUST read:
+👉 “Texas Notary & Document Services”
+
+Replace and improve this line (centered, higher value, more premium):
+“Transparent pricing. Same hour RON available. Always know your price before you book. 7 days a week.”
+
+👉 Rewrite to be more compelling, trust-building, and benefit-driven
+👉 Keep centered and visually strong
+
+🧱 Service Structure
+Update divisions to ONLY these 4:
+Notary Services
+Loan Signing
+Apostille Services
+Electronic Reporting & Transcription Services
+Update language across site:
+❌ “Court Reporting” → ✅ “Electronic Reporting & Transcription Services”
+Expand service scope to include:
+• Depositions
+• EUOs (Examinations Under Oath)
+• Meetings
+• Arbitrations
+💰 Pricing + Structure Fixes
+RON pricing chart:
+❌ Remove in-person/mobile pricing
+Mobile/In-person pricing:
+❌ Remove RON pricing
+Travel fees must clearly state:
+👉 Based on distance from Alamo Ranch (San Antonio)
+Replace ALL instances of:
+❌ “Estimator” → ✅ “Calculator”
+⚖️ Apostille Disclaimer (Required)
+
+Add clearly visible disclaimer:
+
+“Docsy does not control Texas Secretary of State processing times. Processing times may vary and can be longer than expected.”
+
+🏢 Office Space Offering (NEW)
+
+Add section (under Electronic Reporting or Loan Signing):
+
+Offer coordinated office space for client use
+Pricing:
+• $150 — Half Day
+• $175 — Full Day
+Position as a premium convenience service
+💳 Payment System Update (CRITICAL)
+
+Implement internal/admin booking flow:
+
+✅ Option 1: Hidden Admin Route
+
+Public page: /book (requires payment via Stripe)
+Private page: /internal-book
+
+Internal page should:
+
+Allow payment method selection
+Skip Stripe when needed
+Include options:
+• “Pending Payment”
+• “Pay In Person”
+• “Send Payment Link”
+
+👉 This must be clean, simple, and operationally efficient
+
+📄 Transcription Pricing (FINALIZED)
+
+Implement exactly as follows:
+
+Product	Rate	Includes
+Rough Draft	$0.75/page	—
+Rush Certified (1–2 days)	$12.00/page	Standard + Condensed + Mini + Index
+Standard Certified (3–5 days)	$8.50/page	Standard + Condensed + Mini + Index
+Extended Certified (6–10 days)	$7.50/page	Standard + Condensed + Mini + Index
+Certified Copy (per party)	$2.50/page	Standard + Condensed + Mini + Index
+PDF Electronic Copy	TBD	—
+🧭 Navigation + UI Updates
+Remove Lunchbreak Seal entirely
+Move Safe+ from blue CTA button → into main navigation (grey text)
+📚 FAQ Page
+Ensure ALL pricing and hours are:
+✅ Accurate
+✅ Updated
+✅ Consistent with rest of site
+🧹 Global Cleanup
+Remove ALL unnecessary redundancies across the site
+Ensure content is:
+• Clear
+• High-quality
+• Conversion-focused
+• Transparent
+Remove incorrect deliverables:
+❌ Audio recordings are NOT included
+🎯 Hero Section Updates
+Update Membership Page Hero (focus ONLY on membership benefits)
+Update Safe+ Page Hero (focus ONLY on document storage/security)
+Ensure both are clearly differentiated
+
+Tone for all heroes:
+
+Clean, confident, slightly witty
+Premium + calming
+“Fortune 500 meets real-life relief”
+📦 Output Format
+
+Provide:
+
+Updated homepage headline + subtext
+Revised service structure
+Updated pricing sections
+New office space section copy
+Updated heroes (Membership + Safe+)
+List of redundancies removed + improvements made
+🧾 Brand Context
+
+Brand: Docsy
+Tagline:
+
+“Because your documents deserve a safe space too — and your sanity needs a little TLC.”
+
+Voice: Modern, witty, calm, efficient
+
+This should feel like a top-tier, tech-enabled document service company that customers trust instantly.
+
+Make it clean. Make it sharp. Make it convert.
