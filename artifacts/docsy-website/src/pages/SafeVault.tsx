@@ -110,7 +110,7 @@ export default function SafeVault() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <Link href="/estimate" className="px-5 py-2.5 text-xs font-bold text-white" style={{ backgroundColor: "#000" }}>
+                <Link href="/calculate" className="px-5 py-2.5 text-xs font-bold text-white" style={{ backgroundColor: "#000" }}>
                   Book a Service →
                 </Link>
                 <button
@@ -148,7 +148,7 @@ export default function SafeVault() {
               <div className="py-20 text-center border" style={{ borderColor: DIV }}>
                 <p className="text-3xl mb-4" style={{ color: "rgba(255,255,255,0.08)" }}>◎</p>
                 <p className="text-white/40 text-sm mb-6">No documents yet. Files upload automatically after each completed service.</p>
-                <Link href="/estimate" className="inline-block px-8 py-3 text-sm font-bold text-white" style={{ backgroundColor: "#000" }}>
+                <Link href="/calculate" className="inline-block px-8 py-3 text-sm font-bold text-white" style={{ backgroundColor: "#000" }}>
                   Book Your First Service →
                 </Link>
               </div>

@@ -49,7 +49,7 @@ export default function RON() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-ron">
+              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-ron">
                 Book Now →
               </Link>
             </div>
@@ -108,7 +108,6 @@ export default function RON() {
             {[
               { l: "First notarization", p: "$25" },
               { l: "Each additional signature (same session)", p: "$10" },
-              { l: "In-person GNW (no video required)", p: "$10 + travel" },
               { l: "Same-hour availability", p: "Included" },
               { l: "Docsy Safe+ 30-day trial", p: "Included" },
               { l: "Digital certified copy", p: "Included" },
@@ -203,7 +202,7 @@ export default function RON() {
             </div>
           </div>
           <div className="flex-shrink-0">
-            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-ron-cta">
+            <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-ron-cta">
               Book Now →
             </Link>
           </div>

@@ -133,7 +133,7 @@ export default function Login() {
 
         <p className="mt-8 text-center text-sm text-white/25">
           First time here?{" "}
-          <a href="/estimate" className="text-white/40 hover:text-white underline transition-colors">
+          <a href="/calculate" className="text-white/40 hover:text-white underline transition-colors">
             Book your first service
           </a>{" "}
           to create your account.

@@ -120,7 +120,7 @@ const guides = [
     content: [
       { heading: "Booking", body: "Contact Docsy at least 48 hours before the deposition when possible. Provide: case name, deposition date and time, location or video platform (Zoom, Teams, etc.), names of witnesses, estimated duration, and whether you need a transcript." },
       { heading: "Appearance", body: "The certified digital reporter arrives at least 10 minutes before the scheduled start. For remote depositions, a tech check is included at no charge. The reporter administers the oath, marks exhibits, and manages the transcript record." },
-      { heading: "Transcript delivery", body: "Ordinary (30-day) transcripts are $4.75/page. Rush options available. Word index, certified PDF, and e-transcript are always included. No separate line items for these. Transcripts are delivered via secure portal." },
+      { heading: "Transcript delivery", body: "Standard (10-business-day) transcripts are $8.50/page. Rough Draft is $0.75/page, Extended is $7.50/page, Rush is $12.00/page, certified copies are $2.50/page. PDF-only delivery is always free. Word index, certified PDF, and e-transcript are always included on certified orders — no separate line items. Transcripts are delivered via secure portal." },
       { heading: "Payment", body: "All orders: NET-14. Appearance-only orders: no deposit required. Transcript orders: 50% deposit at scheduling, balance due within 14 days of completion. Corporate accounts: NET-30 available upon request." },
     ],
   },
@@ -144,7 +144,7 @@ const guides = [
     summary: "Exactly how the 30-day trial works.",
     content: [
       { heading: "How do I get the trial?", body: "Complete your first service with Docsy. Safe+ activates automatically — no signup, no credit card required. You can opt out before your appointment if you prefer." },
-      { heading: "What's included in the trial?", body: "Full Personal plan access (up to 50 files, 4 users) for 30 days. All files from your Docsy appointment — documents, transcripts, and audio recordings — upload automatically. You can also upload other files manually." },
+      { heading: "What's included in the trial?", body: "Full Personal plan access (up to 50 files, 4 users) for 30 days. All files from your Docsy appointment — documents and transcripts — upload automatically. You can also upload other files manually." },
       { heading: "What happens after 30 days?", body: "Nothing automatic. There is no auto-charge. You'll receive a reminder before the trial ends. If you want to continue, choose a plan and subscribe. If you don't, your files remain accessible in read-only mode for 30 more days, then require a subscription to access." },
       { heading: "Can I use the trial more than once?", body: "The free trial applies to your first apostille or loan signing order. Repeat orders don't trigger another trial. If you need a trial extension for any reason, contact Docsy." },
     ],

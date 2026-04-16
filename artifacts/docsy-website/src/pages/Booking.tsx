@@ -68,10 +68,6 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
       if (autoHas("early bird")) return null;
       if (!isWeekday) return null;
       return has("remote online") ? { label: "Early Bird Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
-    case "LUNCHBREAKSEAL":
-      if (autoHas("lunch break")) return null;
-      if (!isWeekday) return null;
-      return has("remote online") ? { label: "Lunch Break Seal™ — $10 Off Base RON Fee", amount: -10 } : null;
     case "NIGHTSHIFTSEAL":
       if (autoHas("night shift")) return null;
       if (!isWeekday) return null;
@@ -181,7 +177,7 @@ function BookingModal({
                 02 — Docsy Safe+ File Vault
               </p>
               <div className="border p-4 mb-4 text-xs leading-relaxed" style={{ borderColor: DIV, color: "rgba(255,255,255,0.4)" }}>
-                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $5/month (Personal plan) if you choose to continue. You can cancel anytime.
+                Docsy Safe+ is an encrypted file vault. All appointment deliverables — notarized documents, apostilled files, signed loan packages, and deposition transcripts — upload automatically after every appointment. The first <strong className="text-white/60">30 days are free</strong> — no credit card, no signup. After 30 days it's $5/month (Personal plan) if you choose to continue. You can cancel anytime.
               </div>
               <div className="space-y-2">
                 {([
@@ -292,7 +288,6 @@ export default function Booking() {
 
     if (has("remote online") && isWeekday) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
-      else if (hour >= 11 && hour < 13) result.push({ label: "Lunch Break Seal™ — $10 Off", amount: -10 });
       else if (hour >= 18 && hour < 21) result.push({ label: "Night Shift Seal™ — $10 Off",  amount: -10 });
     }
     if (has("general notary work") && !has("remote online") && isWeekday && hour >= 12 && hour < 16)
@@ -432,7 +427,7 @@ export default function Booking() {
         <section className="px-5 pt-16 pb-12 sm:pt-20 sm:pb-14" style={{ backgroundColor: IVORY }}>
           <div className="max-w-5xl mx-auto">
             <FadeIn delay={0}>
-              <Link href="/estimate" className="inline-block text-sm font-bold text-black/40 hover:text-black/70 mb-6 transition-colors">
+              <Link href="/calculate" className="inline-block text-sm font-bold text-black/40 hover:text-black/70 mb-6 transition-colors">
                 ← Back to Calculator
               </Link>
               <h1 className="text-[3rem] sm:text-[4.5rem] font-black leading-none text-black mb-4" style={{ letterSpacing: "-0.03em" }}>
@@ -731,7 +726,7 @@ export default function Booking() {
                   <div className="mb-6 pb-4 border-b" style={{ borderColor: DIV }}>
                     <p className="text-sm" style={{ color: "rgba(255,255,255,0.3)" }}>
                       No price quote found.{" "}
-                      <Link href="/estimate" style={{ color: BLUE }}>Use the Calculator first →</Link>
+                      <Link href="/calculate" style={{ color: BLUE }}>Use the Calculator first →</Link>
                     </p>
                   </div>
                 )}

@@ -202,7 +202,7 @@ export default function MembershipCheckout() {
 
             <FadeIn delay={160}>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
+                <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
                   Book a Service →
                 </Link>
                 <Link href="/" className="px-8 py-4 text-base font-bold text-black border-2 border-black text-center">

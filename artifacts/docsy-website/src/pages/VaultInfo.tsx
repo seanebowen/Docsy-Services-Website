@@ -127,7 +127,7 @@ export default function VaultInfo() {
                 Sign In to Your Vault →
               </Link>
               <Link
-                href="/estimate"
+                href="/calculate"
                 className="px-8 py-4 text-base font-bold text-center border"
                 style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
               >
@@ -207,7 +207,7 @@ export default function VaultInfo() {
                   </ul>
                   {tier.highlight ? (
                     <Link
-                      href="/estimate"
+                      href="/calculate"
                       className="block text-center py-3 text-xs font-bold text-white"
                       style={{ backgroundColor: BLUE }}
                     >
@@ -249,7 +249,7 @@ export default function VaultInfo() {
               { svc: "Mobile Notary", items: "Notarized document, executed copy" },
               { svc: "Loan Signing", items: "Signed loan package, scanback confirmation" },
               { svc: "Apostille", items: "Apostille certificate, document scan" },
-              { svc: "Court Reporting", items: "Certified transcript, audio recording, word index" },
+              { svc: "Electronic Reporting", items: "Certified transcript, word index, e-transcript ASCII" },
             ].map((row) => (
               <FadeIn key={row.svc} delay={0} threshold={0.04}>
                 <div className="p-6 text-left" style={{ backgroundColor: BG }}>
@@ -285,7 +285,7 @@ export default function VaultInfo() {
                 Sign In to Your Vault →
               </Link>
               <Link
-                href="/estimate"
+                href="/calculate"
                 className="inline-block px-10 py-4 text-base font-bold text-black border border-black"
               >
                 Book a Service — Vault Included Free

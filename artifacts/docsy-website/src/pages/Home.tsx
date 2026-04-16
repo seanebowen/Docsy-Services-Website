@@ -94,13 +94,10 @@ const NUM_CARDS = [
 ];
 
 const SERVICES = [
-  { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding. Same-hour available. Anywhere in the US.", href: "/ron" },
-  { icon: MapPin,      label: "Mobile Notary",              desc: "Home, office, hospital — we come to you. 7 days a week, San Antonio metro.", href: "/mobile-notary" },
-  { icon: FileText,    label: "Loan Signing",               desc: "Flat rates. Scanbacks included. Texas HELOC compliant.", href: "/loan-signing" },
-  { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive. State fee in. Scan emailed. Done.", href: "/apostille" },
-  { icon: Briefcase,   label: "Court Reporting",            desc: "Below agency rates. Word index and delivery always included.", href: "/court-reporting" },
-  { icon: ShieldCheck, label: "Docsy Safe+ Vault",         desc: "Encrypted file storage for all appointment deliverables. 30-day free trial.", href: "/memberships#storage" },
-  { icon: Languages,   label: "Language Line",              desc: "Live interpreter add-on for any session. 200+ languages, same-hour available.", href: "/language-line" },
+  { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding RON. Same-hour available. Anywhere in the US.", href: "/ron" },
+  { icon: MapPin,      label: "Mobile Notary & Loan Signing", desc: "We come to you across the SA metro — home, office, hospital, title company. Loan signings included.", href: "/mobile-notary" },
+  { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive Texas apostille. State fee in. Scan emailed. Tracked return shipping.", href: "/apostille" },
+  { icon: Briefcase,   label: "Electronic Reporting & Transcription", desc: "Depositions, EUOs, meetings, arbitrations. Below-agency rates. Word index always included.", href: "/electronic-reporting" },
 ];
 
 const TESTIMONIALS = [
@@ -122,29 +119,29 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center">
           <div>
             <FadeIn delay={0}>
-              <Pill text="⊙ Texas Document Services" />
+              <Pill text="⊙ Texas Notary & Document Services" />
             </FadeIn>
             <FadeIn delay={80}>
               <h1
                 className="text-[3rem] sm:text-[4rem] md:text-[5rem] leading-none mb-8"
                 style={{ letterSpacing: "-0.03em" }}
               >
-                <span className="font-black text-black">Hand us the documents.</span>
+                <span className="font-black text-black">Texas Notary &</span>
                 <br />
-                <span className="font-light text-black/40">Walk away with</span>
+                <span className="font-light text-black/40">Document Services —</span>
                 <br />
-                <span className="font-black text-black"><H>your sanity.</H></span>
+                <span className="font-black text-black"><H>done right.</H></span>
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
               <p className="text-base sm:text-lg font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-                Texas document services — RON, mobile notary, loan signing, apostille, and court reporting. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
+                A premium, all-in-one provider for Remote Online Notarization, mobile notary &amp; loan signing, apostille services, and electronic reporting &amp; transcription. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
               </p>
             </FadeIn>
             <FadeIn delay={320}>
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
                 <Link
-                  href="/estimate"
+                  href="/calculate"
                   className="px-8 py-4 text-sm font-bold text-center border"
                   style={{ borderColor: AMBER, color: AMBER }}
                   data-testid="btn-estimate-hero"
@@ -228,11 +225,11 @@ export default function Home() {
             <div className="text-center mb-14">
               <Pill text="⊟ Services" dark />
               <h2 className="text-3xl sm:text-4xl font-black text-white" style={{ letterSpacing: "-0.02em" }}>
-                Seven divisions. <H>One call.</H>
+                Four divisions. <H>One call.</H>
               </h2>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ backgroundColor: DIV }}>
             {SERVICES.map((svc, i) => (
               <FadeIn key={svc.label} delay={i * 60} threshold={0.05}>
                 <Link
@@ -300,7 +297,7 @@ export default function Home() {
             Tell us what you need. We'll tell you exactly what it costs.<br />No hidden fees, no surprises.
           </p>
           <Link
-            href="/estimate"
+            href="/calculate"
             className="inline-block px-8 py-4 text-sm font-bold text-white text-center"
             style={{ backgroundColor: AMBER }}
             data-testid="btn-book-footer"

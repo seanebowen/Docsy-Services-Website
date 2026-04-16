@@ -263,7 +263,7 @@ export default function Contact() {
             {[
               { label: "FAQ", desc: "Quick answers to the most common notary, apostille, ID, and billing questions.", href: "/faq" },
               { label: "Help Center", desc: "Step-by-step guides for every service — from booking RON to sending apostille documents.", href: "/help-center" },
-              { label: "Job Estimator", desc: "Know your price before you call. Configure your services and get a line-item estimate.", href: "/estimate" },
+              { label: "Price Calculator", desc: "Know your price before you call. Configure your services and get a line-item estimate.", href: "/calculate" },
             ].map((item, i) => (
               <FadeIn key={item.href} delay={i * 60} threshold={0.05}>
                 <Link

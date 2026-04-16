@@ -224,7 +224,7 @@ export default function BookingConfirmation() {
             <Link href="/" className="px-8 py-3 text-sm font-bold text-black border-2 border-black text-center">
               Back to Home
             </Link>
-            <Link href="/estimate" className="px-8 py-3 text-sm font-bold text-black/40 text-center">
+            <Link href="/calculate" className="px-8 py-3 text-sm font-bold text-black/40 text-center">
               New Estimate →
             </Link>
           </div>

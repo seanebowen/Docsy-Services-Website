@@ -20,7 +20,8 @@ import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";
 import SafeVault from "@/pages/SafeVault";
 import VaultInfo from "@/pages/VaultInfo";
-import Estimator from "@/pages/Estimator";
+import Calculator from "@/pages/Calculator";
+import InternalBook from "@/pages/InternalBook";
 import Booking from "@/pages/Booking";
 import BookingPayment from "@/pages/BookingPayment";
 import BookingConfirmation from "@/pages/BookingConfirmation";
@@ -41,7 +42,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/estimate" component={Estimator} />
+      <Route path="/calculate" component={Calculator} />
+      <Route path="/estimate"><Redirect to="/calculate" /></Route>
+      <Route path="/internal-book" component={InternalBook} />
+      <Route path="/electronic-reporting" component={CourtReporting} />
       <Route path="/booking/confirmation" component={BookingConfirmation} />
       <Route path="/booking/payment" component={BookingPayment} />
       <Route path="/booking" component={Booking} />

@@ -149,13 +149,16 @@ export default function Apostille() {
             </h1>
           </FadeIn>
           <FadeIn delay={160}>
-            <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
+            <p className="text-lg sm:text-xl text-black/60 mb-6 max-w-xl font-medium">
               All-inclusive Texas apostille services. Prepaid inbound label, tracked return shipping, and mobile pickup included. Personal documents starting at $165.
+            </p>
+            <p className="text-sm text-black/55 mb-10 max-w-xl border-l-2 pl-4" style={{ borderColor: BLUE }}>
+              <strong className="text-black">Heads up:</strong> Docsy does not control Texas Secretary of State processing times. Standard turnaround estimates are based on current TX SOS guidance and may shift without notice.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille">
+              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille">
                 Book Now →
               </Link>
               <Link href="/contact?inquiry=apostille-precheck" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
@@ -440,7 +443,7 @@ export default function Apostille() {
             </div>
           </div>
           <div className="flex-shrink-0">
-            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille-cta">
+            <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille-cta">
               Book Now →
             </Link>
           </div>

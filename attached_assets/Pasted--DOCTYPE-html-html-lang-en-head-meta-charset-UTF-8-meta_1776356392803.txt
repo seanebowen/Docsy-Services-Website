@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Docsy Services — Complete Status Bar System</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f9fafb;padding:24px;color:#111}
+h1{font-size:15px;font-weight:600;color:#111;margin-bottom:2px}
+.subtitle{font-size:12px;color:#9ca3af;margin-bottom:20px}
+.section-head{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin:24px 0 10px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px 20px;margin-bottom:10px}
+.status-row{display:flex;align-items:center;gap:12px}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.dot.green{background:#22c55e;box-shadow:0 0 0 3px #22c55e28;animation:pulse 2s infinite}
+.dot.yellow{background:#eab308;box-shadow:0 0 0 3px #eab30828;animation:pulse 2s infinite}
+.dot.red{background:#ef4444;box-shadow:0 0 0 3px #ef444428}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.s-label{font-size:15px;font-weight:600;color:#111;line-height:1.3}
+.s-sub{font-size:12px;color:#6b7280;margin-top:3px;line-height:1.5}
+.s-time{font-size:12px;font-weight:600;margin-top:3px}
+.s-time.green{color:#16a34a}
+.s-time.yellow{color:#92400e}
+.s-time.red{color:#991b1b}
+.book-btn{margin-left:auto;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;border:none;text-decoration:none;display:inline-block}
+.book-btn.green{background:#22c55e;color:#fff}.book-btn.green:hover{background:#16a34a}
+.book-btn.muted{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.book-btn.muted:hover{background:#e5e7eb}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:600;margin-bottom:8px;border:1px solid transparent}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #e5e7eb;color:#6b7280;background:transparent}
+.tab.active{background:#f3f4f6;color:#111;border-color:#d1d5db}
+.tab:hover{border-color:#9ca3af}
+.hidden{display:none}
+.tip{font-size:12px;color:#6b7280;line-height:1.6;margin-bottom:12px}
+.div-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:14px}
+.div-card{border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;cursor:pointer;transition:border-color .15s}
+.div-card:hover{border-color:#9ca3af}
+.div-card.selected{border-color:#374151;background:#f9fafb}
+.div-name{font-size:10px;font-weight:600;margin-bottom:1px}
+.div-tag{font-size:9px;color:#9ca3af;line-height:1.3}
+.state-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.copy-block{border-radius:8px;padding:12px 14px;margin-bottom:6px}
+.copy-label{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.copy-h{font-size:13px;font-weight:600;line-height:1.4;margin-bottom:3px}
+.copy-s{font-size:11px;color:#6b7280;margin-bottom:2px}
+.copy-t{font-size:11px;font-weight:600;margin-bottom:2px}
+.copy-cta{font-size:11px;font-weight:600;margin-top:4px}
+.div-section{margin-bottom:18px}
+.div-section-head{font-size:11px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.embed-box{background:#f3f4f6;border-radius:8px;padding:14px;font-family:monospace;font-size:11px;color:#374151;line-height:1.7;word-break:break-all;white-space:pre-wrap;border:1px solid #e5e7eb;max-height:360px;overflow-y:auto;margin-top:8px}
+.action-btn{width:100%;margin-top:8px;background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:8px;font-size:12px;font-weight:500;cursor:pointer}
+.action-btn:hover{background:#f9fafb}
+.action-btn.primary{background:#0078d4;color:#fff;border-color:#0078d4}.action-btn.primary:hover{background:#106ebe}
+.input-row{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.input-row label{font-size:12px;color:#6b7280;font-weight:500}
+.input-row input{font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#111;width:100%}
+.panel{border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:12px}
+.panel-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:10px}
+.step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:#f3f4f6;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#6b7280;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:#6b7280;line-height:1.6}
+.step-text a{color:#0078d4;text-decoration:none}
+code{background:#f3f4f6;padding:1px 5px;border-radius:4px;font-size:11px;font-family:monospace}
+.success-msg{font-size:12px;color:#16a34a;font-weight:500;margin-top:8px}
+.err-msg{font-size:12px;color:#dc2626;margin-top:6px}
+.page-switcher{display:flex;gap:0;margin-bottom:20px;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;width:fit-content}
+.ps-btn{padding:8px 20px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:#fff;color:#6b7280;border-right:1px solid #e5e7eb}
+.ps-btn:last-child{border-right:none}
+.ps-btn.active{background:#111;color:#fff}
+.rotate-indicator{display:flex;align-items:center;gap:6px;margin-top:8px}
+.rotate-dot{width:6px;height:6px;border-radius:50%;background:#e5e7eb;cursor:pointer;transition:background .2s}
+.rotate-dot.active{background:#374151}
+.fade-in{animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.home-note{font-size:11px;color:#9ca3af;margin-top:6px;line-height:1.5}
+.divider{border:none;border-top:1px solid #e5e7eb;margin:24px 0}
+</style>
+</head>
+<body>
+<div style="max-width:720px;margin:0 auto">
+
+<h1>Docsy Services — Status Bar System</h1>
+<div class="subtitle">Homepage rotating bar · Division pages · Live Outlook calendar · Microsoft Graph API</div>
+
+<div class="page-switcher">
+  <button class="ps-btn active" onclick="switchPage('home')">Homepage bar</button>
+  <button class="ps-btn" onclick="switchPage('division')">Division pages</button>
+  <button class="ps-btn" onclick="switchPage('copy')">All copy</button>
+  <button class="ps-btn" onclick="switchPage('setup')">Connect Outlook</button>
+  <button class="ps-btn" onclick="switchPage('embed')">Embed codes</button>
+</div>
+
+<!-- ===== HOMEPAGE ===== -->
+<div id="page-home">
+  <div class="tip">On your homepage the bar rotates through all five divisions every 4 seconds while you're available — showing a different credential each cycle. Goes solid when busy or closed.</div>
+
+  <div class="state-row">
+    <span style="font-size:12px;color:#6b7280;font-weight:500">Preview state:</span>
+    <button class="tab" onclick="setHomeState('available')">Available</button>
+    <button class="tab" onclick="setHomeState('busy')">In session</button>
+    <button class="tab" onclick="setHomeState('closed')">Closed</button>
+  </div>
+
+  <div class="card">
+    <div class="status-row">
+      <div class="dot green" id="h-dot"></div>
+      <div style="flex:1;min-width:0">
+        <div class="s-label fade-in" id="h-label"></div>
+        <div class="s-sub" id="h-sub"></div>
+        <div class="s-time green" id="h-time"></div>
+      </div>
+      <button class="book-btn green" id="h-btn">Book now →</button>
+    </div>
+    <div class="rotate-indicator" id="h-dots"></div>
+  </div>
+  <div class="home-note">Rotation pauses automatically when the visitor hovers over the bar — they won't miss a message mid-read. Rotates: RON · Mobile · Loan Signing · Court Reporting · Apostille.</div>
+</div>
+
+<!-- ===== DIVISION ===== -->
+<div id="page-division" class="hidden">
+  <div class="tip">Each division page shows its own targeted bar. Select a division and state to preview.</div>
+
+  <div class="div-grid" id="div-grid"></div>
+
+  <div class="state-row">
+    <span style="font-size:12px;color:#6b7280;font-weight:500">State:</span>
+    <button class="tab" onclick="setDivState('available')">Available</button>
+    <button class="tab" onclick="setDivState('busy')">In session</button>
+    <button class="tab" onclick="setDivState('closed')">Closed</button>
+  </div>
+
+  <div class="card fade-in" id="d-card">
+    <div id="d-pill-wrap"></div>
+    <div class="status-row">
+      <div class="dot green" id="d-dot"></div>
+      <div style="flex:1;min-width:0">
+        <div class="s-label" id="d-label"></div>
+        <div class="s-sub" id="d-sub"></div>
+        <div class="s-time green" id="d-time"></div>
+      </div>
+      <button class="book-btn green" id="d-btn"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ALL COPY ===== -->
+<div id="page-copy" class="hidden">
+  <div class="tip">Every division · every state · every message. Homepage rotating copy listed first.</div>
+
+  <div class="section-head">Homepage — rotating (available state only, cycles every 4 sec)</div>
+  <div id="home-copy-list"></div>
+
+  <hr class="divider"/>
+  <div class="section-head">Division pages — all states</div>
+  <div id="div-copy-list"></div>
+</div>
+
+<!-- ===== SETUP ===== -->
+<div id="page-setup" class="hidden">
+  <div class="tip">One Azure app registration connects both the homepage bar and all division bars. Set up once, works everywhere.</div>
+  <div class="panel">
+    <div class="panel-label">Azure App Registration (one-time, ~15 min)</div>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Go to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a> → sign in with your M365 account → search "App registrations"</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">New registration → name it <code>Docsy Status Bar</code> → accounts in this org only → Register</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Copy the <code>Application (client) ID</code> and <code>Directory (tenant) ID</code> from the overview page</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">Certificates & secrets → New client secret → copy the value immediately (shown once only)</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text">API permissions → Add → Microsoft Graph → Delegated → <code>Calendars.Read</code> → Grant admin consent</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-text">Authentication → add your website URL as redirect URI → enable Access tokens + ID tokens</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Blocking time off — how it works</div>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Create any Outlook event during the time you want blocked — title it "Blocked," "Lunch," "Break," or anything</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Set "Show as" to <code>Busy</code> — that's what the API checks. Free or Tentative won't trigger the yellow state</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Recurring blocks work automatically — set lunch or closed days once and they apply forever</div></div>
+  </div>
+  <div class="input-row"><label>Azure Client ID</label><input id="inp-cid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/></div>
+  <div class="input-row"><label>Tenant ID</label><input id="inp-tid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/></div>
+  <div class="input-row"><label>Business hours (24hr open / close)</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="inp-open" type="number" min="0" max="23" value="8" style="width:64px"/>
+      <span style="font-size:13px;color:#6b7280">to</span>
+      <input id="inp-close" type="number" min="0" max="23" value="18" style="width:64px"/>
+    </div>
+  </div>
+  <button class="action-btn primary" onclick="saveSetup()">Save & update embed codes</button>
+  <div id="setup-result"></div>
+</div>
+
+<!-- ===== EMBED ===== -->
+<div id="page-embed" class="hidden">
+  <div class="section-head">Homepage embed</div>
+  <div class="tip">Paste once into your homepage header. Rotates automatically, no extra config needed.</div>
+  <div class="embed-box" id="embed-home"></div>
+  <button class="action-btn" onclick="copyCode('embed-home',this)">Copy homepage embed</button>
+
+  <hr class="divider"/>
+  <div class="section-head">Division page embed</div>
+  <div class="tip">Paste into each division page. Change <code>data-docsy-division</code> to match the page: <code>ron</code> · <code>mobile</code> · <code>loan</code> · <code>court</code> · <code>apostille</code></div>
+  <div class="embed-box" id="embed-division"></div>
+  <button class="action-btn" onclick="copyCode('embed-division',this)">Copy division embed</button>
+</div>
+
+</div><!-- end wrapper -->
+
+<script>
+var CLIENT_ID='YOUR_CLIENT_ID', TENANT_ID='YOUR_TENANT_ID', OPEN_H=8, CLOSE_H=18;
+
+var divisions=[
+  {id:'ron',label:'Remote Online Notary',color:'#7c3aed',pill:'RON',
+    home:{h:'Texas RON Specialist Ready & Available',s:'Sign securely from anywhere in Texas · No travel required'},
+    available:{h:'Texas RON Specialist Ready & Available',s:'Secure remote session · No travel · Sign from anywhere in Texas',btn:'Start your session'},
+    busy:{h:'Currently In a RON Session',s:'Remote sessions fill fast — secure your slot now',btn:'Reserve your slot'},
+    closed:{h:'RON Services Closed — Opens at {OPEN}',s:'Book tonight and lock in your remote session for tomorrow',btn:"Book tomorrow's slot"}},
+  {id:'mobile',label:'Mobile Notary',color:'#0891b2',pill:'MOBILE',
+    home:{h:'Mobile Notary Ready & Available — San Antonio',s:'Comes to you · Same-day dispatch · No office visit needed'},
+    available:{h:'Mobile Notary Ready & Available — San Antonio',s:'Mobile notary comes to you · Same-day dispatch available',btn:'Schedule your visit'},
+    busy:{h:'Currently On Location',s:'Leave your address — your stop will be confirmed',btn:'Reserve your stop'},
+    closed:{h:'Mobile Routes Closed — Start at {OPEN}',s:'Book tonight and secure your morning stop before routes fill',btn:'Book your stop'}},
+  {id:'loan',label:'Loan Signing',color:'#059669',pill:'LOAN SIGNING',
+    home:{h:'Certified Loan Signing Agent Ready & Available',s:'Closings handled accurately and professionally · San Antonio'},
+    available:{h:'Certified Loan Signing Agent Ready & Available',s:'Closings handled accurately and professionally · San Antonio & surrounding areas',btn:'Confirm your closing'},
+    busy:{h:'Currently At a Closing',s:"Don't let your closing date slip — hold the next slot now",btn:'Hold my next slot'},
+    closed:{h:'Signing Services Closed — Back at {OPEN}',s:'Schedule tonight to protect your closing date',btn:'Schedule your closing'}},
+  {id:'court',label:'Digital Court Reporting',color:'#d97706',pill:'COURT REPORTING',
+    home:{h:'AAERT Certified Electronic Reporter Ready & Available',s:'Digital proceedings · Depositions · Remote & on-site · San Antonio'},
+    available:{h:'AAERT Certified Electronic Reporter Ready & Available',s:'Digital proceedings · Depositions · Remote & on-site · San Antonio',btn:'Reserve your proceeding'},
+    busy:{h:'Currently In a Proceeding',s:'Calendar fills fast — secure your date before it closes',btn:'Book next opening'},
+    closed:{h:'Court Reporting Closed — Resumes at {OPEN}',s:'Proceedings book out quickly — reserve your date tonight',btn:'Reserve your date'}},
+  {id:'apostille',label:'Apostille Services',color:'#be185d',pill:'APOSTILLE',
+    home:{h:'Texas Apostille Specialist Ready & Available',s:'Texas apostille processing · International documents · Fast turnaround'},
+    available:{h:'Texas Apostille Specialist Ready & Available',s:'Texas apostille processing · International documents · Fast turnaround',btn:'Start your apostille'},
+    busy:{h:'Currently Processing Documents',s:'Orders processed in sequence — submit now to hold your place',btn:'Submit your documents'},
+    closed:{h:'Apostille Services Closed — Resumes at {OPEN}',s:"International deadlines don't wait — submit your request tonight",btn:'Submit tonight'}}
+];
+
+var homeBusy={h:'Currently In Session — Docsy Services',s:'Our specialist is with a client right now',btn:'Schedule ahead →'};
+var homeClosed={h:'Docsy Services Closed — Opens at {OPEN}',s:'Book tonight and secure your spot for tomorrow',btn:'Book for tomorrow →'};
+
+function fmt12(h){return(h%12||12)+':00'+(h>=12?' PM':' AM');}
+function fmtTime(d){return d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});}
+function fmtDay(d){
+  var now=new Date(),tom=new Date(now);tom.setDate(tom.getDate()+1);
+  if(d.toDateString()===now.toDateString())return'Today '+fmtTime(d);
+  if(d.toDateString()===tom.toDateString())return'Tomorrow '+fmtTime(d);
+  return d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'})+' '+fmtTime(d);
+}
+function isOpen(){var h=new Date().getHours();return h>=OPEN_H&&h<CLOSE_H;}
+function getCopy(div,state){
+  var c=Object.assign({},div[state]);
+  if(c.h)c.h=c.h.replace('{OPEN}',fmt12(OPEN_H));
+  if(c.s)c.s=c.s.replace('{OPEN}',fmt12(OPEN_H));
+  return c;
+}
+
+/* ---- HOMEPAGE ---- */
+var homeIdx=0, homeState='available', homeTimer=null, homePaused=false;
+var demoHomeNext='Today 2:30 PM';
+
+function renderHome(){
+  var dotEl=document.getElementById('h-dot');
+  var labelEl=document.getElementById('h-label');
+  var subEl=document.getElementById('h-sub');
+  var timeEl=document.getElementById('h-time');
+  var btnEl=document.getElementById('h-btn');
+  var dotsEl=document.getElementById('h-dots');
+  dotEl.className='dot';
+
+  if(homeState==='busy'){
+    dotEl.classList.add('yellow');
+    labelEl.textContent=homeBusy.h;
+    subEl.textContent=homeBusy.s;
+    timeEl.className='s-time yellow';
+    timeEl.textContent='Next opening: '+demoHomeNext;
+    btnEl.textContent='Schedule ahead →';
+    btnEl.className='book-btn muted';
+    dotsEl.innerHTML='';
+  } else if(homeState==='closed'){
+    dotEl.classList.add('red');
+    var ch=homeClosed.h.replace('{OPEN}',fmt12(OPEN_H));
+    labelEl.textContent=ch;
+    subEl.textContent=homeClosed.s;
+    timeEl.className='s-time red';
+    timeEl.textContent='Next available: Tomorrow '+fmt12(OPEN_H);
+    btnEl.textContent='Book for tomorrow →';
+    btnEl.className='book-btn muted';
+    dotsEl.innerHTML='';
+  } else {
+    var d=divisions[homeIdx];
+    var c=getCopy(d,'home');
+    dotEl.classList.add('green');
+    labelEl.classList.remove('fade-in');
+    void labelEl.offsetWidth;
+    labelEl.classList.add('fade-in');
+    labelEl.textContent=c.h;
+    subEl.textContent=c.s;
+    timeEl.className='s-time green';
+    timeEl.textContent='Next slot: '+demoHomeNext;
+    btnEl.textContent='Book now →';
+    btnEl.className='book-btn green';
+    dotsEl.innerHTML='';
+    divisions.forEach(function(_,i){
+      var dot=document.createElement('div');
+      dot.className='rotate-dot'+(i===homeIdx?' active':'');
+      dot.onclick=function(){homeIdx=i;renderHome();};
+      dotsEl.appendChild(dot);
+    });
+  }
+}
+
+function startHomeRotation(){
+  if(homeTimer)clearInterval(homeTimer);
+  homeTimer=setInterval(function(){
+    if(!homePaused&&homeState==='available'){
+      homeIdx=(homeIdx+1)%divisions.length;
+      renderHome();
+    }
+  },4000);
+}
+
+function setHomeState(s){homeState=s;homeIdx=0;renderHome();}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var card=document.getElementById('page-home');
+  if(card){
+    card.addEventListener('mouseenter',function(){homePaused=true;});
+    card.addEventListener('mouseleave',function(){homePaused=false;});
+  }
+});
+
+/* ---- DIVISION ---- */
+var currentDiv=0, divState='available';
+var demoNextTimes={available:'Today 2:30 PM',busy:'Today 3:45 PM',closed:'Tomorrow '+fmt12(OPEN_H)};
+
+function buildDivGrid(){
+  var g=document.getElementById('div-grid');g.innerHTML='';
+  divisions.forEach(function(d,i){
+    var el=document.createElement('div');
+    el.className='div-card'+(i===currentDiv?' selected':'');
+    el.innerHTML='<div class="div-name" style="color:'+d.color+'">'+d.pill+'</div><div class="div-tag">'+d.label+'</div>';
+    el.onclick=function(){currentDiv=i;buildDivGrid();renderDiv();};
+    g.appendChild(el);
+  });
+}
+
+function renderDiv(){
+  var d=divisions[currentDiv];
+  var c=getCopy(d,divState);
+  var dotEl=document.getElementById('d-dot');
+  dotEl.className='dot '+(divState==='available'?'green':divState==='busy'?'yellow':'red');
+  document.getElementById('d-label').textContent=c.h;
+  document.getElementById('d-sub').textContent=c.s;
+  var timeEl=document.getElementById('d-time');
+  var timeColor=divState==='available'?'green':divState==='busy'?'yellow':'red';
+  var timePrefix=divState==='available'?'Next slot: ':divState==='busy'?'Next opening: ':'Next available: ';
+  timeEl.className='s-time '+timeColor;
+  timeEl.textContent=timePrefix+demoNextTimes[divState];
+  var btn=document.getElementById('d-btn');
+  btn.textContent=c.btn+' →';
+  btn.className='book-btn '+(divState==='available'?'green':'muted');
+  document.getElementById('d-pill-wrap').innerHTML='<div class="pill" style="background:'+d.color+'18;color:'+d.color+';border-color:'+d.color+'33">'+d.pill+'</div>';
+}
+
+function setDivState(s){divState=s;renderDiv();}
+
+/* ---- ALL COPY ---- */
+function buildCopyTab(){
+  var homeList=document.getElementById('home-copy-list');
+  homeList.innerHTML='';
+  divisions.forEach(function(d){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:6px;background:#fff';
+    row.innerHTML='<div style="background:'+d.color+'18;color:'+d.color+';border:1px solid '+d.color+'33;border-radius:99px;padding:2px 8px;font-size:10px;font-weight:600;white-space:nowrap;margin-top:2px">'+d.pill+'</div>'
+      +'<div><div style="font-size:13px;font-weight:600;color:#111;margin-bottom:2px">'+d.home.h+'</div>'
+      +'<div style="font-size:11px;color:#6b7280">'+d.home.s+'</div></div>';
+    homeList.appendChild(row);
+  });
+
+  var divList=document.getElementById('div-copy-list');
+  divList.innerHTML='';
+  var stateConf={
+    available:{bg:'#f0fdf4',lc:'#16a34a',hc:'#14532d',label:'Available — green',tl:'Next slot: Today 2:30 PM'},
+    busy:{bg:'#fefce8',lc:'#92400e',hc:'#713f12',label:'In session — yellow',tl:'Next opening: Today 3:45 PM'},
+    closed:{bg:'#fef2f2',lc:'#991b1b',hc:'#7f1d1d',label:'Closed — red',tl:'Next available: Tomorrow '+fmt12(OPEN_H)}
+  };
+  divisions.forEach(function(d){
+    var sec=document.createElement('div');sec.className='div-section';
+    var head='<div class="div-section-head"><span style="background:'+d.color+'18;color:'+d.color+';border:1px solid '+d.color+'33;padding:2px 9px;border-radius:99px;font-size:10px">'+d.pill+'</span><span style="color:#9ca3af;font-weight:400">'+d.label+'</span></div>';
+    var blocks=['available','busy','closed'].map(function(st){
+      var cfg=stateConf[st];var c=getCopy(d,st);
+      return '<div class="copy-block" style="background:'+cfg.bg+'">'
+        +'<div class="copy-label" style="color:'+cfg.lc+'">'+cfg.label+'</div>'
+        +'<div class="copy-h" style="color:'+cfg.hc+'">'+c.h+'</div>'
+        +'<div class="copy-s">'+c.s+'</div>'
+        +'<div class="copy-t" style="color:'+cfg.lc+'">'+cfg.tl+'</div>'
+        +'<div class="copy-cta" style="color:'+cfg.lc+'">CTA: '+c.btn+' →</div>'
+        +'</div>';
+    }).join('');
+    sec.innerHTML=head+blocks;
+    divList.appendChild(sec);
+  });
+}
+
+/* ---- SETUP ---- */
+function saveSetup(){
+  var cid=document.getElementById('inp-cid').value.trim();
+  var tid=document.getElementById('inp-tid').value.trim();
+  var res=document.getElementById('setup-result');
+  if(!cid||!tid){res.innerHTML='<div class="err-msg">Fill in both fields.</div>';return;}
+  CLIENT_ID=cid;TENANT_ID=tid;
+  OPEN_H=parseInt(document.getElementById('inp-open').value)||8;
+  CLOSE_H=parseInt(document.getElementById('inp-close').value)||18;
+  buildEmbedCodes();
+  res.innerHTML='<div class="success-msg">Saved — both embed codes updated with your credentials.</div>';
+}
+
+/* ---- EMBED CODES ---- */
+function buildEmbedCodes(){
+  var divStr=JSON.stringify(divisions.map(function(d){
+    return {id:d.id,pill:d.pill,color:d.color,
+      home:{h:d.home.h,s:d.home.s},
+      available:{h:d.available.h,s:d.available.s,btn:d.available.btn},
+      busy:{h:d.busy.h,s:d.busy.s,btn:d.busy.btn},
+      closed:{h:d.closed.h,s:d.closed.s,btn:d.closed.btn}};
+  }),null,0);
+
+  var shared=`  var CLIENT_ID="${CLIENT_ID}";
+  var TENANT_ID="${TENANT_ID}";
+  var OPEN=${OPEN_H}, CLOSE=${CLOSE_H};
+  var BOOKING_URL="YOUR_BOOKING_URL";
+  var msalCfg={auth:{clientId:CLIENT_ID,authority:"https://login.microsoftonline.com/"+TENANT_ID},cache:{cacheLocation:"sessionStorage"}};
+  var app=new msal.PublicClientApplication(msalCfg);
+  var scopes={scopes:["Calendars.Read"]};
+  function fmt(h){return(h%12||12)+":00"+(h>=12?" PM":" AM")}
+  function fmtT(d){return d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}
+  function fmtDay(d){var now=new Date(),tom=new Date(now);tom.setDate(tom.getDate()+1);if(d.toDateString()===now.toDateString())return"Today "+fmtT(d);if(d.toDateString()===tom.toDateString())return"Tomorrow "+fmtT(d);return d.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"})+" "+fmtT(d);}
+  function nextFree(events){var now=new Date(),h=now.getHours();if(h>=CLOSE){var t=new Date(now);t.setDate(t.getDate()+1);t.setHours(OPEN,0,0,0);return fmtDay(t);}var cur=now;events.sort(function(a,b){return new Date(a.end.dateTime)-new Date(b.end.dateTime);}).forEach(function(e){var en=new Date(e.end.dateTime);if(en>cur)cur=en;});if(cur.getHours()>=CLOSE){var t2=new Date(cur);t2.setDate(t2.getDate()+1);t2.setHours(OPEN,0,0,0);return fmtDay(t2);}return fmtDay(cur);}
+  function getToken(cb){var acc=app.getAllAccounts();if(acc.length){app.acquireTokenSilent(Object.assign({},scopes,{account:acc[0]})).then(function(r){cb(r.accessToken);}).catch(function(){app.acquireTokenPopup(scopes).then(function(r){cb(r.accessToken);});});}else{app.acquireTokenPopup(scopes).then(function(r){cb(r.accessToken);});}}`;
+
+  document.getElementById('embed-home').textContent=
+`<!-- Docsy Services Homepage Status Bar — rotating, live Outlook calendar -->
+<!-- Replace YOUR_BOOKING_URL with your Microsoft Bookings link -->
+<div id="docsy-home-status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/msal.js/2.38.2/msal-browser.min.js"><\/script>
+<script>
+(function(){
+${shared}
+  var divisions=${divStr};
+  var idx=0,paused=false;
+  var el=document.getElementById("docsy-home-status");
+  function show(dot,label,sub,time,timeColor,btn,btnStyle){
+    el.innerHTML='<div style="font-family:system-ui,sans-serif;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;background:#fff;cursor:default">'
+    +'<div style="display:flex;align-items:center;gap:10px">'
+    +'<div style="width:10px;height:10px;border-radius:50%;background:'+dot+';flex-shrink:0"></div>'
+    +'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#111">'+label+'</div>'
+    +'<div style="font-size:12px;color:#6b7280;margin-top:2px">'+sub+'</div>'
+    +'<div style="font-size:12px;font-weight:600;color:'+timeColor+';margin-top:2px">'+time+'</div></div>'
+    +'<a href="'+BOOKING_URL+'" style="'+btnStyle+';border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0">'+btn+'</a>'
+    +'</div></div>';
+    el.onmouseenter=function(){paused=true;};el.onmouseleave=function(){paused=false;};
+  }
+  function render(token){
+    var now=new Date(),h=now.getHours();
+    if(h<OPEN||h>=CLOSE){show("#ef4444","Docsy Services Closed — Opens "+fmt(OPEN),"Book now and secure your spot for tomorrow","Next available: Tomorrow "+fmt(OPEN),"#991b1b","Book for tomorrow →","background:#f3f4f6;color:#374151");return;}
+    var end=new Date(now);end.setHours(CLOSE,0,0,0);
+    fetch("https://graph.microsoft.com/v1.0/me/calendarView?startDateTime="+now.toISOString()+"&endDateTime="+end.toISOString()+"&$select=subject,start,end&$orderby=start/dateTime&$top=20",{headers:{Authorization:"Bearer "+token}})
+    .then(function(r){return r.json();}).then(function(data){
+      var items=(data.value||[]).filter(function(e){return e.start&&e.start.dateTime;});
+      var active=items.filter(function(e){var s=new Date(e.start.dateTime),en=new Date(e.end.dateTime);return s<=now&&en>now;});
+      if(active.length){show("#eab308","Currently In Session — Docsy Services","Our specialist is with a client right now","Next opening: "+nextFree(items),"#92400e","Schedule ahead →","background:#f3f4f6;color:#374151");return;}
+      var d=divisions[idx];
+      show("#22c55e",d.home.h,d.home.s,"Next slot: Now","#16a34a","Book now →","background:#22c55e;color:#fff");
+    }).catch(function(){var d=divisions[idx];show("#22c55e",d.home.h,d.home.s,"Next slot: Now","#16a34a","Book now →","background:#22c55e;color:#fff");});
+  }
+  function rotate(){if(!paused){idx=(idx+1)%divisions.length;}getToken(render);}
+  getToken(render);setInterval(rotate,4000);
+})();
+<\/script>`;
+
+  document.getElementById('embed-division').textContent=
+`<!-- Docsy Services Division Status Bar -->
+<!-- Change data-docsy-division per page: ron · mobile · loan · court · apostille -->
+<!-- Replace YOUR_BOOKING_URL with your Microsoft Bookings link -->
+<div id="docsy-div-status" data-docsy-division="ron"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/msal.js/2.38.2/msal-browser.min.js"><\/script>
+<script>
+(function(){
+${shared}
+  var divisions=${divStr};
+  var el=document.getElementById("docsy-div-status");
+  var key=el.getAttribute("data-docsy-division")||"ron";
+  var d=divisions.find(function(x){return x.id===key;})||divisions[0];
+  function show(dot,label,sub,time,timeColor,btn,btnStyle){
+    el.innerHTML='<div style="font-family:system-ui,sans-serif;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px;background:#fff">'
+    +'<div style="display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:600;background:'+d.color+'18;color:'+d.color+';border:1px solid '+d.color+'33;margin-bottom:8px">'+d.pill+'</div>'
+    +'<div style="display:flex;align-items:center;gap:10px">'
+    +'<div style="width:10px;height:10px;border-radius:50%;background:'+dot+';flex-shrink:0"></div>'
+    +'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:#111">'+label+'</div>'
+    +'<div style="font-size:12px;color:#6b7280;margin-top:2px">'+sub+'</div>'
+    +'<div style="font-size:12px;font-weight:600;color:'+timeColor+';margin-top:2px">'+time+'</div></div>'
+    +'<a href="'+BOOKING_URL+'" style="'+btnStyle+';border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0">'+btn+' \u2192</a>'
+    +'</div></div>';
+  }
+  function render(token){
+    var now=new Date(),h=now.getHours();
+    if(h<OPEN||h>=CLOSE){var c=d.closed;var ch=c.h.replace("{OPEN}",fmt(OPEN));var tom=new Date(now);tom.setDate(tom.getDate()+1);tom.setHours(OPEN,0,0,0);show("#ef4444",ch,c.s,"Next available: "+fmtDay(tom),"#991b1b",c.btn,"background:#f3f4f6;color:#374151");return;}
+    var end=new Date(now);end.setHours(CLOSE,0,0,0);
+    fetch("https://graph.microsoft.com/v1.0/me/calendarView?startDateTime="+now.toISOString()+"&endDateTime="+end.toISOString()+"&$select=subject,start,end&$orderby=start/dateTime&$top=20",{headers:{Authorization:"Bearer "+token}})
+    .then(function(r){return r.json();}).then(function(data){
+      var items=(data.value||[]).filter(function(e){return e.start&&e.start.dateTime;});
+      var active=items.filter(function(e){var s=new Date(e.start.dateTime),en=new Date(e.end.dateTime);return s<=now&&en>now;});
+      var nf=nextFree(items);
+      if(active.length){var c=d.busy;show("#eab308",c.h,c.s,"Next opening: "+nf,"#92400e",c.btn,"background:#f3f4f6;color:#374151");}
+      else{var c2=d.available;show("#22c55e",c2.h,c2.s,"Next slot: Now","#16a34a",c2.btn,"background:#22c55e;color:#fff");}
+    }).catch(function(){var c=d.available;show("#22c55e",c.h,c.s,"Next slot: Now","#16a34a",c.btn,"background:#22c55e;color:#fff");});
+  }
+  getToken(render);setInterval(function(){getToken(render);},300000);
+})();
+<\/script>`;
+}
+
+/* ---- PAGE SWITCHER ---- */
+function switchPage(p){
+  ['home','division','copy','setup','embed'].forEach(function(id){document.getElementById('page-'+id).classList.add('hidden');});
+  document.getElementById('page-'+p).classList.remove('hidden');
+  document.querySelectorAll('.ps-btn').forEach(function(b,i){
+    b.classList.remove('active');
+    if(['home','division','copy','setup','embed'][i]===p)b.classList.add('active');
+  });
+  if(p==='copy')buildCopyTab();
+}
+
+function copyCode(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(function(){
+    var orig=btn.textContent;btn.textContent='Copied!';
+    setTimeout(function(){btn.textContent=orig;},2000);
+  });
+}
+
+buildDivGrid();
+renderDiv();
+renderHome();
+startHomeRotation();
+buildEmbedCodes();
+</script>
+</body>
+</html>

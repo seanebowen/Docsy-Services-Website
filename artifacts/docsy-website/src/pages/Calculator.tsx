@@ -5,6 +5,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
 const AMBER = "#4D9FDB";
+const BLUE  = "#4D9FDB";
 const DIV   = "#1e2a3a";
 
 /* ── Geocoding helpers (Nominatim / OpenStreetMap — free, no API key) ── */
@@ -121,7 +122,7 @@ type ApostilleType = "personal" | "business" | "federal";
 type ApostilleTurnaround = "standard" | "nextday" | "sameday";
 type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
-type TranscriptSpeed = "14day" | "7day" | "3day" | "sameday";
+type TranscriptSpeed = "rough" | "extended" | "standard" | "rush" | "certified" | "pdf";
 type LLTier     = "t1" | "t2" | "t3";
 type LLDuration = 15 | 30 | 60;
 
@@ -185,7 +186,7 @@ function calcCourt(s: CourtState): number {
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    "14day": 4.75, "7day": 5.75, "3day": 6.75, sameday: 0,
+    rough: 0.75, extended: 7.5, standard: 8.5, rush: 12, certified: 2.5, pdf: 0,
   };
   return appear + s.pages * ratePerPage[s.speed];
 }
@@ -291,7 +292,7 @@ function SummaryLine({ label, amount }: { label: string; amount: number }) {
 }
 
 /* ════════════════════════════════════════════════════════ */
-export default function Estimator() {
+export default function Calculator() {
   React.useEffect(() => { document.title = "Price Calculator | Docsy Services"; }, []);
 
   /* active service toggles */
@@ -303,6 +304,8 @@ export default function Estimator() {
 
   /* add-on subscriptions */
   const [membershipPlan, setMembershipPlan] = useState<null | "starter" | "pro" | "elite">(null);
+  const [membershipBilling, setMembershipBilling] = useState<"monthly" | "annual">("monthly");
+  const [honorPass, setHonorPass] = useState(false);
 
   /* Language Line interpreter state */
   const [llOn,       setLlOn]       = useState(false);
@@ -312,7 +315,12 @@ export default function Estimator() {
   const MEMBERSHIP_PRICES = { starter: 15, pro: 30, elite: 49 } as const;
   const MEMBERSHIP_NAMES  = { starter: "Docsy+ Starter", pro: "Docsy+ Pro", elite: "Docsy+ Elite" } as const;
   const membershipMonthly = membershipPlan ? MEMBERSHIP_PRICES[membershipPlan] : 0;
-  const monthlyTotal      = membershipMonthly;
+  // Annual = 12 months × 0.85 (15% off), billed once
+  const membershipAnnualBilled = membershipPlan ? Math.round(MEMBERSHIP_PRICES[membershipPlan] * 12 * 0.85) : 0;
+  const membershipChargeNow = membershipPlan
+    ? (membershipBilling === "annual" ? membershipAnnualBilled : membershipMonthly)
+    : 0;
+  const monthlyTotal      = membershipChargeNow;
 
   /* RON state */
   const [ron, setRon] = useState<RONState>({ docs: 1, witness: 0, signers: 1 });
@@ -334,7 +342,7 @@ export default function Estimator() {
   /* Court state */
   const [court, setCourt] = useState<CourtState>({
     format: "inperson", duration: "2hr",
-    transcript: false, pages: 100, speed: "14day",
+    transcript: false, pages: 100, speed: "standard",
   });
 
   /* Geocoding state */
@@ -372,7 +380,8 @@ export default function Estimator() {
   const anyServiceActive = ronOn || gnwOn || loanOn || apostOn || courtOn;
   const llTotal       = (llOn && anyServiceActive) ? LL_PRICES[llTier][llDuration] : 0;
   const servicesTotal = ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal + travelTotal + llTotal;
-  const grandTotal    = servicesTotal + monthlyTotal;
+  const honorPassDiscount = honorPass && anyServiceActive ? -Math.round((ronTotal + gnwTotal + loanTotal + apostTotal + courtTotal) * 0.10 * 100) / 100 : 0;
+  const grandTotal    = Math.max(0, servicesTotal + honorPassDiscount + monthlyTotal);
 
   const apostilleAddon = apostOn && apost.turnaround !== "standard"
     ? (apost.turnaround === "nextday" ? 50 : 75)
@@ -386,7 +395,7 @@ export default function Estimator() {
                   + (courtOn       ? calcCourtBase(court)    : 0)
                   + gnwTierFee(travel.tier) * (gnwOn && !gnwTravelWaived ? 1 : 0)
                   + extendedFee;
-  const anySelected = anyServiceActive || membershipPlan !== null;
+  const anySelected = anyServiceActive || membershipPlan !== null || honorPass;
 
   /* Reset interpreter add-on when all services are turned off */
   React.useEffect(() => {
@@ -410,9 +419,10 @@ export default function Estimator() {
       loanOn     && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`,           amount: loanTotal },
       apostOn    && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`,      amount: apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal },
       apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`,                                       amount: apostilleAddon },
-      courtOn    && { name: "Court Reporting",                                                                              amount: courtTotal },
+      courtOn    && { name: "Electronic Reporting & Transcription",                                                          amount: courtTotal },
       travelTotal > 0 && { name: "Travel & Scheduling", amount: travelTotal },
-      membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (monthly)`, amount: membershipMonthly, monthly: true },
+      honorPassDiscount < 0 && { name: "HonorPass™ — 10% off base service fees", amount: honorPassDiscount },
+      membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (${membershipBilling})`, amount: membershipChargeNow, monthly: true },
       llOn && { name: `Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} × ${llDuration} min`, amount: llTotal },
     ].filter(Boolean) as { name: string; amount: number; monthly?: boolean }[];
     sessionStorage.setItem("docsy_estimate", JSON.stringify({
@@ -422,7 +432,7 @@ export default function Estimator() {
       interpreterMinutes: llOn ? llDuration : null,
     }));
     setLocation("/booking");
-  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly, llOn, llTier, llDuration, llTotal]);
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, ronTotal, gnwTotal, loanTotal, apostTotal, courtTotal, travelTotal, grandTotal, baseTotal, apostilleAddon, apostilleAddonLabel, loan.packages, apost.types, apost.docs, gnw.seals, membershipPlan, membershipMonthly, membershipBilling, membershipChargeNow, honorPass, honorPassDiscount, llOn, llTier, llDuration, llTotal]);
 
   /* helpers */
   const upG = useCallback((patch: Partial<GNWState>)      => setGnw(p    => ({ ...p, ...patch })), []);
@@ -483,10 +493,12 @@ export default function Estimator() {
   };
 
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
-    ["14day",    "14-Day",             "$4.75/pg"],
-    ["7day",     "7-Day Expedited",    "$5.75/pg"],
-    ["3day",     "3-Day Rush",         "$6.75/pg"],
-    ["sameday",  "Same-Day",           "Call for pricing"],
+    ["pdf",       "PDF-only delivery",                    "Free"],
+    ["rough",     "Rough Draft (uncertified)",            "$0.75/pg"],
+    ["extended",  "Extended (15+ business days)",         "$7.50/pg"],
+    ["standard",  "Standard (10 business days)",          "$8.50/pg"],
+    ["rush",      "Rush (next business day)",             "$12.00/pg"],
+    ["certified", "Certified Copy (per copy/page)",       "$2.50/pg"],
   ];
 
   return (
@@ -496,7 +508,7 @@ export default function Estimator() {
       <section className="px-5 pt-16 pb-14 sm:pt-20 sm:pb-16" style={{ backgroundColor: IVORY }}>
         <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}>
-            <Pill text="STEP 1 OF 3 — PRICE CALCULATOR" />
+            <Pill text="PRICE CALCULATOR" />
             <h1 className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] leading-none text-black mb-8" style={{ letterSpacing: "-0.03em" }}>
               <span className="font-black">Know your cost</span>
               <br />
@@ -877,7 +889,7 @@ export default function Estimator() {
               <FadeIn delay={240} threshold={0.05}>
               <ServiceCard
                 num="05" title="Court Reporting"
-                desc="AAERT-certified digital court reporter. $4.75/page standard — below agency rates."
+                desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $8.50/page standard — below agency rates."
                 startingAt="$150"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
@@ -1063,13 +1075,41 @@ export default function Estimator() {
                     <RadioRow label="Docsy+ Pro — 1 free notarization/mo, 15% off mobile fees, birthday notarization" price="$30/mo" selected={membershipPlan === "pro"} onClick={() => setMembershipPlan("pro")} />
                     <RadioRow label="Docsy+ Elite — 2 free notarizations/mo, 20% off mobile fees, 1 free travel waiver/mo" price="$49/mo" selected={membershipPlan === "elite"} onClick={() => setMembershipPlan("elite")} />
                   </div>
+                  <div className="pt-2">
+                    <RowLabel>Billing cycle</RowLabel>
+                    <div className="border" style={{ borderColor: DIV }}>
+                      <RadioRow label="Monthly billing" price="" selected={membershipBilling === "monthly"} onClick={() => setMembershipBilling("monthly")} />
+                      <RadioRow label="Annual billing — save 15%" price="ANNUAL · 15% OFF" selected={membershipBilling === "annual"} onClick={() => setMembershipBilling("annual")} />
+                    </div>
+                  </div>
                   <p className="text-xs font-light pt-1" style={{ color: "rgba(255,255,255,0.25)" }}>
-                    First month billed at booking. Renews monthly — cancel any time.
+                    {membershipBilling === "annual"
+                      ? "Annual plans billed in full at signup. Refundable if cancelled more than 30 days before contract end."
+                      : "First month billed at booking. Renews monthly — cancel any time."}
                   </p>
                 </div>
               </ServiceCard>
               </FadeIn>
 
+              {/* ── HonorPass™ ── */}
+              <FadeIn delay={0} threshold={0.05}>
+              <ServiceCard
+                num="08" title="HonorPass™ — Veterans & Active Military"
+                desc="10% off base service fees on every appointment, always. Stacks with all other promos. Valid ID or DD-214 required at first appointment."
+                startingAt="10% OFF"
+                active={honorPass}
+                onToggle={() => setHonorPass(o => !o)}
+              >
+                <div className="space-y-3">
+                  <p className="text-sm font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+                    HonorPass applies a 10% discount to your base service fees (RON, GNW, Loan Signing, Apostille, and Electronic Reporting appearance). Travel fees, surcharges, and add-ons are billed at standard rates.
+                  </p>
+                  <p className="text-xs font-bold" style={{ color: BLUE }}>
+                    ★ One-time eligibility verification. Once verified, HonorPass is saved to your account and auto-applies to every future appointment.
+                  </p>
+                </div>
+              </ServiceCard>
+              </FadeIn>
 
 
             </div>{/* end left col */}
@@ -1100,6 +1140,12 @@ export default function Estimator() {
                     {gnwTierTotal > 0  && <SummaryLine label="↳ GNW Travel" amount={gnwTierTotal} />}
                     {extendedFee > 0   && <SummaryLine label="↳ Extended Distance (40+ mi)" amount={extendedFee} />}
                     {llOn && <SummaryLine label={`↳ Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} ${llDuration} min`} amount={llTotal} />}
+                    {honorPassDiscount < 0 && (
+                      <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
+                        <span className="text-sm font-light" style={{ color: BLUE }}>HonorPass™ — 10% off base service fees</span>
+                        <span className="text-sm font-bold" style={{ color: BLUE }}>−${Math.abs(honorPassDiscount).toFixed(2)}</span>
+                      </div>
+                    )}
 
                     {gnwTravelWaived && travel.tier < 4 && gnwOn && (
                       <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
@@ -1115,8 +1161,14 @@ export default function Estimator() {
                       <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.2)" }}>Monthly membership</p>
                       {membershipPlan && (
                         <div className="flex justify-between items-center py-2 border-b" style={{ borderColor: DIV }}>
-                          <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>{MEMBERSHIP_NAMES[membershipPlan]}</span>
-                          <span className="text-sm font-bold" style={{ color: IVORY }}>${membershipMonthly}<span className="text-[10px] font-light">/mo</span></span>
+                          <span className="text-sm font-light" style={{ color: "rgba(255,255,255,0.55)" }}>
+                            {MEMBERSHIP_NAMES[membershipPlan]}
+                            {membershipBilling === "annual" && <span className="ml-2 text-[9px] font-bold uppercase tracking-widest" style={{ color: BLUE }}>· ANNUAL · 15% OFF</span>}
+                          </span>
+                          <span className="text-sm font-bold" style={{ color: IVORY }}>
+                            ${membershipChargeNow}
+                            <span className="text-[10px] font-light">{membershipBilling === "annual" ? "/yr" : "/mo"}</span>
+                          </span>
                         </div>
                       )}
                     </div>

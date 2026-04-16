@@ -49,7 +49,7 @@ export default function MobileNotary() {
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-mobile">
+              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-mobile">
                 Book Now →
               </Link>
             </div>
@@ -82,7 +82,7 @@ export default function MobileNotary() {
               <HI>San Antonio metro</HI><br />
               <span className="font-light text-white/40">and beyond.</span>
             </h2>
-            <p className="text-base text-white/35 mt-4 max-w-md mx-auto">Travel fees are based on distance from the SA city center. Not sure which tier you're in? The Estimator will calculate it exactly.</p>
+            <p className="text-base text-white/35 mt-4 max-w-md mx-auto">Travel fees are calculated from our home base in <strong className="text-white/55">Alamo Ranch (West San Antonio, 78253)</strong>. Not sure which tier you're in? The Price Calculator works it out exactly from your address.</p>
           </div>
           <div className="border border-[#1e2a3a] overflow-hidden">
             <div className="grid grid-cols-[80px_1fr_auto] md:grid-cols-[100px_1fr_220px_80px] gap-px bg-[#1e2a3a]">
@@ -115,7 +115,7 @@ export default function MobileNotary() {
               ))}
             </div>
           </div>
-          <p className="text-xs text-white/25 mt-4 text-center">Distance calculated from downtown San Antonio. The Estimator calculates your tier automatically.</p>
+          <p className="text-xs text-white/25 mt-4 text-center">Distance is calculated from Alamo Ranch (West San Antonio, 78253). The Price Calculator determines your tier automatically from your address.</p>
         </div>
       </section>
 
@@ -216,7 +216,7 @@ export default function MobileNotary() {
             </div>
           </div>
           <div className="flex-shrink-0">
-            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-mobile-cta">
+            <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-mobile-cta">
               Book Now →
             </Link>
           </div>

@@ -30,12 +30,6 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
         rule: "Weekday mornings only. Appointment must start between 8–10 AM. Valid on RON sessions including General Notary Work. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
       },
       {
-        name: "Lunch Break Seal™",
-        tag: "$10 OFF",
-        window: "11:00 AM – 1:00 PM · Mon – Fri",
-        rule: "Weekday midday RON window. Valid on Remote Online Notarization including GNW. Book in advance or same-hour. Applies to the base RON service fee only — does not apply to additional document seals. Cannot combine with other time-window promos. Auto-applied — no code needed.",
-      },
-      {
         name: "Night Shift Seal™",
         tag: "$10 OFF",
         window: "6:00 PM – 9:00 PM · Mon – Fri",
@@ -206,7 +200,7 @@ export default function Promos() {
               </div>
               <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>Offered at booking — services with deliverables only</p>
               <p className="text-sm text-white/40 leading-relaxed">
-                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, deposition transcripts, and audio recordings. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue from $5/month or stop — no automatic charge.
+                Encrypted file vault that stores every deliverable from every appointment automatically — notarized documents, apostilled files, signed loan packages, and deposition transcripts. Activated through the booking flow when your appointment includes a Docsy service. No card. No signup. After 30 days, continue from $5/month or stop — no automatic charge.
               </p>
             </div>
           </FadeIn>
@@ -222,7 +216,7 @@ export default function Promos() {
               One time-window promo<br />per appointment.
             </h2>
             <p className="text-lg font-light text-white/50 leading-relaxed">
-              Time-window promos (Early Bird Seal, Lunch Break Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass is the exception — it stacks with every other promotion on the same appointment, subject to one-time eligibility verification.
+              Time-window promos (Early Bird Seal, Night Shift Seal, Midday Miles) are mutually exclusive — only one applies per appointment. Weekend Warrior is a separate category and does not interact with time-window promos. HonorPass is the exception — it stacks with every other promotion on the same appointment, subject to one-time eligibility verification.
             </p>
           </FadeIn>
         </div>
@@ -242,7 +236,7 @@ export default function Promos() {
             </p>
           </FadeIn>
           <FadeIn delay={160}>
-            <Link href="/estimate" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
+            <Link href="/calculate" className="inline-block px-10 py-4 text-base font-bold text-white" style={{ backgroundColor: "#000" }}>
               Calculate Your Price
             </Link>
           </FadeIn>

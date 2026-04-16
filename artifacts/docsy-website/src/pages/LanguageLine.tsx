@@ -79,7 +79,7 @@ export default function LanguageLine() {
           </FadeIn>
           <FadeIn delay={160}>
             <Link
-              href="/estimate"
+              href="/calculate"
               className="px-8 py-4 text-base font-bold text-white text-center inline-block"
               style={{ backgroundColor: BLUE }}
             >
@@ -204,7 +204,7 @@ export default function LanguageLine() {
           <FadeIn delay={80}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/estimate"
+                href="/calculate"
                 className="px-8 py-4 text-base font-bold text-white text-center"
                 style={{ backgroundColor: "#000" }}
               >

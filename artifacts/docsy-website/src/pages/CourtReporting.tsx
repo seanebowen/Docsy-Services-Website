@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function CourtReporting() {
   React.useEffect(() => {
-    document.title = "Digital Court Reporting | Docsy Services";
+    document.title = "Electronic Reporting & Transcription Services | Docsy Services";
   }, []);
 
   return (
@@ -44,12 +44,12 @@ export default function CourtReporting() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Digital court reporting for depositions and legal proceedings. AAERT certified. <strong className="text-black">Below agency rates.</strong> Word index, certified PDF, and delivery always included.
+              <strong className="text-black">Electronic Reporting &amp; Transcription Services</strong> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT certified. Below agency rates. Word index, certified PDF, and digital delivery always included.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/estimate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court">
+              <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court">
                 Book Now →
               </Link>
             </div>
@@ -61,6 +61,18 @@ export default function CourtReporting() {
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
+          <Label icon="⊙" text="WHAT WE COVER" />
+          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
+            One reporter. <H>Every kind of proceeding.</H>
+          </h2>
+          <p className="text-lg font-light text-white/50 leading-relaxed">
+            Depositions, examinations under oath (EUOs), board and shareholder meetings, arbitrations, mediations, public hearings, and corporate proceedings — in person or remote. AAERT certified reporters. Verbatim record produced under oath, with the same legal weight as a traditional stenographic transcript.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
+        <div className="max-w-2xl mx-auto">
           <Label icon="⊙" text="THE ISSUE" />
           <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-6" style={{ letterSpacing: "-0.02em" }}>
             What agencies don't want
@@ -68,7 +80,7 @@ export default function CourtReporting() {
             you to <H>compare.</H>
           </h2>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            Agencies charge $5–$7.50+ per page for ordinary transcripts, then add <H>word index fees</H>, litigation package fees, e-delivery surcharges, vault hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying <H>2–3× the advertised page rate.</H>
+            Agencies charge $8.50–$12+ per page for ordinary transcripts, then add <H>word index fees</H>, litigation package fees, e-delivery surcharges, vault hosting, and "administrative processing" charges on top. By the time the invoice arrives, you're paying <H>2–3× the advertised page rate.</H>
           </p>
         </div>
       </section>
@@ -77,11 +89,11 @@ export default function CourtReporting() {
         <div className="max-w-2xl mx-auto">
           <Label icon="⊞" text="PRICING" />
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
-            <H>$4.75</H>
+            <H>$8.50</H>
           </h2>
-          <p className="text-xl font-bold text-white/50 mb-6">per page — standard rate</p>
+          <p className="text-xl font-bold text-white/50 mb-6">per page — Standard transcript</p>
           <p className="text-lg text-white/40">
-            Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. <H>That's the standard rate.</H>
+            Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. <H>That's the standard rate.</H> PDF-only delivery is always free.
           </p>
         </div>
       </section>
@@ -139,9 +151,12 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Transcript Rates (per page)</p>
               </div>
               {[
-                { l: "14-Day", p: "$4.75" },
-                { l: "7-Day Expedited", p: "$5.75" }, { l: "3-Day Rush", p: "$6.75" },
-                { l: "Same-Day", p: "Call for pricing" },
+                { l: "Rough Draft (uncertified)", p: "$0.75" },
+                { l: "Standard (10 business days)", p: "$8.50" },
+                { l: "Extended (15+ business days)", p: "$7.50" },
+                { l: "Rush (next business day)", p: "$12.00" },
+                { l: "Certified Copy (per copy/page)", p: "$2.50" },
+                { l: "PDF-only delivery", p: "Free" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
@@ -151,6 +166,34 @@ export default function CourtReporting() {
             </div>
           </div>
           <p className="text-sm text-white/30 text-center mt-6">All orders: NET-14. A 50% deposit is required at scheduling for transcript orders.</p>
+        </div>
+      </section>
+
+      {/* ── Office Space Rentals ── */}
+      <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a]">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <Label icon="⊞" text="OFFICE SPACE" />
+            <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white" style={{ letterSpacing: "-0.02em" }}>
+              Need a room?<br />
+              <H>We have one.</H>
+            </h2>
+            <p className="text-base text-white/40 mt-4 max-w-lg mx-auto">
+              Conference space available for your deposition, EUO, mediation, or arbitration — fully equipped for in-person and hybrid proceedings.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a]">
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#4D9FDB" }}>Half-Day</p>
+              <p className="text-4xl font-black text-white mb-2">$150</p>
+              <p className="text-sm text-white/40">Up to 4 hours. Conference table, AV, secure Wi-Fi, exhibit display, and refreshments included.</p>
+            </div>
+            <div className="p-8" style={{ backgroundColor: BG }}>
+              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#4D9FDB" }}>Full-Day</p>
+              <p className="text-4xl font-black text-white mb-2">$175</p>
+              <p className="text-sm text-white/40">Up to 8 hours. All half-day amenities plus extended setup, lunch coordination, and on-site tech support.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -170,7 +213,7 @@ export default function CourtReporting() {
             </div>
           </div>
           <div className="flex-shrink-0">
-            <Link href="/estimate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court-cta">
+            <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court-cta">
               Book Now →
             </Link>
           </div>

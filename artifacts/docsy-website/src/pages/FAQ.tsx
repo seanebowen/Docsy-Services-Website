@@ -24,7 +24,7 @@ const faqs = [
       },
       {
         q: "Are you available on weekends and after hours?",
-        a: "Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply on weekdays automatically: Early Bird Seal (8–10 AM, $10 off RON), Lunch Break Seal (11 AM–1 PM, $10 off RON), Night Shift Seal (6–9 PM, $10 off RON), and Midday Miles (12–4 PM, $10 off mobile notary). Weekend Warrior applies on Saturdays and Sundays for loan signing appointments (20% off). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking.",
+        a: "Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply on weekdays automatically: Early Bird Seal (8–10 AM, $10 off RON), Night Shift Seal (6–9 PM, $10 off RON), and Midday Miles (12–4 PM, $10 off mobile notary). Weekend Warrior applies on Saturdays and Sundays for loan signing appointments (20% off). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking.",
       },
       {
         q: "Do I get a receipt or invoice?",
@@ -104,11 +104,11 @@ const faqs = [
     items: [
       {
         q: "What is digital court reporting?",
-        a: "Digital court reporting uses certified audio recording equipment to capture the full verbatim record of a deposition, then produces a certified transcript from that recording. Docsy reporters are AAERT certified. The resulting transcript carries the same legal weight as traditional stenographic transcripts.",
+        a: "Electronic reporting uses certified digital capture equipment to record the full verbatim record of a deposition, EUO, board meeting, arbitration, or similar proceeding, then produces a certified transcript from that record. Docsy reporters are AAERT certified. The resulting transcript carries the same legal weight as traditional stenographic transcripts.",
       },
       {
         q: "What's included in the transcript?",
-        a: "The $4.75/page rate includes: word index, certified PDF, and e-transcript ASCII file. These are standard inclusions — not add-ons. No hidden fees for files that agencies typically charge extra for.",
+        a: "The $8.50/page Standard rate includes: word index, certified PDF, and e-transcript ASCII file. PDF-only delivery is always free. These are standard inclusions — not add-ons. No hidden fees for files that agencies typically charge extra for.",
       },
       {
         q: "How quickly are transcripts delivered?",

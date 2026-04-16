@@ -295,7 +295,7 @@ export default function Memberships() {
               No more lost documents.
             </h2>
             <p className="text-lg text-white/50 leading-relaxed">
-              Docsy Safe+ is an encrypted file vault that stores every deliverable from every Docsy appointment — notarized documents, apostille packages, loan signing files, court reporting transcripts, and audio recordings. Everything uploads automatically. Access it from any device, any time. This is a storage subscription — not a membership. No perks attached, just your files, always there.
+              Docsy Safe+ is an encrypted file vault that stores every deliverable from every Docsy appointment — notarized documents, apostille packages, loan signing files, and electronic reporting transcripts. Everything uploads automatically. Access it from any device, any time. This is a storage subscription — not a membership. No perks attached, just your files, always there.
             </p>
           </FadeIn>
         </div>
@@ -362,7 +362,7 @@ export default function Memberships() {
             </h2>
             <p className="text-lg text-black/60 mb-8">No signup ever needed. Auto-starts with your first service with Docsy — unless you opt out.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/estimate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
+              <Link href="/calculate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
                 Calculate Your Price
               </Link>
               <Link href="/promos" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center">
