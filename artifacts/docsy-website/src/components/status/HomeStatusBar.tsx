@@ -59,7 +59,7 @@ export function HomeStatusBar() {
 
   return (
     <div
-      className="block w-full border-b sticky top-0 z-40"
+      className="block w-full border-b"
       style={{ backgroundColor: SLATE, borderColor: DIV }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

@@ -52,7 +52,7 @@ export function Navbar() {
   const firstName = user?.name.split(" ")[0] ?? "";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b" style={{ backgroundColor: SLATE, borderColor: DIV }}>
+    <header className="w-full border-b" style={{ backgroundColor: SLATE, borderColor: DIV }}>
       <div className="flex items-center justify-between h-14 px-5 max-w-7xl mx-auto">
 
         {/* Logo */}
@@ -150,14 +150,6 @@ export function Navbar() {
             </Link>
           )}
 
-          <Link
-            href="/calculate"
-            className="px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-colors hover:opacity-90"
-            style={{ backgroundColor: "#4D9FDB", color: "#fff" }}
-            data-testid="btn-book-nav"
-          >
-            Book Now →
-          </Link>
         </div>
 
         {/* Mobile hamburger */}
