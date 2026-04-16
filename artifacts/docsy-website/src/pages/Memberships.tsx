@@ -155,9 +155,9 @@ export default function Memberships() {
           </FadeIn>
           <FadeIn delay={260}>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="#memberships" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
+              <a href="#memberships" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
                 View Membership Plans
-              </Link>
+              </a>
               <Link href="/vault-info" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black">
                 Visit Safe+ →
               </Link>
