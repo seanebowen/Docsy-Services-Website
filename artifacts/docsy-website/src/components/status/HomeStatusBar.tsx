@@ -67,31 +67,31 @@ export function HomeStatusBar() {
       aria-live="polite"
       data-testid="home-status-bar"
     >
-      <div className="max-w-7xl mx-auto px-5 py-2.5 flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center gap-3.5">
         <span
-          className={`block w-[10px] h-[10px] rounded-full shrink-0 ${pulse ? "animate-pulse" : ""}`}
+          className={`block w-[13px] h-[13px] rounded-full shrink-0 ${pulse ? "animate-pulse" : ""}`}
           style={{
             backgroundColor: dotColor,
-            boxShadow: `0 0 0 3px ${dotColor}33`,
+            boxShadow: `0 0 0 4px ${dotColor}33`,
           }}
           aria-hidden="true"
         />
-        <div className="flex-1 min-w-0 flex items-center gap-3 overflow-hidden">
+        <div className="flex-1 min-w-0 flex items-center gap-3.5 overflow-hidden">
           <span
             key={state === "available" ? `h-${idx}` : `h-${state}`}
-            className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] whitespace-nowrap truncate"
+            className="text-[14px] sm:text-[15px] font-bold uppercase tracking-[0.12em] whitespace-nowrap truncate"
             style={{ color: BLUE, animation: "fadeUp .35s ease" }}
           >
             {headline}
           </span>
           <span
-            className="hidden md:inline text-[11px] font-medium truncate"
+            className="hidden md:inline text-[12px] sm:text-[13px] font-medium truncate"
             style={{ color: "rgba(77,159,219,0.55)" }}
           >
             {sub}
           </span>
           <span
-            className="hidden lg:inline text-[11px] font-bold whitespace-nowrap"
+            className="hidden lg:inline text-[12px] sm:text-[13px] font-bold whitespace-nowrap"
             style={{ color: dotColor }}
           >
             {next.prefix}{next.value}
@@ -99,7 +99,7 @@ export function HomeStatusBar() {
         </div>
         <Link
           href={BOOKING_HREF}
-          className="ml-auto text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-3 py-1.5 border transition-colors hover:bg-white/[0.05]"
+          className="ml-auto text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] whitespace-nowrap shrink-0 px-4 py-2 border transition-colors hover:bg-white/[0.05]"
           style={{ borderColor: BLUE, color: BLUE }}
           data-testid="home-status-cta"
         >
