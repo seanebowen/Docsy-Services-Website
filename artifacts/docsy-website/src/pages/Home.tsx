@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Link } from "wouter";
-import { FileText, MapPin, Video, Briefcase, Globe, ShieldCheck, Languages } from "lucide-react";
+import { MapPin, Video, Briefcase, Globe, FileText, Calendar, PenLine, DollarSign } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
 import { PromotionTicker } from "@/components/layout/PromotionTicker";
@@ -28,31 +28,6 @@ const Pill = ({ text, dark }: { text: string; dark?: boolean }) => (
     </span>
   </div>
 );
-
-function TypewriterLine({ text, speed = 38 }: { text: string; speed?: number }) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone]           = useState(false);
-  const ref                       = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    setDisplayed("");
-    setDone(false);
-    let i = 0;
-    ref.current = setInterval(() => {
-      i++;
-      setDisplayed(text.slice(0, i));
-      if (i >= text.length) { clearInterval(ref.current!); setDone(true); }
-    }, speed);
-    return () => { if (ref.current) clearInterval(ref.current); };
-  }, [text, speed]);
-
-  return (
-    <span>
-      {displayed}
-      {!done && <span className="animate-pulse opacity-50">█</span>}
-    </span>
-  );
-}
 
 const STATS = [
   { value: "< 15 min", label: "Average RON session" },
@@ -90,7 +65,7 @@ const NUM_CARDS = [
   {
     num: "06",
     title: "Encrypted file vault — auto-started, 30 days free.",
-    body: "Every document, recording, and transcript from every appointment uploads automatically to your Docsy Safe+ vault. No action required. It starts the day of your first service — no card, no signup.",
+    body: "Every document, recording, and transcript from every appointment uploads automatically to your Safe+ Vault. No action required. It starts the day of your first service — no card, no signup.",
   },
 ];
 
@@ -98,7 +73,7 @@ const SERVICES = [
   { icon: Video,       label: "Remote Online Notarization", desc: "Legally binding RON. Same-hour available. Anywhere in the US.", href: "/ron" },
   { icon: MapPin,      label: "Mobile Notary & Loan Signing", desc: "We come to you across the SA metro — home, office, hospital, title company. Loan signings included.", href: "/mobile-notary" },
   { icon: Globe,       label: "Apostille Services",         desc: "All-inclusive Texas apostille. State fee in. Scan emailed. Tracked return shipping.", href: "/apostille" },
-  { icon: Briefcase,   label: "Electronic Reporting & Transcription", desc: "Depositions, EUOs, meetings, arbitrations. Below-agency rates. Word index always included.", href: "/electronic-reporting" },
+  { icon: Briefcase,   label: "Electronic Reporting", desc: "Depositions, EUOs, meetings, arbitrations. Below-agency rates. Word index always included.", href: "/electronic-reporting" },
 ];
 
 const TESTIMONIALS = [
@@ -133,16 +108,19 @@ export default function Home() {
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
-              <p className="text-base sm:text-lg font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-                Texas notary &amp; document services — RON, mobile notary &amp; loan signing, apostille, and electronic reporting &amp; transcription. <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Always know your price before you book.</strong> No hidden fees. No agency markup.
+              <p className="text-lg sm:text-xl font-medium mb-4 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.75)" }}>
+                Transparent pricing. Same-hour availability. Texas-wide.
+              </p>
+              <p className="text-sm sm:text-base font-light mb-10 max-w-xl mx-auto" style={{ color: "rgba(0,0,0,0.45)" }}>
+                RON · Mobile notary &amp; loan signing · Apostille · Electronic reporting &amp; transcription.
               </p>
             </FadeIn>
             <FadeIn delay={320}>
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
                 <Link
                   href="/calculate"
-                  className="px-8 py-4 text-sm font-bold text-center border"
-                  style={{ borderColor: AMBER, color: AMBER }}
+                  className="px-8 py-4 text-sm font-bold text-white text-center"
+                  style={{ backgroundColor: AMBER }}
                   data-testid="btn-estimate-hero"
                 >
                   Calculate Your Price →
@@ -166,6 +144,32 @@ export default function Home() {
 
       {/* ── PROMOTION TICKER ───────────────────────────────── */}
       <PromotionTicker />
+
+      {/* ── HOW IT WORKS STRIP ───────────────────────────── */}
+      <section className="py-10 sm:py-12 px-5 border-b" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
+          <FadeIn delay={0}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-center mb-6" style={{ color: "rgba(255,255,255,0.35)" }}>
+              ⊙ How it works
+            </p>
+            <div className="grid grid-cols-4 gap-px" style={{ backgroundColor: DIV }}>
+              {[
+                { icon: FileText, step: "01", label: "Quote", desc: "Get your exact price" },
+                { icon: Calendar, step: "02", label: "Book",  desc: "Pick a time that works" },
+                { icon: PenLine,  step: "03", label: "Sign",  desc: "Remote or in person" },
+                { icon: DollarSign, step: "04", label: "Paid", desc: "Only what was quoted" },
+              ].map(({ icon: Icon, step, label, desc }) => (
+                <div key={step} className="py-6 px-3 sm:px-5 text-center" style={{ backgroundColor: SLATE }}>
+                  <Icon className="h-5 w-5 mx-auto mb-3" style={{ color: AMBER }} />
+                  <p className="font-mono text-[10px] mb-1 tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>[ {step} ]</p>
+                  <p className="text-sm font-black text-white uppercase tracking-wide">{label}</p>
+                  <p className="hidden sm:block text-xs font-light mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>{desc}</p>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* ── NUMBERED FEATURES ───────────────────────────────── */}
       <section className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
@@ -270,72 +274,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── LANGUAGE LINE ─────────────────────────────────── */}
-      <section id="language-line" className="py-20 sm:py-24 px-5 border-b" style={{ borderColor: DIV }}>
-        <div className="max-w-5xl mx-auto">
+      {/* ── LANGUAGE LINE (teaser) ─────────────────────────── */}
+      <section id="language-line" className="py-16 sm:py-20 px-5 border-b" style={{ borderColor: DIV }}>
+        <div className="max-w-3xl mx-auto text-center">
           <FadeIn delay={0}>
-            <div className="text-center mb-12">
-              <Pill text="⊕ Language Line" dark />
-              <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
-                Need an interpreter?<br />
-                <span className="font-light text-white/40">We've got you covered.</span>
-              </h2>
-              <p className="text-base font-light max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
-                Real-time interpreter support via Language Line Solutions — available on demand across all service divisions. Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. No advance notice required.
-              </p>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={80}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
-              {[
-                { label: "Tier 1 — Spanish", langs: "On-demand. Most common.", prices: { 15: 32, 30: 62, 60: 125 } },
-                { label: "Tier 2 — Common Languages", langs: "French, Portuguese, Vietnamese, Tagalog, Korean, German, Italian, Russian", prices: { 15: 45, 30: 88, 60: 175 } },
-                { label: "Tier 3 — Premium Languages", langs: "Mandarin, Cantonese, Arabic, Japanese, Hindi, and all others", prices: { 15: 68, 30: 135, 60: 275 } },
-              ].map((tier, i) => (
-                <div key={i} className="flex flex-col" style={{ backgroundColor: SLATE }}>
-                  <div className="px-6 py-5 border-b" style={{ borderColor: DIV }}>
-                    <p className="text-sm font-black text-white mb-1">{tier.label}</p>
-                    <p className="text-xs font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>{tier.langs}</p>
-                  </div>
-                  <div className="flex-1 divide-y" style={{ borderColor: DIV }}>
-                    {([15, 30, 60] as const).map(min => (
-                      <div key={min} className="flex justify-between items-center px-6 py-3" style={{ borderColor: DIV }}>
-                        <span className="text-xs font-light" style={{ color: "rgba(255,255,255,0.5)" }}>{min} minutes</span>
-                        <span className="text-sm font-bold" style={{ color: AMBER }}>${tier.prices[min as 15 | 30 | 60]}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={160}>
-            <p className="text-center text-xs font-light mt-6" style={{ color: "rgba(255,255,255,0.35)" }}>
-              Minimum 15 minutes. Sold in 15/30/60-minute blocks. Overage billed in 15-min increments at the applicable tier rate. Interpreter fees are collected upfront alongside the base service fee.
+            <Pill text="⊕ Language Line" dark />
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
+              Need an interpreter?
+            </h2>
+            <p className="text-base font-light mb-8 max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
+              Real-time interpreter support via Language Line Solutions — Spanish, Mandarin, Arabic, Vietnamese, and hundreds more. Available on demand across every service. Tier pricing is shown when you add an interpreter in the calculator.
             </p>
-          </FadeIn>
-
-          <FadeIn delay={240}>
-            <div className="text-center mt-8">
-              <Link
-                href="/calculate"
-                className="inline-block px-8 py-4 text-sm font-bold text-white"
-                style={{ backgroundColor: AMBER }}
-              >
-                Add an interpreter to your booking →
-              </Link>
-            </div>
+            <Link
+              href="/calculate"
+              className="inline-block px-8 py-4 text-sm font-bold text-white"
+              style={{ backgroundColor: AMBER }}
+            >
+              Add an interpreter to your booking →
+            </Link>
           </FadeIn>
         </div>
       </section>
 
-      {/* ── MEMBERSHIPS CTA ──────────────────────────────── */}
+      {/* ── FINAL CTA — Memberships + Get a Price ─────────── */}
       <section className="py-20 sm:py-24 px-5 text-center" style={{ backgroundColor: IVORY }}>
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
-            <Pill text="⊛ Memberships" />
+            <Pill text="⊛ Ready when you are" />
           </FadeIn>
           <FadeIn delay={100}>
             <h2 className="text-4xl sm:text-5xl font-black text-black mb-4" style={{ letterSpacing: "-0.02em" }}>
@@ -344,46 +309,28 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={200}>
             <p className="text-base font-light mb-10 max-w-lg mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-              Docsy+ memberships from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month</strong> — or <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$150/year</strong> and save 15%. Free notarizations, priority scheduling, and discounts across every service division.
+              Tell us what you need and we'll tell you exactly what it costs — no hidden fees, no surprises. Or join Docsy+ from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month</strong> for free notarizations, priority scheduling, and discounts across every service.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
-            <Link
-              href="/memberships"
-              className="inline-block px-8 py-4 text-sm font-bold text-white"
-              style={{ backgroundColor: SLATE }}
-            >
-              See Membership Plans
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/calculate"
+                className="inline-block px-8 py-4 text-sm font-bold text-white"
+                style={{ backgroundColor: AMBER }}
+                data-testid="btn-book-footer"
+              >
+                Get Your Price →
+              </Link>
+              <Link
+                href="/memberships"
+                className="inline-block px-8 py-4 text-sm font-bold text-center border"
+                style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
+              >
+                See Membership Plans
+              </Link>
+            </div>
           </FadeIn>
-        </div>
-      </section>
-
-      {/* ── GET STARTED CTA (last section) ───────────────── */}
-      <section className="py-20 sm:py-24 px-5 text-center" style={{ backgroundColor: SLATE }}>
-        <div className="max-w-2xl mx-auto">
-          <div className="flex justify-center mb-8">
-            <span
-              className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border"
-              style={{ borderColor: AMBER, color: AMBER }}
-            >
-              ◎ Get Started
-            </span>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-black leading-tight text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
-            Ready to get started?
-          </h2>
-          <p className="text-base font-light mb-8 max-w-md mx-auto" style={{ color: "rgba(255,255,255,0.45)" }}>
-            Tell us what you need. We'll tell you exactly what it costs.<br />No hidden fees, no surprises.
-          </p>
-          <Link
-            href="/calculate"
-            className="inline-block px-8 py-4 text-sm font-bold text-white text-center"
-            style={{ backgroundColor: AMBER }}
-            data-testid="btn-book-footer"
-          >
-            Book Now →
-          </Link>
         </div>
       </section>
 

@@ -21,7 +21,7 @@ export interface Division {
 
 export const BUSINESS_HOURS = { open: 8, close: 18 };
 
-export const BOOKING_HREF = "/booking";
+export const BOOKING_HREF = "/calculate";
 
 export const MOCK_NEXT_TIMES: Record<StatusState, string> = {
   available: "Today 2:30 PM",
@@ -119,11 +119,11 @@ export const DIVISIONS: Division[] = [
   },
   {
     id: "court",
-    label: "Digital Court Reporting",
-    pill: "COURT REPORTING",
+    label: "Electronic Reporting",
+    pill: "ELECTRONIC REPORTING",
     color: "#d97706",
     home: {
-      h: "Certified E-Reporter Ready & Available",
+      h: "Certified Electronic Reporter Ready & Available",
       s: "Depositions · Remote & on-site · San Antonio",
     },
     available: {
@@ -137,7 +137,7 @@ export const DIVISIONS: Division[] = [
       btn: "Book next opening",
     },
     closed: {
-      h: "Court Reporting Closed — Resumes at {OPEN}",
+      h: "Electronic Reporting Closed — Resumes at {OPEN}",
       s: "Proceedings book out quickly — reserve your date tonight",
       btn: "Reserve your date",
     },

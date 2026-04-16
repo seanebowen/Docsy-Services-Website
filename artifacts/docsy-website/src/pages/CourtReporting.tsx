@@ -25,7 +25,7 @@ const HI = ({ children }: { children: React.ReactNode }) => (
 
 export default function CourtReporting() {
   React.useEffect(() => {
-    document.title = "Electronic Reporting & Transcription Services | Docsy Services";
+    document.title = "Electronic Reporting | Docsy Services";
   }, []);
 
 
@@ -46,13 +46,13 @@ export default function CourtReporting() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              <strong className="text-black">Electronic Reporting &amp; Transcription Services</strong> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT certified. Below agency rates. Word index, certified PDF, and digital delivery always included.
+              <strong className="text-black">Electronic Reporting</strong> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT certified. Below agency rates. Word index, certified PDF, and digital delivery always included.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court">
-                Book Now →
+                Get Your Price →
               </Link>
             </div>
           </FadeIn>
@@ -60,6 +60,19 @@ export default function CourtReporting() {
       </section>
 
       <ImageBand src={courtImg} alt="Court reporting conference table with microphone" />
+
+      {/* ── Testimonial ── */}
+      <section className="py-12 px-5 border-t border-[#1e2a3a]">
+        <div className="max-w-3xl mx-auto">
+          <div className="p-8 border border-[#1e2a3a]">
+            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+              &ldquo;Every court reporter I've used charges extra for the word index. Docsy just includes it. The invoice was exactly what I expected.&rdquo;
+            </p>
+            <p className="text-xs font-bold text-white">T. Perkins</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>San Antonio, TX</p>
+          </div>
+        </div>
+      </section>
 
       <section className="py-20 sm:py-24 px-5 border-t border-[#1e2a3a] text-center">
         <div className="max-w-2xl mx-auto">
@@ -220,7 +233,7 @@ export default function CourtReporting() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-court-cta">
-              Book Now →
+              Get Your Price →
             </Link>
           </div>
         </div>

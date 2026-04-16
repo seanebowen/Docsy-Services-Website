@@ -419,7 +419,7 @@ export default function Calculator() {
       loanOn     && { name: `Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`,           amount: loanTotal },
       apostOn    && { name: `Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`,      amount: apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal },
       apostOn && apostilleAddon > 0 && { name: `Apostille — ${apostilleAddonLabel}`,                                       amount: apostilleAddon },
-      courtOn    && { name: "Electronic Reporting & Transcription",                                                          amount: courtTotal },
+      courtOn    && { name: "Electronic Reporting",                                                          amount: courtTotal },
       travelTotal > 0 && { name: "Travel & Scheduling", amount: travelTotal },
       honorPassDiscount < 0 && { name: "HonorPass™ — 10% off base service fees", amount: honorPassDiscount },
       membershipPlan && { name: `${MEMBERSHIP_NAMES[membershipPlan]} (${membershipBilling})`, amount: membershipChargeNow, monthly: true },
@@ -885,10 +885,10 @@ export default function Calculator() {
 
               </FadeIn>
 
-              {/* ── Court Reporting ── */}
+              {/* ── Electronic Reporting ── */}
               <FadeIn delay={240} threshold={0.05}>
               <ServiceCard
-                num="05" title="Court Reporting"
+                num="05" title="Electronic Reporting"
                 desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $8.50/page standard — below agency rates."
                 startingAt="$150"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
@@ -1136,7 +1136,7 @@ export default function Calculator() {
                     {loanOn       && <SummaryLine label={`Loan Signing (${loan.packages.length} pkg${loan.packages.length !== 1 ? "s" : ""})`} amount={loanTotal} />}
                     {apostOn      && <SummaryLine label={`Apostille — ${apost.types.join(" + ")} (${apost.docs} doc${apost.docs > 1 ? "s" : ""})`} amount={apostilleAddon > 0 ? apostTotal - apostilleAddon : apostTotal} />}
                     {apostOn && apostilleAddon > 0 && <SummaryLine label={`↳ ${apostilleAddonLabel}`} amount={apostilleAddon} />}
-                    {courtOn           && <SummaryLine label="Court Reporting" amount={courtTotal} />}
+                    {courtOn           && <SummaryLine label="Electronic Reporting" amount={courtTotal} />}
                     {gnwTierTotal > 0  && <SummaryLine label="↳ GNW Travel" amount={gnwTierTotal} />}
                     {extendedFee > 0   && <SummaryLine label="↳ Extended Distance (40+ mi)" amount={extendedFee} />}
                     {llOn && <SummaryLine label={`↳ Interpreter (Language Line) — ${LL_TIER_LABELS[llTier]} ${llDuration} min`} amount={llTotal} />}

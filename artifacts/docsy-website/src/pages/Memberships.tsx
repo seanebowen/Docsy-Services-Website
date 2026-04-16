@@ -25,7 +25,7 @@ const TIERS = [
     price: "$15/mo",
     planKey: "starter",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Free Safe+ Vault subscription",
       "Fee-free priority bookings",
       "50% off 1 notarization/month (RON or mobile)",
       "10% off mobile fees",
@@ -37,7 +37,7 @@ const TIERS = [
     price: "$30/mo",
     planKey: "pro",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Free Safe+ Vault subscription",
       "Fee-free priority bookings",
       "1 free notarization/month (RON or mobile)",
       "15% off mobile fees",
@@ -50,7 +50,7 @@ const TIERS = [
     price: "$49/mo",
     planKey: "elite",
     features: [
-      "Free Docsy Safe+ subscription",
+      "Free Safe+ Vault subscription",
       "Fee-free priority bookings",
       "2 free notarizations/month (RON or mobile)",
       "20% off mobile fees",
@@ -74,7 +74,7 @@ Docsy Services reserves the right to update membership pricing with 30 days writ
   },
   {
     heading: "Cancellation",
-    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to all membership perks — including Docsy Safe+, priority booking, and discounts — remains active through the end of the current billing cycle. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
+    body: `Members may cancel at any time via written notice to Docsy Services. Upon cancellation, access to all membership perks — including Safe+ Vault, priority booking, and discounts — remains active through the end of the current billing cycle. No extensions, credits, or prorations are issued beyond what is outlined in the annual refund policy above.
 
 Docsy Services reserves the right to cancel any membership immediately and without refund in cases of abuse, fraud, misuse of perks, or violation of these terms.`,
   },
@@ -112,8 +112,8 @@ All RON or mobile sessions beyond the monthly credit allotment are billed at sta
     body: `All members receive fee-free priority booking across all service divisions. Priority booking places members ahead of non-member scheduling requests. It does not guarantee same-day or next-day availability. Priority status is tied to the active membership account and is non-transferable unless approved under the Transfer Policy below.`,
   },
   {
-    heading: "Docsy Safe+ Inclusion",
-    body: `All active Docsy+ members receive a complimentary Docsy Safe+ subscription included with their plan. Safe+ access is contingent on active membership status. Cancellation or lapse of membership results in loss of Safe+ access at the end of the billing cycle. Members wishing to retain Safe+ after cancellation may subscribe independently at the standard rate.`,
+    heading: "Safe+ Vault Inclusion",
+    body: `All active Docsy+ members receive a complimentary Safe+ Vault subscription included with their plan. Safe+ access is contingent on active membership status. Cancellation or lapse of membership results in loss of Safe+ access at the end of the billing cycle. Members wishing to retain Safe+ after cancellation may subscribe independently at the standard rate.`,
   },
   {
     heading: "Transfer Policy",
@@ -150,7 +150,7 @@ export default function Memberships() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Docsy+ is a membership — free notarizations every month, priority scheduling, and discounts across every service. The more you use Docsy, the more you save. Looking for document storage? <Link href="/vault-info" className="underline font-bold text-black">See Docsy Safe+ →</Link>
+              Docsy+ is a membership — free notarizations every month, priority scheduling, and discounts across every service. The more you use Docsy, the more you save. Looking for document storage? <Link href="/vault-info" className="underline font-bold text-black">See Safe+ Vault →</Link>
             </p>
           </FadeIn>
           <FadeIn delay={260}>
@@ -159,7 +159,7 @@ export default function Memberships() {
                 View Membership Plans
               </Link>
               <Link href="/vault-info" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black">
-                Visit Docsy Safe+ →
+                Visit Safe+ Vault →
               </Link>
             </div>
           </FadeIn>
@@ -294,10 +294,10 @@ export default function Memberships() {
             </h2>
             <p className="text-lg text-black/60 mb-8">Pick a tier above, or check out the calculator first to see how memberships change your price.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/calculate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#000" }}>
-                Calculate Your Price
+              <Link href="/calculate" className="px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }}>
+                Get Your Price →
               </Link>
-              <Link href="/promos" className="px-10 py-4 text-base font-bold text-black border-2 border-black text-center">
+              <Link href="/promos" className="px-10 py-4 text-base font-bold text-center border" style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}>
                 View Promotions
               </Link>
             </div>

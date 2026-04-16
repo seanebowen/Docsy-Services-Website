@@ -84,7 +84,7 @@ export default function NotaryServices() {
                 Jump to Mobile / GNW →
               </a>
               <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-notary">
-                Book Now →
+                Get Your Price →
               </Link>
             </div>
           </FadeIn>
@@ -95,6 +95,19 @@ export default function NotaryServices() {
       <SectionDivider id="ron" kicker="Remote Online Notarization" title="Get notarized without leaving the couch." />
 
       <ImageBand src={ronImg} alt="Remote online notarization video call" />
+
+      {/* ── Testimonial — RON ── */}
+      <section className="py-12 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="p-8 border" style={{ borderColor: DIV }}>
+            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+              &ldquo;The RON session took nine minutes. I signed my power of attorney from a coffee shop in Austin. Easiest notary experience I've ever had.&rdquo;
+            </p>
+            <p className="text-xs font-bold text-white">K. Mitchell</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>Austin, TX</p>
+          </div>
+        </div>
+      </section>
 
       <section className="py-20 sm:py-24 px-5 border-t text-center" style={{ borderColor: DIV }}>
         <div className="max-w-2xl mx-auto">
@@ -199,6 +212,19 @@ export default function NotaryServices() {
 
 
       <ImageBand src={mobileImg} alt="Mobile notary with document folio" />
+
+      {/* ── Testimonial — Mobile ── */}
+      <section className="py-12 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="p-8 border" style={{ borderColor: DIV }}>
+            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+              &ldquo;We had to close on a Friday evening. Docsy showed up on time, had everything organized, and the scanbacks were back to our title office before I left the parking lot.&rdquo;
+            </p>
+            <p className="text-xs font-bold text-white">R. Salazar</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>San Antonio, TX</p>
+          </div>
+        </div>
+      </section>
 
       <section className="py-20 sm:py-24 px-5 border-t text-center" style={{ borderColor: DIV }}>
         <div className="max-w-2xl mx-auto">
@@ -348,7 +374,7 @@ export default function NotaryServices() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-notary-cta">
-              Book Now →
+              Get Your Price →
             </Link>
           </div>
         </div>

@@ -161,7 +161,7 @@ export default function Apostille() {
           <FadeIn delay={300}>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3">
               <Link href="/calculate" className="px-8 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille">
-                Book Now →
+                Get Your Price →
               </Link>
               <Link href="/about?inquiry=apostille-precheck#apostille-precheck" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
@@ -175,6 +175,19 @@ export default function Apostille() {
       </section>
 
       <ImageBand src={apostilleImg} alt="Apostille wax seal on official document" />
+
+      {/* ── Testimonial ── */}
+      <section className="py-12 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="p-8 border" style={{ borderColor: DIV }}>
+            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+              &ldquo;I needed an apostille for a work visa and didn't know where to start. The pre-check saved me from sending the wrong document. Everything was handled in three days.&rdquo;
+            </p>
+            <p className="text-xs font-bold text-white">A. Nguyen</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>Houston, TX</p>
+          </div>
+        </div>
+      </section>
 
       {/* ── Info sections ── */}
       {[
@@ -446,7 +459,7 @@ export default function Apostille() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille-cta">
-              Book Now →
+              Get Your Price →
             </Link>
           </div>
         </div>

@@ -38,19 +38,17 @@ export function HomeStatusBar() {
   let pulse = true;
   let headline = "";
   let sub = "";
-  let btnText = "Book now";
+  const btnText = "Get Your Price";
 
   if (state === "busy") {
     dotColor = "#eab308";
     headline = HOME_BUSY.h;
     sub = HOME_BUSY.s;
-    btnText = HOME_BUSY.btn;
   } else if (state === "closed") {
     dotColor = "#ef4444";
     pulse = false;
     headline = applyTokens(HOME_CLOSED.h);
     sub = HOME_CLOSED.s;
-    btnText = HOME_CLOSED.btn;
   } else {
     const d = DIVISIONS[idx];
     headline = d.home.h;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, HelpCircle, MessageSquare, Tag, Calculator, ChevronDown, Phone, Archive, LogOut, User, Info, Languages } from "lucide-react";
+import { Menu, X, HelpCircle, Tag, ChevronDown, Archive, LogOut, User, Info, Languages } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const SLATE = "#131929";
@@ -11,13 +11,12 @@ const allLinks = [
   { href: "/notary-services",     label: "Notary Services" },
   { href: "/loan-signing",        label: "Loan Signing" },
   { href: "/apostille",           label: "Apostille" },
-  { href: "/electronic-reporting",label: "E-Reporting" },
+  { href: "/electronic-reporting",label: "Electronic Reporting" },
   { href: "/memberships",         label: "Memberships" },
-  { href: "/vault-info",          label: "Safe+" },
+  { href: "/vault-info",          label: "Safe+ Vault" },
 ];
 
 const moreLinks = [
-  { href: "/calculate",     label: "Price Calculator", icon: Calculator },
   { href: "/about",         label: "About & Contact",  icon: Info },
   { href: "/faq",           label: "FAQ & Guides",     icon: HelpCircle },
   { href: "/promos",        label: "Promotions",       icon: Tag },
@@ -102,7 +101,15 @@ export function Navbar() {
         </nav>
 
         {/* Desktop right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/calculate"
+            className="px-4 py-2 text-xs font-bold uppercase tracking-[0.12em]"
+            style={{ backgroundColor: AMBER, color: "#fff" }}
+            data-testid="nav-get-price"
+          >
+            Get a Price
+          </Link>
           {user ? (
             /* ── Signed-in account widget ── */
             <div className="relative" ref={accountRef}>
@@ -195,7 +202,7 @@ export function Navbar() {
 
             <div className="pt-4 flex flex-col gap-3">
               <Link href="/calculate" className="block px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-center" style={{ backgroundColor: "#4D9FDB", color: "#fff" }}>
-                Book Now →
+                Get Your Price →
               </Link>
               {user ? (
                 <button
