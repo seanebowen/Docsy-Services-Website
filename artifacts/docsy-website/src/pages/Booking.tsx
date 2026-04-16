@@ -272,10 +272,16 @@ export default function Booking() {
 
     if (isHoliday) result.push({ label: "Federal Holiday Surcharge", amount: 20 });
 
-    /* Timing surcharges — in-person services only, exempt for Docsy+ members */
+    /* Timing surcharges — in-person services only.
+       Members see an explicit waiver line ($0) so the perk is itemized. */
     const isInPerson = has("general notary work") || has("loan signing");
-    if (!isMember && isInPerson && hour >= 21)
-      result.push({ label: "After-Hours Surcharge (9 PM – 11 PM)", amount: 20 });
+    if (isInPerson && hour >= 21) {
+      if (isMember) {
+        result.push({ label: "After-Hours Surcharge (9 PM – 11 PM): Waived — Docsy+ Member", amount: 0 });
+      } else {
+        result.push({ label: "After-Hours Surcharge (9 PM – 11 PM)", amount: 20 });
+      }
+    }
 
     if (has("remote online") && isWeekday) {
       if      (hour >= 8  && hour < 10) result.push({ label: "Early Bird Seal™ — $10 Off",  amount: -10 });
@@ -294,7 +300,7 @@ export default function Booking() {
       if (pct > 0) {
         const off = Math.round(estimate.baseTotal * pct * 100) / 100;
         result.push({
-          label:  `${memberLabel} Discount — ${Math.round(pct * 100)}% Off Base`,
+          label:  `${memberLabel} Member Discount — ${Math.round(pct * 100)}% Off Base`,
           amount: -off,
         });
       }

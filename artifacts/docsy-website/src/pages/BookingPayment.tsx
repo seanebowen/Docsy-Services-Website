@@ -21,6 +21,13 @@ interface MemberCreditsState {
   travelWaiverAvailable: boolean;
 }
 
+/* Estimated dollar value applied when a member uses a credit at checkout.
+   Notarization credits cover a typical Texas notary line ($25); the starter
+   tier is a 50%-off credit so it caps at half that. Travel waiver removes
+   a typical mobile travel fee ($15). */
+const NOTARIZATION_CREDIT_VALUE = 25;
+const TRAVEL_WAIVER_VALUE       = 15;
+
 /* ── Payment Terms copy (one block per division) ── */
 const TERMS: Record<string, { heading: string; body: string[] }> = {
   ron: {
@@ -133,6 +140,13 @@ export default function BookingPayment() {
 
   /* Member credits (loaded for signed-in members) */
   const [credits, setCredits] = useState<MemberCreditsState | null>(null);
+  /* Explicitly applied credits — only these are consumed on confirm */
+  const [applyNotarization, setApplyNotarization] = useState(false);
+  const [applyTravelWaiver, setApplyTravelWaiver] = useState(false);
+  /* Existing-account-detected state (when /api/auth/upsert reports an
+     account already exists for the supplied email/phone). The user is
+     NOT signed in automatically — they must verify via OTP/login. */
+  const [existingAccount, setExistingAccount] = useState<null | { masked: string; identifier: string }>(null);
 
   /* card form state */
   const [name,    setName]    = useState("");
@@ -186,10 +200,18 @@ export default function BookingPayment() {
       .catch(() => { /* non-blocking */ });
   }, [token, user]);
 
-  const hasDiscount  = (booking?.autoPromos?.length ?? 0) > 0 || !!booking?.promoDiscount;
-  const displayTotal = hasDiscount
+  /* Effective per-credit values, derived from tier rules */
+  const notarizationCreditValue =
+    user?.membership === "starter" ? NOTARIZATION_CREDIT_VALUE * 0.5 : NOTARIZATION_CREDIT_VALUE;
+  const creditAdjustment =
+    (applyNotarization ? notarizationCreditValue : 0) +
+    (applyTravelWaiver ? TRAVEL_WAIVER_VALUE     : 0);
+
+  const hasDiscount  = (booking?.autoPromos?.length ?? 0) > 0 || !!booking?.promoDiscount || creditAdjustment > 0;
+  const baseDisplay  = (booking?.autoPromos?.length ?? 0) > 0 || !!booking?.promoDiscount
     ? (booking?.discountedTotal ?? booking?.estimate?.total ?? 0)
     : (booking?.estimate?.total ?? 0);
+  const displayTotal = Math.max(0, baseDisplay - creditAdjustment);
 
   /* Contact validation */
   const contactNameOk  = clientName.trim().length > 1;
@@ -260,8 +282,12 @@ export default function BookingPayment() {
 
     const last4 = upfront ? number.replace(/\s/g, "").slice(-4) : null;
 
-    /* Step 1 — auto-create account when opted in and no signed-in user */
-    let accountCreated = false;
+    /* Step 1 — auto-create account when opted in and no signed-in user.
+       The server only issues a session for *new* accounts. If an account
+       already exists, we surface that to the user (no auto-signin) and
+       prompt them to verify via the existing OTP flow. */
+    let accountCreated  = false;
+    let accountExisting = false;
     if (!user && createAccount) {
       try {
         const res = await fetch("/api/auth/upsert", {
@@ -274,39 +300,63 @@ export default function BookingPayment() {
           }),
         });
         const data = await res.json();
-        if (data?.ok && data.token && data.user) {
-          signIn(data.token, data.user);
-          accountCreated = !!data.created;
+        if (data?.ok) {
+          if (data.created && data.token && data.user) {
+            signIn(data.token, data.user);
+            accountCreated = true;
+          } else if (data.existing) {
+            accountExisting = true;
+            setExistingAccount({ masked: data.masked ?? clientEmail.trim(), identifier: data.identifier ?? clientEmail.trim() });
+          }
         }
       } catch {
         /* non-blocking — booking still proceeds even if account creation fails */
       }
     }
 
-    /* Step 2 — consume any auto-applied member credits (best-effort) */
-    if (token && user?.membership && booking) {
-      const usedTravelWaiver = (booking.autoPromos ?? []).some(p => p.label.toLowerCase().includes("travel waiver"));
-      const usedNotarization = (booking.autoPromos ?? []).some(p => p.label.toLowerCase().includes("free notarization"));
-      if (usedTravelWaiver || usedNotarization) {
-        fetch("/api/vault/credits/consume", {
-          method:  "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body:    JSON.stringify({ useNotarization: usedNotarization, useTravelWaiver: usedTravelWaiver }),
-        }).catch(() => { /* non-blocking */ });
-      }
+    /* Step 2 — consume only credits the user explicitly applied */
+    if (token && user?.membership && (applyNotarization || applyTravelWaiver)) {
+      fetch("/api/vault/credits/consume", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({
+          useNotarization: applyNotarization,
+          useTravelWaiver: applyTravelWaiver,
+        }),
+      }).catch(() => { /* non-blocking */ });
     }
 
     /* Step 3 — persist booking + fire Zapier (fire-and-forget) */
     try {
       const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
+      const appliedCreditLines: { label: string; amount: number }[] = [];
+      if (applyNotarization) {
+        appliedCreditLines.push({
+          label:  user?.membership === "starter"
+            ? `${MEMBERSHIP_LABELS[user.membership]} Member Credit — 50% Off Notarization`
+            : `${MEMBERSHIP_LABELS[user!.membership!]} Member Credit — Free Notarization`,
+          amount: -notarizationCreditValue,
+        });
+      }
+      if (applyTravelWaiver) {
+        appliedCreditLines.push({
+          label:  `${MEMBERSHIP_LABELS[user!.membership!]} Member Credit — Travel Waiver`,
+          amount: -TRAVEL_WAIVER_VALUE,
+        });
+      }
+      const mergedAutoPromos = [...(current.autoPromos ?? []), ...appliedCreditLines];
       const updated = {
         ...current,
+        autoPromos: mergedAutoPromos,
+        discountedTotal: displayTotal,
         paymentCompleted: true,
         cardLast4: last4,
         clientName:  clientName.trim(),
         clientEmail: clientEmail.trim(),
         clientPhone: clientPhone.replace(/\D/g, ""),
         accountCreated,
+        accountExisting,
+        appliedCredits: { notarization: applyNotarization, travelWaiver: applyTravelWaiver },
       };
       sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
 
@@ -321,7 +371,7 @@ export default function BookingPayment() {
     } catch {}
 
     setTimeout(() => setLocation("/booking/confirmation"), 600);
-  }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation, user, token, createAccount, signIn]);
+  }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation, user, token, createAccount, signIn, applyNotarization, applyTravelWaiver, displayTotal, notarizationCreditValue]);
 
   const fieldBorder = (ok: boolean) =>
     touched && !ok ? RED : DIV;
@@ -502,7 +552,7 @@ export default function BookingPayment() {
             </div>
           </FadeIn>
 
-          {/* ── Available Member Credits panel ── */}
+          {/* ── Available Member Credits panel — explicit Apply / Remove ── */}
           {credits && credits.membership && (credits.notarizationCredits > 0 || credits.travelWaiverAvailable) && (
             <FadeIn delay={50}>
               <div className="border-2 border-black overflow-hidden" style={{ backgroundColor: BG }}>
@@ -514,29 +564,99 @@ export default function BookingPayment() {
                     ◆ {MEMBERSHIP_LABELS[credits.membership] ?? credits.membership}
                   </span>
                 </div>
-                <div className="px-8 py-5 space-y-3">
+                <div className="px-8 py-5 space-y-4">
+
                   {credits.notarizationCredits > 0 && (
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-sm font-medium" style={{ color: IVORY }}>
-                        {credits.membership === "starter" ? "50% off notarization" : `Free notarization${credits.notarizationCredits > 1 ? "s" : ""}`}
-                      </span>
-                      <span className="text-sm font-black" style={{ color: BLUE }}>
-                        {credits.membership === "starter"
-                          ? `${credits.notarizationCredits >= 0.5 ? "1" : "0"} available`
-                          : `${credits.notarizationCredits} available`}
-                      </span>
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                      <div>
+                        <p className="text-sm font-medium" style={{ color: IVORY }}>
+                          {credits.membership === "starter"
+                            ? "50% off notarization"
+                            : `Free notarization${credits.notarizationCredits > 1 ? "s" : ""}`}
+                        </p>
+                        <p className="text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          {credits.membership === "starter" ? "1 available" : `${credits.notarizationCredits} available`} ·
+                          Worth −${notarizationCreditValue.toFixed(2)} on this booking
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setApplyNotarization(v => !v)}
+                        className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-colors"
+                        style={{
+                          borderColor:     applyNotarization ? BLUE : "rgba(255,255,255,0.2)",
+                          color:           applyNotarization ? "#000" : BLUE,
+                          backgroundColor: applyNotarization ? BLUE : "transparent",
+                        }}
+                        data-testid="toggle-credit-notarization"
+                      >
+                        {applyNotarization ? "Remove" : "Use this credit"}
+                      </button>
                     </div>
                   )}
+
                   {credits.travelWaiverAvailable && (
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-sm font-medium" style={{ color: IVORY }}>Mobile travel waiver</span>
-                      <span className="text-sm font-black" style={{ color: BLUE }}>1 available</span>
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                      <div>
+                        <p className="text-sm font-medium" style={{ color: IVORY }}>Mobile travel waiver</p>
+                        <p className="text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>
+                          1 available · Worth −${TRAVEL_WAIVER_VALUE.toFixed(2)} on this booking
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setApplyTravelWaiver(v => !v)}
+                        className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest border transition-colors"
+                        style={{
+                          borderColor:     applyTravelWaiver ? BLUE : "rgba(255,255,255,0.2)",
+                          color:           applyTravelWaiver ? "#000" : BLUE,
+                          backgroundColor: applyTravelWaiver ? BLUE : "transparent",
+                        }}
+                        data-testid="toggle-credit-travel"
+                      >
+                        {applyTravelWaiver ? "Remove" : "Use this credit"}
+                      </button>
                     </div>
                   )}
+
+                  {(applyNotarization || applyTravelWaiver) && (
+                    <div className="pt-3 border-t" style={{ borderColor: DIV }}>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>
+                        Applied to this booking
+                      </p>
+                      {applyNotarization && (
+                        <div className="flex items-baseline justify-between text-xs mb-1">
+                          <span style={{ color: IVORY }}>Notarization credit</span>
+                          <span className="font-black" style={{ color: BLUE }}>−${notarizationCreditValue.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {applyTravelWaiver && (
+                        <div className="flex items-baseline justify-between text-xs">
+                          <span style={{ color: IVORY }}>Travel waiver</span>
+                          <span className="font-black" style={{ color: BLUE }}>−${TRAVEL_WAIVER_VALUE.toFixed(2)}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <p className="text-[10px] leading-relaxed pt-2 border-t" style={{ color: "rgba(255,255,255,0.3)", borderColor: DIV }}>
-                    Eligible perks were applied to your estimate automatically. Credits roll over once before expiring.
+                    Credits are only consumed when you complete the booking. Toggle off to keep them for a future appointment.
                   </p>
                 </div>
+              </div>
+            </FadeIn>
+          )}
+
+          {/* ── Existing-account notice (post-attempt) ── */}
+          {existingAccount && !user && (
+            <FadeIn delay={50}>
+              <div className="border-2 p-5 text-xs" style={{ borderColor: BLUE, backgroundColor: "rgba(77,159,219,0.08)", color: IVORY }}>
+                <p className="font-bold mb-1">A Docsy account already exists for {existingAccount.masked}.</p>
+                <p style={{ color: "rgba(255,255,255,0.6)" }}>
+                  Your booking will still be confirmed. To access your Safe+ Vault, please {" "}
+                  <Link href="/login" style={{ color: BLUE }} className="underline font-bold">sign in to your existing account</Link>
+                  {" "} — we just sent a verification code to your email.
+                </p>
               </div>
             </FadeIn>
           )}

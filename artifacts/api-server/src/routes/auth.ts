@@ -148,8 +148,15 @@ router.post("/verify", (req, res): void => {
 });
 
 /* ── POST /api/auth/upsert ──────────────────────────────────
-   Creates (or reuses) an account from checkout booking data and
-   returns a session token. Triggers a welcome OTP (console-log demo).
+   Creates an account from checkout booking data when no Docsy account
+   exists for the supplied email/phone.
+
+   Security: a session token is ONLY issued for newly-created accounts.
+   When an account already exists for the supplied email or phone, this
+   endpoint refuses to issue a session (no ownership has been proved).
+   Instead it triggers a one-time code via the existing /request flow
+   and returns { existing: true, masked } so the client can prompt the
+   user to verify before being signed in.
 */
 router.post("/upsert", (req, res): void => {
   const { name, email, phone } = req.body as { name?: string; email?: string; phone?: string };
@@ -162,32 +169,43 @@ router.post("/upsert", (req, res): void => {
     return;
   }
 
-  /* Look up by email first, phone second */
-  let user = BY_EMAIL.get(cleanEmail) ?? BY_PHONE.get(cleanPhone) ?? null;
-  let created = false;
+  /* Look up existing accounts by either contact channel */
+  const existing = BY_EMAIL.get(cleanEmail) ?? BY_PHONE.get(cleanPhone) ?? null;
 
-  if (!user) {
-    user = {
-      id:         randomId(),
-      name:       cleanName,
-      email:      cleanEmail,
-      phone:      cleanPhone,
-      membership: null,
-    };
-    USERS.push(user);
-    BY_EMAIL.set(cleanEmail, user);
-    BY_PHONE.set(cleanPhone, user);
-    created = true;
+  if (existing) {
+    /* Existing account — never issue a session here. Send an OTP and tell
+       the client to ask the user to verify before being signed in. */
+    const code = randomCode();
+    const key  = existing.email.toLowerCase();
+    OTP_STORE.set(key, { userId: existing.id, code, expiresAt: Date.now() + 15 * 60 * 1000 });
+    console.info(`[AUTH] Verification OTP for existing account ${key}: ${code}`);
+    res.json({
+      ok:        true,
+      created:   false,
+      existing:  true,
+      masked:    mask(existing.email, "email"),
+      identifier: existing.email,
+    });
+    return;
   }
 
-  /* Create a session and log a welcome OTP (demo fallback) */
-  const token       = randomToken();
-  SESSION_STORE.set(token, user.id);
-  const welcomeCode = randomCode();
-  OTP_STORE.set(cleanEmail, { userId: user.id, code: welcomeCode, expiresAt: Date.now() + 24 * 60 * 60 * 1000 });
-  console.info(`[AUTH] Welcome OTP for ${cleanEmail}: ${welcomeCode} (account ${created ? "created" : "reused"})`);
+  /* New account — create it and issue a session token */
+  const newUser: MockUser = {
+    id:         randomId(),
+    name:       cleanName,
+    email:      cleanEmail,
+    phone:      cleanPhone,
+    membership: null,
+  };
+  USERS.push(newUser);
+  BY_EMAIL.set(cleanEmail, newUser);
+  BY_PHONE.set(cleanPhone, newUser);
 
-  res.json({ ok: true, created, token, user: publicUser(user) });
+  const token = randomToken();
+  SESSION_STORE.set(token, newUser.id);
+  console.info(`[AUTH] New account created for ${cleanEmail} — session issued`);
+
+  res.json({ ok: true, created: true, existing: false, token, user: publicUser(newUser) });
 });
 
 export default router;

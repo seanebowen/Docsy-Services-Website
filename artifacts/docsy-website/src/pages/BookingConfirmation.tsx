@@ -22,6 +22,7 @@ interface BookingData {
   clientEmail?:     string;
   clientPhone?:     string;
   accountCreated?:  boolean;
+  accountExisting?: boolean;
   memberTier?:      string | null;
 }
 
@@ -182,6 +183,14 @@ export default function BookingConfirmation() {
                       <Link href="/vault" style={{ color: BLUE }} className="underline">Open your Safe+ Vault →</Link>
                       <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
                         Your account was created automatically. Sign in any time at <Link href="/login" className="underline" style={{ color: BLUE }}>docsy/login</Link> with this email — we just sent you a sign-in link.
+                      </span>
+                    </p>
+                  )}
+                  {!booking.accountCreated && booking.accountExisting && (
+                    <p className="text-xs mt-3 font-bold">
+                      <Link href="/login" style={{ color: BLUE }} className="underline">Sign in to access your Safe+ Vault →</Link>
+                      <span className="block text-[10px] mt-1 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>
+                        We found an existing Docsy account for {booking.clientEmail}. We've sent a verification code to that email — sign in to find this booking's deliverables in your vault.
                       </span>
                     </p>
                   )}
