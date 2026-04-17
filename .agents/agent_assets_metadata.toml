@@ -36,6 +36,24 @@ uri = "file://artifacts/docsy-website/src/assets/images/apostille-seal.png"
 type = "image"
 title = "apostille cream minimal"
 
+[[generated]]
+id = "LIOSa_UDnuOAkhQesnvFz"
+uri = "file://attached_assets/generated_images/docsy-hero-grid.png"
+type = "image"
+title = "docsy brand illustration grid"
+
+[[generated]]
+id = "_ngOjG14cqJbR4YOmvcOk"
+uri = "file://attached_assets/generated_images/docsy-hero-single.png"
+type = "image"
+title = "docsy hero illustration single"
+
+[[generated]]
+id = "wPPSuLtQ160vO07MovJ2K"
+uri = "file://attached_assets/generated_images/docsy-split-illustration.png"
+type = "image"
+title = "docsy split panel illustration"
+
 [[outputs]]
 id = "bdjMapL9VuYhFFBOs5Nb9"
 uri = "file://attached_assets/stock_images/home-workspace.jpg"
@@ -107,3 +125,21 @@ id = "kmrwyBSDDOAjZjJnZpMw5"
 uri = "file://attached_assets/stock_images/mobile-notary-signing_3.jpg"
 type = "image"
 title = "two people signing legal documents at a table, professional meeting, paperwork"
+
+[[outputs]]
+id = "QdfmMDY7OsLS3_J3atuBV"
+uri = "file://attached_assets/generated_images/docsy-hero-grid.png"
+type = "image"
+title = "Docsy — Brand Illustration Grid (3×3 scenes)"
+
+[[outputs]]
+id = "duPum0HBrw-I9kFH7FAS2"
+uri = "file://attached_assets/generated_images/docsy-hero-single.png"
+type = "image"
+title = "Docsy — Hero Scene (16:9 wide)"
+
+[[outputs]]
+id = "PfEONnLsdpPRV1Yz7_X-y"
+uri = "file://attached_assets/generated_images/docsy-split-illustration.png"
+type = "image"
+title = "Docsy — Split Panel (two-scene)"
