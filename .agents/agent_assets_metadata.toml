@@ -54,6 +54,24 @@ uri = "file://attached_assets/generated_images/docsy-split-illustration.png"
 type = "image"
 title = "docsy split panel illustration"
 
+[[generated]]
+id = "wARCrsDj_-kJQOOcft5wY"
+uri = "file://attached_assets/generated_images/docsy-bwb-grid.png"
+type = "image"
+title = "docsy black white blue grid"
+
+[[generated]]
+id = "NSYRN9NOvGvHUNVmWSzUi"
+uri = "file://attached_assets/generated_images/docsy-bwb-hero.png"
+type = "image"
+title = "docsy black white blue hero"
+
+[[generated]]
+id = "XgiEwzNj7gqeO1UGobvTy"
+uri = "file://attached_assets/generated_images/docsy-bwb-scenes.png"
+type = "image"
+title = "docsy black white blue scenes"
+
 [[outputs]]
 id = "bdjMapL9VuYhFFBOs5Nb9"
 uri = "file://attached_assets/stock_images/home-workspace.jpg"
@@ -143,3 +161,21 @@ id = "PfEONnLsdpPRV1Yz7_X-y"
 uri = "file://attached_assets/generated_images/docsy-split-illustration.png"
 type = "image"
 title = "Docsy — Split Panel (two-scene)"
+
+[[outputs]]
+id = "sBEJ0-MExgXZfIUHzyb2d"
+uri = "file://attached_assets/generated_images/docsy-bwb-grid.png"
+type = "image"
+title = "Black, White & Blue — Grid Layout"
+
+[[outputs]]
+id = "ZrCzxghOVsuYCODsR_ftR"
+uri = "file://attached_assets/generated_images/docsy-bwb-hero.png"
+type = "image"
+title = "Black, White & Blue — Hero Wide"
+
+[[outputs]]
+id = "lw66Iox1_39yj9qE1RgN0"
+uri = "file://attached_assets/generated_images/docsy-bwb-scenes.png"
+type = "image"
+title = "Black, White & Blue — 6-Scene Set"
