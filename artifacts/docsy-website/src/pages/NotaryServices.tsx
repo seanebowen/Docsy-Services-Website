@@ -311,7 +311,7 @@ export default function NotaryServices() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
             {[
-              { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Each additional (same doc)", p: "$1" }] },
+              { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Additional signer (same session)", p: "$1" }, { l: "Additional seal (same session)", p: "$5" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
               { title: "Timing Add-Ons", items: [{ l: "After-hours (9 PM – 11 PM)", p: "+$20" }, { l: "Federal holiday", p: "+$20" }, { l: "Docsy+ members", p: "Exempt" }] },
             ].map((col) => (

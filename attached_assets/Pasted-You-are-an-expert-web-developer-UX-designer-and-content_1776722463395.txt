@@ -1,0 +1,100 @@
+You are an expert web developer, UX designer, and content strategist. Address each of the 
+following website updates precisely and independently. Do not alter anything outside the 
+specific scope of each task.
+
+---
+
+**1. IMAGE ZOOM & WHITE SPACE — COMPOSITION FIX**
+Current issue: Images have excessive white space but zooming in too aggressively hides 
+key visual elements.
+
+Fix: Apply a balanced crop/zoom approach that:
+  - Uses `object-fit: cover` with a carefully tuned `object-position` value to center 
+    the most important visual elements
+  - Sets a consistent, tested `max-height` per section so zoom feels intentional, not clipped
+  - Eliminates dead white space without cutting off faces, hands, or document subjects
+  - Test at 1280px, 1440px, and 1920px desktop breakpoints to confirm composition holds
+  - Do NOT use `transform: scale()` — control zoom purely through container sizing and 
+    object-position
+
+---
+
+**2. MEMBERSHIP PAGE — REMOVE "SAFE+" MENTIONS**
+Audit the membership page for every instance of the text "Safe+" (case-insensitive).
+  - Remove all occurrences from headings, body copy, labels, tooltips, and metadata
+  - Do not remove or alter surrounding content — only excise the "Safe+" references
+  - After removal, ensure sentences remain grammatically complete and coherent
+  - Provide a list of every location where "Safe+" was found and removed
+
+---
+
+**3. SAFE+ PAGE — REMOVE DOCSY MEMBER BONUS BOX**
+Locate and fully remove the "Docsy Member Bonus" box/component from the Safe+ page.
+  - Delete the element and its associated CSS/JS
+  - Ensure no layout gap or broken spacing remains after removal
+  - Do not alter any surrounding sections or content blocks
+
+---
+
+**4. MOBILE NOTARY IMAGE — ADD SMILES TO PEOPLE**
+The people in the mobile notary image currently appear expressionless or neutral.
+Fix: Update the image so the subjects have natural, approachable smiles.
+  - If AI-generated: regenerate with the prompt addition "warm, genuine smiles, 
+    approachable and professional expressions"
+  - If illustrated: edit facial expressions on existing characters only
+  - Do not change clothing, background, composition, skin tone, or any other element
+
+---
+
+**5. RON PRICING — CORRECT TWO LINE ITEMS**
+
+  Fix A — Additional Seal:
+  - Add a new line item: "$5 per additional seal (same session)"
+  - Place it directly below the base RON service fee in the pricing list
+  - This is additive within the same appointment, not a separate session charge
+
+  Fix B — Additional Signer Language:
+  - Current (incorrect): "$5 per each additional signature"
+  - Correct to: "$5 per additional signer"
+  - This is per person, not per signature — update label and any supporting copy 
+    or tooltips that reference this line item
+
+---
+
+**6. DOCSY SAFE+ TRIAL LANGUAGE — GLOBAL REMOVAL**
+Audit the entire site for any language that positions Docsy Safe+ as a "trial," 
+"trial period," "try free," or "trial membership."
+
+Replace all such instances with language reflecting that:
+  - Docsy Safe+ is ALWAYS included as a standard benefit
+  - It is only removed if the customer explicitly opts out
+  - Suggested replacement framing: "Included with your membership," 
+    "Always included — opt out anytime," or "Standard with every account"
+  - Provide a full list of every page and location where trial language was found 
+    and what it was replaced with
+
+---
+
+**7. IMAGE SKIN TONE CONSISTENCY — DIVERSITY & INCLUSION PRESERVED**
+Current issue: People across site images have inconsistent skin tone rendering, 
+creating a visual disconnect between images.
+
+Fix parameters (STRICT):
+  - Normalize the COLOR TREATMENT and LIGHTING of skin tones across all images 
+    so they feel cohesive under the same lighting model
+  - Do NOT change, flatten, or homogenize actual skin tones — preserve the full 
+    range of representation as-is
+  - Do NOT alter facial features, hair, clothing, body type, or any diversity 
+    signifiers whatsoever
+  - Adjustment is purely a photo/illustration post-processing correction: 
+    match white balance, shadow warmth, and highlight rendering across the image set
+  - Goal: images look like they came from the same professional shoot — 
+    not that everyone looks the same
+
+---
+
+For each task deliver:
+  - Exact code changes or asset update instructions
+  - File/component location of the change
+  - Before/after content summary where applicable
+  - Confirmation checklist item so QA can verify each fix independently
