@@ -11,8 +11,8 @@ export function ImageBand({ src, alt = "" }: ImageBandProps) {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: "560px",
         width: "100%",
+        backgroundColor: "#ffffff",
       }}
       className="image-band-desktop"
     >
@@ -22,22 +22,24 @@ export function ImageBand({ src, alt = "" }: ImageBandProps) {
         style={{
           width: "100%",
           height: "100%",
-          objectFit: "contain",
-          objectPosition: "center",
+          objectFit: "cover",
+          objectPosition: "center 35%",
           display: "block",
-          backgroundColor: "#ffffff",
         }}
       />
       <style>{`
+        .image-band-desktop { height: 480px; }
+        @media (min-width: 1440px) {
+          .image-band-desktop { height: 540px; }
+        }
+        @media (min-width: 1920px) {
+          .image-band-desktop { height: 600px; }
+        }
         @media (max-width: 1024px) {
-          .image-band-desktop {
-            height: 400px !important;
-          }
+          .image-band-desktop { height: 380px; }
         }
         @media (max-width: 640px) {
-          .image-band-desktop {
-            height: 240px !important;
-          }
+          .image-band-desktop { height: 260px; }
         }
       `}</style>
     </div>
