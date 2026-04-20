@@ -176,18 +176,20 @@ export function Navbar() {
       {isOpen && (
         <div className="md:hidden border-t" style={{ backgroundColor: SLATE, borderColor: DIV }}>
           <nav className="px-5 py-4 flex flex-col">
-            {allLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="py-3 text-sm font-medium border-b"
-                style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.45)", borderColor: DIV }}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {allLinks
+              .filter((link) => link.label !== "Safe+")
+              .map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="py-3 text-sm font-medium border-b"
+                  style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.45)", borderColor: DIV }}
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-            {/* Safe+ in mobile nav — always visible */}
+            {/* Single Safe+ entry — auth-aware */}
             <Link
               href={user ? "/vault" : "/vault-info"}
               className="py-3 text-sm font-medium border-b flex items-center gap-2"

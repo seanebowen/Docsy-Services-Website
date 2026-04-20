@@ -1,0 +1,60 @@
+You are an expert web developer and UX/conversion specialist. I need you to audit and fix 
+several specific issues on my website. Address each one systematically:
+
+---
+
+**1. "HOW IT WORKS" SECTION — COPY & CONVERSION FIX**
+The current steps read: Quote → Book → Sign → Paid
+"Paid" feels transactional and breaks trust/flow. Rewrite the 4-step sequence using 
+conversion-optimized, client-centric language. The new step 4 should convey completion, 
+confidence, or delivery (e.g., "Get Certified," "Receive Your Documents," "Done & Delivered"). 
+Maintain parallel grammatical structure across all 4 steps (all verbs or all nouns — be consistent).
+
+---
+
+**2. IMAGE STYLE CONSISTENCY**
+The following images have consistent, professional styling and should be used as the visual 
+reference standard:
+  - Court reporting image
+  - Homepage hero image
+  - Notary services image
+
+Problem: The loan signing image has people rendered in a noticeably different visual style.
+
+Fix: Regenerate or replace the loan signing image so its illustration/photo style, color 
+treatment, character rendering, and tone match the three reference images exactly.
+
+---
+
+**3. APOSTILLE PAGE IMAGE**
+The current apostille image shows two people alongside a document.
+Fix: Remove the people entirely. Display only the document as the focal subject. 
+Ensure the document is well-lit, centered, and visually prominent after cropping/editing.
+
+---
+
+**4. RESPONSIVE LAYOUT — DESKTOP IMAGE ZOOM ISSUE**
+All site images appear zoomed in / cropped too tightly on desktop viewports.
+Fix: Audit all image CSS for the following and correct as needed:
+  - `object-fit: cover` combined with fixed height containers that are too small
+  - Missing `max-height` constraints on desktop breakpoints
+  - Images lacking `width: 100%; height: auto` responsive defaults
+  - Any `transform: scale()` or `zoom` properties causing unintended magnification
+Ensure all images render at their intended composition on screens ≥ 1024px.
+
+---
+
+**5. MOBILE NAVIGATION — DUPLICATE "SAGE+" DROPDOWN ITEM**
+On mobile, "Sage+" appears twice in the dropdown navigation menu.
+Fix: Audit the mobile nav markup and remove the duplicate entry. Check for:
+  - Duplicate `<li>` or `<a>` elements in the mobile menu component
+  - A desktop nav item bleeding into the mobile menu via CSS visibility issue
+  - Any conditional rendering logic that renders the item twice
+Confirm only one "Sage+" item appears in the mobile dropdown after fix.
+
+---
+
+For each fix, provide:
+- The specific code change (HTML/CSS/JS as applicable)
+- Where in the codebase the change should be made (component name, file, or section)
+- A before/after summary of what changed

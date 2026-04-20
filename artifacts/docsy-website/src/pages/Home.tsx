@@ -146,10 +146,10 @@ export default function Home() {
             </p>
             <div className="grid grid-cols-4 gap-px" style={{ backgroundColor: DIV }}>
               {[
-                { icon: FileText, step: "01", label: "Quote", desc: "Get your exact price" },
-                { icon: Calendar, step: "02", label: "Book",  desc: "Pick a time that works" },
-                { icon: PenLine,  step: "03", label: "Sign",  desc: "Remote or in person" },
-                { icon: DollarSign, step: "04", label: "Paid", desc: "Only what was quoted" },
+                { icon: FileText, step: "01", label: "Quote",     desc: "Get your exact price" },
+                { icon: Calendar, step: "02", label: "Book",      desc: "Pick a time that works" },
+                { icon: PenLine,  step: "03", label: "Sign",      desc: "Remote or in person" },
+                { icon: DollarSign, step: "04", label: "Delivered", desc: "Certified copies in hand" },
               ].map(({ icon: Icon, step, label, desc }) => (
                 <div key={step} className="py-6 px-3 sm:px-5 text-center" style={{ backgroundColor: SLATE }}>
                   <Icon className="h-5 w-5 mx-auto mb-3" style={{ color: AMBER }} />
