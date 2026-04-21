@@ -10,13 +10,13 @@ title = "generated_image"
 id = "4bVu-g60mmgnx3QTRO3v-"
 uri = "file://artifacts/docsy-website/src/assets/images/ron-laptop.png"
 type = "image"
-title = "RON: clean laptop scene, notary on screen only"
+title = "generated_image"
 
 [[generated]]
 id = "-niGkPgSH8TC9ciyQk-n-"
 uri = "file://artifacts/docsy-website/src/assets/images/mobile-notary-folio.png"
 type = "image"
-title = "Mobile notary: single driver only, no passengers"
+title = "generated_image"
 
 [[generated]]
 id = "xZ7ZjeFUoHuXU5d55uqWh"
