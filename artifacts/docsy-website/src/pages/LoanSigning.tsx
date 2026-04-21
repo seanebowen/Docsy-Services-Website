@@ -58,7 +58,7 @@ export default function LoanSigning() {
       <section className="py-12 px-5 border-t border-[#1e2a3a]">
         <div className="max-w-3xl mx-auto">
           <div className="p-8 border border-[#1e2a3a]">
-            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+            <p className="review-text text-base sm:text-lg font-light leading-relaxed mb-4">
               &ldquo;We had to close on a Friday evening. Docsy showed up on time, had everything organized, and the scanbacks were back to our title office before I left the parking lot.&rdquo;
             </p>
             <p className="text-xs font-bold text-white">R. Salazar</p>

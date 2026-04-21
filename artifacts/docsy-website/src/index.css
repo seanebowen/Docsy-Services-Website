@@ -197,3 +197,8 @@
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.review-text {
+  color: #4D9FDB;
+  font-style: italic;
+}

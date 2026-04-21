@@ -252,7 +252,7 @@ export default function Home() {
             {TESTIMONIALS.map((t, i) => (
               <FadeIn key={t.name} delay={i * 70} threshold={0.04}>
                 <div className="p-8 h-full flex flex-col justify-between" style={{ backgroundColor: SLATE }}>
-                  <p className="text-sm font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  <p className="review-text text-sm font-light leading-relaxed mb-6">
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div>

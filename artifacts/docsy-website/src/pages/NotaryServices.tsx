@@ -97,7 +97,7 @@ export default function NotaryServices() {
       <section className="py-12 px-5 border-t" style={{ borderColor: DIV }}>
         <div className="max-w-3xl mx-auto">
           <div className="p-8 border" style={{ borderColor: DIV }}>
-            <p className="text-base sm:text-lg font-light leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.65)" }}>
+            <p className="review-text text-base sm:text-lg font-light leading-relaxed mb-4">
               &ldquo;The RON session took nine minutes. I signed my power of attorney from a coffee shop in Austin. Easiest notary experience I've ever had.&rdquo;
             </p>
             <p className="text-xs font-bold text-white">K. Mitchell</p>

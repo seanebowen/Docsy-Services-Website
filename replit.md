@@ -52,3 +52,16 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Design System — Brand Blue
+Confirmed hex: **#4D9FDB** — extracted from the `docsy.` logo period, used as `AMBER` constant in Navbar and `--primary: 205 60% 56%` in CSS.
+
+## Review / Testimonial Styling
+All quote text site-wide uses CSS class `.review-text { color: #4D9FDB; font-style: italic; }` defined in `index.css`. Applied to quote paragraphs in: Home.tsx, NotaryServices.tsx, LoanSigning.tsx, Apostille.tsx, CourtReporting.tsx.
+
+## Navigation Structure (as of rebuild)
+- Desktop: "Services ▾" dropdown (alphabetical: Apostille, Electronic Reporting, Loan Signing, Memberships, Notary Services, Safe+) + "More ▾" (FAQ & Guides, About & Contact, Promotions)
+- Mobile: Section labels "Services" and "Support & Company" with same ordering
+
+## Image Style Canon
+All 5 people illustrations use: Keith Haring bold outlines + Basquiat neo-expressionist energy. Strict palette: black + white + #4D9FDB. All characters have white/outlined skin (diversity expressed through hair texture, style, clothing). Motion lines throughout.
