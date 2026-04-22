@@ -124,7 +124,8 @@ type ApostilleType = "personal" | "business" | "federal";
 type ApostilleTurnaround = "standard" | "nextday" | "sameday";
 type CourtFormat = "inperson" | "remote";
 type CourtDuration = "2hr" | "halfday" | "fullday";
-type TranscriptSpeed = "rough" | "extended" | "standard" | "rush" | "certified" | "pdf";
+type TranscriptSpeed = "none" | "rough" | "working" | "extended" | "standard" | "rush";
+type ProceedingType = "deposition" | "continued" | "30b6" | "hearing" | "euo" | "other";
 type LLTier     = "t1" | "t2" | "t3";
 type LLDuration = 15 | 30 | 60;
 
@@ -150,6 +151,7 @@ interface ApostilleState {
 }
 interface CourtState {
   format: CourtFormat; duration: CourtDuration;
+  witnesses: number; proceeding: ProceedingType;
   transcript: boolean; pages: number; speed: TranscriptSpeed;
 }
 
@@ -186,11 +188,13 @@ function calcCourt(s: CourtState): number {
     remote:   { "2hr": 225, halfday: 375, fullday: 675 },
   };
   const appear = appearFees[s.format][s.duration];
-  if (!s.transcript) return appear;
+  const witnessAddon = Math.max(0, (s.witnesses ?? 1) - 1) * 100;
+  if (!s.transcript || s.speed === "none") return appear + witnessAddon;
   const ratePerPage: Record<TranscriptSpeed, number> = {
-    rough: 0.75, extended: 8.5, standard: 7.5, rush: 12, certified: 2.5, pdf: 0,
+    none: 0, rough: 0.75, working: 2.0, extended: 7.5, standard: 8.5, rush: 12,
   };
-  return appear + s.pages * ratePerPage[s.speed];
+  // Each witness gets a separately certified transcript billed per witness
+  return appear + witnessAddon + s.pages * ratePerPage[s.speed] * Math.max(1, s.witnesses ?? 1);
 }
 
 /* ── Base-fee-only versions (excludes add-ons/surcharges) ── */
@@ -208,12 +212,12 @@ function calcApostilleBase(s: ApostilleState): number {
   if (s.docs > 1) base += (s.docs - 1) * 75;
   return base;
 }
-function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
+function calcCourtBase(s: CourtState): number { // appearance fee + witness add-on; transcript is separate
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
     inperson: { "2hr": 340, halfday: 490, fullday: 825 },
     remote:   { "2hr": 225, halfday: 375, fullday: 675 },
   };
-  return appearFees[s.format][s.duration];
+  return appearFees[s.format][s.duration] + Math.max(0, (s.witnesses ?? 1) - 1) * 100;
 }
 
 /* ─── service card wrapper ─── */
@@ -341,7 +345,8 @@ export default function Calculator() {
   /* Court state */
   const [court, setCourt] = useState<CourtState>({
     format: "inperson", duration: "2hr",
-    transcript: false, pages: 100, speed: "standard",
+    witnesses: 1, proceeding: "deposition",
+    transcript: false, pages: 100, speed: "extended",
   });
 
   /* Geocoding state */
@@ -504,12 +509,20 @@ export default function Calculator() {
   };
 
   const transcriptSpeeds: [TranscriptSpeed, string, string][] = [
-    ["pdf",       "PDF-only delivery",                    "Free"],
-    ["rough",     "Rough Draft (uncertified)",            "$0.75/pg"],
-    ["standard",  "Standard (10 business days)",          "$7.50/pg"],
-    ["extended",  "Expedited (5 business days)",          "$8.50/pg"],
-    ["rush",      "Rush (3 business days)",               "$12.00/pg"],
-    ["certified", "Certified Copy (per copy/page)",       "$2.50/pg"],
+    ["rough",     "Rough Draft (uncertified)",                "$0.75/pg"],
+    ["working",   "Working Copy (proofread, uncertified)",    "$2.00/pg"],
+    ["extended",  "Extended Certified (6–10 business days)",  "$7.50/pg"],
+    ["standard",  "Standard Certified (3–5 business days)",   "$8.50/pg"],
+    ["rush",      "Rush Certified (1–2 business days)",       "$12.00/pg"],
+  ];
+
+  const proceedingTypes: [ProceedingType, string][] = [
+    ["deposition", "Initial deposition"],
+    ["continued",  "Continued deposition"],
+    ["30b6",       "30(b)(6) corporate representative"],
+    ["hearing",    "Hearing"],
+    ["euo",        "Examination under oath"],
+    ["other",      "Other"],
   ];
 
   return (
@@ -900,8 +913,8 @@ export default function Calculator() {
               <FadeIn delay={240} threshold={0.05}>
               <ServiceCard
                 num="05" title="Electronic Reporting"
-                desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $7.50/page standard — below agency rates."
-                startingAt="$150"
+                desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $7.50/page Extended Certified (6–10 days) — below agency rates."
+                startingAt="$225"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
                 <div className="space-y-6">
@@ -948,6 +961,42 @@ export default function Calculator() {
                   </div>
 
                   <div>
+                    <RowLabel>Number of witnesses</RowLabel>
+                    <div className="border" style={{ borderColor: DIV }}>
+                      {[1, 2, 3, 4].map(n => (
+                        <RadioRow
+                          key={n}
+                          label={n === 4 ? "4 or more" : `${n} witness${n > 1 ? "es" : ""}`}
+                          price={n === 1 ? "" : `+$${(n - 1) * 100}`}
+                          selected={court.witnesses === n}
+                          onClick={() => upC({ witnesses: n })}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                      Each additional witness adds $100 to the appearance fee and generates a separately certified transcript billed per witness at the selected turnaround rate.
+                    </p>
+                  </div>
+
+                  <div>
+                    <RowLabel>Proceeding type</RowLabel>
+                    <div className="border" style={{ borderColor: DIV }}>
+                      {proceedingTypes.map(([key, label]) => (
+                        <RadioRow
+                          key={key}
+                          label={label}
+                          price=""
+                          selected={court.proceeding === key}
+                          onClick={() => upC({ proceeding: key })}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
+                      Used for scheduling, formatting, and certification routing — does not affect price.
+                    </p>
+                  </div>
+
+                  <div>
                     <RowLabel>Transcript needed?</RowLabel>
                     <div className="border" style={{ borderColor: DIV }}>
                       <CheckRow label="Yes — include transcript cost" price="" checked={court.transcript} onChange={v => upC({ transcript: v })} />
@@ -981,8 +1030,8 @@ export default function Calculator() {
                           ))}
                         </div>
                         <p className="text-xs font-light mt-2" style={{ color: "rgba(255,255,255,0.2)" }}>
-                          Word index, certified PDF, e-transcript, and digital delivery always included.
-                          {court.speed === "sameday" && " Same-Day transcript pricing is custom — Docsy will confirm cost before the appointment."}
+                          Word index, certified PDF, e-transcript, and digital delivery always included on certified tiers.
+                          {court.witnesses > 1 && ` Per-page rate billed per witness — ${court.witnesses} witnesses × ${court.pages} pages.`}
                         </p>
                       </div>
                     </>

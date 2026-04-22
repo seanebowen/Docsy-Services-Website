@@ -99,7 +99,7 @@ export default function CourtReporting() {
           <h2 className="text-[5rem] sm:text-[8rem] font-black leading-none text-white mb-4" style={{ letterSpacing: "-0.04em" }}>
             <H>$7.50</H>
           </h2>
-          <p className="text-xl font-bold text-white/50 mb-6">per page — Standard transcript (10 business days)</p>
+          <p className="text-xl font-bold text-white/50 mb-6">per page — Extended Certified transcript (6–10 business days)</p>
           <p className="text-lg text-white/40">
             Word index, certified PDF, e-transcript, and digital delivery all included. That's not a promotional rate. <H>That's the standard rate.</H> PDF-only delivery is always free.
           </p>
@@ -143,10 +143,14 @@ export default function CourtReporting() {
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Appearance Fees</p>
               </div>
               {[
-                { l: "2-Hour Minimum (In-Person)", p: "$340" }, { l: "Half-Day (up to 4 hrs)", p: "$490" },
-                { l: "Full-Day (up to 8 hrs)", p: "$825" }, { l: "2-Hour Minimum (Remote)", p: "$225" },
-                { l: "Remote Half-Day", p: "$375" }, { l: "Remote Full-Day", p: "$675" },
-                { l: "Overtime per 30 min", p: "$50" },
+                { l: "2-Hour Minimum (In-Person)", p: "$340" },
+                { l: "Half-Day, In-Person (up to 4 hrs)", p: "$490" },
+                { l: "Full-Day, In-Person (up to 8 hrs)", p: "$825" },
+                { l: "2-Hour Minimum (Remote)", p: "$225" },
+                { l: "Remote Half-Day (up to 4 hrs)", p: "$375" },
+                { l: "Remote Full-Day (up to 8 hrs)", p: "$675" },
+                { l: "Overtime (per hour, prorated 30-min)", p: "$100" },
+                { l: "Additional Witness (same day)", p: "$100" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
@@ -160,10 +164,10 @@ export default function CourtReporting() {
               </div>
               {[
                 { l: "Rough Draft (uncertified)", p: "$0.75" },
-                { l: "Standard (10 business days)", p: "$7.50" },
-                { l: "Expedited (5 business days)", p: "$8.50" },
-                { l: "Rush (3 business days)", p: "$12.00" },
-                { l: "Certified Copy (per copy/page)", p: "$2.50" },
+                { l: "Working Copy (proofread, uncertified)", p: "$2.00" },
+                { l: "Extended Certified (6–10 business days)", p: "$7.50" },
+                { l: "Standard Certified (3–5 business days)", p: "$8.50" },
+                { l: "Rush Certified (1–2 business days)", p: "$12.00" },
               ].map((r) => (
                 <div key={r.l} className="flex justify-between px-8 py-4 border-b border-[#1e2a3a] last:border-b-0">
                   <span className="text-sm text-white/60">{r.l}</span>
@@ -173,9 +177,10 @@ export default function CourtReporting() {
             </div>
           </div>
           <div className="text-sm text-white/40 text-center mt-6 max-w-2xl mx-auto leading-relaxed space-y-1">
-            <p><strong className="text-white/70">All payments: NET-14.</strong></p>
-            <p>Appearance-only orders: NET-14 from the date of appearance.</p>
-            <p>Transcript orders: 50% deposit required at scheduling; balance due upon transcript delivery. <strong className="text-white/60">Transcripts are not released until payment is complete.</strong></p>
+            <p><strong className="text-white/70">Court reporting is billed post-service.</strong></p>
+            <p>Appearance-only invoices: <strong className="text-white/60">NET-14</strong> from the date of appearance.</p>
+            <p>Combined appearance + transcript invoices: <strong className="text-white/60">NET-7</strong> from the date the transcript is marked ready. <strong className="text-white/60">Certified transcripts are withheld until payment is received in full.</strong></p>
+            <p className="pt-2">Multi-witness depositions: one appearance fee + $100 per additional witness. Each witness receives a separately bound, certified transcript billed per witness at the selected turnaround rate.</p>
           </div>
         </div>
       </section>
