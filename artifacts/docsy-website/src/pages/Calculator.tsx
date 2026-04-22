@@ -182,8 +182,8 @@ function calcApostille(s: ApostilleState): number {
 
 function calcCourt(s: CourtState): number {
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
-    inperson: { "2hr": 225, halfday: 325, fullday: 550 },
-    remote:   { "2hr": 150, halfday: 250, fullday: 450 },
+    inperson: { "2hr": 340, halfday: 490, fullday: 825 },
+    remote:   { "2hr": 225, halfday: 375, fullday: 675 },
   };
   const appear = appearFees[s.format][s.duration];
   if (!s.transcript) return appear;
@@ -210,8 +210,8 @@ function calcApostilleBase(s: ApostilleState): number {
 }
 function calcCourtBase(s: CourtState): number { // appearance fee only; transcript is an add-on
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
-    inperson: { "2hr": 225, halfday: 325, fullday: 550 },
-    remote:   { "2hr": 150, halfday: 250, fullday: 450 },
+    inperson: { "2hr": 340, halfday: 490, fullday: 825 },
+    remote:   { "2hr": 225, halfday: 375, fullday: 675 },
   };
   return appearFees[s.format][s.duration];
 }
@@ -928,19 +928,19 @@ export default function Calculator() {
                     <div className="border" style={{ borderColor: DIV }}>
                       <RadioRow
                         label="2-Hour Minimum"
-                        price={court.format === "remote" ? "$150" : "$225"}
+                        price={court.format === "remote" ? "$225" : "$340"}
                         selected={court.duration === "2hr"}
                         onClick={() => upC({ duration: "2hr" })}
                       />
                       <RadioRow
                         label="Half-Day (up to 4 hrs)"
-                        price={court.format === "remote" ? "$250" : "$325"}
+                        price={court.format === "remote" ? "$375" : "$490"}
                         selected={court.duration === "halfday"}
                         onClick={() => upC({ duration: "halfday" })}
                       />
                       <RadioRow
                         label="Full-Day (up to 8 hrs)"
-                        price={court.format === "remote" ? "$450" : "$550"}
+                        price={court.format === "remote" ? "$675" : "$825"}
                         selected={court.duration === "fullday"}
                         onClick={() => upC({ duration: "fullday" })}
                       />
