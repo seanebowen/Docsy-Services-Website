@@ -78,6 +78,12 @@ uri = "file://artifacts/docsy-website/src/assets/images/home-workspace-realism.p
 type = "image"
 title = "home workspace realism v3"
 
+[[generated]]
+id = "Gkn0_PckTYHUiBfcrYpph"
+uri = "file://artifacts/docsy-website/src/assets/images/home-workspace-flat.png"
+type = "image"
+title = "home workspace flat vector"
+
 [[outputs]]
 id = "bdjMapL9VuYhFFBOs5Nb9"
 uri = "file://attached_assets/stock_images/home-workspace.jpg"
