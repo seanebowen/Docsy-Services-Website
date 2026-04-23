@@ -994,6 +994,9 @@ export default function Calculator() {
                         onClick={() => upC({ duration: "fullday" })}
                       />
                     </div>
+                    <p className="text-xs font-light mt-2" style={{ color: "rgba(77,159,219,0.95)" }}>
+                      ⊙ Show Up &amp; Save — keep your appointment and a $50 credit is automatically applied to your final invoice. <a href="/promos" className="underline">See promo</a>.
+                    </p>
                   </div>
 
                   <div>

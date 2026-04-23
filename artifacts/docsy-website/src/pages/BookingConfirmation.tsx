@@ -208,6 +208,9 @@ export default function BookingConfirmation() {
                   hasCourtRep
                     ? "For your court reporting appointment: reply to the confirmation email with the deposition notice. It has everything Docsy needs — venue address, case name, witness names, and start time."
                     : null,
+                  hasCourtRep
+                    ? "Reminder: Keep your scheduled appointment and you'll automatically receive a $50 Show Up & Save credit on your final invoice."
+                    : null,
                   "Your price is confirmed before the appointment starts. You know what you owe before anyone shows up.",
                 ] as (string | null)[]).filter(Boolean).map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
