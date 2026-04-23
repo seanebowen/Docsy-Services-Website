@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { useAuth } from "@/context/AuthContext";
+import { HonorPassUpsell } from "@/components/ui/HonorPassUpsell";
+import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
 
 const MEMBERSHIP_LABELS: Record<string, string> = {
   starter: "Docsy+ Starter",
@@ -304,8 +306,27 @@ export default function Booking() {
     return result;
   }, [selectedDate, selectedTime, estimate, isMember, memberTier, memberLabel]);
 
-  const autoPromoTotal  = autoPromos.reduce((sum, p) => sum + p.amount, 0);
-  const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, autoPromos, selectedDate?.getDay() ?? -1), [promoCode, estimate, autoPromos, selectedDate]);
+  /* HonorPass auto-apply: 10% off base whenever user is ID.me-verified.
+     Lives outside `autoPromos` because it does NOT depend on date/time —
+     a freshly-verified user should see the discount the instant they
+     return from /idme/callback. Skipped if Calculator already added a
+     HonorPass line item to the stored estimate (avoids double counting). */
+  const honorPassPromo = useMemo((): { label: string; amount: number; rateOnly?: boolean }[] => {
+    if (!estimate?.baseTotal) return [];
+    const alreadyHasHonorPass = estimate.services.some(s => s.name.toLowerCase().includes("honorpass"));
+    if (alreadyHasHonorPass) return [];
+    const verif = resolveIdMeVerification(user?.idMeVerification ?? null);
+    if (!isHonorPassEligible(verif)) return [];
+    const off = Math.round(estimate.baseTotal * 0.10 * 100) / 100;
+    return off > 0 ? [{ label: "HonorPass™ — 10% off base service fees", amount: -off }] : [];
+  }, [estimate, user?.idMeVerification]);
+
+  /* Merge HonorPass into the auto-promo list so it renders in the
+     summary, contributes to the running total, and is gated by the
+     same dedupe rules as other auto-promos. */
+  const allAutoPromos   = useMemo(() => [...autoPromos, ...honorPassPromo], [autoPromos, honorPassPromo]);
+  const autoPromoTotal  = allAutoPromos.reduce((sum, p) => sum + p.amount, 0);
+  const promoDiscount   = useMemo(() => applyPromoCode(promoCode, estimate, allAutoPromos, selectedDate?.getDay() ?? -1), [promoCode, estimate, allAutoPromos, selectedDate]);
   const promoInvalid    = promoCode.trim().length > 0 && promoDiscount === null;
   const discountedTotal = estimate ? Math.max(0, estimate.total + autoPromoTotal + (promoDiscount?.amount ?? 0)) : 0;
 
@@ -407,7 +428,7 @@ export default function Booking() {
       note,
       promoCode: promoCode.trim(),
       promoDiscount,
-      autoPromos,
+      autoPromos: allAutoPromos,
       discountedTotal,
       estimate,
       memberTier,
@@ -691,13 +712,16 @@ export default function Booking() {
 
                 {estimate ? (
                   <div className="mb-6">
+                    <div className="mb-4">
+                      <HonorPassUpsell returnTo="/booking" variant="inline" />
+                    </div>
                     {estimate.services.map(s => (
                       <div key={s.name} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
                         <span style={{ color: "rgba(255,255,255,0.5)" }}>{s.name}</span>
                         <span className="font-bold" style={{ color: IVORY }}>${s.amount.toFixed(2)}</span>
                       </div>
                     ))}
-                    {autoPromos.map(p => (
+                    {allAutoPromos.map(p => (
                       <div key={p.label} className="flex justify-between py-2 border-b text-sm" style={{ borderColor: DIV }}>
                         <span className="flex items-center gap-2" style={{ color: p.amount > 0 ? "#F5A623" : BLUE }}>
                           ↳ {p.label}
@@ -720,11 +744,11 @@ export default function Booking() {
                     <div className="flex justify-between items-baseline pt-4">
                       <span className="text-sm font-bold text-white">Calculated Total</span>
                       <div className="text-right">
-                        {(autoPromos.length > 0 || promoDiscount) && (
+                        {(allAutoPromos.length > 0 || promoDiscount) && (
                           <span className="text-sm line-through mr-2" style={{ color: "rgba(255,255,255,0.3)" }}>${estimate.total.toFixed(2)}</span>
                         )}
                         <span className="text-2xl font-black" style={{ color: BLUE }}>
-                          ${(autoPromos.length > 0 || promoDiscount) ? discountedTotal.toFixed(2) : estimate.total.toFixed(2)}
+                          ${(allAutoPromos.length > 0 || promoDiscount) ? discountedTotal.toFixed(2) : estimate.total.toFixed(2)}
                         </span>
                       </div>
                     </div>

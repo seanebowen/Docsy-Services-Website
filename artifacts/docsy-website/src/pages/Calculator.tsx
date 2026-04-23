@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
+import { HonorPassUpsell } from "@/components/ui/HonorPassUpsell";
 import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
@@ -298,15 +299,39 @@ function SummaryLine({ label, amount }: { label: string; amount: number }) {
 }
 
 /* ════════════════════════════════════════════════════════ */
+/* Persisted snapshot of every Calculator selection. Lives in
+   sessionStorage so a quick round-trip (e.g. /idme/callback) doesn't
+   nuke the user's in-progress quote. Defaults match the original
+   useState defaults below. */
+const CALC_STATE_KEY = "docsy_calc_state_v1";
+
+interface PersistedCalcState {
+  ronOn: boolean; gnwOn: boolean; loanOn: boolean; apostOn: boolean; courtOn: boolean;
+  llOn: boolean; llTier: LLTier; llDuration: LLDuration;
+  ron: RONState; gnw: GNWState; travel: TravelState; loan: LoanState;
+  apost: ApostilleState; court: CourtState;
+}
+
+function loadPersistedCalcState(): Partial<PersistedCalcState> {
+  try {
+    const raw = sessionStorage.getItem(CALC_STATE_KEY);
+    return raw ? (JSON.parse(raw) as PersistedCalcState) : {};
+  } catch {
+    return {};
+  }
+}
+
 export default function Calculator() {
   React.useEffect(() => { document.title = "Price Calculator | Docsy Services"; }, []);
 
+  const persisted = React.useMemo(() => loadPersistedCalcState(), []);
+
   /* active service toggles */
-  const [ronOn,   setRonOn]   = useState(false);
-  const [gnwOn,   setGnwOn]   = useState(false);
-  const [loanOn,  setLoanOn]  = useState(false);
-  const [apostOn, setApostOn] = useState(false);
-  const [courtOn, setCourtOn] = useState(false);
+  const [ronOn,   setRonOn]   = useState(persisted.ronOn   ?? false);
+  const [gnwOn,   setGnwOn]   = useState(persisted.gnwOn   ?? false);
+  const [loanOn,  setLoanOn]  = useState(persisted.loanOn  ?? false);
+  const [apostOn, setApostOn] = useState(persisted.apostOn ?? false);
+  const [courtOn, setCourtOn] = useState(persisted.courtOn ?? false);
 
   /* add-on subscriptions */
   const { user } = useAuth();
@@ -321,33 +346,44 @@ export default function Calculator() {
   }, [idMeVerif?.group]);
 
   /* Language Line interpreter state */
-  const [llOn,       setLlOn]       = useState(false);
-  const [llTier,     setLlTier]     = useState<LLTier>("t1");
-  const [llDuration, setLlDuration] = useState<LLDuration>(15);
+  const [llOn,       setLlOn]       = useState(persisted.llOn       ?? false);
+  const [llTier,     setLlTier]     = useState<LLTier>(persisted.llTier ?? "t1");
+  const [llDuration, setLlDuration] = useState<LLDuration>(persisted.llDuration ?? 15);
 
   /* RON state */
-  const [ron, setRon] = useState<RONState>({ docs: 1, witness: 0, signers: 1 });
+  const [ron, setRon] = useState<RONState>(persisted.ron ?? { docs: 1, witness: 0, signers: 1 });
 
   /* General Notary Work state */
-  const [gnw, setGnw] = useState<GNWState>({ seals: 1, witness: 0, signers: 1, address: "" });
+  const [gnw, setGnw] = useState<GNWState>(persisted.gnw ?? { seals: 1, witness: 0, signers: 1, address: "" });
 
   /* Shared travel state — distance tier, one per appointment */
-  const [travel, setTravel] = useState<TravelState>({ tier: 1 });
+  const [travel, setTravel] = useState<TravelState>(persisted.travel ?? { tier: 1 });
 
   /* Loan state */
-  const [loan, setLoan] = useState<LoanState>({ packages: ["refi"], address: "" });
+  const [loan, setLoan] = useState<LoanState>(persisted.loan ?? { packages: ["refi"], address: "" });
 
   /* Apostille state */
-  const [apost, setApost] = useState<ApostilleState>({
+  const [apost, setApost] = useState<ApostilleState>(persisted.apost ?? {
     types: ["personal"], docs: 1, turnaround: "standard", mobile: false, address: "",
   });
 
   /* Court state */
-  const [court, setCourt] = useState<CourtState>({
+  const [court, setCourt] = useState<CourtState>(persisted.court ?? {
     format: "inperson", duration: "2hr",
     witnesses: 1, proceeding: "deposition",
     transcript: false, pages: 100, speed: "extended",
   });
+
+  /* Persist every change back to sessionStorage so navigations away
+     (e.g. ID.me OAuth round-trip) preserve the in-progress quote. */
+  useEffect(() => {
+    const snapshot: PersistedCalcState = {
+      ronOn, gnwOn, loanOn, apostOn, courtOn,
+      llOn, llTier, llDuration,
+      ron, gnw, travel, loan, apost, court,
+    };
+    try { sessionStorage.setItem(CALC_STATE_KEY, JSON.stringify(snapshot)); } catch { /* quota / private mode — ignore */ }
+  }, [ronOn, gnwOn, loanOn, apostOn, courtOn, llOn, llTier, llDuration, ron, gnw, travel, loan, apost, court]);
 
   /* Geocoding state */
   const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -1151,6 +1187,11 @@ export default function Calculator() {
                         <span className="text-sm font-bold" style={{ color: AMBER }}>WAIVED</span>
                       </div>
                     )}
+                  </div>
+
+                  {/* HonorPass upsell — verify or confirm-active chip */}
+                  <div className="mb-4">
+                    <HonorPassUpsell returnTo="/calculate" variant="inline" />
                   </div>
 
                   {/* grand total */}

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { useAuth } from "@/context/AuthContext";
+import { HonorPassUpsell } from "@/components/ui/HonorPassUpsell";
+import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -89,7 +91,7 @@ interface BookingData {
   promoDiscount?:   PromoResult | null;
   autoPromos?:      { label: string; amount: number }[];
   discountedTotal?: number;
-  estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; } | null;
+  estimate:         { services: ServiceLine[]; total: number; hasRON: boolean; baseTotal?: number; } | null;
   memberTier?:      string | null;
 }
 
@@ -165,6 +167,36 @@ export default function BookingPayment() {
       }
     } catch {}
   }, []);
+
+  /* If the user verified ID.me from this page (or any page during the
+     funnel) and HonorPass isn't yet on the booking, fold it in so the
+     payment-step totals reflect the discount immediately on return. */
+  useEffect(() => {
+    if (!booking?.estimate) return;
+    const verif = resolveIdMeVerification(user?.idMeVerification ?? null);
+    if (!isHonorPassEligible(verif)) return;
+
+    const promoLabelMatch = (s: string) => s.toLowerCase().includes("honorpass");
+    const alreadyApplied =
+      (booking.autoPromos ?? []).some(p => promoLabelMatch(p.label)) ||
+      booking.estimate.services.some(s => promoLabelMatch(s.name)) ||
+      (booking.promoCode ?? "").toUpperCase() === "HONORPASS";
+    if (alreadyApplied) return;
+
+    const base = booking.estimate.baseTotal ?? booking.estimate.total;
+    if (!base) return;
+    const off = Math.round(base * 0.10 * 100) / 100;
+    if (off <= 0) return;
+
+    const newAutoPromos = [
+      ...(booking.autoPromos ?? []),
+      { label: "HonorPass™ — 10% off base service fees", amount: -off },
+    ];
+    const newDiscounted = Math.max(0, (booking.discountedTotal ?? booking.estimate.total) - off);
+    const next: BookingData = { ...booking, autoPromos: newAutoPromos, discountedTotal: newDiscounted };
+    setBooking(next);
+    try { sessionStorage.setItem("docsy_booking", JSON.stringify(next)); } catch { /* ignore */ }
+  }, [user?.idMeVerification, booking]);
 
   /* Prefill contact info from authenticated user */
   useEffect(() => {
@@ -637,6 +669,13 @@ export default function BookingPayment() {
               </div>
             </FadeIn>
           )}
+
+          {/* ── HonorPass upsell — last chance before payment ── */}
+          <FadeIn delay={70}>
+            <div className="mb-6">
+              <HonorPassUpsell returnTo="/booking/payment" variant="panel" />
+            </div>
+          </FadeIn>
 
           {/* ── Card form or court-only message ── */}
           <FadeIn delay={80}>

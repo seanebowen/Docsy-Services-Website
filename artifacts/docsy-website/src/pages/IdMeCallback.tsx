@@ -73,11 +73,37 @@ export default function IdMeCallback() {
 
   const returnTo = sessionStorage.getItem("docsy_idme_return_to") ?? "/calculate";
 
+  /* Smart auto-redirect: when a signed-out user verifies from inside
+     the booking funnel (Calculator, Booking, Payment), skip the
+     "Sign in to attach HonorPass" interstitial and bounce them
+     straight back so the discount lands on their live quote. The
+     pending-localStorage record migrates onto the account
+     automatically when it's auto-created at checkout. Users coming
+     back from any other path still see the interstitial. */
+  const isFunnelReturn =
+    returnTo === "/calculate" ||
+    returnTo.startsWith("/calculate?") ||
+    returnTo === "/booking" ||
+    returnTo.startsWith("/booking?") ||
+    returnTo.startsWith("/booking/");
+
   const goBack = () => {
     sessionStorage.removeItem("docsy_idme_return_to");
     sessionStorage.removeItem("docsy_idme_state");
     setLocation(returnTo);
   };
+
+  useEffect(() => {
+    if (status !== "ok") return;
+    if (signedIn && !attached) return; // let the user see the warning
+    if (signedIn && attached) return;  // signed-in success already shows a Continue button
+    if (!signedIn && !isFunnelReturn) return; // promos / other → keep interstitial
+
+    /* Signed-out + funnel return → auto-redirect after a short beat. */
+    const t = setTimeout(() => goBack(), 1800);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, attached]);
 
   const goSignIn = () => {
     sessionStorage.removeItem("docsy_idme_state");
@@ -143,7 +169,36 @@ export default function IdMeCallback() {
               </>
             )}
 
-            {status === "ok" && !signedIn && (
+            {status === "ok" && !signedIn && isFunnelReturn && (
+              <>
+                <h1 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
+                  You're verified.
+                </h1>
+                <p className="text-white/50 text-sm mb-2">
+                  Thank you for your service.
+                </p>
+                <p className="text-white/40 text-sm mb-6">
+                  Taking you back to your booking — your 10% HonorPass™ discount is now applied. We'll save it to your Docsy account at checkout.
+                </p>
+                <div className="flex justify-center mb-6">
+                  <div className="w-6 h-6 border-2 border-white/10 rounded-full animate-spin" style={{ borderTopColor: GREEN }} />
+                </div>
+                <button
+                  type="button"
+                  onClick={goBack}
+                  className="w-full px-5 py-3 text-sm font-bold border"
+                  style={{ borderColor: DIV, color: "rgba(255,255,255,0.6)" }}
+                  data-testid="btn-idme-continue-booking"
+                >
+                  Continue now →
+                </button>
+                <p className="text-[11px] text-white/25 mt-4">
+                  Verified group: <span className="font-bold" style={{ color: BLUE }}>{group}</span>
+                </p>
+              </>
+            )}
+
+            {status === "ok" && !signedIn && !isFunnelReturn && (
               <>
                 <h1 className="text-3xl sm:text-4xl font-black text-white mb-3" style={{ letterSpacing: "-0.02em" }}>
                   You're verified.
