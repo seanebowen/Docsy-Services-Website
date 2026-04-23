@@ -163,21 +163,46 @@ function BookingModal({
                 Travel fees (mobile only) are based on your distance tier. After-hours and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
               </p>
               <p>
-                By proceeding you agree that Docsy may contact you to confirm your appointment, discuss document requirements, and send your invoice. You may cancel or reschedule at any time before confirmation.
+                By proceeding you agree that Docsy may contact you to confirm your appointment, discuss document requirements, and send your invoice. You may cancel or reschedule at any time before confirmation, subject to the cancellation policy in our Terms of Service.
               </p>
             </div>
-            <label className="flex items-start gap-3 cursor-pointer group" onClick={() => setTermsAgreed(v => !v)}>
+            <label className="flex items-start gap-3 cursor-pointer group" onClick={(e) => {
+              if ((e.target as HTMLElement).closest("a")) return;
+              setTermsAgreed(v => !v);
+            }}>
               <div
                 className="mt-0.5 w-5 h-5 shrink-0 border-2 flex items-center justify-center transition-colors"
                 style={{
                   borderColor:     termsAgreed ? BLUE : "rgba(255,255,255,0.2)",
                   backgroundColor: termsAgreed ? BLUE : "transparent",
                 }}
+                role="checkbox"
+                aria-checked={termsAgreed}
               >
                 {termsAgreed && <span className="text-black text-[11px] font-black leading-none">✓</span>}
               </div>
               <span className="text-sm font-medium leading-snug" style={{ color: termsAgreed ? IVORY : "rgba(255,255,255,0.5)" }}>
-                I have read and agree to the rates, fees, and booking terms above.
+                I have read and agree to the rates, fees, and booking terms above, and to Docsy's{" "}
+                <Link href="/terms" className="underline hover:text-white" style={{ color: BLUE }} onClick={(e) => e.stopPropagation()}>
+                  Terms of Service
+                </Link>
+                {", including the "}
+                <Link href="/terms#cancellation" className="underline hover:text-white" style={{ color: BLUE }} onClick={(e) => e.stopPropagation()}>
+                  cancellation
+                </Link>
+                {", "}
+                <Link href="/terms#refunds" className="underline hover:text-white" style={{ color: BLUE }} onClick={(e) => e.stopPropagation()}>
+                  refund
+                </Link>
+                {", "}
+                <Link href="/terms#privacy" className="underline hover:text-white" style={{ color: BLUE }} onClick={(e) => e.stopPropagation()}>
+                  privacy
+                </Link>
+                {", and "}
+                <Link href="/terms#arbitration" className="underline hover:text-white" style={{ color: BLUE }} onClick={(e) => e.stopPropagation()}>
+                  dispute resolution
+                </Link>
+                {" terms."}
               </span>
             </label>
           </div>
