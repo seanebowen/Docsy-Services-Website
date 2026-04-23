@@ -19,6 +19,7 @@ interface Promo {
   tag: string;
   window: string;
   rule: string;
+  accent?: string;
 }
 
 const divisions: { label: string; service: string; promos: Promo[] }[] = [
@@ -55,6 +56,19 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
         tag: "20% OFF",
         window: "Sat & Sun · Any loan signing booked for the weekend",
         rule: "20% off the standard loan signing service fee for any appointment scheduled on Saturday or Sunday. No advance booking deadline — auto-applies whenever a weekend loan signing is quoted. Does not apply to travel fee or timing surcharges. Auto-applied — no code needed.",
+      },
+    ],
+  },
+  {
+    label: "04",
+    service: "Digital Court Reporting",
+    promos: [
+      {
+        name: "Show Up & Save",
+        tag: "$50 CREDIT",
+        window: "Keep your appointment. Keep $50.",
+        rule: "Book any digital court reporting session with Docsy and keep your appointment as scheduled — we'll apply a $50 Show Up & Save credit directly to your final invoice. No forms, no codes. Just show up. Credit applied automatically to confirmed, completed appearances. Not valid on cancelled or rescheduled sessions. One credit per session.",
+        accent: "#0e9fa0",
       },
     ],
   },
@@ -113,21 +127,24 @@ export default function Promos() {
             </FadeIn>
 
             <div className={`grid gap-px ${div.promos.length === 1 ? "grid-cols-1 max-w-2xl" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}`} style={{ backgroundColor: DIV }}>
-              {div.promos.map((promo, i) => (
-                <FadeIn key={promo.name} delay={di * 40 + i * 60} threshold={0.04}>
-                  <div className="p-8 h-full" style={{ backgroundColor: BG }}>
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <h3 className="text-xl font-black text-white leading-tight">{promo.name}</h3>
-                      <span
-                        className="shrink-0 px-2 py-1 text-xs font-bold tracking-wider border"
-                        style={{ borderColor: BLUE, color: BLUE }}
-                      >{promo.tag}</span>
+              {div.promos.map((promo, i) => {
+                const accent = promo.accent ?? BLUE;
+                return (
+                  <FadeIn key={promo.name} delay={di * 40 + i * 60} threshold={0.04}>
+                    <div className="p-8 h-full" style={{ backgroundColor: BG }}>
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <h3 className="text-xl font-black text-white leading-tight">{promo.name}</h3>
+                        <span
+                          className="shrink-0 px-2 py-1 text-xs font-bold tracking-wider border"
+                          style={{ borderColor: accent, color: accent }}
+                        >{promo.tag}</span>
+                      </div>
+                      <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>{promo.window}</p>
+                      <p className="text-sm text-white/40 leading-relaxed">{promo.rule}</p>
                     </div>
-                    <p className="text-sm font-semibold mb-4" style={{ color: IVORY }}>{promo.window}</p>
-                    <p className="text-sm text-white/40 leading-relaxed">{promo.rule}</p>
-                  </div>
-                </FadeIn>
-              ))}
+                  </FadeIn>
+                );
+              })}
             </div>
 
           </div>

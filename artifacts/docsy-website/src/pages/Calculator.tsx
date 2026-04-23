@@ -185,8 +185,8 @@ function calcApostille(s: ApostilleState): number {
 
 function calcCourt(s: CourtState): number {
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
-    inperson: { "2hr": 340, halfday: 490, fullday: 825 },
-    remote:   { "2hr": 225, halfday: 375, fullday: 675 },
+    inperson: { "2hr": 390, halfday: 540, fullday: 875 },
+    remote:   { "2hr": 275, halfday: 425, fullday: 725 },
   };
   const appear = appearFees[s.format][s.duration];
   const witnessAddon = Math.max(0, (s.witnesses ?? 1) - 1) * 100;
@@ -215,8 +215,8 @@ function calcApostilleBase(s: ApostilleState): number {
 }
 function calcCourtBase(s: CourtState): number { // appearance fee + witness add-on; transcript is separate
   const appearFees: Record<CourtFormat, Record<CourtDuration, number>> = {
-    inperson: { "2hr": 340, halfday: 490, fullday: 825 },
-    remote:   { "2hr": 225, halfday: 375, fullday: 675 },
+    inperson: { "2hr": 390, halfday: 540, fullday: 875 },
+    remote:   { "2hr": 275, halfday: 425, fullday: 725 },
   };
   return appearFees[s.format][s.duration] + Math.max(0, (s.witnesses ?? 1) - 1) * 100;
 }
@@ -950,7 +950,7 @@ export default function Calculator() {
               <ServiceCard
                 num="05" title="Electronic Reporting"
                 desc="AAERT-certified electronic reporter & transcriptionist for depositions, EUOs, meetings, arbitrations. $7.50/page Extended Certified (6–10 days) — below agency rates."
-                startingAt="$225"
+                startingAt="$275"
                 active={courtOn} onToggle={() => setCourtOn(o => !o)}
               >
                 <div className="space-y-6">
@@ -977,23 +977,26 @@ export default function Calculator() {
                     <div className="border" style={{ borderColor: DIV }}>
                       <RadioRow
                         label="2-Hour Minimum"
-                        price={court.format === "remote" ? "$225" : "$340"}
+                        price={court.format === "remote" ? "$275" : "$390"}
                         selected={court.duration === "2hr"}
                         onClick={() => upC({ duration: "2hr" })}
                       />
                       <RadioRow
                         label="Half-Day (up to 4 hrs)"
-                        price={court.format === "remote" ? "$375" : "$490"}
+                        price={court.format === "remote" ? "$425" : "$540"}
                         selected={court.duration === "halfday"}
                         onClick={() => upC({ duration: "halfday" })}
                       />
                       <RadioRow
                         label="Full-Day (up to 8 hrs)"
-                        price={court.format === "remote" ? "$675" : "$825"}
+                        price={court.format === "remote" ? "$725" : "$875"}
                         selected={court.duration === "fullday"}
                         onClick={() => upC({ duration: "fullday" })}
                       />
                     </div>
+                    <p className="text-xs font-light mt-2" style={{ color: "rgba(14,159,160,0.85)" }}>
+                      ⊙ Show Up &amp; Save — keep your appointment and a $50 credit is automatically applied to your final invoice. <a href="/promos" className="underline">See promo</a>.
+                    </p>
                   </div>
 
                   <div>

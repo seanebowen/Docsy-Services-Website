@@ -137,18 +137,46 @@ export default function CourtReporting() {
               Appearance & <H>transcript rates.</H>
             </h2>
           </div>
+
+          {/* ── Show Up & Save callout ── */}
+          <FadeIn delay={0} threshold={0.05}>
+            <Link
+              href="/promos"
+              className="block max-w-3xl mx-auto mb-10 border-2 px-6 py-5 sm:px-8 sm:py-6 hover:bg-white/[0.02] transition-colors group"
+              style={{ borderColor: "#0e9fa0", backgroundColor: "rgba(14,159,160,0.06)" }}
+            >
+              <div className="flex items-start sm:items-center gap-4 sm:gap-6 flex-col sm:flex-row">
+                <span
+                  className="shrink-0 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] border"
+                  style={{ borderColor: "#0e9fa0", color: "#0e9fa0", backgroundColor: "rgba(14,159,160,0.08)" }}
+                >⊙ Promotion</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-lg sm:text-xl font-black text-white mb-1" style={{ letterSpacing: "-0.01em" }}>
+                    Show Up &amp; Save — <span style={{ color: "#0e9fa0" }}>$50 off your invoice.</span>
+                  </p>
+                  <p className="text-sm text-white/55 leading-relaxed">
+                    Keep your scheduled appointment and we'll automatically apply a $50 credit to your final invoice. No codes. No forms. Just show up.
+                  </p>
+                </div>
+                <span className="text-xs font-bold uppercase tracking-widest shrink-0 group-hover:opacity-80" style={{ color: "#0e9fa0" }}>
+                  See promo →
+                </span>
+              </div>
+            </Link>
+          </FadeIn>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a] max-w-3xl mx-auto">
             <div style={{ backgroundColor: BG }}>
               <div className="px-8 py-5 border-b border-[#1e2a3a]">
                 <p className="text-xs font-bold uppercase tracking-widest text-white/30">Appearance Fees</p>
               </div>
               {[
-                { l: "2-Hour Minimum (In-Person)", p: "$340" },
-                { l: "Half-Day, In-Person (up to 4 hrs)", p: "$490" },
-                { l: "Full-Day, In-Person (up to 8 hrs)", p: "$825" },
-                { l: "2-Hour Minimum (Remote)", p: "$225" },
-                { l: "Remote Half-Day (up to 4 hrs)", p: "$375" },
-                { l: "Remote Full-Day (up to 8 hrs)", p: "$675" },
+                { l: "2-Hour Minimum (In-Person)", p: "$390" },
+                { l: "Half-Day, In-Person (up to 4 hrs)", p: "$540" },
+                { l: "Full-Day, In-Person (up to 8 hrs)", p: "$875" },
+                { l: "2-Hour Minimum (Remote)", p: "$275" },
+                { l: "Remote Half-Day (up to 4 hrs)", p: "$425" },
+                { l: "Remote Full-Day (up to 8 hrs)", p: "$725" },
                 { l: "Overtime (per hour, prorated 30-min)", p: "$100" },
                 { l: "Additional Witness (same day)", p: "$100" },
               ].map((r) => (

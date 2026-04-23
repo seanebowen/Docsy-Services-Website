@@ -1,0 +1,29 @@
+We're adding a new promotion called Show Up & Save to the Docsy website. Here's everything that needs to be updated across the site. Make all changes in one pass.
+
+RATE UPDATE — Digital Court Reporting Appearance Fees
+Update the appearance fee rate table (wherever it currently lives — court reporting page, pricing section, calculator, or any rate display component) to reflect these new base rates:
+ServiceNew Rate2-Hour Minimum (In-Person)$390Half-Day, In-Person (up to 4 hrs)$540Full-Day, In-Person (up to 8 hrs)$8752-Hour Minimum (Remote)$275Remote Half-Day (up to 4 hrs)$425Remote Full-Day (up to 8 hrs)$725Overtime (per hour, prorated 30-min)$100 (unchanged)Additional Witness (same day)$100 (unchanged)
+
+PROMOTIONS PAGE — Add under Digital Court Reporting
+On the Promotions page, under the Digital Court Reporting section (create the section if it doesn't exist), add the following promotion block:
+Headline: Show Up & Save
+Subhead: Keep your appointment. Keep $50.
+Body: Book any digital court reporting session with Docsy and keep your appointment as scheduled — we'll apply a $50 Show Up & Save credit directly to your final invoice. No forms, no codes. Just show up.
+Fine print: Credit applied automatically to confirmed, completed appearances. Not valid on cancelled or rescheduled sessions. One credit per session.
+Style it consistent with other promo cards on the page. Use teal (#0e9fa0) as the accent color for this card.
+
+COURT REPORTING PAGE — Add promotion callout
+On the court reporting service page, add a promotion callout near the pricing/rates section. Short and punchy:
+Headline: Show Up & Save — $50 Off Your Invoice
+Body: Keep your scheduled appointment and we'll automatically apply a $50 credit to your final invoice. No codes. No forms. Just show up.
+Link it to the Promotions page.
+
+BOOKING CONFIRMATION — Add to confirmation messaging
+In the booking confirmation email template and/or confirmation screen shown after a court reporting appointment is booked, add this line:
+"Reminder: Keep your scheduled appointment and you'll automatically receive a $50 Show Up & Save credit on your final invoice."
+
+CALCULATOR (if one exists for court reporting)
+If there is a quote/fee calculator for court reporting, update it to reflect the new base rates above. Optionally, display a note below the estimate: "Keep your appointment and save $50 with our Show Up & Save credit."
+
+AIRTABLE — Jobs Table
+Add a checkbox field called Show Up & Save Eligible (auto-checked for all court reporting jobs) and a checkbox field called Show Up & Save Applied. These will be used to track credit application per job.
