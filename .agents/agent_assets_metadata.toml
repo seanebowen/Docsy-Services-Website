@@ -72,6 +72,12 @@ uri = "file://attached_assets/generated_images/docsy-bwb-scenes.png"
 type = "image"
 title = "docsy black white blue scenes"
 
+[[generated]]
+id = "kf3ePSAs-m9xD46_YfJBS"
+uri = "file://artifacts/docsy-website/src/assets/images/home-workspace-realism.png"
+type = "image"
+title = "home workspace realism v3"
+
 [[outputs]]
 id = "bdjMapL9VuYhFFBOs5Nb9"
 uri = "file://attached_assets/stock_images/home-workspace.jpg"
