@@ -4,7 +4,7 @@ import { MapPin, Video, Briefcase, Globe, FileText, Calendar, PenLine, DollarSig
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
 import { PromotionTicker } from "@/components/layout/PromotionTicker";
-import homeImg from "@/assets/images/home-workspace-flat.png";
+import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
 const SLATE  = "#131929";
