@@ -72,6 +72,9 @@ function applyPromoCode(code: string, estimate: EstimateSummary | null, appliedA
   const isWeekday = day === -1 || (day >= 1 && day <= 5);
   switch (n) {
     case "HONORPASS":
+      /* Block manual code if HonorPass is already auto-applied (via verified
+         ID.me) or already present as a service line — prevents double-discount. */
+      if (autoHas("honorpass") || has("honorpass")) return null;
       return { label: "HonorPass — 10% Off Base Service Fee", amount: -(Math.round(base * 0.10 * 100) / 100) };
     case "WEEKENDWARRIOR": {
       if (autoHas("weekend warrior")) return null;

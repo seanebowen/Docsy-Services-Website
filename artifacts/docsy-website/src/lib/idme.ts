@@ -108,7 +108,7 @@ export async function clearIdMeOnAccount(token: string): Promise<boolean> {
 /* ── Display / eligibility helpers ─────────────────────── */
 export function isHonorPassEligible(v: IdMeVerification | null): boolean {
   if (!v) return false;
-  return v.group === "military" || v.group === "veteran";
+  return v.group === "military" || v.group === "veteran" || v.group === "responder";
 }
 
 export function groupLabel(group: IdMeGroup): string {
