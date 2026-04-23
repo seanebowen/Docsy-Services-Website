@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useSearch } from "wouter";
 import { Phone, Mail, MessageSquare, Clock, AlertTriangle, FileText, Receipt, Package, Building2, Users, HelpCircle } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
+import seanPortrait from "@assets/Sean_Docsy_1776916203340.png";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -133,19 +134,88 @@ export default function About() {
       </section>
 
       {/* ── Who's Behind It ── */}
-      <section className="py-20 sm:py-24 px-5 border-t text-center" style={{ borderColor: DIV }}>
-        <div className="max-w-2xl mx-auto">
+      <section className="py-20 sm:py-24 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
           <FadeIn delay={0}><Label icon="⊙" text="WHO'S BEHIND IT" /></FadeIn>
-          <FadeIn delay={80}>
-            <p className="text-lg font-light leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Sean Bowen is the owner and sole operator of Docsy Services LLC, a Texas-based professional services company. He holds a Texas notary commission, AAERT CER certification as a digital court reporter, and operates as a licensed loan signing agent and apostille specialist.
-            </p>
-          </FadeIn>
-          <FadeIn delay={160}>
-            <p className="text-lg font-light leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Docsy is structured as a professional services brand — not a one-off freelancer. That means documented processes, consistent pricing, and accountability baked into how the business runs.
-            </p>
-          </FadeIn>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-10 lg:gap-14 items-start">
+
+            {/* ── Portrait ── */}
+            <FadeIn delay={80}>
+              <div className="relative w-full max-w-[300px] mx-auto lg:mx-0">
+                {/* Offset accent block (Haring-style geometry) */}
+                <div
+                  aria-hidden="true"
+                  className="absolute"
+                  style={{
+                    top: 14,
+                    left: 14,
+                    right: -14,
+                    bottom: -14,
+                    backgroundColor: BLUE,
+                    opacity: 0.18,
+                  }}
+                />
+                {/* Image frame */}
+                <div className="relative" style={{ backgroundColor: BLUE }}>
+                  <img
+                    src={seanPortrait}
+                    alt="Sean Bowen, owner and operator of Docsy Services"
+                    loading="lazy"
+                    decoding="async"
+                    className="block w-full h-auto"
+                    style={{ mixBlendMode: "luminosity", filter: "contrast(1.05)" }}
+                  />
+                  {/* Bottom name plate */}
+                  <div className="absolute left-0 right-0 bottom-0 px-4 py-3 backdrop-blur-sm" style={{ backgroundColor: "rgba(19,25,41,0.78)" }}>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: BLUE }}>⊙ Owner & Operator</p>
+                    <p className="text-base font-black text-white leading-tight" style={{ letterSpacing: "-0.01em" }}>Sean Bowen</p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* ── Bio ── */}
+            <div>
+              <FadeIn delay={120}>
+                <h3 className="text-3xl sm:text-4xl font-black text-white mb-2" style={{ letterSpacing: "-0.02em" }}>
+                  Hi, I'm <HI>Sean.</HI>
+                </h3>
+                <p className="text-sm font-bold uppercase tracking-[0.18em] mb-6" style={{ color: BLUE }}>
+                  Founder · Texas Notary · AAERT CER
+                </p>
+              </FadeIn>
+              <FadeIn delay={180}>
+                <p className="text-lg font-light leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>
+                  I'm the owner and sole operator of Docsy Services LLC, a Texas-based professional services company. Every appointment you book — RON, mobile notary, loan signing, apostille, or court reporting — is performed by me, personally. No subcontractors, no rotating cast, no guesswork about who's showing up.
+                </p>
+              </FadeIn>
+              <FadeIn delay={240}>
+                <p className="text-base font-light leading-relaxed mb-7" style={{ color: "rgba(255,255,255,0.45)" }}>
+                  Docsy is structured as a professional services brand — not a one-off freelancer. That means documented processes, consistent pricing, and accountability baked into how the business runs.
+                </p>
+              </FadeIn>
+              <FadeIn delay={300}>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "Commissioned Texas Notary",
+                    "Remote Online Notary (RON)",
+                    "AAERT CER · Court Reporter",
+                    "Certified Loan Signing Agent",
+                    "Apostille Specialist",
+                  ].map((credential) => (
+                    <span
+                      key={credential}
+                      className="inline-block px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] border"
+                      style={{ borderColor: DIV, color: "rgba(255,255,255,0.55)" }}
+                    >
+                      {credential}
+                    </span>
+                  ))}
+                </div>
+              </FadeIn>
+            </div>
+          </div>
         </div>
       </section>
 
