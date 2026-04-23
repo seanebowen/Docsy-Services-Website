@@ -27,6 +27,7 @@ import BookingConfirmation from "@/pages/BookingConfirmation";
 import MembershipCheckout from "@/pages/MembershipCheckout";
 import About from "@/pages/About";
 import IdMeCallback from "@/pages/IdMeCallback";
+import Terms from "@/pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,9 @@ function Router() {
       <Route path="/language-line"><Redirect to="/calculate" /></Route>
       <Route path="/membership-checkout" component={MembershipCheckout} />
       <Route path="/idme/callback" component={IdMeCallback} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/terms-of-service"><Redirect to="/terms" /></Route>
+      <Route path="/legal"><Redirect to="/terms" /></Route>
       <Route component={NotFound} />
     </Switch>
   );
