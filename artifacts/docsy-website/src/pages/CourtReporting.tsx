@@ -138,33 +138,6 @@ export default function CourtReporting() {
             </h2>
           </div>
 
-          {/* ── Show Up & Save callout ── */}
-          <FadeIn delay={0} threshold={0.05}>
-            <Link
-              href="/promos"
-              className="block max-w-3xl mx-auto mb-10 border-2 px-6 py-5 sm:px-8 sm:py-6 hover:bg-white/[0.02] transition-colors group"
-              style={{ borderColor: "#4D9FDB", backgroundColor: "rgba(77,159,219,0.06)" }}
-            >
-              <div className="flex items-start sm:items-center gap-4 sm:gap-6 flex-col sm:flex-row">
-                <span
-                  className="shrink-0 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] border"
-                  style={{ borderColor: "#4D9FDB", color: "#4D9FDB", backgroundColor: "rgba(77,159,219,0.08)" }}
-                >⊙ Promotion</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-lg sm:text-xl font-black text-white mb-1" style={{ letterSpacing: "-0.01em" }}>
-                    Show Up &amp; Save — <span style={{ color: "#4D9FDB" }}>$50 off your invoice.</span>
-                  </p>
-                  <p className="text-sm text-white/55 leading-relaxed">
-                    Keep your scheduled appointment and we'll automatically apply a $50 credit to your final invoice. No codes. No forms. Just show up.
-                  </p>
-                </div>
-                <span className="text-xs font-bold uppercase tracking-widest shrink-0 group-hover:opacity-80" style={{ color: "#4D9FDB" }}>
-                  See promo →
-                </span>
-              </div>
-            </Link>
-          </FadeIn>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1e2a3a] max-w-3xl mx-auto">
             <div style={{ backgroundColor: BG }}>
               <div className="px-8 py-5 border-b border-[#1e2a3a]">
@@ -206,8 +179,7 @@ export default function CourtReporting() {
           </div>
           <div className="text-sm text-white/40 text-center mt-6 max-w-2xl mx-auto leading-relaxed space-y-1">
             <p><strong className="text-white/70">Court reporting is billed post-service.</strong></p>
-            <p>Appearance-only invoices: <strong className="text-white/60">NET-14</strong> from the date of appearance.</p>
-            <p>Combined appearance + transcript invoices: <strong className="text-white/60">NET-7</strong> from the date the transcript is marked ready. <strong className="text-white/60">Certified transcripts are withheld until payment is received in full.</strong></p>
+            <p>All court reporting invoices — appearance, transcript, or combined — are <strong className="text-white/60">NET-14</strong> from the invoice date. <strong className="text-white/60">Certified transcripts are withheld until payment is received in full.</strong></p>
             <p className="pt-2">Multi-witness depositions: one appearance fee + $100 per additional witness. Each witness receives a separately bound, certified transcript billed per witness at the selected turnaround rate.</p>
           </div>
         </div>
