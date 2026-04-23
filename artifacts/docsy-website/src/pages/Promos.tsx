@@ -68,7 +68,7 @@ const divisions: { label: string; service: string; promos: Promo[] }[] = [
         tag: "$50 CREDIT",
         window: "Keep your appointment. Keep $50.",
         rule: "Book any digital court reporting session with Docsy and keep your appointment as scheduled — we'll apply a $50 Show Up & Save credit directly to your final invoice. No forms, no codes. Just show up. Credit applied automatically to confirmed, completed appearances. Not valid on cancelled or rescheduled sessions. One credit per session.",
-        accent: "#0e9fa0",
+        accent: "#4D9FDB",
       },
     ],
   },

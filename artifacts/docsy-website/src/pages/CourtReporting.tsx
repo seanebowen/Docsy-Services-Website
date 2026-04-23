@@ -143,22 +143,22 @@ export default function CourtReporting() {
             <Link
               href="/promos"
               className="block max-w-3xl mx-auto mb-10 border-2 px-6 py-5 sm:px-8 sm:py-6 hover:bg-white/[0.02] transition-colors group"
-              style={{ borderColor: "#0e9fa0", backgroundColor: "rgba(14,159,160,0.06)" }}
+              style={{ borderColor: "#4D9FDB", backgroundColor: "rgba(77,159,219,0.06)" }}
             >
               <div className="flex items-start sm:items-center gap-4 sm:gap-6 flex-col sm:flex-row">
                 <span
                   className="shrink-0 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] border"
-                  style={{ borderColor: "#0e9fa0", color: "#0e9fa0", backgroundColor: "rgba(14,159,160,0.08)" }}
+                  style={{ borderColor: "#4D9FDB", color: "#4D9FDB", backgroundColor: "rgba(77,159,219,0.08)" }}
                 >⊙ Promotion</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-lg sm:text-xl font-black text-white mb-1" style={{ letterSpacing: "-0.01em" }}>
-                    Show Up &amp; Save — <span style={{ color: "#0e9fa0" }}>$50 off your invoice.</span>
+                    Show Up &amp; Save — <span style={{ color: "#4D9FDB" }}>$50 off your invoice.</span>
                   </p>
                   <p className="text-sm text-white/55 leading-relaxed">
                     Keep your scheduled appointment and we'll automatically apply a $50 credit to your final invoice. No codes. No forms. Just show up.
                   </p>
                 </div>
-                <span className="text-xs font-bold uppercase tracking-widest shrink-0 group-hover:opacity-80" style={{ color: "#0e9fa0" }}>
+                <span className="text-xs font-bold uppercase tracking-widest shrink-0 group-hover:opacity-80" style={{ color: "#4D9FDB" }}>
                   See promo →
                 </span>
               </div>
