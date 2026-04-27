@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { ensureLifecyclePolicy } from "./lib/objectStorage";
 
 const rawPort = process.env["PORT"];
 
@@ -22,4 +23,12 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
+
+  /* Best-effort: install the 24-hour TTL lifecycle rule on the App
+     Storage bucket so anonymous document-check uploads auto-purge.
+     Failures are logged but do not crash startup. */
+  ensureLifecyclePolicy((msg, extra) => {
+    if (extra) logger.warn({ extra }, msg);
+    else       logger.info(msg);
+  }).catch((err) => logger.warn({ err }, "ensureLifecyclePolicy threw"));
 });

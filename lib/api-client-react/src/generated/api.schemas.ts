@@ -8,3 +8,85 @@
 export interface HealthStatus {
   status: string;
 }
+
+/**
+ * Traffic-light verdict.
+ */
+export type DocumentCheckRecommendation =
+  (typeof DocumentCheckRecommendation)[keyof typeof DocumentCheckRecommendation];
+
+export const DocumentCheckRecommendation = {
+  ready_to_notarize: "ready_to_notarize",
+  fix_first: "fix_first",
+  needs_review: "needs_review",
+} as const;
+
+/**
+ * The Docsy service the inspector recommends booking.
+ */
+export type DocumentCheckSuggestedService =
+  (typeof DocumentCheckSuggestedService)[keyof typeof DocumentCheckSuggestedService];
+
+export const DocumentCheckSuggestedService = {
+  ron: "ron",
+  mobile: "mobile",
+  "in-office": "in-office",
+  apostille: "apostille",
+  "loan-signing": "loan-signing",
+} as const;
+
+export type DocumentCheckDateField =
+  (typeof DocumentCheckDateField)[keyof typeof DocumentCheckDateField];
+
+export const DocumentCheckDateField = {
+  present: "present",
+  missing: "missing",
+  unknown: "unknown",
+} as const;
+
+export interface DocumentCheckNotarialBlock {
+  present: boolean;
+  /**
+   * Human-readable position, e.g. "page 2, bottom".
+   * @nullable
+   */
+  location: string | null;
+}
+
+export interface DocumentCheckResult {
+  documentType: string;
+  notarialBlockPresent: DocumentCheckNotarialBlock;
+  signaturePresent: boolean;
+  dateField: DocumentCheckDateField;
+  redFlags: string[];
+  recommendation: DocumentCheckRecommendation;
+  recommendationRationale: string;
+  suggestedService: DocumentCheckSuggestedService;
+  /** Data URL of the original image for the result preview. Empty string for PDFs. */
+  thumbnailDataUrl: string;
+  /**
+   * App Storage object path, or null if storage was unavailable.
+   * @nullable
+   */
+  storedObjectPath: string | null;
+  /**
+   * ISO timestamp when the stored object will be purged.
+   * @nullable
+   */
+  storedExpiresAt: string | null;
+}
+
+export interface DocumentCheckResponse {
+  ok: boolean;
+  result: DocumentCheckResult;
+}
+
+export interface DocumentCheckError {
+  ok: boolean;
+  error: string;
+}
+
+export type DocumentCheckBody = {
+  /** The document to inspect (PDF, JPG, or PNG, ≤25 MB). */
+  file: Blob;
+};

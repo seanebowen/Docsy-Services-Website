@@ -1,6 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
+import type {
+  DocumentCheckResult,
+  DocumentCheckRecommendation,
+  DocumentCheckSuggestedService,
+} from "@workspace/api-zod";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -10,22 +15,7 @@ const DIV   = "#1e2a3a";
 const ACCEPTED = ".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png";
 const MAX_BYTES = 25 * 1024 * 1024;
 
-type Recommendation = "ready_to_notarize" | "fix_first" | "needs_review";
-type SuggestedService = "ron" | "mobile" | "in-office" | "apostille" | "loan-signing";
-
-interface DocumentCheckResult {
-  documentType:           string;
-  notarialBlockPresent:   { present: boolean; location: string | null };
-  signaturePresent:       boolean;
-  dateField:              "present" | "missing" | "unknown";
-  redFlags:               string[];
-  recommendation:         Recommendation;
-  recommendationRationale: string;
-  suggestedService:       SuggestedService;
-  thumbnailDataUrl:       string;
-}
-
-const SERVICE_LABELS: Record<SuggestedService, string> = {
+const SERVICE_LABELS: Record<DocumentCheckSuggestedService, string> = {
   ron:           "Remote Online Notarization",
   mobile:        "Mobile Notary (we come to you)",
   "in-office":   "In-office notarization",
@@ -33,7 +23,7 @@ const SERVICE_LABELS: Record<SuggestedService, string> = {
   "loan-signing": "Loan signing",
 };
 
-const RECO_META: Record<Recommendation, { label: string; color: string; bg: string; icon: string }> = {
+const RECO_META: Record<DocumentCheckRecommendation, { label: string; color: string; bg: string; icon: string }> = {
   ready_to_notarize: { label: "Ready to notarize",  color: "#7CDB9F", bg: "rgba(124,219,159,0.10)", icon: "✓" },
   fix_first:         { label: "Fix before booking", color: "#F59E5C", bg: "rgba(245,158,92,0.12)",  icon: "!" },
   needs_review:      { label: "Needs human review", color: BLUE,      bg: "rgba(77,159,219,0.10)",  icon: "?" },
@@ -167,7 +157,7 @@ export default function DocumentCheck() {
           </FadeIn>
           <FadeIn delay={220}>
             <p className="mt-6 text-sm text-black/50 max-w-xl border-l-2 pl-4" style={{ borderColor: BLUE }}>
-              <strong className="text-black">No account required.</strong> Anonymous uploads aren't stored after the scan completes. Documents are inspected by an AI vision service to identify issues — they're never sent to a notary or third party without your booking.
+              <strong className="text-black">No account required.</strong> Documents are inspected by an AI vision service, kept in encrypted storage, and purged automatically after 24 hours. They're never sent to a notary or third party without your booking.
             </p>
           </FadeIn>
         </div>
@@ -419,7 +409,14 @@ export default function DocumentCheck() {
 
                 {/* Privacy footer */}
                 <div className="px-6 sm:px-8 py-5 border-t text-[10px] text-white/35 leading-relaxed" style={{ borderColor: DIV }}>
-                  This pre-flight scan is informational only and is not legal advice. Docsy's free Pre-Check confirms eligibility before any document is submitted. Your file is processed by an AI vision service to spot common issues; anonymous uploads are not retained on Docsy servers after the scan completes.
+                  This pre-flight scan is informational only and is not legal advice. Docsy's free Pre-Check confirms eligibility before any document is submitted. Your file is processed by an AI vision service to spot common issues.
+                  {result.storedExpiresAt
+                    ? <> Anonymous uploads are kept in encrypted storage and automatically purged on{" "}
+                        <strong className="text-white/55">
+                          {new Date(result.storedExpiresAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
+                        </strong>.
+                      </>
+                    : <> Anonymous uploads are not retained on Docsy servers after the scan completes.</>}
                 </div>
               </div>
             </FadeIn>

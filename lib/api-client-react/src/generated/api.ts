@@ -5,18 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  DocumentCheckBody,
+  DocumentCheckError,
+  DocumentCheckResponse,
+  HealthStatus,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +107,97 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Accepts a PDF, JPG, or PNG of a document the user intends to notarize
+and returns structured findings: document type, presence of notarial
+block / signature line / date field, red flags, and a one-of-five
+suggested service. Anonymous uploads are stored in App Storage and
+purged after 24 hours by the bucket lifecycle rule.
+
+ * @summary Run AI pre-flight inspection on an uploaded document
+ */
+export const getDocumentCheckUrl = () => {
+  return `/api/document-check`;
+};
+
+export const documentCheck = async (
+  documentCheckBody: DocumentCheckBody,
+  options?: RequestInit,
+): Promise<DocumentCheckResponse> => {
+  const formData = new FormData();
+  formData.append(`file`, documentCheckBody.file);
+
+  return customFetch<DocumentCheckResponse>(getDocumentCheckUrl(), {
+    ...options,
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const getDocumentCheckMutationOptions = <
+  TError = ErrorType<DocumentCheckError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof documentCheck>>,
+    TError,
+    { data: BodyType<DocumentCheckBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof documentCheck>>,
+  TError,
+  { data: BodyType<DocumentCheckBody> },
+  TContext
+> => {
+  const mutationKey = ["documentCheck"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof documentCheck>>,
+    { data: BodyType<DocumentCheckBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return documentCheck(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DocumentCheckMutationResult = NonNullable<
+  Awaited<ReturnType<typeof documentCheck>>
+>;
+export type DocumentCheckMutationBody = BodyType<DocumentCheckBody>;
+export type DocumentCheckMutationError = ErrorType<DocumentCheckError>;
+
+/**
+ * @summary Run AI pre-flight inspection on an uploaded document
+ */
+export const useDocumentCheck = <
+  TError = ErrorType<DocumentCheckError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof documentCheck>>,
+    TError,
+    { data: BodyType<DocumentCheckBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof documentCheck>>,
+  TError,
+  { data: BodyType<DocumentCheckBody> },
+  TContext
+> => {
+  return useMutation(getDocumentCheckMutationOptions(options));
+};

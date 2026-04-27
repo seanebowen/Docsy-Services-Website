@@ -14,3 +14,55 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Accepts a PDF, JPG, or PNG of a document the user intends to notarize
+and returns structured findings: document type, presence of notarial
+block / signature line / date field, red flags, and a one-of-five
+suggested service. Anonymous uploads are stored in App Storage and
+purged after 24 hours by the bucket lifecycle rule.
+
+ * @summary Run AI pre-flight inspection on an uploaded document
+ */
+export const DocumentCheckBody = zod.object({
+  file: zod
+    .instanceof(File)
+    .describe("The document to inspect (PDF, JPG, or PNG, ≤25 MB)."),
+});
+
+export const DocumentCheckResponse = zod.object({
+  ok: zod.literal(true),
+  result: zod.object({
+    documentType: zod.string(),
+    notarialBlockPresent: zod.object({
+      present: zod.boolean(),
+      location: zod
+        .string()
+        .nullable()
+        .describe('Human-readable position, e.g. \"page 2, bottom\".'),
+    }),
+    signaturePresent: zod.boolean(),
+    dateField: zod.enum(["present", "missing", "unknown"]),
+    redFlags: zod.array(zod.string()),
+    recommendation: zod
+      .enum(["ready_to_notarize", "fix_first", "needs_review"])
+      .describe("Traffic-light verdict."),
+    recommendationRationale: zod.string(),
+    suggestedService: zod
+      .enum(["ron", "mobile", "in-office", "apostille", "loan-signing"])
+      .describe("The Docsy service the inspector recommends booking."),
+    thumbnailDataUrl: zod
+      .string()
+      .describe(
+        "Data URL of the original image for the result preview. Empty string for PDFs.",
+      ),
+    storedObjectPath: zod
+      .string()
+      .nullable()
+      .describe("App Storage object path, or null if storage was unavailable."),
+    storedExpiresAt: zod.coerce
+      .date()
+      .nullable()
+      .describe("ISO timestamp when the stored object will be purged."),
+  }),
+});

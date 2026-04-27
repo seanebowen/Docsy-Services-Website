@@ -1,6 +1,15 @@
 import { Router, type Request, type Response } from "express";
 import multer from "multer";
 import OpenAI from "openai";
+import crypto from "node:crypto";
+import { pdfToPng } from "pdf-to-png-converter";
+import {
+  DocumentCheckResponse,
+  type DocumentCheckResult,
+  type DocumentCheckRecommendation,
+  type DocumentCheckSuggestedService,
+} from "@workspace/api-zod";
+import { saveBuffer, opportunisticCleanup } from "../lib/objectStorage.js";
 
 const router = Router();
 
@@ -36,23 +45,6 @@ const upload = multer({
     cb(null, true);
   },
 });
-
-export type Recommendation = "ready_to_notarize" | "fix_first" | "needs_review";
-export type SuggestedService = "ron" | "mobile" | "in-office" | "apostille" | "loan-signing";
-
-export interface DocumentCheckResult {
-  documentType:           string;
-  notarialBlockPresent:   { present: boolean; location: string | null };
-  signaturePresent:       boolean;
-  dateField:              "present" | "missing" | "unknown";
-  redFlags:               string[];
-  recommendation:         Recommendation;
-  recommendationRationale: string;
-  suggestedService:       SuggestedService;
-  /* Returned for the result UI thumbnail — base64 of the original
-     upload. Cleared from server memory after the response is sent. */
-  thumbnailDataUrl:       string;
-}
 
 /* ── Vision prompt — strict JSON output ────────────────────────── */
 const SYSTEM_PROMPT = `You are Docsy's pre-flight document inspector for a Texas notary services company. A user has uploaded a document they intend to notarize. Your job is to spot the common errors that get documents rejected at the closing table or by the Texas Secretary of State.
@@ -106,6 +98,98 @@ function uploadSingle(req: Request, res: Response, next: () => void): void {
   });
 }
 
+/* Render a PDF to one or more PNG buffers (one per page, max 3 pages
+   so we stay under reasonable token limits). The Replit AI Integrations
+   proxy doesn't expose OpenAI's `/files` endpoint, so we can't use the
+   "file_id" content type — vision is the only available path for
+   reading scanned content. */
+async function rasterizePdf(buffer: Buffer, log: Request["log"]): Promise<Buffer[]> {
+  try {
+    const pages = await pdfToPng(buffer, {
+      viewportScale:   1.5,        // 1.5× CSS pixels — good for OCR-quality text without blowing up payload
+      outputFolder:    undefined,  // keep in memory
+      disableFontFace: true,
+    });
+    return pages
+      .slice(0, 3)
+      .map((p) => p.content)
+      .filter((b): b is Buffer => Boolean(b));
+  } catch (err) {
+    log.warn({ err }, "document-check: PDF rasterization failed");
+    return [];
+  }
+}
+
+/* ── Run the inspection.
+   - Images: send as a base64 data URL via the vision content type.
+   - PDFs: rasterize the first up-to-3 pages to PNG and send each as a
+     vision image. If rasterization fails (corrupt PDF, encrypted), fall
+     back to a "needs_review" stub so the user still gets actionable
+     next steps. */
+async function runInspection(
+  client:   OpenAI,
+  buffer:   Buffer,
+  mime:     string,
+  log:      Request["log"],
+): Promise<Omit<DocumentCheckResult, "thumbnailDataUrl" | "storedObjectPath" | "storedExpiresAt"> | null> {
+  const isPdf = mime === "application/pdf";
+
+  try {
+    const userContent: Array<Record<string, unknown>> = [
+      { type: "text", text: "Inspect the attached document and respond with the JSON object only." },
+    ];
+
+    if (isPdf) {
+      const pages = await rasterizePdf(buffer, log);
+      if (pages.length === 0) {
+        return {
+          documentType:           "PDF document (couldn't render)",
+          notarialBlockPresent:   { present: false, location: null },
+          signaturePresent:       false,
+          dateField:              "unknown",
+          redFlags:               [
+            "Couldn't render this PDF — it may be encrypted, corrupted, or scanned at very low quality. Re-export it or book a free Pre-Check and Docsy will eyeball it.",
+          ],
+          recommendation:         "needs_review",
+          recommendationRationale: "Docsy's inspector couldn't read this PDF. A human Pre-Check will confirm whether it's ready.",
+          suggestedService:       "mobile",
+        };
+      }
+      for (const png of pages) {
+        userContent.push({
+          type: "image_url",
+          image_url: { url: `data:image/png;base64,${png.toString("base64")}`, detail: "high" },
+        });
+      }
+    } else {
+      const dataUrl = `data:${mime};base64,${buffer.toString("base64")}`;
+      userContent.push({ type: "image_url", image_url: { url: dataUrl, detail: "high" } });
+    }
+
+    const completion = await client.chat.completions.create({
+      model: "gpt-5.4",
+      max_completion_tokens: 1500,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        { role: "user", content: userContent as any },
+      ],
+    });
+
+    const raw = completion.choices[0]?.message?.content ?? "";
+    try {
+      return JSON.parse(raw);
+    } catch {
+      log.warn({ raw: raw.slice(0, 500) }, "document-check: failed to parse JSON");
+      return null;
+    }
+  } catch (err) {
+    log.warn({ err }, "document-check: inspection call failed");
+    return null;
+  }
+}
+
 router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void> => {
   try {
     const file = req.file;
@@ -120,65 +204,8 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
       return;
     }
 
-    /* Build the data URL — OpenAI vision accepts data URLs for images.
-       For PDFs we send as a base64 file via the input_image content type
-       (the model will OCR the first page). */
-    const base64    = file.buffer.toString("base64");
-    const mime      = file.mimetype;
-    const isPdf     = mime === "application/pdf";
-    /* GPT vision currently does not accept PDF directly — convert PDF to
-       a textual prompt-only request that asks the model to respond based
-       on the filename + structural analysis only. For PDFs we instead
-       send the first ~50KB as text-extractable hints. To avoid a heavy
-       PDF parser dep, we simply tell the model "the user uploaded a PDF"
-       and ask it to provide a structured needs_review result if it cannot
-       analyze it. The image path is the primary supported flow. */
-    const dataUrl   = isPdf
-      ? null
-      : `data:${mime};base64,${base64}`;
-
-    let parsed: Omit<DocumentCheckResult, "thumbnailDataUrl"> | null = null;
-
-    if (dataUrl) {
-      const completion = await client.chat.completions.create({
-        model: "gpt-5.4",
-        max_completion_tokens: 1500,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: "Inspect the attached document image and respond with the JSON object only." },
-              { type: "image_url", image_url: { url: dataUrl, detail: "high" } },
-            ],
-          },
-        ],
-      });
-      const raw = completion.choices[0]?.message?.content ?? "";
-      try {
-        parsed = JSON.parse(raw);
-      } catch {
-        req.log.warn({ raw: raw.slice(0, 500) }, "document-check: failed to parse JSON");
-      }
-    } else {
-      /* PDF path — return a "needs_review" result with the filename and a
-         clear note that the user should re-upload as an image (or call
-         for the free Pre-Check). This avoids shipping a PDF parser and a
-         second model call just for this MVP. */
-      parsed = {
-        documentType:           "PDF document (unable to auto-inspect)",
-        notarialBlockPresent:   { present: false, location: null },
-        signaturePresent:       false,
-        dateField:              "unknown",
-        redFlags:               [
-          "PDF auto-inspection isn't enabled yet. Re-upload the page as a JPG or PNG, or book a free Pre-Check and Docsy will eyeball it.",
-        ],
-        recommendation:         "needs_review",
-        recommendationRationale: "Docsy's automated inspector currently scans images. PDFs go straight to a human Pre-Check call.",
-        suggestedService:       "mobile",
-      };
-    }
+    const isPdf  = file.mimetype === "application/pdf";
+    const parsed = await runInspection(client, file.buffer, file.mimetype, req.log);
 
     if (!parsed) {
       res.status(502).json({ ok: false, error: "The inspector returned an unexpected response. Please try again, or book a free Pre-Check." });
@@ -188,30 +215,101 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
     /* Defensive shape coercion — the model SHOULD obey response_format,
        but we guard the fields we render so a malformed value can't crash
        the result UI. */
+    const enums = {
+      date:    new Set(["present", "missing", "unknown"]),
+      reco:    new Set(["ready_to_notarize", "fix_first", "needs_review"]),
+      service: new Set(["ron", "mobile", "in-office", "apostille", "loan-signing"]),
+    };
+    const recommendation: DocumentCheckRecommendation =
+      enums.reco.has(String(parsed.recommendation))
+        ? (parsed.recommendation as DocumentCheckRecommendation)
+        : "needs_review";
+    const suggestedService: DocumentCheckSuggestedService =
+      enums.service.has(String(parsed.suggestedService))
+        ? (parsed.suggestedService as DocumentCheckSuggestedService)
+        : "mobile";
+
+    /* Store the original upload + the structured result in App Storage
+       under document-checks/<uuid>. Failures are non-fatal — we still
+       return the inspection to the user, just with storedObjectPath
+       set to null so the UI knows nothing was retained. */
+    let storedObjectPath: string | null = null;
+    let storedExpiresAt:  string | null = null;
+    try {
+      const id    = crypto.randomUUID();
+      const saved = await saveBuffer(
+        `document-checks/${id}/original`,
+        file.buffer,
+        file.mimetype,
+        {
+          docType:        String(parsed.documentType ?? "").slice(0, 200),
+          recommendation: recommendation,
+          source:         "document-check",
+          originalName:   file.originalname.slice(0, 200),
+        },
+      );
+      storedObjectPath = saved.objectPath;
+      storedExpiresAt  = saved.expiresAt;
+
+      /* Also persist the structured findings alongside the original so a
+         future "Save to Safe+" flow can read both without re-running the
+         scan. */
+      await saveBuffer(
+        `document-checks/${id}/result.json`,
+        Buffer.from(JSON.stringify(parsed, null, 2)),
+        "application/json",
+        { docType: String(parsed.documentType ?? "").slice(0, 200), source: "document-check" },
+      );
+
+      /* Fire-and-forget cleanup of any document-check objects older
+         than 24 hours. We can't install a bucket-level lifecycle rule
+         (the proxy service account lacks bucket admin), so this
+         object-level sweep is what actually enforces the TTL the
+         user is promised. setImmediate so the response isn't
+         blocked. */
+      setImmediate(() => {
+        opportunisticCleanup("document-checks/", 24 * 60 * 60 * 1000, (msg, extra) => {
+          if (extra) req.log.warn({ extra }, msg);
+          else       req.log.info(msg);
+        }).catch((err) => req.log.warn({ err }, "opportunisticCleanup threw"));
+      });
+    } catch (err) {
+      req.log.warn({ err }, "document-check: storage failed (non-fatal)");
+    }
+
     const safe: DocumentCheckResult = {
-      documentType:            String(parsed.documentType ?? "Unknown"),
+      documentType: String(parsed.documentType ?? "Unknown"),
       notarialBlockPresent: {
         present:  Boolean(parsed.notarialBlockPresent?.present),
         location: parsed.notarialBlockPresent?.location ?? null,
       },
-      signaturePresent:        Boolean(parsed.signaturePresent),
-      dateField:               (["present", "missing", "unknown"].includes(parsed.dateField as string)
-                                 ? parsed.dateField
-                                 : "unknown") as DocumentCheckResult["dateField"],
-      redFlags:                Array.isArray(parsed.redFlags)
-                                 ? parsed.redFlags.slice(0, 12).map((f: unknown) => String(f).slice(0, 240))
-                                 : [],
-      recommendation:          (["ready_to_notarize", "fix_first", "needs_review"].includes(parsed.recommendation as string)
-                                 ? parsed.recommendation
-                                 : "needs_review") as Recommendation,
+      signaturePresent: Boolean(parsed.signaturePresent),
+      dateField: (enums.date.has(String(parsed.dateField))
+        ? parsed.dateField
+        : "unknown") as DocumentCheckResult["dateField"],
+      redFlags: Array.isArray(parsed.redFlags)
+        ? parsed.redFlags.slice(0, 12).map((f: unknown) => String(f).slice(0, 240))
+        : [],
+      recommendation,
       recommendationRationale: String(parsed.recommendationRationale ?? "").slice(0, 600),
-      suggestedService:        (["ron", "mobile", "in-office", "apostille", "loan-signing"].includes(parsed.suggestedService as string)
-                                 ? parsed.suggestedService
-                                 : "mobile") as SuggestedService,
-      thumbnailDataUrl:        isPdf ? "" : `data:${mime};base64,${base64}`,
+      suggestedService,
+      thumbnailDataUrl: isPdf ? "" : `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
+      storedObjectPath,
+      storedExpiresAt:  storedExpiresAt ? new Date(storedExpiresAt) : null,
     };
 
-    res.json({ ok: true, result: safe });
+    /* Validate against the OpenAPI-generated zod schema so any drift
+       between this route and the typed contract is caught immediately
+       in development rather than surfacing as an undefined field on
+       the frontend. */
+    const validated = DocumentCheckResponse.safeParse({ ok: true, result: safe });
+    if (!validated.success) {
+      req.log.error({ issues: validated.error.issues }, "document-check: response failed schema validation");
+      res.status(500).json({ ok: false, error: "Inspection returned in an unexpected shape. Please try again." });
+      return;
+    }
+
+    res.json(validated.data);
   } catch (err) {
     req.log.error({ err }, "document-check: unhandled error");
     res.status(500).json({ ok: false, error: "Document check failed. Please try again." });

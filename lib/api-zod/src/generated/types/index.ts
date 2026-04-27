@@ -6,4 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./documentCheckBody";
+export * from "./documentCheckDateField";
+export * from "./documentCheckError";
+export * from "./documentCheckNotarialBlock";
+export * from "./documentCheckRecommendation";
+export * from "./documentCheckResponse";
+export * from "./documentCheckResult";
+export * from "./documentCheckSuggestedService";
 export * from "./healthStatus";

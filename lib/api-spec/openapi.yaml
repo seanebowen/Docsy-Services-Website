@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: document-check
+    description: Pre-flight document inspection (free, anonymous)
 paths:
   /healthz:
     get:
@@ -24,6 +26,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /document-check:
+    post:
+      operationId: documentCheck
+      tags: [document-check]
+      summary: Run AI pre-flight inspection on an uploaded document
+      description: |
+        Accepts a PDF, JPG, or PNG of a document the user intends to notarize
+        and returns structured findings: document type, presence of notarial
+        block / signature line / date field, red flags, and a one-of-five
+        suggested service. Anonymous uploads are stored in App Storage and
+        purged after 24 hours by the bucket lifecycle rule.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The document to inspect (PDF, JPG, or PNG, ≤25 MB).
+      responses:
+        "200":
+          description: Inspection complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
+        "413":
+          description: Payload too large
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
+        "503":
+          description: Inspection service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +83,84 @@ components:
           type: string
       required:
         - status
-
+    DocumentCheckRecommendation:
+      type: string
+      enum: [ready_to_notarize, fix_first, needs_review]
+      description: Traffic-light verdict.
+    DocumentCheckSuggestedService:
+      type: string
+      enum: [ron, mobile, in-office, apostille, loan-signing]
+      description: The Docsy service the inspector recommends booking.
+    DocumentCheckDateField:
+      type: string
+      enum: [present, missing, unknown]
+    DocumentCheckNotarialBlock:
+      type: object
+      required: [present, location]
+      properties:
+        present:
+          type: boolean
+        location:
+          type: [string, "null"]
+          description: Human-readable position, e.g. "page 2, bottom".
+    DocumentCheckResult:
+      type: object
+      required:
+        - documentType
+        - notarialBlockPresent
+        - signaturePresent
+        - dateField
+        - redFlags
+        - recommendation
+        - recommendationRationale
+        - suggestedService
+        - thumbnailDataUrl
+        - storedObjectPath
+        - storedExpiresAt
+      properties:
+        documentType:
+          type: string
+        notarialBlockPresent:
+          $ref: "#/components/schemas/DocumentCheckNotarialBlock"
+        signaturePresent:
+          type: boolean
+        dateField:
+          $ref: "#/components/schemas/DocumentCheckDateField"
+        redFlags:
+          type: array
+          items:
+            type: string
+        recommendation:
+          $ref: "#/components/schemas/DocumentCheckRecommendation"
+        recommendationRationale:
+          type: string
+        suggestedService:
+          $ref: "#/components/schemas/DocumentCheckSuggestedService"
+        thumbnailDataUrl:
+          type: string
+          description: Data URL of the original image for the result preview. Empty string for PDFs.
+        storedObjectPath:
+          type: [string, "null"]
+          description: App Storage object path, or null if storage was unavailable.
+        storedExpiresAt:
+          type: [string, "null"]
+          format: date-time
+          description: ISO timestamp when the stored object will be purged.
+    DocumentCheckResponse:
+      type: object
+      required: [ok, result]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        result:
+          $ref: "#/components/schemas/DocumentCheckResult"
+    DocumentCheckError:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
