@@ -33,6 +33,8 @@ const TOC: LegalSectionEntry[] = [
 export default function Privacy() {
   return (
     <LegalShell
+      toc={TOC}
+      tocTestId="privacy"
       documentTitle="Privacy Policy | Docsy Services"
       metaDescription="How Docsy Services collects, uses, shares, and protects the personal information of customers using our notary, RON, apostille, loan signing, and electronic reporting services."
       eyebrow="Legal · Privacy Policy"

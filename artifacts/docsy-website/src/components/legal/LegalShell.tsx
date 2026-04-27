@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 export const IVORY = "#F5EFE6";
@@ -74,6 +74,8 @@ interface ShellProps {
   summaryLabel?: string;
   summary: React.ReactNode;
   contactEmail?: string;
+  toc: LegalSectionEntry[];
+  tocTestId?: string;
   children: React.ReactNode;
 }
 
@@ -89,8 +91,13 @@ export function LegalShell({
   summaryLabel = "WHAT THIS MEANS FOR YOU",
   summary,
   contactEmail,
+  toc,
+  tocTestId,
   children,
 }: ShellProps) {
+  const [active, setActive] = useState<string>(toc[0]?.id ?? "");
+  const [mobileTocOpen, setMobileTocOpen] = useState(false);
+
   useEffect(() => {
     document.title = documentTitle;
     let meta = document.querySelector('meta[name="description"]');
@@ -101,6 +108,51 @@ export function LegalShell({
     }
     meta.setAttribute("content", metaDescription);
   }, [documentTitle, metaDescription]);
+
+  /* Highlight active TOC entry as user scrolls. */
+  useEffect(() => {
+    if (!toc.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
+    );
+    toc.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [toc]);
+
+  /* Scroll to deep-linked section on mount (e.g. /privacy#sharing). */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) return;
+    if (!toc.some(e => e.id === hash)) return;
+    const el = document.getElementById(hash);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "auto", block: "start" });
+      setActive(hash);
+    });
+  }, [toc]);
+
+  const handleTocClick = (id: string) => {
+    setMobileTocOpen(false);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (typeof window !== "undefined" && window.history.replaceState) {
+      window.history.replaceState(null, "", `#${id}`);
+    }
+    setActive(id);
+  };
+
+  const tocId = tocTestId ? `${tocTestId}-mobile-toc` : "legal-mobile-toc";
 
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
@@ -142,16 +194,85 @@ export function LegalShell({
         </div>
       </section>
 
-      {/* ── Body sections ── */}
+      {/* ── Body: TOC + Sections ── */}
       <section className="px-5 py-12 sm:py-16 border-t" style={{ borderColor: DIV }}>
-        <div className="max-w-3xl mx-auto">
-          {children}
-          {contactEmail && (
-            <div className="mt-12 pt-8 border-t text-[13px] font-light" style={{ borderColor: DIV, color: SOFT }}>
-              Questions about this policy?{" "}
-              <a href={`mailto:${contactEmail}`} className="underline hover:text-white" style={{ color: BLUE }}>{contactEmail}</a>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-14">
+
+          {/* ── Mobile TOC toggle ── */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setMobileTocOpen(o => !o)}
+              className="w-full flex justify-between items-center px-4 py-3 border-2 text-sm font-bold uppercase tracking-[0.16em]"
+              style={{ borderColor: BLUE, color: BLUE }}
+              data-testid={tocTestId ? `${tocTestId}-toc-toggle` : undefined}
+              aria-expanded={mobileTocOpen}
+              aria-controls={tocId}
+            >
+              <span>⊙ Jump to section</span>
+              <span>{mobileTocOpen ? "−" : "+"}</span>
+            </button>
+            {mobileTocOpen && (
+              <ol id={tocId} aria-label="Table of contents" className="mt-3 border" style={{ borderColor: DIV }}>
+                {toc.map(e => (
+                  <li key={e.id}>
+                    <button
+                      onClick={() => handleTocClick(e.id)}
+                      className="w-full text-left flex gap-3 px-4 py-2.5 border-b text-[13px] font-light hover:bg-white/5"
+                      style={{ borderColor: DIV, color: MUTE }}
+                    >
+                      <span style={{ color: SOFT }}>{e.n}</span>
+                      <span>{e.title}</span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+
+          {/* ── Sticky desktop TOC ── */}
+          <aside className="hidden lg:block" aria-label="Table of contents">
+            <div className="sticky top-24">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] mb-4" style={{ color: SOFT }}>⊙ Contents</p>
+              <ol className="space-y-1.5 border-l" style={{ borderColor: DIV }}>
+                {toc.map(e => {
+                  const isActive = active === e.id;
+                  return (
+                    <li key={e.id}>
+                      <button
+                        onClick={() => handleTocClick(e.id)}
+                        aria-current={isActive ? "true" : undefined}
+                        className="w-full text-left pl-4 py-1.5 -ml-px border-l-2 transition-colors"
+                        style={{
+                          borderColor: isActive ? BLUE : "transparent",
+                          color: isActive ? IVORY : SOFT,
+                        }}
+                      >
+                        <span className="text-[10px] font-bold tracking-widest mr-2" style={{ color: isActive ? BLUE : "rgba(255,255,255,0.25)" }}>{e.n}</span>
+                        <span className="text-[13px] font-light">{e.title}</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+              {contactEmail && (
+                <div className="mt-8 pt-6 border-t text-[11px] font-light leading-relaxed" style={{ borderColor: DIV, color: SOFT }}>
+                  Questions about this policy?<br />
+                  <a href={`mailto:${contactEmail}`} className="underline hover:text-white" style={{ color: BLUE }}>{contactEmail}</a>
+                </div>
+              )}
             </div>
-          )}
+          </aside>
+
+          {/* ── Sections ── */}
+          <div className="min-w-0">
+            {children}
+            {contactEmail && (
+              <div className="mt-12 pt-8 border-t text-[13px] font-light lg:hidden" style={{ borderColor: DIV, color: SOFT }}>
+                Questions about this policy?{" "}
+                <a href={`mailto:${contactEmail}`} className="underline hover:text-white" style={{ color: BLUE }}>{contactEmail}</a>
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>

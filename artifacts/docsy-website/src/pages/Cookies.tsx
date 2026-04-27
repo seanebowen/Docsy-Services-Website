@@ -46,6 +46,8 @@ const STORAGE_TABLE: StorageRow[] = [
 export default function Cookies() {
   return (
     <LegalShell
+      toc={TOC}
+      tocTestId="cookies"
       documentTitle="Cookie Policy | Docsy Services"
       metaDescription="The cookies and similar technologies Docsy Services uses on our website, what they do, and how to control them in your browser."
       eyebrow="Legal · Cookie Policy"

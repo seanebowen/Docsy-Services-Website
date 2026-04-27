@@ -28,6 +28,8 @@ const TOC: LegalSectionEntry[] = [
 export default function Accessibility() {
   return (
     <LegalShell
+      toc={TOC}
+      tocTestId="accessibility"
       documentTitle="Accessibility Statement | Docsy Services"
       metaDescription="Docsy Services' accessibility commitment, WCAG 2.1 AA conformance status, known limitations, and how to request accommodations or report a barrier."
       eyebrow="Legal · Accessibility"
