@@ -4,6 +4,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
 import { HonorPassUpsell } from "@/components/ui/HonorPassUpsell";
 import { useAuth } from "@/context/AuthContext";
+import { WIZARD_HANDOFF_KEY, type ApostilleHandoff } from "@/components/apostille/DestinationWizard";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -385,6 +386,49 @@ export default function Calculator() {
     try { sessionStorage.setItem(CALC_STATE_KEY, JSON.stringify(snapshot)); } catch { /* quota / private mode — ignore */ }
   }, [ronOn, gnwOn, loanOn, apostOn, courtOn, llOn, llTier, llDuration, ron, gnw, travel, loan, apost, court]);
 
+  /* ── Deep-link pre-fill ─────────────────────────────────────────────
+     The Apostille destination wizard sends users here with a URL like
+     /calculate?service=apostille&docType=birth-cert&country=ES&apostType=personal
+     Auto-toggle the matching service and set the apostille type, then
+     pick up the wizard's handoff (docType label + country name) to surface
+     a banner so the user can confirm the right context carried over. */
+  const [wizardHandoff, setWizardHandoff] = useState<ApostilleHandoff | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const service   = params.get("service");
+    const apostType = params.get("apostType");
+    if (service !== "apostille") return;
+
+    setApostOn(true);
+    if (apostType === "personal" || apostType === "business" || apostType === "federal") {
+      setApost(p => ({ ...p, types: [apostType as ApostilleType] }));
+    }
+
+    /* Pull the handoff context the wizard stashed before navigating. We
+       only honour it for ~30 minutes so a stale entry from a prior visit
+       doesn't surface on an unrelated quote. */
+    try {
+      const raw = sessionStorage.getItem(WIZARD_HANDOFF_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as ApostilleHandoff;
+        if (parsed && typeof parsed.ts === "number" && Date.now() - parsed.ts < 30 * 60 * 1000) {
+          setWizardHandoff(parsed);
+        } else {
+          sessionStorage.removeItem(WIZARD_HANDOFF_KEY);
+        }
+      }
+    } catch { /* ignore */ }
+
+    /* Clean the query string so a refresh doesn't keep re-applying. */
+    try {
+      const url = new URL(window.location.href);
+      url.search = "";
+      window.history.replaceState({}, "", url.toString());
+    } catch { /* ignore */ }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /* Geocoding state */
   const [geoStatus, setGeoStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [geoMiles, setGeoMiles]   = useState<number | null>(null);
@@ -584,6 +628,37 @@ export default function Calculator() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ── Wizard handoff banner ── */}
+      {wizardHandoff && (
+        <section
+          className="px-5 py-4 border-t"
+          style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.08)" }}
+          data-testid="wizard-handoff-banner"
+        >
+          <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-white/75">
+              <span className="font-bold uppercase tracking-widest text-[10px] mr-3" style={{ color: BLUE }}>
+                From your wizard
+              </span>
+              <strong className="text-white">{wizardHandoff.docTypeLabel}</strong> →{" "}
+              <strong className="text-white">{wizardHandoff.countryName}</strong>
+              <span className="text-white/45"> · apostille pre-selected below.</span>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setWizardHandoff(null);
+                try { sessionStorage.removeItem(WIZARD_HANDOFF_KEY); } catch { /* ignore */ }
+              }}
+              className="text-xs font-bold uppercase tracking-widest text-white/55 hover:text-white transition-colors"
+              data-testid="wizard-handoff-dismiss"
+            >
+              Dismiss ✕
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* ── Main estimator body ── */}
       <section className="border-t" style={{ borderColor: DIV }}>

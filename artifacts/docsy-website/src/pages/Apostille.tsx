@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
+import { DestinationWizard } from "@/components/apostille/DestinationWizard";
 import apostilleImg from "@/assets/images/apostille-seal.png";
 
 const IVORY = "#F5EFE6";
@@ -129,10 +130,27 @@ const POLICIES = [
 ];
 
 export default function Apostille() {
+  const [location] = useLocation();
+
   React.useEffect(() => {
     document.title = "Apostille Services | Docsy Services";
   }, []);
 
+  /* Deep-link: /apostille/wizard auto-scrolls to the wizard section.
+     Tolerates trailing slash; query strings aren't part of wouter location. */
+  React.useEffect(() => {
+    if (!/\/wizard\/?$/.test(location)) return;
+    const t = window.setTimeout(() => {
+      const el = document.getElementById("destination-wizard");
+      if (el) {
+        const headerOffset =
+          parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h") || "0", 10) || 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - headerOffset - 12;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }, 120);
+    return () => window.clearTimeout(t);
+  }, [location]);
 
   return (
     <div className="w-full" style={{ backgroundColor: BG }}>
@@ -201,6 +219,19 @@ export default function Apostille() {
             <p className="text-xs font-bold text-white">A. Nguyen</p>
             <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>Houston, TX</p>
           </div>
+        </div>
+      </section>
+
+      {/* ── Destination Wizard ── */}
+      <section
+        id="destination-wizard"
+        className="py-16 sm:py-20 px-5 border-t scroll-mt-32"
+        style={{ borderColor: DIV }}
+      >
+        <div className="max-w-3xl mx-auto">
+          <FadeIn delay={0} threshold={0.05}>
+            <DestinationWizard />
+          </FadeIn>
         </div>
       </section>
 

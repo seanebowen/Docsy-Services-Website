@@ -55,6 +55,7 @@ function Router() {
       <Route path="/ron"><Redirect to="/notary-services#ron" /></Route>
       <Route path="/mobile-notary"><Redirect to="/notary-services#mobile" /></Route>
       <Route path="/apostille" component={Apostille} />
+      <Route path="/apostille/wizard" component={Apostille} />
       <Route path="/loan-signing" component={LoanSigning} />
       <Route path="/court-reporting"><Redirect to="/electronic-reporting" /></Route>
       <Route path="/memberships" component={Memberships} />
