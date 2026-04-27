@@ -31,6 +31,7 @@ import Privacy from "@/pages/Privacy";
 import Cookies from "@/pages/Cookies";
 import Accessibility from "@/pages/Accessibility";
 import Glossary from "@/pages/Glossary";
+import DocumentCheck from "@/pages/DocumentCheck";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +85,7 @@ function Router() {
       <Route path="/accessibility-statement"><Redirect to="/accessibility" /></Route>
       <Route path="/glossary" component={Glossary} />
       <Route path="/glossary/:slug" component={Glossary} />
+      <Route path="/document-check" component={DocumentCheck} />
       <Route component={NotFound} />
     </Switch>
   );
