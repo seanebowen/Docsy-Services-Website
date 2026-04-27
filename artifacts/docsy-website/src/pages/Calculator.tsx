@@ -398,27 +398,49 @@ export default function Calculator() {
     const params = new URLSearchParams(window.location.search);
     const service   = params.get("service");
     const apostType = params.get("apostType");
-    if (service !== "apostille") return;
 
-    setApostOn(true);
-    if (apostType === "personal" || apostType === "business" || apostType === "federal") {
-      setApost(p => ({ ...p, types: [apostType as ApostilleType] }));
+    /* Pre-toggle the matching service. Used by the apostille wizard
+       (service=apostille[+apostType]) AND by the document-check page
+       (service=apostille|loan|ron|mobile), which routes the user here
+       with the recommended service already enabled. */
+    let matched = false;
+    if (service === "apostille") {
+      setApostOn(true);
+      matched = true;
+      if (apostType === "personal" || apostType === "business" || apostType === "federal") {
+        setApost(p => ({ ...p, types: [apostType as ApostilleType] }));
+      }
+    } else if (service === "loan") {
+      setLoanOn(true);
+      matched = true;
+    } else if (service === "ron") {
+      setRonOn(true);
+      matched = true;
+    } else if (service === "mobile" || service === "gnw") {
+      setGnwOn(true);
+      matched = true;
+    } else if (service === "court") {
+      setCourtOn(true);
+      matched = true;
     }
+    if (!matched) return;
 
     /* Pull the handoff context the wizard stashed before navigating. We
        only honour it for ~30 minutes so a stale entry from a prior visit
-       doesn't surface on an unrelated quote. */
-    try {
-      const raw = sessionStorage.getItem(WIZARD_HANDOFF_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as ApostilleHandoff;
-        if (parsed && typeof parsed.ts === "number" && Date.now() - parsed.ts < 30 * 60 * 1000) {
-          setWizardHandoff(parsed);
-        } else {
-          sessionStorage.removeItem(WIZARD_HANDOFF_KEY);
+       doesn't surface on an unrelated quote. Only relevant for apostille. */
+    if (service === "apostille") {
+      try {
+        const raw = sessionStorage.getItem(WIZARD_HANDOFF_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw) as ApostilleHandoff;
+          if (parsed && typeof parsed.ts === "number" && Date.now() - parsed.ts < 30 * 60 * 1000) {
+            setWizardHandoff(parsed);
+          } else {
+            sessionStorage.removeItem(WIZARD_HANDOFF_KEY);
+          }
         }
-      }
-    } catch { /* ignore */ }
+      } catch { /* ignore */ }
+    }
 
     /* Clean the query string so a refresh doesn't keep re-applying. */
     try {
@@ -624,6 +646,14 @@ export default function Calculator() {
           <FadeIn delay={80}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium">
               Select your services and configure the details — your exact price calculates in real time. Your quote carries directly into the booking flow as Step 1 of 3.
+            </p>
+          </FadeIn>
+          <FadeIn delay={160}>
+            <p className="mt-6 text-sm font-medium border-l-2 pl-4 max-w-xl" style={{ borderColor: BLUE, color: "rgba(0,0,0,0.55)" }}>
+              Not sure your document is ready?{" "}
+              <Link href="/document-check" className="font-bold underline" style={{ color: BLUE }} data-testid="btn-calc-doc-check">
+                Run a free pre-flight check first →
+              </Link>
             </p>
           </FadeIn>
         </div>

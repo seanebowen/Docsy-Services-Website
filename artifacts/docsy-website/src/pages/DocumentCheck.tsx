@@ -195,6 +195,9 @@ export default function DocumentCheck() {
                 <div className="px-6 sm:px-8 py-8">
                   {/* Drop zone */}
                   <div
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Upload a document — drop a file here or press Enter to choose"
                     onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                     onDragLeave={() => setDragOver(false)}
                     onDrop={(e) => {
@@ -203,12 +206,18 @@ export default function DocumentCheck() {
                       const f = e.dataTransfer.files?.[0];
                       if (f) handleFile(f);
                     }}
-                    className="border-2 border-dashed flex flex-col items-center justify-center text-center p-10 sm:p-14 transition-colors cursor-pointer"
+                    className="border-2 border-dashed flex flex-col items-center justify-center text-center p-10 sm:p-14 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2"
                     style={{
                       borderColor: dragOver ? BLUE : DIV,
                       backgroundColor: dragOver ? "rgba(77,159,219,0.05)" : "transparent",
                     }}
                     onClick={() => inputRef.current?.click()}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        inputRef.current?.click();
+                      }
+                    }}
                     data-testid="docchk-dropzone"
                   >
                     <div className="text-5xl mb-3" style={{ color: BLUE }} aria-hidden>⤒</div>

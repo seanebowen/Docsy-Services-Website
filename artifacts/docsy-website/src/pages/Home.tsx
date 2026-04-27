@@ -361,6 +361,9 @@ export default function Home() {
             </p>
           </FadeIn>
           <FadeIn delay={300}>
+            <p className="text-xs font-medium mb-5" style={{ color: "rgba(0,0,0,0.45)" }}>
+              Not sure if your document is ready? <Link href="/document-check" className="underline" style={{ color: "rgba(0,0,0,0.75)" }} data-testid="btn-home-doc-check">Run a free pre-flight check →</Link>
+            </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/calculate"

@@ -83,7 +83,30 @@ Suggested service rules:
 
 Be specific and concrete. The user needs to know exactly what to fix.`;
 
-router.post("/", upload.single("file"), async (req: Request, res: Response): Promise<void> => {
+/* Multer wrapper that converts thrown errors (oversize, wrong MIME) into
+   JSON 4xx responses so the frontend always receives a parseable payload.
+   Without this, multer errors bubble to Express's default HTML error
+   handler and the client's res.json() throws on parse. */
+function uploadSingle(req: Request, res: Response, next: () => void): void {
+  upload.single("file")(req, res, (err: unknown) => {
+    if (!err) { next(); return; }
+    if (err instanceof multer.MulterError) {
+      const msg =
+        err.code === "LIMIT_FILE_SIZE"
+          ? "File is too large. The limit is 25 MB — re-export at lower resolution or split into pages."
+          : `Upload failed: ${err.message}`;
+      res.status(413).json({ ok: false, error: msg });
+      return;
+    }
+    if (err instanceof Error) {
+      res.status(400).json({ ok: false, error: err.message });
+      return;
+    }
+    res.status(400).json({ ok: false, error: "Upload failed." });
+  });
+}
+
+router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void> => {
   try {
     const file = req.file;
     if (!file) {

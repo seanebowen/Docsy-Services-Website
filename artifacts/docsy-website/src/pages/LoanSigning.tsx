@@ -154,7 +154,10 @@ export default function LoanSigning() {
               ))}
             </div>
           </div>
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
+            <Link href="/document-check" className="block px-6 py-4 text-sm font-bold text-center border" style={{ borderColor: "#4D9FDB", color: "#4D9FDB" }} data-testid="btn-signing-doc-check">
+              Free document check →
+            </Link>
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: "#4D9FDB" }} data-testid="btn-book-signing-cta">
               Book Now →
             </Link>
