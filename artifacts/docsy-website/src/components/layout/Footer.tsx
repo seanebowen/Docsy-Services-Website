@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
+import { CredentialsStrip } from "@/components/marketing/CredentialsStrip";
 
 const SLATE = "#131929";
 const DIV   = "#1e2a3a";
@@ -44,14 +45,13 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t pt-6 pb-6 flex items-center gap-3 flex-wrap" style={{ borderColor: DIV }}>
-          <span className="inline-flex items-center gap-2 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] border" style={{ borderColor: "#76b900", color: "#76b900" }}>
-            <span style={{ letterSpacing: "-0.02em" }}>ID.me</span>
-            <span style={{ opacity: 0.6 }}>·</span>
-            <span>Trusted Partner</span>
-          </span>
-          <p className="text-[11px] font-light" style={{ color: "rgba(255,255,255,0.32)" }}>
-            Military, veteran, and first responder verification powered by <Link href="/promos" className="underline hover:text-white">ID.me</Link>. The same federal credential service used by the VA &amp; IRS.
+        <div className="border-t pt-6 pb-6" style={{ borderColor: DIV }}>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-3" style={{ color: "rgba(255,255,255,0.25)" }}>
+            ⊙ Credentials &amp; Trust
+          </p>
+          <CredentialsStrip variant="footer" />
+          <p className="text-[11px] font-light mt-4 max-w-3xl" style={{ color: "rgba(255,255,255,0.32)" }}>
+            Military, veteran, and first responder verification powered by <Link href="/promos" className="underline hover:text-white">ID.me</Link> — the same federal credential service used by the VA &amp; IRS. Texas notary commission and surety bond on file with the Texas Secretary of State.
           </p>
         </div>
         <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-start gap-4" style={{ borderColor: DIV }}>

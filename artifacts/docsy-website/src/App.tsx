@@ -13,7 +13,6 @@ import LoanSigning from "@/pages/LoanSigning";
 import CourtReporting from "@/pages/CourtReporting";
 import Memberships from "@/pages/Memberships";
 import FAQ from "@/pages/FAQ";
-import HelpCenter from "@/pages/HelpCenter";
 import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
 import Verify from "@/pages/Verify";

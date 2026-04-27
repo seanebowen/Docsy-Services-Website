@@ -4,6 +4,9 @@ import { MapPin, Video, Briefcase, Globe, FileText, Calendar, PenLine, DollarSig
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ImageBand } from "@/components/ui/ImageBand";
 import { PromotionTicker } from "@/components/layout/PromotionTicker";
+import { CredentialsStrip } from "@/components/marketing/CredentialsStrip";
+import { PressStrip } from "@/components/marketing/PressStrip";
+import { StarRating } from "@/components/marketing/StarRating";
 import homeImg from "@/assets/images/home-workspace.png";
 
 const IVORY  = "#F5EFE6";
@@ -77,11 +80,11 @@ const SERVICES = [
 ];
 
 const TESTIMONIALS = [
-  { quote: "The RON session took nine minutes. I signed my power of attorney from a coffee shop in Austin. Easiest notary experience I've ever had.", name: "K. Mitchell", loc: "Austin, TX" },
-  { quote: "We had to close on a Friday evening. Docsy showed up on time, had everything organized, and the scanbacks were back to our title office before I left the parking lot.", name: "R. Salazar", loc: "San Antonio, TX" },
-  { quote: "I needed an apostille for a work visa and didn't know where to start. The pre-check saved me from sending the wrong document. Everything was handled in three days.", name: "A. Nguyen", loc: "Houston, TX" },
-  { quote: "Every court reporter I've used charges extra for the word index. Docsy just includes it. The invoice was exactly what I expected.", name: "T. Perkins", loc: "San Antonio, TX" },
-  { quote: "I've booked four appointments through Docsy — RON, mobile, loan signing, and an apostille. Same clear pricing, same invoice format, same follow-through every time.", name: "M. Okafor", loc: "Dallas, TX" },
+  { id: "t-mitchell-ron",     quote: "The RON session took nine minutes. I signed my power of attorney from a coffee shop in Austin. Easiest notary experience I've ever had.", name: "K. Mitchell", loc: "Austin, TX",      service: "RON — Power of Attorney" },
+  { id: "t-salazar-loan",     quote: "We had to close on a Friday evening. Docsy showed up on time, had everything organized, and the scanbacks were back to our title office before I left the parking lot.", name: "R. Salazar", loc: "San Antonio, TX", service: "Loan Signing — Friday evening close" },
+  { id: "t-nguyen-apostille", quote: "I needed an apostille for a work visa and didn't know where to start. The pre-check saved me from sending the wrong document. Everything was handled in three days.", name: "A. Nguyen", loc: "Houston, TX",     service: "Apostille — Work Visa" },
+  { id: "t-perkins-er",       quote: "Every court reporter I've used charges extra for the word index. Docsy just includes it. The invoice was exactly what I expected.", name: "T. Perkins", loc: "San Antonio, TX", service: "Electronic Reporting — Deposition" },
+  { id: "t-okafor-multi",     quote: "I've booked four appointments through Docsy — RON, mobile, loan signing, and an apostille. Same clear pricing, same invoice format, same follow-through every time.", name: "M. Okafor", loc: "Dallas, TX",      service: "Multi-service client" },
 ];
 
 export default function Home() {
@@ -133,6 +136,9 @@ export default function Home() {
 
       {/* ── IMAGE BAND ──────────────────────────────────────── */}
       <ImageBand src={homeImg} alt="Texas legal workspace" />
+
+      {/* ── CREDENTIALS & TRUST STRIP ──────────────────────── */}
+      <CredentialsStrip variant="compact" />
 
       {/* ── PROMOTION TICKER ───────────────────────────────── */}
       <PromotionTicker />
@@ -311,11 +317,19 @@ export default function Home() {
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ backgroundColor: DIV }}>
             {TESTIMONIALS.map((t, i) => (
-              <FadeIn key={t.name} delay={i * 70} threshold={0.04}>
+              <FadeIn key={t.id} delay={i * 70} threshold={0.04}>
                 <div className="p-8 h-full flex flex-col justify-between" style={{ backgroundColor: SLATE }}>
-                  <p className="review-text text-sm font-light leading-relaxed mb-6">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <StarRating count={5} size={13} />
+                    </div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.14em] mb-4" style={{ color: AMBER }}>
+                      {t.service}
+                    </p>
+                    <p className="review-text text-sm font-light leading-relaxed mb-6">
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+                  </div>
                   <div>
                     <p className="text-xs font-bold text-white">{t.name}</p>
                     <p className="text-[10px] font-medium uppercase tracking-[0.12em] mt-0.5" style={{ color: "rgba(255,255,255,0.28)" }}>{t.loc}</p>
@@ -326,6 +340,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── PRESS / AS SEEN IN STRIP ────────────────────────── */}
+      <PressStrip />
 
       {/* ── FINAL CTA — Memberships + Get a Price ─────────── */}
       <section className="py-20 sm:py-24 px-5 text-center" style={{ backgroundColor: IVORY }}>

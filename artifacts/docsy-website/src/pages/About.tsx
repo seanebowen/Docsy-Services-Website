@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useSearch } from "wouter";
 import { Phone, Mail, MessageSquare, Clock, AlertTriangle, FileText, Receipt, Package, Building2, Users, HelpCircle } from "lucide-react";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { CredentialsStrip } from "@/components/marketing/CredentialsStrip";
 import seanPortrait from "@assets/Sean_Docsy_1776916203340.png";
 
 const IVORY = "#F5EFE6";
@@ -216,6 +217,24 @@ export default function About() {
               </FadeIn>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Credentials & Trust ── */}
+      <section className="py-20 sm:py-24 px-5 border-t" style={{ borderColor: DIV }}>
+        <div className="max-w-5xl mx-auto">
+          <FadeIn delay={0}><Label icon="⊙" text="CREDENTIALS & TRUST" /></FadeIn>
+          <FadeIn delay={60}>
+            <h2 className="text-3xl sm:text-4xl font-black text-white text-center mb-3" style={{ letterSpacing: "-0.02em" }}>
+              The credentials that <HI>actually matter.</HI>
+            </h2>
+            <p className="text-base font-light text-center mb-12 max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Every credential below is current, verifiable, and on file with the relevant authority. We list them because clients — especially title companies and attorneys — should be able to confirm them in 30 seconds.
+            </p>
+          </FadeIn>
+          <FadeIn delay={120}>
+            <CredentialsStrip variant="expanded" />
+          </FadeIn>
         </div>
       </section>
 
