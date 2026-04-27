@@ -46,7 +46,7 @@ export default function LoanSigning() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              Certified loan signing agent for refinance, buyer, seller, HELOC, reverse mortgage, and commercial packages. Texas-compliant. Reliable.
+              Certified <Link href="/glossary#loan-signing-agent" className="underline text-black">loan signing agent</Link> for refinance, buyer, seller, HELOC, reverse mortgage, and commercial packages. Texas-compliant. Reliable. <Link href="/glossary#eo-insurance" className="underline text-black">E&amp;O insurance</Link> on file.
             </p>
           </FadeIn>
         </div>

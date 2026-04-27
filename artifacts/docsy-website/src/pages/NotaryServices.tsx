@@ -72,7 +72,7 @@ export default function NotaryServices() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-2xl font-medium">
-              <strong className="text-black">Remote Online Notarization (RON)</strong> for everything that doesn't require an in-person notary, and <strong className="text-black">Mobile Notary &amp; General Notary Work (GNW)</strong> when it does. Same provider. Same transparent pricing. Same know-your-price-before-you-book promise.
+              <Link href="/glossary#ron" className="underline font-bold text-black">Remote Online Notarization (RON)</Link> for everything that doesn't require an in-person notary, and <strong className="text-black">Mobile Notary &amp; General Notary Work (GNW)</strong> when it does. Same provider. Same transparent pricing. Same know-your-price-before-you-book promise.
             </p>
           </FadeIn>
           <FadeIn delay={260}>
@@ -188,6 +188,15 @@ export default function NotaryServices() {
           </h3>
           <p className="text-lg font-light text-white/50 leading-relaxed">
             A device with a working front-facing camera and microphone. A stable internet connection. A <H>valid, unexpired government-issued photo ID.</H> Your document accessible as a file or ready to share on screen. That's it.
+          </p>
+          <p className="text-sm text-white/35 mt-6">
+            Not sure whether your document needs an{" "}
+            <Link href="/glossary#acknowledgment" className="underline" style={{ color: BLUE }}>acknowledgment</Link>{" "}
+            or a{" "}
+            <Link href="/glossary#jurat" className="underline" style={{ color: BLUE }}>jurat</Link>?
+            Don&rsquo;t have an ID? See{" "}
+            <Link href="/glossary#credible-witness" className="underline" style={{ color: BLUE }}>credible witness</Link>{" "}
+            in our glossary for the alternative Texas allows.
           </p>
         </div>
       </section>

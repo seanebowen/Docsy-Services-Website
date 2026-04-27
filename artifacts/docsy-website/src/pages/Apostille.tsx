@@ -173,6 +173,24 @@ export default function Apostille() {
 
       <ImageBand src={apostilleImg} alt="Apostille wax seal on official document" />
 
+      {/* ── Glossary callout ── */}
+      <section className="px-5 py-6 border-t" style={{ borderColor: DIV, backgroundColor: BG }}>
+        <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs">
+          <span className="font-bold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.35)" }}>Quick reference →</span>
+          {[
+            ["apostille", "Apostille"],
+            ["hague-convention", "Hague Convention"],
+            ["authentication-federal", "Federal authentication"],
+            ["certified-copy", "Certified copy"],
+            ["exemplification", "Exemplification"],
+          ].map(([slug, label]) => (
+            <Link key={slug} href={`/glossary#${slug}`} className="underline font-medium" style={{ color: BLUE }}>
+              {label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ── Testimonial ── */}
       <section className="py-12 px-5 border-t" style={{ borderColor: DIV }}>
         <div className="max-w-3xl mx-auto">
@@ -191,7 +209,7 @@ export default function Apostille() {
         {
           icon: "⊙", label: "THE BASICS",
           heading: "The certificate that\nmakes your document\nwork abroad.",
-          body: "An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille.",
+          body: "An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille. New to the terminology? See our glossary entries for apostille, the Hague Convention, and federal authentication.",
         },
         {
           icon: "⊟", label: "COVERAGE",

@@ -30,6 +30,7 @@ import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import Cookies from "@/pages/Cookies";
 import Accessibility from "@/pages/Accessibility";
+import Glossary from "@/pages/Glossary";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,8 @@ function Router() {
       <Route path="/cookie-policy"><Redirect to="/cookies" /></Route>
       <Route path="/accessibility" component={Accessibility} />
       <Route path="/accessibility-statement"><Redirect to="/accessibility" /></Route>
+      <Route path="/glossary" component={Glossary} />
+      <Route path="/glossary/:slug" component={Glossary} />
       <Route component={NotFound} />
     </Switch>
   );

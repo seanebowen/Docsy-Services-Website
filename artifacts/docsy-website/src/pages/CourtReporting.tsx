@@ -46,7 +46,7 @@ export default function CourtReporting() {
           </FadeIn>
           <FadeIn delay={160}>
             <p className="text-lg sm:text-xl text-black/60 mb-10 max-w-xl font-medium">
-              <strong className="text-black">Electronic Reporting</strong> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT certified. Below agency rates. Word index, certified PDF, and digital delivery always included.
+              <Link href="/glossary#electronic-reporting" className="underline font-bold text-black">Electronic Reporting</Link> for depositions, examinations under oath (EUOs), board meetings, arbitrations, and legal proceedings. AAERT-certified — staffed by trained <Link href="/glossary#court-reporter" className="underline text-black">court reporters</Link>. Below agency rates. Word index, certified PDF, and digital delivery always included.
             </p>
           </FadeIn>
         </div>

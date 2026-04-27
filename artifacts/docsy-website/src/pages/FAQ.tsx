@@ -246,7 +246,7 @@ export default function FAQ() {
           </FadeIn>
           <FadeIn delay={80}>
             <p className="text-lg sm:text-xl text-black/60 max-w-xl font-medium mb-6">
-              Real questions, real answers — plus step-by-step guides for every Docsy service. Plain language. No runaround.
+              Real questions, real answers — plus step-by-step guides for every Docsy service. Plain language. No runaround. Need a definition instead of a guide? Our <Link href="/glossary" className="underline font-bold text-black">notary glossary</Link> covers every term we use.
             </p>
           </FadeIn>
           <FadeIn delay={120}>
@@ -257,6 +257,9 @@ export default function FAQ() {
               <a href="#guides" className="px-6 py-3 text-sm font-bold text-black border-2 border-black">
                 Step-by-step guides →
               </a>
+              <Link href="/glossary" className="px-6 py-3 text-sm font-bold text-black border-2 border-black">
+                Open the glossary →
+              </Link>
             </div>
           </FadeIn>
         </div>
