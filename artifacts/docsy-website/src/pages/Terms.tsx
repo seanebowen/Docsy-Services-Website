@@ -597,36 +597,16 @@ export default function Terms() {
             {/* 14 ────────────────────────────────── */}
             <Section entry={TOC[13]}>
               <PolicyCallout href="/privacy" label="Privacy Policy">
-                This section is a summary of our data practices as they relate to your contractual rights under these Terms.
+                Our complete privacy practices — what we collect, how we use it, who we share it with (Stripe, ID.me, Google Calendar, Zapier, RON platform, government recipients), retention periods, and your rights — live on the standalone Privacy Policy page.
               </PolicyCallout>
-              <SubH>What We Collect</SubH>
-              <UL items={[
-                <>Account information you provide: name, email, phone number, billing address, and (where you create one) account password.</>,
-                <>Booking information: service requested, appointment date and location, signer count, document type, special instructions.</>,
-                <>Payment information: card details are tokenized by our PCI-compliant payment processor; we do not store full card numbers on our servers.</>,
-                <>Identity verification data for RON sessions: ID image, KBA results, and the audio-video session recording, retained as required by law (see Section 09).</>,
-                <>ID.me verification status when you elect to use HonorPass for a discount: only the high-level group (military, veteran, first responder) and verification timestamp; we do not receive your underlying ID documents from ID.me.</>,
-                <>Site usage data: IP address, browser type, pages viewed, and similar analytics collected via cookies and similar technologies.</>,
-              ]} />
-              <SubH>How We Use & Store Data</SubH>
               <P>
-                We use your data to deliver the services you request, process payment, send appointment confirmations and reminders, comply with legal recordkeeping obligations, prevent fraud, and improve our site. Data is stored on encrypted, access-controlled infrastructure operated by reputable U.S.-based providers.
+                In summary, and as a contractual commitment under these Terms: we collect only the information needed to deliver the service you booked; we use it to deliver the service, comply with notarial recordkeeping law, and prevent fraud; we do not sell your personal information; and we share data only with the vetted partners and government recipients listed in the Privacy Policy. RON session recordings and notarial journal entries are retained for the period required by {STATE} law (see Section 09 for retention specifics).
               </P>
-              <SubH>Third-Party Sharing</SubH>
               <P>
-                We share data only with parties necessary to deliver our services (e.g., RON platform, payment processor, ID.me for HonorPass verification, the {STATE} Secretary of State for apostille submissions, and lenders/title companies for loan signings you have ordered). We do not sell your personal information. We will disclose information when required by subpoena, court order, or other lawful process.
+                The site stores a small set of strictly functional items in your browser's local and session storage to keep you signed in, hold your in-progress price calculator quote, and carry your booking through checkout. The full inventory of those items is published in our <Link href="/cookies" className="underline" style={{ color: BLUE }}>Cookie Policy</Link>.
               </P>
-              <SubH>RON Recording Retention & Deletion</SubH>
               <P>
-                RON session recordings, credential-analysis results, and KBA logs are retained for the period required by {STATE} law (currently five years from the date of the act). After that period, recordings are securely deleted in the ordinary course unless we are subject to a litigation hold or subpoena. You may request a copy of the recording in which you appear at any time within the retention period; see Section 09.
-              </P>
-              <SubH>State Privacy Law Notices</SubH>
-              <P>
-                Residents of California, Colorado, Connecticut, Utah, Virginia, and other states with comprehensive privacy statutes have specific rights regarding their personal information, including the right to know what we collect, the right to access and delete certain categories of data, the right to correct inaccuracies, and the right to opt out of certain processing. To exercise these rights, contact <a href={`mailto:${PRIVACY_EMAIL}`} className="underline" style={{ color: BLUE }}>{PRIVACY_EMAIL}</a>. We do not sell personal information as the term “sale” is defined under the CCPA, the CPRA, or analogous state laws.
-              </P>
-              <SubH>Cookies</SubH>
-              <P>
-                The site uses cookies and similar technologies for authentication, session continuity, the price calculator's draft-quote persistence, and basic analytics. You may disable cookies in your browser, but parts of the site (including the booking flow and account features) will not function correctly without them. The full list of cookies we set is published in our <Link href="/cookies" className="underline" style={{ color: BLUE }}>Cookie Policy</Link>.
+                Residents of states with comprehensive privacy statutes (California, Colorado, Connecticut, Utah, Virginia, and others) may exercise their rights to access, correct, delete, and opt out of certain processing by contacting <a href={`mailto:${PRIVACY_EMAIL}`} className="underline" style={{ color: BLUE }}>{PRIVACY_EMAIL}</a>. The full state-by-state notices and the procedures we follow are detailed on the <Link href="/privacy" className="underline" style={{ color: BLUE }}>Privacy Policy</Link> page.
               </P>
             </Section>
 
@@ -691,19 +671,13 @@ export default function Terms() {
             {/* 18 ────────────────────────────────── */}
             <Section entry={TOC[17]}>
               <PolicyCallout href="/accessibility" label="Accessibility Statement">
-                This section summarizes the accessibility commitments {TRADE_NAME} makes as part of these Terms.
+                Our complete accessibility commitments — WCAG 2.1 AA conformance status, known limitations, the assistive technologies we test with, accessible service delivery beyond the website (hospitals, hospices, interpreters), and the process to request accommodations or report a barrier — live on the standalone Accessibility Statement page.
               </PolicyCallout>
-              <SubH>ADA Commitment</SubH>
               <P>
-                {TRADE_NAME} is committed to providing services that comply with the Americans with Disabilities Act (ADA) and analogous {STATE} law. Our mobile and in-person services routinely accommodate hospital beds, oxygen equipment, memory care environments, and other non-standard settings at no additional charge beyond standard travel fees. Our website is designed to follow the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard; we welcome reports of any accessibility barrier so we can address it promptly.
+                As a contractual commitment under these Terms: {TRADE_NAME} provides services that comply with the Americans with Disabilities Act (ADA) and analogous {STATE} law, and we provide services without discrimination on the basis of race, color, religion, national origin, ancestry, sex, gender identity, sexual orientation, age, disability, marital status, military or veteran status, source of income, or any other characteristic protected by federal, state, or local law. {STATE} notaries are bound by an oath of impartiality, and we honor that oath in every booking we accept.
               </P>
-              <SubH>Non-Discrimination</SubH>
               <P>
-                {TRADE_NAME} provides services without discrimination on the basis of race, color, religion, national origin, ancestry, sex, gender identity, sexual orientation, age, disability, marital status, military or veteran status, source of income, or any other characteristic protected by federal, state, or local law. {STATE} notaries are bound by an oath of impartiality, and we honor that oath in every booking we accept.
-              </P>
-              <SubH>Requesting Accommodations</SubH>
-              <P>
-                To request an accommodation — including a sign-language interpreter, a reader, an alternative communication method, additional time, or an accessible location — contact us at {PHONE} or <a href={`mailto:${EMAIL}`} className="underline" style={{ color: BLUE }}>{EMAIL}</a> at least 48 hours before your appointment when possible. We will work with you to provide a reasonable accommodation at no additional charge.
+                To request an accommodation — sign-language interpreter, reader, alternative communication method, additional time, accessible location, or anything else — contact us at {PHONE} or <a href={`mailto:${EMAIL}`} className="underline" style={{ color: BLUE }}>{EMAIL}</a> at least 48 hours before your appointment when possible. We will work with you to provide a reasonable accommodation at no additional charge. The full process and our contact channels are detailed on the <Link href="/accessibility" className="underline" style={{ color: BLUE }}>Accessibility Statement</Link>.
               </P>
             </Section>
 
