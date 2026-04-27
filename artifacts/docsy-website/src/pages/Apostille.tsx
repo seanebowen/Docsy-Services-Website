@@ -205,23 +205,35 @@ export default function Apostille() {
       </section>
 
       {/* ── Info sections ── */}
-      {[
+      {([
         {
           icon: "⊙", label: "THE BASICS",
           heading: "The certificate that\nmakes your document\nwork abroad.",
-          body: "An apostille is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 Hague Convention (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need an apostille. New to the terminology? See our glossary entries for apostille, the Hague Convention, and federal authentication.",
+          body: (
+            <>
+              An <Link href="/glossary#apostille" className="underline" style={{ color: BLUE }}>apostille</Link> is an official certificate that authenticates a document for use in another country — specifically in countries that are part of the 1961 <Link href="/glossary#hague-convention" className="underline" style={{ color: BLUE }}>Hague Convention</Link> (which is most of them). If you're moving abroad, applying for dual citizenship, getting married internationally, sending your diploma to a foreign employer, or adopting internationally — you probably need one. For US federal documents like FBI background checks you'll need <Link href="/glossary#authentication-federal" className="underline" style={{ color: BLUE }}>federal authentication</Link> from the US Department of State instead.
+            </>
+          ),
         },
         {
           icon: "⊟", label: "COVERAGE",
           heading: "Everything.",
-          body: "You send us the original certified document. We review it before filing (our free Pre-Check makes sure it qualifies before we submit anything), file it at the Texas Secretary of State, email you a digital certified scan the moment it's done, and send the original back to you. All fees are included in the flat rate — state filing fee, scan, and return shipping.",
+          body: (
+            <>
+              You send us the original <Link href="/glossary#certified-copy" className="underline" style={{ color: BLUE }}>certified copy</Link> of your document. We review it before filing (our free Pre-Check makes sure it qualifies before we submit anything), file it at the Texas Secretary of State, email you a digital certified scan the moment it's done, and send the original back to you. All fees are included in the flat rate — state filing fee, scan, and return shipping. Court-issued documents that need a higher level of certification can be issued as an <Link href="/glossary#exemplification" className="underline" style={{ color: BLUE }}>exemplification</Link>; ask us at pre-check.
+            </>
+          ),
         },
         {
           icon: "✕", label: "CRITICAL LIMITATION",
           heading: "Originals only.\nNo photocopies.",
-          body: "Texas apostilles can only be placed on Texas-origin documents or documents notarized by a Texas notary. Originals only — photocopies, scans, and laminated documents cannot be apostilled. If you're not sure what qualifies, use the free Pre-Check before sending anything.",
+          body: (
+            <>
+              Texas apostilles can only be placed on Texas-origin documents or documents notarized by a Texas notary. Originals only — personal photocopies, scans, and laminated documents cannot be apostilled. Vital records (birth certificates, marriage licenses) must be a county- or state-issued <Link href="/glossary#certified-copy" className="underline" style={{ color: BLUE }}>certified copy</Link>, not a personal copy. If you're not sure what qualifies, use the free Pre-Check before sending anything.
+            </>
+          ),
         },
-      ].map((feat, i) => (
+      ] as { icon: string; label: string; heading: string; body: React.ReactNode }[]).map((feat, i) => (
         <section key={i} className="py-20 sm:py-24 px-5 border-t text-center" style={{ borderColor: DIV }}>
           <div className="max-w-2xl mx-auto">
             <FadeIn delay={0}>

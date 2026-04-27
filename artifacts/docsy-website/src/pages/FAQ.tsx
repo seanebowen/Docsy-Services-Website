@@ -13,13 +13,21 @@ const HI = ({ children }: { children: React.ReactNode }) => (
   <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>{children}</span>
 );
 
-const faqs = [
+const GLink = ({ slug, children }: { slug: string; children: React.ReactNode }) => (
+  <Link href={`/glossary#${slug}`} className="underline" style={{ color: BLUE }}>
+    {children}
+  </Link>
+);
+
+type FaqItem = { q: string; a: React.ReactNode };
+
+const faqs: { category: string; items: FaqItem[] }[] = [
   {
     category: "General",
     items: [
-      { q: "How much does a notary cost?", a: "It depends on the service. RON starts at $25 for the first notarization. Mobile notary visits start at $30 travel + the statutory notary fee ($10 for the first signature under Texas law). Apostilles start at $165 all-inclusive. Loan signings start at $100 for a seller package. You know your exact price before you confirm — always. Nothing starts until the number is agreed on." },
+      { q: "How much does a notary cost?", a: (<>It depends on the service. <GLink slug="ron">RON</GLink> starts at $25 for the first notarization. Mobile notary visits start at $30 travel + the statutory notary fee ($10 for the first signature under Texas law). Apostilles start at $165 all-inclusive. Loan signings start at $100 for a seller package. You know your exact price before you confirm — always. Nothing starts until the number is agreed on.</>) },
       { q: "Do you come to my location?", a: "Yes. Docsy mobile notary serves the San Antonio metro area with four travel tiers based on distance. We also go to hospitals, nursing homes, assisted living facilities, and hospice locations. For documents that don't require in-person presence, RON is available nationwide." },
-      { q: "Are you available on weekends and after hours?", a: "Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply on weekdays automatically: Night Shift Seal (6–9 PM, $10 off RON) and Midday Miles (12–4 PM, $10 off mobile notary). Weekend Warrior applies on Saturdays and Sundays for loan signing appointments (20% off). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking." },
+      { q: "Are you available on weekends and after hours?", a: (<>Yes. Docsy is available 7 days a week, 7 AM to 11 PM. General hours are 9 AM–9 PM. Docsy+ members get extended access from 7 AM–9 AM and 9 PM–11 PM. Time-window promotions apply on weekdays automatically: Night Shift Seal (6–9 PM, $10 off <GLink slug="ron">RON</GLink>) and Midday Miles (12–4 PM, $10 off mobile notary). Weekend Warrior applies on Saturdays and Sundays for loan signing appointments (20% off). After-hours appointments (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking.</>) },
       { q: "Do I get a receipt or invoice?", a: "Yes. Every appointment comes with an itemized invoice that separates statutory notary fees from all other service fees — as required by Texas law. All fees on the invoice match the price you saw before you booked." },
       { q: "What payment methods do you accept?", a: "Check, ACH/wire transfer (preferred — no fee), credit or debit card (3% processing fee), and Zelle." },
     ],
@@ -35,16 +43,16 @@ const faqs = [
   {
     category: "Apostille",
     items: [
-      { q: "What is an apostille and do I need one?", a: "An apostille is a certificate that makes your US document legally recognized in other countries that are part of the Hague Convention. If you're using a US document abroad — for immigration, education, business, marriage, or anything official — you almost certainly need one." },
-      { q: "What documents can be apostilled?", a: "Any Texas-origin document or document notarized by a Texas notary. Common ones: birth certificates, marriage licenses, divorce decrees, death certificates, diplomas, transcripts, powers of attorney, business documents. Federal documents (like FBI background checks) require USDOS apostille — Docsy handles those too at $275." },
-      { q: "Can I send a photocopy?", a: "No. For recordable documents (birth certificates, marriage licenses, etc.) you need a certified copy issued by the county or state — not a personal copy or scan. For other documents, the original notarized document is required. When in doubt, use the free Pre-Check service before sending anything." },
+      { q: "What is an apostille and do I need one?", a: (<>An <GLink slug="apostille">apostille</GLink> is a certificate that makes your US document legally recognized in other countries that are part of the <GLink slug="hague-convention">Hague Convention</GLink>. If you're using a US document abroad — for immigration, education, business, marriage, or anything official — you almost certainly need one.</>) },
+      { q: "What documents can be apostilled?", a: (<>Any Texas-origin document or document notarized by a Texas notary. Common ones: birth certificates, marriage licenses, divorce decrees, death certificates, diplomas, transcripts, powers of attorney, business documents. Federal documents (like FBI background checks) require <GLink slug="authentication-federal">USDOS authentication</GLink> — Docsy handles those too at $275.</>) },
+      { q: "Can I send a photocopy?", a: (<>No. For recordable documents (birth certificates, marriage licenses, etc.) you need a <GLink slug="certified-copy">certified copy</GLink> issued by the county or state — not a personal copy or scan. For other documents, the original notarized document is required. When in doubt, use the free Pre-Check service before sending anything.</>) },
       { q: "How long does an apostille take?", a: "Standard: 3–5 business days. Next-Day Rush: if received by 11 AM. Same-Day Sprint: mobile pickup only, returned same day or via FedEx overnight. Federal/USDOS: 2–3 weeks standard." },
     ],
   },
   {
     category: "Loan Signing",
     items: [
-      { q: "What does a loan signing agent do?", a: "A certified loan signing agent facilitates the signing of mortgage and real estate documents on behalf of a title company or lender. Docsy verifies your identity, witnesses your signatures on the loan package, notarizes the documents that require it, and returns the package — including scanbacks — to the title company immediately on completion." },
+      { q: "What does a loan signing agent do?", a: (<>A certified <GLink slug="loan-signing-agent">loan signing agent</GLink> facilitates the signing of mortgage and real estate documents on behalf of a title company or lender. Docsy verifies your identity, witnesses your signatures on the loan package, notarizes the documents that require it, and returns the package — including scanbacks — to the title company immediately on completion.</>) },
       { q: "Do I need to bring anything to the signing?", a: "Valid, unexpired, government-issued photo ID — for both signers if it's a joint signing. The name on your ID should match the name on the loan documents. If there's a discrepancy, notify your lender or title company before the appointment, not during." },
       { q: "Can I pre-sign the documents before the notary arrives?", a: "No. Do not sign anything before the signing agent arrives. The agent must witness every signature on the loan documents. Pre-signing voids the notarized documents and will require a re-signing — which delays your closing." },
       { q: "How long does a loan signing take?", a: "Most signings take 45–75 minutes. HELOC packages and reverse mortgage packages may take longer. Clear at least 90 minutes to be safe. There is no rush — the signing is complete when it's complete." },
@@ -54,7 +62,7 @@ const faqs = [
   {
     category: "Electronic Reporting",
     items: [
-      { q: "What is electronic reporting?", a: "Electronic reporting uses certified digital capture equipment to record the full verbatim record of a deposition, EUO, board meeting, arbitration, or similar proceeding, then produces a certified transcript from that record. Docsy reporters are AAERT certified. The resulting transcript carries the same legal weight as traditional stenographic transcripts." },
+      { q: "What is electronic reporting?", a: (<><GLink slug="electronic-reporting">Electronic reporting</GLink> uses certified digital capture equipment to record the full verbatim record of a deposition, EUO, board meeting, arbitration, or similar proceeding, then produces a certified transcript from that record. Docsy <GLink slug="court-reporter">reporters</GLink> are AAERT-certified. Admissibility of the resulting transcript follows the venue's rules and the parties' stipulations.</>) },
       { q: "What's included in the transcript?", a: "The $8.50/page Standard rate includes: word index, certified PDF, PDF delivery, and e-transcript ASCII file. These are standard inclusions — not add-ons. No hidden fees for files that agencies typically charge extra for." },
       { q: "How quickly are transcripts delivered?", a: "Standard turnaround is 30 days. Rush delivery is available — contact Docsy to confirm availability and pricing before scheduling." },
       { q: "What are the payment terms for electronic reporting?", a: "All electronic reporting payments are NET-14. Appearance-only orders are NET-14 from the date of appearance. Transcript orders require a 50% deposit at scheduling, with the balance due upon transcript delivery — transcripts are not released until payment is complete." },
