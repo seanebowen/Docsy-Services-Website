@@ -44,7 +44,7 @@ export default function Privacy() {
       contactEmail={PRIVACY_EMAIL}
       summary={
         <>
-          We collect the information we need to deliver the service you booked — your name, contact info, document details, payment, and (for RON) your ID and a recorded session. We use it to deliver the service, comply with notarial recordkeeping law, and prevent fraud. <strong style={{ color: IVORY }}>We do not sell your personal information.</strong> We share data only with vetted partners required to deliver your service (a PCI-compliant payment processor, ID.me for HonorPass verification, the {STATE} Secretary of State for apostilles, RON platforms, and the lender or title company for a loan signing you ordered). You have the right to access, correct, and delete most of your data — write{" "}
+          We collect the information we need to deliver the service you booked — your name, contact info, document details, payment, and (for RON) your ID and a recorded session. We use it to deliver the service, comply with notarial recordkeeping law, and prevent fraud. <strong style={{ color: IVORY }}>We do not sell your personal information.</strong> We share data only with vetted partners required to deliver your service (Stripe for payments, ID.me for HonorPass verification, Google Calendar for appointment scheduling, Zapier for routing confirmed-booking notifications into our internal tools, the {STATE} Secretary of State for apostilles, RON platforms, and the lender or title company for a loan signing you ordered). You have the right to access, correct, and delete most of your data — write{" "}
           <a href={`mailto:${PRIVACY_EMAIL}`} className="underline" style={{ color: BLUE }}>{PRIVACY_EMAIL}</a>.
         </>
       }
@@ -64,7 +64,7 @@ export default function Privacy() {
         <UL items={[
           <><strong style={{ color: IVORY }}>Account & contact information:</strong> name, email address, phone number, and (where you create an account) a password.</>,
           <><strong style={{ color: IVORY }}>Booking information:</strong> the service you requested, appointment date and time, signing location or RON link, signer count, document type, special instructions, and any access information you provide (gate codes, suite numbers, hospital floor, etc.).</>,
-          <><strong style={{ color: IVORY }}>Payment information:</strong> billing name and address, and card details. Card numbers are tokenized by a PCI-compliant payment processor and are not stored on Docsy servers.</>,
+          <><strong style={{ color: IVORY }}>Payment information:</strong> billing name and address, and card details. Card numbers are tokenized by Stripe (our PCI-compliant payment processor) and are not stored on Docsy servers — Docsy only retains the Stripe payment identifier returned by Stripe so the charge can be reconciled with your booking.</>,
           <><strong style={{ color: IVORY }}>Documents you upload:</strong> documents submitted for notarization, apostille processing, or storage in your Safe+ vault.</>,
           <><strong style={{ color: IVORY }}>Communications:</strong> messages you send us by email, text, contact form, or phone (calls may be recorded for quality and training where disclosed at the time).</>,
         ]} />
@@ -102,11 +102,12 @@ export default function Privacy() {
         </P>
         <SubH>Service Providers (Processors)</SubH>
         <UL items={[
-          <><strong style={{ color: IVORY }}>PCI-compliant payment processor</strong> — receives the information needed to charge your payment method and to comply with anti-fraud and PCI-DSS requirements. We will name the specific processor here once that integration is live, and update this Policy at that time.</>,
-          <><strong style={{ color: IVORY }}>ID.me</strong> — identity verification for HonorPass discount eligibility. Receives the data you provide directly to ID.me; returns only group and verification timestamp to us.</>,
+          <><strong style={{ color: IVORY }}>Stripe, Inc.</strong> (payment processing) — receives the information needed to charge your payment method and to comply with anti-fraud and PCI-DSS requirements. Stripe's privacy practices are governed at <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>stripe.com/privacy</a>.</>,
+          <><strong style={{ color: IVORY }}>ID.me, Inc.</strong> (HonorPass identity verification) — receives the data you provide directly to ID.me when you initiate verification; returns only your eligibility group (military / veteran / first-responder / nurse / teacher) and a verification timestamp to us. Governed by <a href="https://www.id.me/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>id.me/privacy</a>.</>,
+          <><strong style={{ color: IVORY }}>Google LLC — Google Calendar API</strong> (appointment availability) — our scheduling backend uses a Google service-account credential with a read-only Calendar scope to look up existing booked events on the {TRADE_NAME} business calendar so we can compute open slots when you choose a date. The date you select is sent to Google solely to retrieve that day's events; your name, contact information, and document details are not sent to Google. Once you confirm a booking, the new appointment is added to the {TRADE_NAME} business calendar (your name and the service type are visible inside our calendar so the assigned notary can prepare). Governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>policies.google.com/privacy</a>.</>,
+          <><strong style={{ color: IVORY }}>Zapier, Inc.</strong> (booking-confirmed webhook) — when your booking is confirmed, our backend POSTs a JSON payload to a Zapier webhook (configured via the <code style={{ color: BLUE }}>ZAPIER_WEBHOOK_URL</code> server secret). The payload contains your name, email, phone, service type, appointment time, amount charged, and the Stripe payment identifier. Zapier then routes that payload into our internal CRM, calendar, and notification tools. The payload does <strong style={{ color: IVORY }}>not</strong> include document contents, government-ID images, or RON session recordings. Governed by <a href="https://zapier.com/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>zapier.com/privacy</a>.</>,
           <><strong style={{ color: IVORY }}>RON platform provider</strong> — runs the Remote Online Notarization session, performs KBA, captures the session recording, and stores the recording for the legally required retention period.</>,
           <><strong style={{ color: IVORY }}>Hosting & infrastructure providers</strong> — store data on encrypted, access-controlled, U.S.-based infrastructure.</>,
-          <><strong style={{ color: IVORY }}>Zapier</strong> — receives a booking-confirmed webhook (your name, email, phone, service type, appointment time, and amount charged) used to relay confirmed bookings into our internal CRM and calendar tools. The webhook contents do not include document contents or RON recordings.</>,
         ]} />
         <SubH>Government & Required Recipients</SubH>
         <UL items={[
@@ -139,7 +140,7 @@ export default function Privacy() {
 
       <Section entry={TOC[6]}>
         <P>
-          We use administrative, technical, and physical safeguards designed to protect personal information against unauthorized access, disclosure, alteration, and destruction. These include encryption in transit (TLS) and at rest where feasible, role-based access controls, audit logging, multi-factor authentication for administrative accounts, and PCI-DSS-aligned handling of payment data through our payment processor.
+          We use administrative, technical, and physical safeguards designed to protect personal information against unauthorized access, disclosure, alteration, and destruction. These include encryption in transit (TLS) and at rest where feasible, role-based access controls, audit logging, multi-factor authentication for administrative accounts, and PCI-DSS-aligned handling of payment data through Stripe.
         </P>
         <P>
           No security program is perfect. If we ever experience a breach that affects your personal information, we will notify you promptly and as required by law, and we will provide guidance on what to do.

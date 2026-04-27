@@ -57,7 +57,7 @@ export default function Cookies() {
       contactEmail={PRIVACY_EMAIL}
       summary={
         <>
-          The {TRADE_NAME} site itself does not currently set any HTTP cookies. Instead, we use your browser's <strong style={{ color: IVORY }}>local storage and session storage</strong> for strictly functional purposes — keeping you signed in, remembering your in-progress price calculator quote, and carrying your booking through checkout. We do not run third-party advertising, analytics, or marketing trackers today. The full list of storage items we set is below; you can clear it from your browser at any time, but parts of the site (sign-in, the calculator, the booking flow) will not work without it.
+          The {TRADE_NAME} site uses your browser's <strong style={{ color: IVORY }}>local storage and session storage</strong> (not first-party HTTP cookies) for strictly functional purposes — keeping you signed in, remembering your in-progress price calculator quote, and carrying your booking through checkout. The full list of storage items we set is below. <strong style={{ color: IVORY }}>Stripe</strong> sets its own cookies on its own domain when its hosted payment fields are loaded during checkout, and <strong style={{ color: IVORY }}>ID.me</strong> sets cookies on its own domain when you complete HonorPass verification. We do not run third-party advertising, analytics, or marketing trackers today. You can clear all of this from your browser at any time, but parts of the site (sign-in, the calculator, the booking flow, payment) will not work without it.
         </>
       }
     >
@@ -86,7 +86,7 @@ export default function Cookies() {
 
       <Section entry={TOC[2]}>
         <P>
-          The following list is current as of the date at the top of this page. We update it whenever we add, remove, or change a storage item. All items below are <strong style={{ color: IVORY }}>first-party</strong> (set by {TRADE_NAME} itself) and strictly functional. If we later add HTTP cookies — for example, when we integrate a hosted payment processor — they will be added here at that time.
+          The following list is current as of the date at the top of this page. We update it whenever we add, remove, or change a storage item. All items below are <strong style={{ color: IVORY }}>first-party</strong> (set by {TRADE_NAME} itself) and strictly functional. Cookies set by third parties (Stripe, ID.me) are described in Section 04.
         </P>
         <div className="overflow-x-auto -mx-5 sm:mx-0 my-6">
           <table className="w-full border" style={{ borderColor: DIV }}>
@@ -114,13 +114,16 @@ export default function Cookies() {
 
       <Section entry={TOC[3]}>
         <P>
-          No third party currently sets cookies on the {TRADE_NAME} site. The two integrations we rely on — described below — load on their own domains rather than ours.
+          The {TRADE_NAME} marketing site itself does not set cross-site or HTTP cookies for tracking purposes. The third-party integrations we rely on — described below — set cookies (where they set any) only on their own domains, not on docsy.com.
         </P>
         <P>
-          <strong style={{ color: IVORY }}>ID.me</strong>, used for HonorPass military / veteran / first-responder / nurse / teacher verification, opens its own page in a separate window when you initiate verification. ID.me sets cookies only on the <code style={{ color: BLUE }}>id.me</code> domain. We never see those cookies. ID.me's privacy practices are governed at <a href="https://www.id.me/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>id.me/privacy</a>.
+          <strong style={{ color: IVORY }}>Stripe, Inc.</strong> is our payment processor. When Stripe's hosted payment fields are loaded during checkout, Stripe may set its own cookies on the <code style={{ color: BLUE }}>stripe.com</code> and <code style={{ color: BLUE }}>js.stripe.com</code> domains for fraud detection and to maintain the integrity of the payment session. Those cookies are governed by Stripe's privacy and cookie policies at <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>stripe.com/privacy</a> and <a href="https://stripe.com/cookies-policy/legal" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>stripe.com/cookies-policy/legal</a>.
         </P>
         <P>
-          When we add a hosted payment processor in the future, that processor's payment fields and fraud-prevention scripts will set their own cookies during checkout. We will list the processor here, link to its privacy policy, and explain what its cookies do — before that integration ships.
+          <strong style={{ color: IVORY }}>ID.me, Inc.</strong>, used for HonorPass military / veteran / first-responder / nurse / teacher verification, opens its own page in a separate window when you initiate verification. ID.me sets cookies only on the <code style={{ color: BLUE }}>id.me</code> domain. We never see those cookies. ID.me's privacy practices are governed at <a href="https://www.id.me/privacy" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>id.me/privacy</a>.
+        </P>
+        <P>
+          <strong style={{ color: IVORY }}>Google Calendar API</strong> is called only from our backend (server-to-server) using a service-account credential, not from your browser, so it does not set any cookies on your device through {TRADE_NAME}.
         </P>
       </Section>
 
@@ -140,6 +143,10 @@ export default function Cookies() {
         <SubH>Booking-in-Progress Storage</SubH>
         <P>
           The in-progress booking key (<code style={{ color: BLUE }}>docsy_booking</code>) lives only for the duration of the tab session and is removed when you complete the booking confirmation page. To abandon a booking and clear the storage immediately, close the tab or click "Start over" in the booking flow.
+        </P>
+        <SubH>Stripe Cookies</SubH>
+        <P>
+          You cannot complete a card payment with Stripe cookies blocked. If you do not want Stripe cookies set, you may book by phone at <Link href="/about#contact" className="underline" style={{ color: BLUE }}>(512) 555-0190</Link> and arrange an alternative payment method (check, ACH, or in-person card swipe at signing).
         </P>
       </Section>
 

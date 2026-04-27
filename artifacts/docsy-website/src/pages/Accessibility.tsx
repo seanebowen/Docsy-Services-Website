@@ -21,7 +21,7 @@ const TOC: LegalSectionEntry[] = [
   { id: "request-help",     n: "06", title: "Requesting Accommodations" },
   { id: "report-barrier",   n: "07", title: "Reporting an Accessibility Barrier" },
   { id: "assistive-tech",   n: "08", title: "Assistive Technologies We Test With" },
-  { id: "third-party",      n: "09", title: "Third-Party Tools (ID.me, RON Platform, Payment Processor)" },
+  { id: "third-party",      n: "09", title: "Third-Party Tools (Stripe, ID.me, RON Platform)" },
   { id: "contact",          n: "10", title: "Contact the Accessibility Team" },
 ];
 
@@ -79,7 +79,7 @@ export default function Accessibility() {
           We are transparent about what is not yet fully conformant. The known items below are tracked and addressed in our normal release cadence.
         </P>
         <UL items={[
-          <><strong style={{ color: IVORY }}>Embedded third-party widgets.</strong> Where we integrate components served by third parties (the ID.me verification flow, the RON platform, and — when added — a hosted payment processor), each follows its own accessibility roadmap. We monitor each vendor's published accessibility conformance and raise issues directly when we detect a regression. See Section 09.</>,
+          <><strong style={{ color: IVORY }}>Embedded third-party widgets.</strong> Components served by third parties (Stripe payment fields, the ID.me verification flow, and the RON platform) follow their own accessibility roadmaps. We monitor each vendor's published accessibility conformance and raise issues directly when we detect a regression. See Section 09.</>,
           <><strong style={{ color: IVORY }}>Long-form legal pages.</strong> Our Terms of Service is intentionally exhaustive. We provide a sticky table of contents and per-section anchors, but extended legal copy is harder to navigate by screen reader than shorter pages. We continue to refine section headings and intra-page navigation.</>,
           <><strong style={{ color: IVORY }}>Auto-updating timing components.</strong> The "Next available" division status indicator and the promotional ticker auto-rotate; we are working to add a user-controlled pause toggle.</>,
           <><strong style={{ color: IVORY }}>Captioning of future media.</strong> Any video testimonials we publish in future will ship with full captions and a text transcript.</>,
@@ -154,9 +154,9 @@ export default function Accessibility() {
           Some parts of the booking experience rely on third-party components that maintain their own accessibility commitments and roadmaps:
         </P>
         <UL items={[
+          <><strong style={{ color: IVORY }}>Stripe</strong> (payment processing) — Stripe's accessibility statement is published at <a href="https://stripe.com/accessibility" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>stripe.com/accessibility</a>. If a signer's assistive technology is not supported by Stripe's hosted payment fields, we will arrange a phone booking and an alternative payment method (check, ACH, or in-person card swipe at signing) at no extra cost.</>,
           <><strong style={{ color: IVORY }}>ID.me</strong> (HonorPass identity verification) — ID.me's accessibility commitment is at <a href="https://www.id.me/about/accessibility" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: BLUE }}>id.me/about/accessibility</a>.</>,
           <><strong style={{ color: IVORY }}>RON platform</strong> (audio-visual notarial sessions) — captioning availability and supported assistive tech vary by platform; if you need a specific accommodation for a RON session, mention it at booking and we will arrange a compatible session or an in-person mobile alternative at no additional cost.</>,
-          <><strong style={{ color: IVORY }}>Hosted payment processor</strong> — once integrated, the processor's checkout fields are governed by the processor's own published accessibility commitment. We will list the processor and link its commitment here at that time, and we will provide a phone-booking alternative for any signer whose assistive technology is not supported by the processor's hosted UI.</>,
         ]} />
         <P>
           When we receive a credible report that a third-party component is blocking accessibility, we raise it directly with the vendor and offer an alternative channel (typically a phone booking and in-person appointment) so the customer is not stuck waiting on a fix outside our control.
