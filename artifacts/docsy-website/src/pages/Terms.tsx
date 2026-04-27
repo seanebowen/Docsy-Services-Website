@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FadeIn } from "@/components/ui/FadeIn";
 
+const PolicyCallout = ({ href, label, children }: { href: string; label: string; children: React.ReactNode }) => (
+  <div className="border-l-2 pl-4 py-1 my-4 text-[14px] leading-relaxed font-light" style={{ borderColor: "#4D9FDB", color: "rgba(255,255,255,0.7)" }}>
+    {children} See the full <Link href={href} className="underline" style={{ color: "#4D9FDB" }}>{label}</Link>.
+  </div>
+);
+
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
 const BLUE  = "#4D9FDB";
@@ -590,6 +596,9 @@ export default function Terms() {
 
             {/* 14 ────────────────────────────────── */}
             <Section entry={TOC[13]}>
+              <PolicyCallout href="/privacy" label="Privacy Policy">
+                This section is a summary of our data practices as they relate to your contractual rights under these Terms.
+              </PolicyCallout>
               <SubH>What We Collect</SubH>
               <UL items={[
                 <>Account information you provide: name, email, phone number, billing address, and (where you create one) account password.</>,
@@ -617,7 +626,7 @@ export default function Terms() {
               </P>
               <SubH>Cookies</SubH>
               <P>
-                The site uses cookies and similar technologies for authentication, session continuity, the price calculator's draft-quote persistence, and basic analytics. You may disable cookies in your browser, but parts of the site (including the booking flow and account features) will not function correctly without them.
+                The site uses cookies and similar technologies for authentication, session continuity, the price calculator's draft-quote persistence, and basic analytics. You may disable cookies in your browser, but parts of the site (including the booking flow and account features) will not function correctly without them. The full list of cookies we set is published in our <Link href="/cookies" className="underline" style={{ color: BLUE }}>Cookie Policy</Link>.
               </P>
             </Section>
 
@@ -681,6 +690,9 @@ export default function Terms() {
 
             {/* 18 ────────────────────────────────── */}
             <Section entry={TOC[17]}>
+              <PolicyCallout href="/accessibility" label="Accessibility Statement">
+                This section summarizes the accessibility commitments {TRADE_NAME} makes as part of these Terms.
+              </PolicyCallout>
               <SubH>ADA Commitment</SubH>
               <P>
                 {TRADE_NAME} is committed to providing services that comply with the Americans with Disabilities Act (ADA) and analogous {STATE} law. Our mobile and in-person services routinely accommodate hospital beds, oxygen equipment, memory care environments, and other non-standard settings at no additional charge beyond standard travel fees. Our website is designed to follow the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard; we welcome reports of any accessibility barrier so we can address it promptly.

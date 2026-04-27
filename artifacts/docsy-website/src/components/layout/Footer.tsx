@@ -39,7 +39,7 @@ export function Footer() {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: "rgba(255,255,255,0.25)" }}>Legal</p>
             <ul className="space-y-2">
-              {[["/terms","Terms of Service"],["/terms#privacy","Privacy & Data Use"],["/terms#refunds","Refund Policy"],["/terms#arbitration","Dispute Resolution"]].map(([href,label]) => (
+              {[["/terms","Terms of Service"],["/privacy","Privacy Policy"],["/cookies","Cookie Policy"],["/accessibility","Accessibility"],["/terms#refunds","Refund Policy"],["/terms#arbitration","Dispute Resolution"]].map(([href,label]) => (
                 <li key={href}><Link href={href} className="text-sm font-light transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.38)" }}>{label}</Link></li>
               ))}
             </ul>

@@ -27,6 +27,9 @@ import MembershipCheckout from "@/pages/MembershipCheckout";
 import About from "@/pages/About";
 import IdMeCallback from "@/pages/IdMeCallback";
 import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
+import Cookies from "@/pages/Cookies";
+import Accessibility from "@/pages/Accessibility";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +74,12 @@ function Router() {
       <Route path="/terms" component={Terms} />
       <Route path="/terms-of-service"><Redirect to="/terms" /></Route>
       <Route path="/legal"><Redirect to="/terms" /></Route>
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/privacy-policy"><Redirect to="/privacy" /></Route>
+      <Route path="/cookies" component={Cookies} />
+      <Route path="/cookie-policy"><Redirect to="/cookies" /></Route>
+      <Route path="/accessibility" component={Accessibility} />
+      <Route path="/accessibility-statement"><Redirect to="/accessibility" /></Route>
       <Route component={NotFound} />
     </Switch>
   );

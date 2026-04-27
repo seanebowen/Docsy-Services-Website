@@ -9,6 +9,11 @@ interface FadeInProps {
   distance?: number;
 }
 
+function getPrefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
+}
+
 export function FadeIn({
   children,
   delay = 0,
@@ -19,6 +24,20 @@ export function FadeIn({
 }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState<boolean>(() => getPrefersReducedMotion());
+
+  /* Honor the user's prefers-reduced-motion system setting; subscribe to changes. */
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    if (typeof mq.addEventListener === "function") mq.addEventListener("change", handler);
+    else if (typeof mq.addListener === "function") mq.addListener(handler);
+    return () => {
+      if (typeof mq.removeEventListener === "function") mq.removeEventListener("change", handler);
+      else if (typeof mq.removeListener === "function") mq.removeListener(handler);
+    };
+  }, []);
 
   /*
    * useLayoutEffect fires synchronously after DOM mutations but BEFORE the
@@ -55,6 +74,18 @@ export function FadeIn({
     observer.observe(el);
     return () => observer.disconnect();
   }, [threshold, visible]);
+
+  /*
+   * When the user prefers reduced motion: skip the slide-up + long fade,
+   * render content visible immediately with no transition.
+   */
+  if (reducedMotion) {
+    return (
+      <div ref={ref} className={className} style={{ ...style, opacity: 1, transform: "none" }}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div
