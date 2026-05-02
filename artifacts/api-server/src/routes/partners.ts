@@ -6,6 +6,7 @@ import {
   indexUser,
   type MockUser,
 } from "./auth.js";
+import { logger } from "../lib/logger.js";
 
 const router = Router();
 
@@ -50,6 +51,9 @@ export interface PartnerReferral {
 export const PARTNERS:          Map<string, Partner>              = new Map();
 export const PARTNER_REFERRALS: Map<string, PartnerReferral[]>   = new Map();
 export const PARTNERS_BY_CODE:  Map<string, Partner>              = new Map();
+
+/* Set of booking refs already attributed — prevents duplicate referrals */
+const ATTRIBUTED_BOOKING_REFS: Set<string> = new Set();
 
 /* ─────────────────────────────────────────────────────────
    Seed: one demo approved partner with referrals
@@ -220,6 +224,21 @@ router.post("/apply", (req: Request, res: Response): void => {
   PARTNERS_BY_CODE.set(refCode, partner);
   PARTNER_REFERRALS.set(partnerId, []);
 
+  /* ── Email dispatch stub ──────────────────────────────────
+     In production this would enqueue a transactional email via
+     SendGrid / Postmark / SES. Here we log the payload so the
+     send path is exercised and easy to hook up later.
+  ──────────────────────────────────────────────────────────── */
+  logger.info({
+    event:       "partner_application_email",
+    to:          cleanEmail,
+    subject:     "Welcome to the Docsy Partner Program",
+    refCode,
+    trackedLink: `/?ref=${refCode}`,
+    portalUrl:   "/partners/portal",
+    note:        "stub — replace with real email provider call",
+  }, "partner application email queued");
+
   res.json({
     ok:          true,
     partnerId,
@@ -247,6 +266,7 @@ router.get("/track", (req: Request, res: Response): void => {
         path:     "/",
         httpOnly: true,
         sameSite: "lax",
+        signed:   true,
       });
     }
   }
@@ -311,8 +331,25 @@ router.get("/me", (req: Request, res: Response): void => {
    ───────────────────────────────────────────────────────── */
 
 router.post("/record-booking", (req: Request, res: Response): void => {
-  const cookies = req.cookies as Record<string, string>;
-  const refCode = (cookies["docsy_ref"] ?? "").toUpperCase();
+  const { bookingRef, services, bookingValue } = req.body as {
+    bookingRef?:   string;
+    services?:     string[];
+    bookingValue?: number;
+  };
+
+  /* bookingRef is always required — validate before checking the cookie */
+  const stableRef = (bookingRef ?? "").trim();
+  if (!stableRef) {
+    res.status(400).json({ ok: false, error: "bookingRef is required." });
+    return;
+  }
+
+  /* Read the SIGNED attribution cookie — tampered/unsigned values resolve to false */
+  const signedCookies = req.signedCookies as Record<string, string | false>;
+  const refCode = (typeof signedCookies["docsy_ref"] === "string"
+    ? signedCookies["docsy_ref"]
+    : ""
+  ).toUpperCase();
 
   if (!refCode) {
     res.json({ ok: true, attributed: false });
@@ -325,21 +362,26 @@ router.post("/record-booking", (req: Request, res: Response): void => {
     return;
   }
 
-  const { bookingRef, services, bookingValue } = req.body as {
-    bookingRef?:   string;
-    services?:     string[];
-    bookingValue?: number;
-  };
+  /* Idempotency — reject duplicate attribution for the same booking */
+  if (ATTRIBUTED_BOOKING_REFS.has(stableRef)) {
+    req.log.info({ bookingRef: stableRef, refCode }, "duplicate record-booking ignored");
+    res.json({ ok: true, attributed: false, duplicate: true });
+    return;
+  }
 
-  const value       = typeof bookingValue === "number" && bookingValue > 0 ? bookingValue : 0;
-  const creditRate  = 0.10;
+  /* Cap bookingValue to a reasonable ceiling to limit fraud surface */
+  const MAX_BOOKING_VALUE = 2000;
+  const rawValue = typeof bookingValue === "number" && bookingValue > 0 ? bookingValue : 0;
+  const value    = Math.min(rawValue, MAX_BOOKING_VALUE);
+
+  const creditRate   = 0.10;
   const creditEarned = Math.round(value * creditRate * 100) / 100;
 
   const referral: PartnerReferral = {
     id:           newReferralId(),
     partnerId:    partner.id,
     refCode,
-    bookingRef:   bookingRef ?? ("BK-" + Date.now()),
+    bookingRef:   stableRef,
     services:     Array.isArray(services) ? services : [],
     bookingValue: value,
     creditRate,
@@ -348,10 +390,14 @@ router.post("/record-booking", (req: Request, res: Response): void => {
     createdAt:    new Date().toISOString(),
   };
 
+  /* Mark booking ref as attributed before persisting to prevent races */
+  ATTRIBUTED_BOOKING_REFS.add(stableRef);
+
   const existing = PARTNER_REFERRALS.get(partner.id) ?? [];
   existing.push(referral);
   PARTNER_REFERRALS.set(partner.id, existing);
 
+  req.log.info({ bookingRef: stableRef, refCode, partnerId: partner.id, creditEarned }, "referral attributed");
   res.json({ ok: true, attributed: true, partnerId: partner.id, creditEarned });
 });
 
