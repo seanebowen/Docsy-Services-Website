@@ -23,7 +23,7 @@ export function Footer() {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: "rgba(255,255,255,0.25)" }}>Company</p>
             <ul className="space-y-2">
-              {[["/business","Docsy Business+ (Memberships & Firms)"],["/vault-info","Safe+"],["/faq","FAQ & Guides"],["/glossary","Glossary"],["/about","About & Contact"],["/promos","Promotions"]].map(([href,label]) => (
+              {[["/business","Docsy Business+ (Memberships & Firms)"],["/vault-info","Safe+"],["/faq","FAQ & Guides"],["/glossary","Glossary"],["/about","About & Contact"],["/promos","Promotions"],["/partners","Partner Program"]].map(([href,label]) => (
                 <li key={href}><Link href={href} className="text-sm font-light transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.38)" }} data-testid={`footer-link-${href.replace(/\W+/g, "-").replace(/^-+|-+$/g, "")}`}>{label}</Link></li>
               ))}
             </ul>

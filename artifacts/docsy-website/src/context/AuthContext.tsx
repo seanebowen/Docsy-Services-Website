@@ -13,8 +13,9 @@ export interface AuthUser {
   phone:            string;
   membership:       "starter" | "pro" | "elite" | null;
   idMeVerification?: AccountIdMeRecord | null;
-  role?:            "individual" | "firm_admin" | "firm_member" | "internal_admin";
+  role?:            "individual" | "firm_admin" | "firm_member" | "internal_admin" | "partner";
   firmId?:          string | null;
+  partnerId?:       string | null;
 }
 
 interface AuthContextValue {

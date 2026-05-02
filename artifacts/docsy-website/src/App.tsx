@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "@/components/layout/Layout";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 import Home from "@/pages/Home";
 import NotaryServices from "@/pages/NotaryServices";
@@ -34,8 +35,24 @@ import Glossary from "@/pages/Glossary";
 import DocumentCheck from "@/pages/DocumentCheck";
 import FirmPortal from "@/pages/FirmPortal";
 import InternalFirms from "@/pages/InternalFirms";
+import Partners from "@/pages/Partners";
+import PartnerPortal from "@/pages/PartnerPortal";
 
 const queryClient = new QueryClient();
+
+/* Silently calls the attribution endpoint when a ?ref= param is present
+   in the URL on initial page load. Sets a 30-day server-side cookie so
+   bookings made within the attribution window are credited to the partner. */
+function RefTracker() {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref    = params.get("ref");
+    if (ref) {
+      fetch(`/api/partners/track?ref=${encodeURIComponent(ref)}`).catch(() => {});
+    }
+  }, []);
+  return null;
+}
 
 function VaultGuard() {
   const { token } = useAuth();
@@ -92,6 +109,8 @@ function Router() {
       <Route path="/firms"><Redirect to="/business" /></Route>
       <Route path="/firm/portal" component={FirmPortal} />
       <Route path="/internal-firms" component={InternalFirms} />
+      <Route path="/partners/portal" component={PartnerPortal} />
+      <Route path="/partners" component={Partners} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -103,6 +122,7 @@ function App() {
       <TooltipProvider>
         <AuthProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <RefTracker />
             <Layout>
               <Router />
             </Layout>

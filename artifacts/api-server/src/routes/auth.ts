@@ -18,7 +18,7 @@ export interface IdMeVerificationRecord {
    the firm; firm_member can bulk-book and view jobs/invoices but not
    modify the roster. internal_admin is Docsy staff and is gated by
    real session-based RBAC (NOT a shared header secret). */
-export type UserRole = "individual" | "firm_admin" | "firm_member" | "internal_admin";
+export type UserRole = "individual" | "firm_admin" | "firm_member" | "internal_admin" | "partner";
 
 export interface MockUser {
   id:         string;
@@ -29,6 +29,7 @@ export interface MockUser {
   idMeVerification?: IdMeVerificationRecord | null;
   role?:      UserRole;       // undefined treated as "individual"
   firmId?:    string | null;  // set when role is firm_admin or firm_member
+  partnerId?: string | null;  // set when role is "partner"
 }
 
 /* ── Cycle credits per user (in-memory; mutated on use) ── */
@@ -57,6 +58,8 @@ export const USERS: MockUser[] = [
   /* Docsy staff member (demo). In production this would be provisioned
      out-of-band, not seeded. Gates the /internal-firms approval surface. */
   { id: "ia1", name: "Avery Internal",   email: "admin@docsy.test",               phone: "2105559900", membership: null, role: "internal_admin" },
+  /* Demo partner — linked to seed partner record "p1" in partners.ts. */
+  { id: "pa1", name: "Sandra Kim",       email: "sandra@realty.test",             phone: "2105554001", membership: null, role: "partner", partnerId: "p1" },
 ];
 
 /* Per-user mutable credits (seeded from tier defaults) */
@@ -119,6 +122,7 @@ export function publicUser(u: MockUser) {
     idMeVerification: u.idMeVerification ?? null,
     role:             u.role ?? "individual",
     firmId:           u.firmId ?? null,
+    partnerId:        u.partnerId ?? null,
   };
 }
 
@@ -174,6 +178,25 @@ export function requireFirmAuth(req: Request, res: Response, next: () => void): 
   (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).userId   = userId;
   (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).firmId   = user.firmId;
   (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).firmRole = user.role;
+  next();
+}
+
+/* ── Middleware: verify Bearer token AND partner role. */
+export function requirePartnerAuth(req: Request, res: Response, next: () => void): void {
+  const header = req.headers["authorization"] ?? "";
+  const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!token || !SESSION_STORE.has(token)) {
+    res.status(401).json({ ok: false, error: "Unauthorized. Please sign in." });
+    return;
+  }
+  const userId = SESSION_STORE.get(token)!;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user || user.role !== "partner") {
+    res.status(403).json({ ok: false, error: "Partner access required." });
+    return;
+  }
+  (req as Request & { userId: string; partnerId: string | null }).userId    = userId;
+  (req as Request & { userId: string; partnerId: string | null }).partnerId = user.partnerId ?? null;
   next();
 }
 

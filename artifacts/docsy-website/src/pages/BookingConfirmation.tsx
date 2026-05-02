@@ -35,7 +35,22 @@ export default function BookingConfirmation() {
     document.title = "Booking Submitted | Docsy Services";
     try {
       const stored = sessionStorage.getItem("docsy_booking");
-      if (stored) setBooking(JSON.parse(stored));
+      if (stored) {
+        const parsed = JSON.parse(stored) as BookingData;
+        setBooking(parsed);
+        /* Attribution: stamp the referral record server-side if a
+           docsy_ref attribution cookie was set by a partner's tracked
+           link. Fire-and-forget; any failure is non-blocking. */
+        const bookingRef = "BK-" + Date.now();
+        const services   = parsed.estimate?.services?.map(s => s.name) ?? [];
+        const value      = parsed.discountedTotal ?? parsed.estimate?.total ?? 0;
+        fetch("/api/partners/record-booking", {
+          method:      "POST",
+          credentials: "same-origin",
+          headers:     { "Content-Type": "application/json" },
+          body:        JSON.stringify({ bookingRef, services, bookingValue: value }),
+        }).catch(() => {});
+      }
     } catch {}
   }, []);
 
