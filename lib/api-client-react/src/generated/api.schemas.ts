@@ -124,6 +124,283 @@ export interface SaveScanToVaultResponse {
   file: VaultFile;
 }
 
+export interface ApiOk {
+  ok: boolean;
+}
+
+export interface ApiError {
+  ok: boolean;
+  error: string;
+}
+
+export type FirmType = (typeof FirmType)[keyof typeof FirmType];
+
+export const FirmType = {
+  "title-company": "title-company",
+  "law-firm": "law-firm",
+  lender: "lender",
+  corporate: "corporate",
+  other: "other",
+} as const;
+
+export type FirmStatus = (typeof FirmStatus)[keyof typeof FirmStatus];
+
+export const FirmStatus = {
+  pending: "pending",
+  approved: "approved",
+  denied: "denied",
+} as const;
+
+export interface FirmContact {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export interface Firm {
+  id: string;
+  name: string;
+  ein: string;
+  type: FirmType;
+  address: string;
+  primaryContact: FirmContact;
+  expectedMonthlyVolume: number;
+  serviceMix: string[];
+  notes: string;
+  status: FirmStatus;
+  createdAt: string;
+  /** @nullable */
+  approvedAt: string | null;
+}
+
+export interface FirmApplyRequest {
+  name: string;
+  ein?: string;
+  type: FirmType;
+  address: string;
+  primaryContact: FirmContact;
+  /** @minimum 1 */
+  expectedMonthlyVolume: number;
+  /** @minItems 1 */
+  serviceMix: string[];
+  notes?: string;
+}
+
+export interface FirmResponse {
+  ok: boolean;
+  firm: Firm;
+}
+
+export interface FirmCounts {
+  jobsScheduled: number;
+  jobsCompleted: number;
+  invoicesOpen: number;
+  rosterActive: number;
+}
+
+export type FirmUserPublicRole =
+  (typeof FirmUserPublicRole)[keyof typeof FirmUserPublicRole];
+
+export const FirmUserPublicRole = {
+  individual: "individual",
+  firm_admin: "firm_admin",
+  firm_member: "firm_member",
+  internal_admin: "internal_admin",
+} as const;
+
+export interface FirmUserPublic {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  /** @nullable */
+  membership: string | null;
+  role: FirmUserPublicRole;
+  /** @nullable */
+  firmId: string | null;
+}
+
+export interface FirmMeResponse {
+  ok: boolean;
+  user: FirmUserPublic;
+  firm: Firm;
+  counts: FirmCounts;
+}
+
+export type FirmJobServiceType =
+  (typeof FirmJobServiceType)[keyof typeof FirmJobServiceType];
+
+export const FirmJobServiceType = {
+  "loan-signing": "loan-signing",
+  ron: "ron",
+  mobile: "mobile",
+  apostille: "apostille",
+  court: "court",
+} as const;
+
+export type FirmJobStatus = (typeof FirmJobStatus)[keyof typeof FirmJobStatus];
+
+export const FirmJobStatus = {
+  scheduled: "scheduled",
+  "in-progress": "in-progress",
+  completed: "completed",
+  invoiced: "invoiced",
+  cancelled: "cancelled",
+} as const;
+
+export interface FirmJob {
+  id: string;
+  firmId: string;
+  signerName: string;
+  signerEmail: string;
+  address: string;
+  serviceType: FirmJobServiceType;
+  documentType: string;
+  requestedWindow: string;
+  status: FirmJobStatus;
+  notes: string;
+  createdAt: string;
+  createdByUserId: string;
+}
+
+export interface FirmJobsResponse {
+  ok: boolean;
+  jobs: FirmJob[];
+}
+
+export interface FirmBulkBookJobInput {
+  signerName: string;
+  signerEmail?: string;
+  address?: string;
+  serviceType: FirmJobServiceType;
+  documentType: string;
+  requestedWindow: string;
+  notes?: string;
+}
+
+export interface FirmBulkBookRequest {
+  /**
+   * @minItems 1
+   * @maxItems 100
+   */
+  jobs: FirmBulkBookJobInput[];
+}
+
+export interface FirmBulkBookResponse {
+  ok: boolean;
+  created: FirmJob[];
+}
+
+export type FirmBulkBookErrorErrorsItem = {
+  row: number;
+  error: string;
+};
+
+export interface FirmBulkBookError {
+  ok: boolean;
+  error: string;
+  errors: FirmBulkBookErrorErrorsItem[];
+}
+
+export interface FirmInvoiceLineItem {
+  description: string;
+  qty: number;
+  unitPrice: number;
+  total: number;
+}
+
+export type FirmInvoiceStatus =
+  (typeof FirmInvoiceStatus)[keyof typeof FirmInvoiceStatus];
+
+export const FirmInvoiceStatus = {
+  open: "open",
+  paid: "paid",
+  overdue: "overdue",
+} as const;
+
+export interface FirmInvoice {
+  id: string;
+  firmId: string;
+  number: string;
+  periodStart: string;
+  periodEnd: string;
+  lineItems: FirmInvoiceLineItem[];
+  total: number;
+  status: FirmInvoiceStatus;
+  dueDate: string;
+  issuedDate: string;
+  /** @nullable */
+  paidDate: string | null;
+}
+
+export interface FirmInvoicesResponse {
+  ok: boolean;
+  invoices: FirmInvoice[];
+}
+
+export type FirmRosterMemberRole =
+  (typeof FirmRosterMemberRole)[keyof typeof FirmRosterMemberRole];
+
+export const FirmRosterMemberRole = {
+  firm_admin: "firm_admin",
+  firm_member: "firm_member",
+} as const;
+
+export type FirmRosterMemberStatus =
+  (typeof FirmRosterMemberStatus)[keyof typeof FirmRosterMemberStatus];
+
+export const FirmRosterMemberStatus = {
+  invited: "invited",
+  active: "active",
+} as const;
+
+export interface FirmRosterMember {
+  id: string;
+  firmId: string;
+  name: string;
+  email: string;
+  role: FirmRosterMemberRole;
+  status: FirmRosterMemberStatus;
+  invitedAt: string;
+  invitedBy: string;
+}
+
+export interface FirmRosterResponse {
+  ok: boolean;
+  members: FirmRosterMember[];
+}
+
+export type FirmRosterInviteRequestRole =
+  (typeof FirmRosterInviteRequestRole)[keyof typeof FirmRosterInviteRequestRole];
+
+export const FirmRosterInviteRequestRole = {
+  firm_admin: "firm_admin",
+  firm_member: "firm_member",
+} as const;
+
+export interface FirmRosterInviteRequest {
+  name: string;
+  email: string;
+  role: FirmRosterInviteRequestRole;
+}
+
+export interface FirmRosterMemberResponse {
+  ok: boolean;
+  member: FirmRosterMember;
+}
+
+export interface FirmListResponse {
+  ok: boolean;
+  firms: Firm[];
+}
+
+export interface FirmApproveResponse {
+  ok: boolean;
+  firm: Firm;
+  adminEmail?: string;
+  alreadyApproved?: boolean;
+}
+
 export type DocumentCheckBody = {
   /** The document to inspect (PDF, JPG, or PNG, ≤25 MB). */
   file: Blob;

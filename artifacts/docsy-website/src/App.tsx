@@ -32,6 +32,9 @@ import Cookies from "@/pages/Cookies";
 import Accessibility from "@/pages/Accessibility";
 import Glossary from "@/pages/Glossary";
 import DocumentCheck from "@/pages/DocumentCheck";
+import Firms from "@/pages/Firms";
+import FirmPortal from "@/pages/FirmPortal";
+import InternalFirms from "@/pages/InternalFirms";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +89,9 @@ function Router() {
       <Route path="/glossary" component={Glossary} />
       <Route path="/glossary/:slug" component={Glossary} />
       <Route path="/document-check" component={DocumentCheck} />
+      <Route path="/firms" component={Firms} />
+      <Route path="/firm/portal" component={FirmPortal} />
+      <Route path="/internal-firms" component={InternalFirms} />
       <Route component={NotFound} />
     </Switch>
   );

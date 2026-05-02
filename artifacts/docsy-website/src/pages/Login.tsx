@@ -28,7 +28,16 @@ export default function Login() {
   const [loading,  setLoading]  = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  React.useEffect(() => { document.title = "Sign In | Docsy Services"; }, []);
+  React.useEffect(() => {
+    document.title = "Sign In | Docsy Services";
+    /* If we arrived here as ?next=/somewhere, stash the destination so
+       Verify can route the user there after a successful sign-in. */
+    try {
+      const search = window.location.search ?? "";
+      const next   = new URLSearchParams(search).get("next");
+      if (next && next.startsWith("/")) sessionStorage.setItem("docsy_auth_next", next);
+    } catch { /* ignore */ }
+  }, []);
 
   const type    = detectType(raw);
   const isEmpty = raw.trim() === "";

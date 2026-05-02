@@ -103,3 +103,394 @@ export const SaveScanToVaultResponse = zod.object({
     size: zod.string().describe("Human-readable, e.g. '247 KB'"),
   }),
 });
+
+/**
+ * Public endpoint. Creates a pending firm application that an internal admin must approve before the firm can sign in to the portal.
+ * @summary Submit a firm application
+ */
+
+export const FirmsApplyBody = zod.object({
+  name: zod.string(),
+  ein: zod.string().optional(),
+  type: zod.enum(["title-company", "law-firm", "lender", "corporate", "other"]),
+  address: zod.string(),
+  primaryContact: zod.object({
+    name: zod.string(),
+    email: zod.string(),
+    phone: zod.string(),
+  }),
+  expectedMonthlyVolume: zod.number().min(1),
+  serviceMix: zod.array(zod.string()).min(1),
+  notes: zod.string().optional(),
+});
+
+export const FirmsApplyResponse = zod.object({
+  ok: zod.literal(true),
+  firm: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    ein: zod.string(),
+    type: zod.enum([
+      "title-company",
+      "law-firm",
+      "lender",
+      "corporate",
+      "other",
+    ]),
+    address: zod.string(),
+    primaryContact: zod.object({
+      name: zod.string(),
+      email: zod.string(),
+      phone: zod.string(),
+    }),
+    expectedMonthlyVolume: zod.number(),
+    serviceMix: zod.array(zod.string()),
+    notes: zod.string(),
+    status: zod.enum(["pending", "approved", "denied"]),
+    createdAt: zod.coerce.date(),
+    approvedAt: zod.coerce.date().nullable(),
+  }),
+});
+
+/**
+ * @summary Get the signed-in user's firm + summary counts
+ */
+export const FirmsMeResponse = zod.object({
+  ok: zod.literal(true),
+  user: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    email: zod.string(),
+    phone: zod.string(),
+    membership: zod.string().nullable(),
+    role: zod.enum([
+      "individual",
+      "firm_admin",
+      "firm_member",
+      "internal_admin",
+    ]),
+    firmId: zod.string().nullable(),
+  }),
+  firm: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    ein: zod.string(),
+    type: zod.enum([
+      "title-company",
+      "law-firm",
+      "lender",
+      "corporate",
+      "other",
+    ]),
+    address: zod.string(),
+    primaryContact: zod.object({
+      name: zod.string(),
+      email: zod.string(),
+      phone: zod.string(),
+    }),
+    expectedMonthlyVolume: zod.number(),
+    serviceMix: zod.array(zod.string()),
+    notes: zod.string(),
+    status: zod.enum(["pending", "approved", "denied"]),
+    createdAt: zod.coerce.date(),
+    approvedAt: zod.coerce.date().nullable(),
+  }),
+  counts: zod.object({
+    jobsScheduled: zod.number(),
+    jobsCompleted: zod.number(),
+    invoicesOpen: zod.number(),
+    rosterActive: zod.number(),
+  }),
+});
+
+/**
+ * @summary List the firm's jobs (newest first)
+ */
+export const FirmsJobsResponse = zod.object({
+  ok: zod.literal(true),
+  jobs: zod.array(
+    zod.object({
+      id: zod.string(),
+      firmId: zod.string(),
+      signerName: zod.string(),
+      signerEmail: zod.string(),
+      address: zod.string(),
+      serviceType: zod.enum([
+        "loan-signing",
+        "ron",
+        "mobile",
+        "apostille",
+        "court",
+      ]),
+      documentType: zod.string(),
+      requestedWindow: zod.string(),
+      status: zod.enum([
+        "scheduled",
+        "in-progress",
+        "completed",
+        "invoiced",
+        "cancelled",
+      ]),
+      notes: zod.string(),
+      createdAt: zod.coerce.date(),
+      createdByUserId: zod.string(),
+    }),
+  ),
+});
+
+/**
+ * @summary Submit a batch of jobs for the firm
+ */
+export const firmsBulkBookBodyJobsMax = 100;
+
+export const FirmsBulkBookBody = zod.object({
+  jobs: zod
+    .array(
+      zod.object({
+        signerName: zod.string(),
+        signerEmail: zod.string().optional(),
+        address: zod.string().optional(),
+        serviceType: zod.enum([
+          "loan-signing",
+          "ron",
+          "mobile",
+          "apostille",
+          "court",
+        ]),
+        documentType: zod.string(),
+        requestedWindow: zod.string(),
+        notes: zod.string().optional(),
+      }),
+    )
+    .min(1)
+    .max(firmsBulkBookBodyJobsMax),
+});
+
+export const FirmsBulkBookResponse = zod.object({
+  ok: zod.literal(true),
+  created: zod.array(
+    zod.object({
+      id: zod.string(),
+      firmId: zod.string(),
+      signerName: zod.string(),
+      signerEmail: zod.string(),
+      address: zod.string(),
+      serviceType: zod.enum([
+        "loan-signing",
+        "ron",
+        "mobile",
+        "apostille",
+        "court",
+      ]),
+      documentType: zod.string(),
+      requestedWindow: zod.string(),
+      status: zod.enum([
+        "scheduled",
+        "in-progress",
+        "completed",
+        "invoiced",
+        "cancelled",
+      ]),
+      notes: zod.string(),
+      createdAt: zod.coerce.date(),
+      createdByUserId: zod.string(),
+    }),
+  ),
+});
+
+/**
+ * @summary List the firm's invoices (newest first)
+ */
+export const FirmsInvoicesResponse = zod.object({
+  ok: zod.literal(true),
+  invoices: zod.array(
+    zod.object({
+      id: zod.string(),
+      firmId: zod.string(),
+      number: zod.string(),
+      periodStart: zod.string(),
+      periodEnd: zod.string(),
+      lineItems: zod.array(
+        zod.object({
+          description: zod.string(),
+          qty: zod.number(),
+          unitPrice: zod.number(),
+          total: zod.number(),
+        }),
+      ),
+      total: zod.number(),
+      status: zod.enum(["open", "paid", "overdue"]),
+      dueDate: zod.string(),
+      issuedDate: zod.string(),
+      paidDate: zod.string().nullable(),
+    }),
+  ),
+});
+
+/**
+ * @summary Download a placeholder invoice
+ */
+export const FirmsInvoicePdfParams = zod.object({
+  id: zod.coerce.string(),
+});
+
+/**
+ * @summary List the firm's roster
+ */
+export const FirmsRosterResponse = zod.object({
+  ok: zod.literal(true),
+  members: zod.array(
+    zod.object({
+      id: zod.string(),
+      firmId: zod.string(),
+      name: zod.string(),
+      email: zod.string(),
+      role: zod.enum(["firm_admin", "firm_member"]),
+      status: zod.enum(["invited", "active"]),
+      invitedAt: zod.coerce.date(),
+      invitedBy: zod.string(),
+    }),
+  ),
+});
+
+/**
+ * @summary Invite a teammate (firm_admin only)
+ */
+export const FirmsRosterInviteBody = zod.object({
+  name: zod.string(),
+  email: zod.string(),
+  role: zod.enum(["firm_admin", "firm_member"]),
+});
+
+export const FirmsRosterInviteResponse = zod.object({
+  ok: zod.literal(true),
+  member: zod.object({
+    id: zod.string(),
+    firmId: zod.string(),
+    name: zod.string(),
+    email: zod.string(),
+    role: zod.enum(["firm_admin", "firm_member"]),
+    status: zod.enum(["invited", "active"]),
+    invitedAt: zod.coerce.date(),
+    invitedBy: zod.string(),
+  }),
+});
+
+/**
+ * @summary Remove a teammate (firm_admin only)
+ */
+export const FirmsRosterRemoveParams = zod.object({
+  memberId: zod.coerce.string(),
+});
+
+export const FirmsRosterRemoveResponse = zod.object({
+  ok: zod.literal(true),
+});
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary List all firm applications (internal admin)
+ */
+export const FirmsListApplicationsResponse = zod.object({
+  ok: zod.literal(true),
+  firms: zod.array(
+    zod.object({
+      id: zod.string(),
+      name: zod.string(),
+      ein: zod.string(),
+      type: zod.enum([
+        "title-company",
+        "law-firm",
+        "lender",
+        "corporate",
+        "other",
+      ]),
+      address: zod.string(),
+      primaryContact: zod.object({
+        name: zod.string(),
+        email: zod.string(),
+        phone: zod.string(),
+      }),
+      expectedMonthlyVolume: zod.number(),
+      serviceMix: zod.array(zod.string()),
+      notes: zod.string(),
+      status: zod.enum(["pending", "approved", "denied"]),
+      createdAt: zod.coerce.date(),
+      approvedAt: zod.coerce.date().nullable(),
+    }),
+  ),
+});
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary Approve a pending firm application (internal admin)
+ */
+export const FirmsApproveApplicationParams = zod.object({
+  id: zod.coerce.string(),
+});
+
+export const FirmsApproveApplicationResponse = zod.object({
+  ok: zod.literal(true),
+  firm: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    ein: zod.string(),
+    type: zod.enum([
+      "title-company",
+      "law-firm",
+      "lender",
+      "corporate",
+      "other",
+    ]),
+    address: zod.string(),
+    primaryContact: zod.object({
+      name: zod.string(),
+      email: zod.string(),
+      phone: zod.string(),
+    }),
+    expectedMonthlyVolume: zod.number(),
+    serviceMix: zod.array(zod.string()),
+    notes: zod.string(),
+    status: zod.enum(["pending", "approved", "denied"]),
+    createdAt: zod.coerce.date(),
+    approvedAt: zod.coerce.date().nullable(),
+  }),
+  adminEmail: zod.string().optional(),
+  alreadyApproved: zod.boolean().optional(),
+});
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary Deny a pending firm application (internal admin)
+ */
+export const FirmsDenyApplicationParams = zod.object({
+  id: zod.coerce.string(),
+});
+
+export const FirmsDenyApplicationResponse = zod.object({
+  ok: zod.literal(true),
+  firm: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    ein: zod.string(),
+    type: zod.enum([
+      "title-company",
+      "law-firm",
+      "lender",
+      "corporate",
+      "other",
+    ]),
+    address: zod.string(),
+    primaryContact: zod.object({
+      name: zod.string(),
+      email: zod.string(),
+      phone: zod.string(),
+    }),
+    expectedMonthlyVolume: zod.number(),
+    serviceMix: zod.array(zod.string()),
+    notes: zod.string(),
+    status: zod.enum(["pending", "approved", "denied"]),
+    createdAt: zod.coerce.date(),
+    approvedAt: zod.coerce.date().nullable(),
+  }),
+});

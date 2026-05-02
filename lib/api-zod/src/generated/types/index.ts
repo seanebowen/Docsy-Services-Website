@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./apiError";
+export * from "./apiOk";
 export * from "./documentCheckBody";
 export * from "./documentCheckDateField";
 export * from "./documentCheckError";
@@ -14,6 +16,38 @@ export * from "./documentCheckRecommendation";
 export * from "./documentCheckResponse";
 export * from "./documentCheckResult";
 export * from "./documentCheckSuggestedService";
+export * from "./firm";
+export * from "./firmApplyRequest";
+export * from "./firmApproveResponse";
+export * from "./firmBulkBookError";
+export * from "./firmBulkBookErrorErrorsItem";
+export * from "./firmBulkBookJobInput";
+export * from "./firmBulkBookRequest";
+export * from "./firmBulkBookResponse";
+export * from "./firmContact";
+export * from "./firmCounts";
+export * from "./firmInvoice";
+export * from "./firmInvoiceLineItem";
+export * from "./firmInvoicesResponse";
+export * from "./firmInvoiceStatus";
+export * from "./firmJob";
+export * from "./firmJobServiceType";
+export * from "./firmJobsResponse";
+export * from "./firmJobStatus";
+export * from "./firmListResponse";
+export * from "./firmMeResponse";
+export * from "./firmResponse";
+export * from "./firmRosterInviteRequest";
+export * from "./firmRosterInviteRequestRole";
+export * from "./firmRosterMember";
+export * from "./firmRosterMemberResponse";
+export * from "./firmRosterMemberRole";
+export * from "./firmRosterMemberStatus";
+export * from "./firmRosterResponse";
+export * from "./firmStatus";
+export * from "./firmType";
+export * from "./firmUserPublic";
+export * from "./firmUserPublicRole";
 export * from "./healthStatus";
 export * from "./saveScanToVaultBody";
 export * from "./saveScanToVaultResponse";

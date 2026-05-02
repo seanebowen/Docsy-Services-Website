@@ -14,6 +14,8 @@ tags:
     description: Pre-flight document inspection (free, anonymous)
   - name: vault
     description: Signed-in member document vault (Safe+)
+  - name: firms
+    description: B2B portal for title companies and law firms
 paths:
   /healthz:
     get:
@@ -133,6 +135,209 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DocumentCheckError"
+  /firms/apply:
+    post:
+      operationId: firmsApply
+      tags: [firms]
+      summary: Submit a firm application
+      description: Public endpoint. Creates a pending firm application that an internal admin must approve before the firm can sign in to the portal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirmApplyRequest"
+      responses:
+        "200":
+          description: Application received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirmResponse"
+        "400":
+          description: Invalid application
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /firms/me:
+    get:
+      operationId: firmsMe
+      tags: [firms]
+      summary: Get the signed-in user's firm + summary counts
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Firm dashboard payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirmMeResponse"
+        "401":
+          description: Not signed in
+          content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } }
+        "403":
+          description: Not a firm user
+          content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } }
+  /firms/jobs:
+    get:
+      operationId: firmsJobs
+      tags: [firms]
+      summary: List the firm's jobs (newest first)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Jobs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FirmJobsResponse"
+        "401": { description: Not signed in,  content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not a firm user, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/bulk-book:
+    post:
+      operationId: firmsBulkBook
+      tags: [firms]
+      summary: Submit a batch of jobs for the firm
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FirmBulkBookRequest"
+      responses:
+        "200": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/FirmBulkBookResponse" } } } }
+        "400": { description: Validation failed, content: { application/json: { schema: { $ref: "#/components/schemas/FirmBulkBookError"   } } } }
+        "401": { description: Not signed in,    content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not a firm user,   content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/invoices:
+    get:
+      operationId: firmsInvoices
+      tags: [firms]
+      summary: List the firm's invoices (newest first)
+      security:
+        - bearerAuth: []
+      responses:
+        "200": { description: Invoices, content: { application/json: { schema: { $ref: "#/components/schemas/FirmInvoicesResponse" } } } }
+        "401": { description: Not signed in,    content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not a firm user,   content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/invoices/{id}/pdf:
+    get:
+      operationId: firmsInvoicePdf
+      tags: [firms]
+      summary: Download a placeholder invoice
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Plain-text invoice (placeholder)
+          content:
+            text/plain:
+              schema: { type: string }
+        "401": { description: Not signed in,    content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not a firm user,   content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "404": { description: Invoice not found, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/roster:
+    get:
+      operationId: firmsRoster
+      tags: [firms]
+      summary: List the firm's roster
+      security:
+        - bearerAuth: []
+      responses:
+        "200": { description: Roster, content: { application/json: { schema: { $ref: "#/components/schemas/FirmRosterResponse" } } } }
+        "401": { description: Not signed in,    content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not a firm user,   content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/roster/invite:
+    post:
+      operationId: firmsRosterInvite
+      tags: [firms]
+      summary: Invite a teammate (firm_admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FirmRosterInviteRequest" }
+      responses:
+        "200": { description: Invited, content: { application/json: { schema: { $ref: "#/components/schemas/FirmRosterMemberResponse" } } } }
+        "400": { description: Bad input, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "401": { description: Not signed in, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not firm admin, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "409": { description: Already on roster, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/roster/{memberId}:
+    delete:
+      operationId: firmsRosterRemove
+      tags: [firms]
+      summary: Remove a teammate (firm_admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: memberId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Removed, content: { application/json: { schema: { $ref: "#/components/schemas/ApiOk" } } } }
+        "400": { description: Bad request, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "401": { description: Not signed in, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Not firm admin, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "404": { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/applications:
+    get:
+      operationId: firmsListApplications
+      tags: [firms]
+      summary: List all firm applications (internal admin)
+      description: Requires a Bearer session token belonging to a user with role `internal_admin`.
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200": { description: All firms, content: { application/json: { schema: { $ref: "#/components/schemas/FirmListResponse" } } } }
+        "401": { description: Not signed in, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Forbidden, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/applications/{id}/approve:
+    post:
+      operationId: firmsApproveApplication
+      tags: [firms]
+      summary: Approve a pending firm application (internal admin)
+      description: Requires a Bearer session token belonging to a user with role `internal_admin`.
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Approved, content: { application/json: { schema: { $ref: "#/components/schemas/FirmApproveResponse" } } } }
+        "401": { description: Not signed in, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Forbidden, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "404": { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+  /firms/applications/{id}/deny:
+    post:
+      operationId: firmsDenyApplication
+      tags: [firms]
+      summary: Deny a pending firm application (internal admin)
+      description: Requires a Bearer session token belonging to a user with role `internal_admin`.
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Denied, content: { application/json: { schema: { $ref: "#/components/schemas/FirmResponse" } } } }
+        "401": { description: Not signed in, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "403": { description: Forbidden, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
+        "404": { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/ApiError" } } } }
 components:
   securitySchemes:
     bearerAuth:
@@ -257,3 +462,247 @@ components:
           enum: [true]
         file:
           $ref: "#/components/schemas/VaultFile"
+    ApiOk:
+      type: object
+      required: [ok]
+      properties:
+        ok: { type: boolean, enum: [true] }
+    ApiError:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:    { type: boolean, enum: [false] }
+        error: { type: string }
+    FirmType:
+      type: string
+      enum: [title-company, law-firm, lender, corporate, other]
+    FirmStatus:
+      type: string
+      enum: [pending, approved, denied]
+    FirmContact:
+      type: object
+      required: [name, email, phone]
+      properties:
+        name:  { type: string }
+        email: { type: string }
+        phone: { type: string }
+    Firm:
+      type: object
+      required: [id, name, ein, type, address, primaryContact, expectedMonthlyVolume, serviceMix, notes, status, createdAt, approvedAt]
+      properties:
+        id:                    { type: string }
+        name:                  { type: string }
+        ein:                   { type: string }
+        type:                  { $ref: "#/components/schemas/FirmType" }
+        address:               { type: string }
+        primaryContact:        { $ref: "#/components/schemas/FirmContact" }
+        expectedMonthlyVolume: { type: integer }
+        serviceMix:
+          type: array
+          items: { type: string }
+        notes:      { type: string }
+        status:     { $ref: "#/components/schemas/FirmStatus" }
+        createdAt:  { type: string, format: date-time }
+        approvedAt: { type: [string, "null"], format: date-time }
+    FirmApplyRequest:
+      type: object
+      required: [name, type, address, primaryContact, expectedMonthlyVolume, serviceMix]
+      properties:
+        name:    { type: string }
+        ein:     { type: string }
+        type:    { $ref: "#/components/schemas/FirmType" }
+        address: { type: string }
+        primaryContact: { $ref: "#/components/schemas/FirmContact" }
+        expectedMonthlyVolume: { type: integer, minimum: 1 }
+        serviceMix:
+          type: array
+          minItems: 1
+          items: { type: string }
+        notes: { type: string }
+    FirmResponse:
+      type: object
+      required: [ok, firm]
+      properties:
+        ok:   { type: boolean, enum: [true] }
+        firm: { $ref: "#/components/schemas/Firm" }
+    FirmCounts:
+      type: object
+      required: [jobsScheduled, jobsCompleted, invoicesOpen, rosterActive]
+      properties:
+        jobsScheduled: { type: integer }
+        jobsCompleted: { type: integer }
+        invoicesOpen:  { type: integer }
+        rosterActive:  { type: integer }
+    FirmUserPublic:
+      type: object
+      required: [id, name, email, phone, membership, role, firmId]
+      properties:
+        id:         { type: string }
+        name:       { type: string }
+        email:      { type: string }
+        phone:      { type: string }
+        membership: { type: [string, "null"] }
+        role:       { type: string, enum: [individual, firm_admin, firm_member, internal_admin] }
+        firmId:     { type: [string, "null"] }
+    FirmMeResponse:
+      type: object
+      required: [ok, user, firm, counts]
+      properties:
+        ok:     { type: boolean, enum: [true] }
+        user:   { $ref: "#/components/schemas/FirmUserPublic" }
+        firm:   { $ref: "#/components/schemas/Firm" }
+        counts: { $ref: "#/components/schemas/FirmCounts" }
+    FirmJobServiceType:
+      type: string
+      enum: [loan-signing, ron, mobile, apostille, court]
+    FirmJobStatus:
+      type: string
+      enum: [scheduled, in-progress, completed, invoiced, cancelled]
+    FirmJob:
+      type: object
+      required: [id, firmId, signerName, signerEmail, address, serviceType, documentType, requestedWindow, status, notes, createdAt, createdByUserId]
+      properties:
+        id:               { type: string }
+        firmId:           { type: string }
+        signerName:       { type: string }
+        signerEmail:      { type: string }
+        address:          { type: string }
+        serviceType:      { $ref: "#/components/schemas/FirmJobServiceType" }
+        documentType:     { type: string }
+        requestedWindow:  { type: string }
+        status:           { $ref: "#/components/schemas/FirmJobStatus" }
+        notes:            { type: string }
+        createdAt:        { type: string, format: date-time }
+        createdByUserId:  { type: string }
+    FirmJobsResponse:
+      type: object
+      required: [ok, jobs]
+      properties:
+        ok:   { type: boolean, enum: [true] }
+        jobs:
+          type: array
+          items: { $ref: "#/components/schemas/FirmJob" }
+    FirmBulkBookJobInput:
+      type: object
+      required: [signerName, serviceType, documentType, requestedWindow]
+      properties:
+        signerName:      { type: string }
+        signerEmail:     { type: string }
+        address:         { type: string }
+        serviceType:     { $ref: "#/components/schemas/FirmJobServiceType" }
+        documentType:    { type: string }
+        requestedWindow: { type: string }
+        notes:           { type: string }
+    FirmBulkBookRequest:
+      type: object
+      required: [jobs]
+      properties:
+        jobs:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items: { $ref: "#/components/schemas/FirmBulkBookJobInput" }
+    FirmBulkBookResponse:
+      type: object
+      required: [ok, created]
+      properties:
+        ok:      { type: boolean, enum: [true] }
+        created:
+          type: array
+          items: { $ref: "#/components/schemas/FirmJob" }
+    FirmBulkBookError:
+      type: object
+      required: [ok, error, errors]
+      properties:
+        ok:    { type: boolean, enum: [false] }
+        error: { type: string }
+        errors:
+          type: array
+          items:
+            type: object
+            required: [row, error]
+            properties:
+              row:   { type: integer }
+              error: { type: string }
+    FirmInvoiceLineItem:
+      type: object
+      required: [description, qty, unitPrice, total]
+      properties:
+        description: { type: string }
+        qty:         { type: integer }
+        unitPrice:   { type: number }
+        total:       { type: number }
+    FirmInvoice:
+      type: object
+      required: [id, firmId, number, periodStart, periodEnd, lineItems, total, status, dueDate, issuedDate, paidDate]
+      properties:
+        id:          { type: string }
+        firmId:      { type: string }
+        number:      { type: string }
+        periodStart: { type: string }
+        periodEnd:   { type: string }
+        lineItems:
+          type: array
+          items: { $ref: "#/components/schemas/FirmInvoiceLineItem" }
+        total:       { type: number }
+        status:      { type: string, enum: [open, paid, overdue] }
+        dueDate:     { type: string }
+        issuedDate:  { type: string }
+        paidDate:    { type: [string, "null"] }
+    FirmInvoicesResponse:
+      type: object
+      required: [ok, invoices]
+      properties:
+        ok:       { type: boolean, enum: [true] }
+        invoices:
+          type: array
+          items: { $ref: "#/components/schemas/FirmInvoice" }
+    FirmRosterMember:
+      type: object
+      required: [id, firmId, name, email, role, status, invitedAt, invitedBy]
+      properties:
+        id:        { type: string }
+        firmId:    { type: string }
+        name:      { type: string }
+        email:     { type: string }
+        role:      { type: string, enum: [firm_admin, firm_member] }
+        status:    { type: string, enum: [invited, active] }
+        invitedAt: { type: string, format: date-time }
+        invitedBy: { type: string }
+    FirmRosterResponse:
+      type: object
+      required: [ok, members]
+      properties:
+        ok:      { type: boolean, enum: [true] }
+        members:
+          type: array
+          items: { $ref: "#/components/schemas/FirmRosterMember" }
+    FirmRosterInviteRequest:
+      type: object
+      required: [name, email, role]
+      properties:
+        name:  { type: string }
+        email: { type: string }
+        role:  { type: string, enum: [firm_admin, firm_member] }
+    FirmRosterMemberResponse:
+      type: object
+      required: [ok, member]
+      properties:
+        ok:     { type: boolean, enum: [true] }
+        member: { $ref: "#/components/schemas/FirmRosterMember" }
+    FirmListResponse:
+      type: object
+      required: [ok, firms]
+      properties:
+        ok:    { type: boolean, enum: [true] }
+        firms:
+          type: array
+          items: { $ref: "#/components/schemas/Firm" }
+    FirmApproveResponse:
+      type: object
+      required: [ok, firm]
+      properties:
+        ok:              { type: boolean, enum: [true] }
+        firm:            { $ref: "#/components/schemas/Firm" }
+        adminEmail:      { type: string }
+        alreadyApproved: { type: boolean }

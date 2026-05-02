@@ -17,9 +17,24 @@ import type {
 } from "@tanstack/react-query";
 
 import type {
+  ApiError,
+  ApiOk,
   DocumentCheckBody,
   DocumentCheckError,
   DocumentCheckResponse,
+  FirmApplyRequest,
+  FirmApproveResponse,
+  FirmBulkBookError,
+  FirmBulkBookRequest,
+  FirmBulkBookResponse,
+  FirmInvoicesResponse,
+  FirmJobsResponse,
+  FirmListResponse,
+  FirmMeResponse,
+  FirmResponse,
+  FirmRosterInviteRequest,
+  FirmRosterMemberResponse,
+  FirmRosterResponse,
   HealthStatus,
   SaveScanToVaultBody,
   SaveScanToVaultResponse,
@@ -296,4 +311,966 @@ export const useSaveScanToVault = <
   TContext
 > => {
   return useMutation(getSaveScanToVaultMutationOptions(options));
+};
+
+/**
+ * Public endpoint. Creates a pending firm application that an internal admin must approve before the firm can sign in to the portal.
+ * @summary Submit a firm application
+ */
+export const getFirmsApplyUrl = () => {
+  return `/api/firms/apply`;
+};
+
+export const firmsApply = async (
+  firmApplyRequest: FirmApplyRequest,
+  options?: RequestInit,
+): Promise<FirmResponse> => {
+  return customFetch<FirmResponse>(getFirmsApplyUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(firmApplyRequest),
+  });
+};
+
+export const getFirmsApplyMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsApply>>,
+    TError,
+    { data: BodyType<FirmApplyRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsApply>>,
+  TError,
+  { data: BodyType<FirmApplyRequest> },
+  TContext
+> => {
+  const mutationKey = ["firmsApply"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsApply>>,
+    { data: BodyType<FirmApplyRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return firmsApply(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsApplyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsApply>>
+>;
+export type FirmsApplyMutationBody = BodyType<FirmApplyRequest>;
+export type FirmsApplyMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Submit a firm application
+ */
+export const useFirmsApply = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsApply>>,
+    TError,
+    { data: BodyType<FirmApplyRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsApply>>,
+  TError,
+  { data: BodyType<FirmApplyRequest> },
+  TContext
+> => {
+  return useMutation(getFirmsApplyMutationOptions(options));
+};
+
+/**
+ * @summary Get the signed-in user's firm + summary counts
+ */
+export const getFirmsMeUrl = () => {
+  return `/api/firms/me`;
+};
+
+export const firmsMe = async (
+  options?: RequestInit,
+): Promise<FirmMeResponse> => {
+  return customFetch<FirmMeResponse>(getFirmsMeUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsMeQueryKey = () => {
+  return [`/api/firms/me`] as const;
+};
+
+export const getFirmsMeQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsMe>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof firmsMe>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsMeQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof firmsMe>>> = ({
+    signal,
+  }) => firmsMe({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsMe>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsMeQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsMe>>
+>;
+export type FirmsMeQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary Get the signed-in user's firm + summary counts
+ */
+
+export function useFirmsMe<
+  TData = Awaited<ReturnType<typeof firmsMe>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof firmsMe>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsMeQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List the firm's jobs (newest first)
+ */
+export const getFirmsJobsUrl = () => {
+  return `/api/firms/jobs`;
+};
+
+export const firmsJobs = async (
+  options?: RequestInit,
+): Promise<FirmJobsResponse> => {
+  return customFetch<FirmJobsResponse>(getFirmsJobsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsJobsQueryKey = () => {
+  return [`/api/firms/jobs`] as const;
+};
+
+export const getFirmsJobsQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsJobs>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof firmsJobs>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsJobsQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof firmsJobs>>> = ({
+    signal,
+  }) => firmsJobs({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsJobs>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsJobsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsJobs>>
+>;
+export type FirmsJobsQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary List the firm's jobs (newest first)
+ */
+
+export function useFirmsJobs<
+  TData = Awaited<ReturnType<typeof firmsJobs>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof firmsJobs>>, TError, TData>;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsJobsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Submit a batch of jobs for the firm
+ */
+export const getFirmsBulkBookUrl = () => {
+  return `/api/firms/bulk-book`;
+};
+
+export const firmsBulkBook = async (
+  firmBulkBookRequest: FirmBulkBookRequest,
+  options?: RequestInit,
+): Promise<FirmBulkBookResponse> => {
+  return customFetch<FirmBulkBookResponse>(getFirmsBulkBookUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(firmBulkBookRequest),
+  });
+};
+
+export const getFirmsBulkBookMutationOptions = <
+  TError = ErrorType<FirmBulkBookError | ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsBulkBook>>,
+    TError,
+    { data: BodyType<FirmBulkBookRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsBulkBook>>,
+  TError,
+  { data: BodyType<FirmBulkBookRequest> },
+  TContext
+> => {
+  const mutationKey = ["firmsBulkBook"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsBulkBook>>,
+    { data: BodyType<FirmBulkBookRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return firmsBulkBook(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsBulkBookMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsBulkBook>>
+>;
+export type FirmsBulkBookMutationBody = BodyType<FirmBulkBookRequest>;
+export type FirmsBulkBookMutationError = ErrorType<
+  FirmBulkBookError | ApiError
+>;
+
+/**
+ * @summary Submit a batch of jobs for the firm
+ */
+export const useFirmsBulkBook = <
+  TError = ErrorType<FirmBulkBookError | ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsBulkBook>>,
+    TError,
+    { data: BodyType<FirmBulkBookRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsBulkBook>>,
+  TError,
+  { data: BodyType<FirmBulkBookRequest> },
+  TContext
+> => {
+  return useMutation(getFirmsBulkBookMutationOptions(options));
+};
+
+/**
+ * @summary List the firm's invoices (newest first)
+ */
+export const getFirmsInvoicesUrl = () => {
+  return `/api/firms/invoices`;
+};
+
+export const firmsInvoices = async (
+  options?: RequestInit,
+): Promise<FirmInvoicesResponse> => {
+  return customFetch<FirmInvoicesResponse>(getFirmsInvoicesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsInvoicesQueryKey = () => {
+  return [`/api/firms/invoices`] as const;
+};
+
+export const getFirmsInvoicesQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsInvoices>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsInvoices>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsInvoicesQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof firmsInvoices>>> = ({
+    signal,
+  }) => firmsInvoices({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsInvoices>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsInvoicesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsInvoices>>
+>;
+export type FirmsInvoicesQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary List the firm's invoices (newest first)
+ */
+
+export function useFirmsInvoices<
+  TData = Awaited<ReturnType<typeof firmsInvoices>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsInvoices>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsInvoicesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Download a placeholder invoice
+ */
+export const getFirmsInvoicePdfUrl = (id: string) => {
+  return `/api/firms/invoices/${id}/pdf`;
+};
+
+export const firmsInvoicePdf = async (
+  id: string,
+  options?: RequestInit,
+): Promise<string> => {
+  return customFetch<string>(getFirmsInvoicePdfUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsInvoicePdfQueryKey = (id: string) => {
+  return [`/api/firms/invoices/${id}/pdf`] as const;
+};
+
+export const getFirmsInvoicePdfQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsInvoicePdf>>,
+  TError = ErrorType<ApiError>,
+>(
+  id: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof firmsInvoicePdf>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsInvoicePdfQueryKey(id);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof firmsInvoicePdf>>> = ({
+    signal,
+  }) => firmsInvoicePdf(id, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!id,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsInvoicePdf>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsInvoicePdfQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsInvoicePdf>>
+>;
+export type FirmsInvoicePdfQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary Download a placeholder invoice
+ */
+
+export function useFirmsInvoicePdf<
+  TData = Awaited<ReturnType<typeof firmsInvoicePdf>>,
+  TError = ErrorType<ApiError>,
+>(
+  id: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof firmsInvoicePdf>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsInvoicePdfQueryOptions(id, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary List the firm's roster
+ */
+export const getFirmsRosterUrl = () => {
+  return `/api/firms/roster`;
+};
+
+export const firmsRoster = async (
+  options?: RequestInit,
+): Promise<FirmRosterResponse> => {
+  return customFetch<FirmRosterResponse>(getFirmsRosterUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsRosterQueryKey = () => {
+  return [`/api/firms/roster`] as const;
+};
+
+export const getFirmsRosterQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsRoster>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsRoster>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsRosterQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof firmsRoster>>> = ({
+    signal,
+  }) => firmsRoster({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsRoster>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsRosterQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsRoster>>
+>;
+export type FirmsRosterQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary List the firm's roster
+ */
+
+export function useFirmsRoster<
+  TData = Awaited<ReturnType<typeof firmsRoster>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsRoster>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsRosterQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Invite a teammate (firm_admin only)
+ */
+export const getFirmsRosterInviteUrl = () => {
+  return `/api/firms/roster/invite`;
+};
+
+export const firmsRosterInvite = async (
+  firmRosterInviteRequest: FirmRosterInviteRequest,
+  options?: RequestInit,
+): Promise<FirmRosterMemberResponse> => {
+  return customFetch<FirmRosterMemberResponse>(getFirmsRosterInviteUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(firmRosterInviteRequest),
+  });
+};
+
+export const getFirmsRosterInviteMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsRosterInvite>>,
+    TError,
+    { data: BodyType<FirmRosterInviteRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsRosterInvite>>,
+  TError,
+  { data: BodyType<FirmRosterInviteRequest> },
+  TContext
+> => {
+  const mutationKey = ["firmsRosterInvite"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsRosterInvite>>,
+    { data: BodyType<FirmRosterInviteRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return firmsRosterInvite(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsRosterInviteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsRosterInvite>>
+>;
+export type FirmsRosterInviteMutationBody = BodyType<FirmRosterInviteRequest>;
+export type FirmsRosterInviteMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Invite a teammate (firm_admin only)
+ */
+export const useFirmsRosterInvite = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsRosterInvite>>,
+    TError,
+    { data: BodyType<FirmRosterInviteRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsRosterInvite>>,
+  TError,
+  { data: BodyType<FirmRosterInviteRequest> },
+  TContext
+> => {
+  return useMutation(getFirmsRosterInviteMutationOptions(options));
+};
+
+/**
+ * @summary Remove a teammate (firm_admin only)
+ */
+export const getFirmsRosterRemoveUrl = (memberId: string) => {
+  return `/api/firms/roster/${memberId}`;
+};
+
+export const firmsRosterRemove = async (
+  memberId: string,
+  options?: RequestInit,
+): Promise<ApiOk> => {
+  return customFetch<ApiOk>(getFirmsRosterRemoveUrl(memberId), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getFirmsRosterRemoveMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsRosterRemove>>,
+    TError,
+    { memberId: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsRosterRemove>>,
+  TError,
+  { memberId: string },
+  TContext
+> => {
+  const mutationKey = ["firmsRosterRemove"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsRosterRemove>>,
+    { memberId: string }
+  > = (props) => {
+    const { memberId } = props ?? {};
+
+    return firmsRosterRemove(memberId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsRosterRemoveMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsRosterRemove>>
+>;
+
+export type FirmsRosterRemoveMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Remove a teammate (firm_admin only)
+ */
+export const useFirmsRosterRemove = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsRosterRemove>>,
+    TError,
+    { memberId: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsRosterRemove>>,
+  TError,
+  { memberId: string },
+  TContext
+> => {
+  return useMutation(getFirmsRosterRemoveMutationOptions(options));
+};
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary List all firm applications (internal admin)
+ */
+export const getFirmsListApplicationsUrl = () => {
+  return `/api/firms/applications`;
+};
+
+export const firmsListApplications = async (
+  options?: RequestInit,
+): Promise<FirmListResponse> => {
+  return customFetch<FirmListResponse>(getFirmsListApplicationsUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getFirmsListApplicationsQueryKey = () => {
+  return [`/api/firms/applications`] as const;
+};
+
+export const getFirmsListApplicationsQueryOptions = <
+  TData = Awaited<ReturnType<typeof firmsListApplications>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsListApplications>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getFirmsListApplicationsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof firmsListApplications>>
+  > = ({ signal }) => firmsListApplications({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof firmsListApplications>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type FirmsListApplicationsQueryResult = NonNullable<
+  Awaited<ReturnType<typeof firmsListApplications>>
+>;
+export type FirmsListApplicationsQueryError = ErrorType<ApiError>;
+
+/**
+ * @summary List all firm applications (internal admin)
+ */
+
+export function useFirmsListApplications<
+  TData = Awaited<ReturnType<typeof firmsListApplications>>,
+  TError = ErrorType<ApiError>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof firmsListApplications>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getFirmsListApplicationsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary Approve a pending firm application (internal admin)
+ */
+export const getFirmsApproveApplicationUrl = (id: string) => {
+  return `/api/firms/applications/${id}/approve`;
+};
+
+export const firmsApproveApplication = async (
+  id: string,
+  options?: RequestInit,
+): Promise<FirmApproveResponse> => {
+  return customFetch<FirmApproveResponse>(getFirmsApproveApplicationUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getFirmsApproveApplicationMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsApproveApplication>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsApproveApplication>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationKey = ["firmsApproveApplication"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsApproveApplication>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return firmsApproveApplication(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsApproveApplicationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsApproveApplication>>
+>;
+
+export type FirmsApproveApplicationMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Approve a pending firm application (internal admin)
+ */
+export const useFirmsApproveApplication = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsApproveApplication>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsApproveApplication>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  return useMutation(getFirmsApproveApplicationMutationOptions(options));
+};
+
+/**
+ * Requires a Bearer session token belonging to a user with role `internal_admin`.
+ * @summary Deny a pending firm application (internal admin)
+ */
+export const getFirmsDenyApplicationUrl = (id: string) => {
+  return `/api/firms/applications/${id}/deny`;
+};
+
+export const firmsDenyApplication = async (
+  id: string,
+  options?: RequestInit,
+): Promise<FirmResponse> => {
+  return customFetch<FirmResponse>(getFirmsDenyApplicationUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getFirmsDenyApplicationMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsDenyApplication>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof firmsDenyApplication>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  const mutationKey = ["firmsDenyApplication"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof firmsDenyApplication>>,
+    { id: string }
+  > = (props) => {
+    const { id } = props ?? {};
+
+    return firmsDenyApplication(id, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type FirmsDenyApplicationMutationResult = NonNullable<
+  Awaited<ReturnType<typeof firmsDenyApplication>>
+>;
+
+export type FirmsDenyApplicationMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Deny a pending firm application (internal admin)
+ */
+export const useFirmsDenyApplication = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof firmsDenyApplication>>,
+    TError,
+    { id: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof firmsDenyApplication>>,
+  TError,
+  { id: string },
+  TContext
+> => {
+  return useMutation(getFirmsDenyApplicationMutationOptions(options));
 };

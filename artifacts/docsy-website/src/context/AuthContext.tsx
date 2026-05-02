@@ -13,6 +13,8 @@ export interface AuthUser {
   phone:            string;
   membership:       "starter" | "pro" | "elite" | null;
   idMeVerification?: AccountIdMeRecord | null;
+  role?:            "individual" | "firm_admin" | "firm_member" | "internal_admin";
+  firmId?:          string | null;
 }
 
 interface AuthContextValue {

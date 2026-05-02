@@ -13,6 +13,13 @@ export interface IdMeVerificationRecord {
   verifiedAt: string;
 }
 
+/* B2B firm-role on a user account. Default for everyone is "individual";
+   firm_admin can manage their firm's roster and bulk-book on behalf of
+   the firm; firm_member can bulk-book and view jobs/invoices but not
+   modify the roster. internal_admin is Docsy staff and is gated by
+   real session-based RBAC (NOT a shared header secret). */
+export type UserRole = "individual" | "firm_admin" | "firm_member" | "internal_admin";
+
 export interface MockUser {
   id:         string;
   name:       string;
@@ -20,6 +27,8 @@ export interface MockUser {
   phone:      string; // normalized digits only, e.g. "2105551001"
   membership: MembershipTier;
   idMeVerification?: IdMeVerificationRecord | null;
+  role?:      UserRole;       // undefined treated as "individual"
+  firmId?:    string | null;  // set when role is firm_admin or firm_member
 }
 
 /* ── Cycle credits per user (in-memory; mutated on use) ── */
@@ -37,9 +46,17 @@ const CREDITS_BY_TIER: Record<Exclude<MembershipTier, null>, MemberCredits> = {
 
 /* ── Seeded demo accounts ───────────────────────────────── */
 export const USERS: MockUser[] = [
-  { id: "u1", name: "Jordan Williams",   email: "jordan@example.com", phone: "2105551001", membership: "starter" },
-  { id: "u2", name: "Maria Rodriguez",   email: "maria@example.com",  phone: "2105551002", membership: "pro"     },
-  { id: "u3", name: "Devon Carter",      email: "devon@example.com",  phone: "2105551003", membership: "elite"   },
+  { id: "u1", name: "Jordan Williams",   email: "jordan@example.com", phone: "2105551001", membership: "starter", role: "individual" },
+  { id: "u2", name: "Maria Rodriguez",   email: "maria@example.com",  phone: "2105551002", membership: "pro",     role: "individual" },
+  { id: "u3", name: "Devon Carter",      email: "devon@example.com",  phone: "2105551003", membership: "elite",   role: "individual" },
+  /* Pre-approved demo firm "Hill Country Title Co." (firm id "f1"). The
+     admin can manage roster + bulk-book; the member can bulk-book and
+     view jobs/invoices. */
+  { id: "fu1", name: "Valerie Chen",     email: "valerie@hillcountrytitle.test", phone: "2105552001", membership: null, role: "firm_admin",  firmId: "f1" },
+  { id: "fu2", name: "Marcus Wright",    email: "marcus@hillcountrytitle.test",  phone: "2105552002", membership: null, role: "firm_member", firmId: "f1" },
+  /* Docsy staff member (demo). In production this would be provisioned
+     out-of-band, not seeded. Gates the /internal-firms approval surface. */
+  { id: "ia1", name: "Avery Internal",   email: "admin@docsy.test",               phone: "2105559900", membership: null, role: "internal_admin" },
 ];
 
 /* Per-user mutable credits (seeded from tier defaults) */
@@ -100,13 +117,35 @@ export function publicUser(u: MockUser) {
     phone:            u.phone,
     membership:       u.membership,
     idMeVerification: u.idMeVerification ?? null,
+    role:             u.role ?? "individual",
+    firmId:           u.firmId ?? null,
   };
+}
+
+/* ── Helper: look up the user behind a Bearer token without
+   coupling other route files to the SESSION_STORE map directly. */
+export function userIdFromToken(token: string | undefined | null): string | null {
+  if (!token) return null;
+  return SESSION_STORE.get(token) ?? null;
+}
+
+export function findUser(userId: string | null | undefined): MockUser | null {
+  if (!userId) return null;
+  return USERS.find((u) => u.id === userId) ?? null;
+}
+
+/* Add a freshly-created user to the email + phone indexes so OTP login
+   immediately recognises them. Use this from any module that mutates
+   USERS at runtime (firm onboarding, etc). Idempotent. */
+export function indexUser(u: MockUser): void {
+  BY_EMAIL.set(u.email.toLowerCase(), u);
+  if (u.phone) BY_PHONE.set(u.phone, u);
 }
 
 /* ── Middleware: verify Bearer token ─────────────────────
    Inlined here to avoid circular imports with vault.ts.
 */
-function requireAuth(req: Request, res: Response, next: () => void): void {
+export function requireAuth(req: Request, res: Response, next: () => void): void {
   const header = req.headers["authorization"] ?? "";
   const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
   if (!token || !SESSION_STORE.has(token)) {
@@ -114,6 +153,48 @@ function requireAuth(req: Request, res: Response, next: () => void): void {
     return;
   }
   (req as Request & { userId: string }).userId = SESSION_STORE.get(token)!;
+  next();
+}
+
+/* ── Middleware: verify Bearer token AND firm role.
+   Allows firm_admin or firm_member; rejects everyone else. */
+export function requireFirmAuth(req: Request, res: Response, next: () => void): void {
+  const header = req.headers["authorization"] ?? "";
+  const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!token || !SESSION_STORE.has(token)) {
+    res.status(401).json({ ok: false, error: "Unauthorized. Please sign in." });
+    return;
+  }
+  const userId = SESSION_STORE.get(token)!;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user || (user.role !== "firm_admin" && user.role !== "firm_member") || !user.firmId) {
+    res.status(403).json({ ok: false, error: "Firm access required." });
+    return;
+  }
+  (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).userId   = userId;
+  (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).firmId   = user.firmId;
+  (req as Request & { userId: string; firmId: string; firmRole: "firm_admin" | "firm_member" }).firmRole = user.role;
+  next();
+}
+
+/* ── Middleware: internal admin gate (real RBAC).
+   Verifies a Bearer session token AND that the user behind it has the
+   `internal_admin` role. No shared secret, no client-side header that
+   anyone could replay. */
+export function requireInternalAdmin(req: Request, res: Response, next: () => void): void {
+  const header = req.headers["authorization"] ?? "";
+  const token  = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!token || !SESSION_STORE.has(token)) {
+    res.status(401).json({ ok: false, error: "Unauthorized. Please sign in." });
+    return;
+  }
+  const userId = SESSION_STORE.get(token)!;
+  const user   = USERS.find(u => u.id === userId);
+  if (!user || user.role !== "internal_admin") {
+    res.status(403).json({ ok: false, error: "Internal admin access required." });
+    return;
+  }
+  (req as Request & { userId: string }).userId = userId;
   next();
 }
 

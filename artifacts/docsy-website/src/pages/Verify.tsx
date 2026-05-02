@@ -66,7 +66,14 @@ export default function Verify() {
         signIn(data.token, data.user);
         sessionStorage.removeItem("docsy_auth_identifier");
         sessionStorage.removeItem("docsy_auth_masked");
-        setLocation("/vault");
+        const nextRaw = sessionStorage.getItem("docsy_auth_next");
+        sessionStorage.removeItem("docsy_auth_next");
+        const dest = nextRaw && nextRaw.startsWith("/")
+          ? nextRaw
+          : (data.user.role === "firm_admin" || data.user.role === "firm_member")
+            ? "/firm/portal"
+            : "/vault";
+        setLocation(dest);
       } else {
         setApiError(data.error ?? "Invalid code. Please try again.");
         setDigits(Array(6).fill(""));
