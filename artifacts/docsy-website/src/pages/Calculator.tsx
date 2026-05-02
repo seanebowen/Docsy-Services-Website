@@ -1355,7 +1355,13 @@ export default function Calculator() {
             <br />
             <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "inherit", padding: "0 5px" }}>Let's make it official.</span>
           </h2>
-          <p className="text-lg text-black/60">Know your price before you book. Always.</p>
+          <p className="text-lg text-black/60 mb-4">Know your price before you book. Always.</p>
+          <p className="text-sm font-medium" style={{ color: "rgba(0,0,0,0.45)" }}>
+            Not sure if your document is notarization-ready?{" "}
+            <Link href="/document-check" className="underline font-bold" style={{ color: "rgba(0,0,0,0.70)" }} data-testid="btn-calc-doc-check">
+              Run a free Document Check first →
+            </Link>
+          </p>
         </div>
       </section>
 

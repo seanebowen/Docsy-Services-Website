@@ -476,8 +476,14 @@ export default function Booking() {
               </h1>
             </FadeIn>
             <FadeIn delay={140}>
-              <p className="text-lg text-black/60 max-w-lg font-medium">
+              <p className="text-lg text-black/60 max-w-lg font-medium mb-4">
                 Pick a preferred date and time slot. Your booking is not confirmed until you receive a confirmation email from Docsy.
+              </p>
+              <p className="text-sm font-medium" style={{ color: "rgba(0,0,0,0.45)" }}>
+                Want to verify your document first?{" "}
+                <Link href="/document-check" className="underline font-bold" style={{ color: "rgba(0,0,0,0.70)" }} data-testid="btn-booking-doc-check">
+                  Free Document Check →
+                </Link>
               </p>
             </FadeIn>
           </div>
@@ -612,15 +618,14 @@ export default function Booking() {
                       );
                     })()}
 
-                    {/* Hours notice */}
-                    {!slotsLoading && (
-                      <p className="text-[10px] leading-relaxed mt-3" style={{ color: "rgba(255,255,255,0.28)" }}>
-                        Standard hours: 9 AM – 9 PM, 7 days a week. For 24/7 RON, mobile signings until midnight, or a dedicated after-hours line, see{" "}
-                        <Link href="/business" style={{ color: BLUE }}>Docsy Business+ Firm accounts</Link>.
-                      </p>
-                    )}
                   </div>
                 )}
+
+                {/* Hours notice — always visible below the calendar */}
+                <p className="text-[10px] leading-relaxed mt-4" style={{ color: "rgba(255,255,255,0.28)" }}>
+                  Standard hours: 9 AM – 9 PM, 7 days a week. For 24/7 RON, mobile signings until midnight, or a dedicated after-hours line, see{" "}
+                  <Link href="/business" style={{ color: BLUE }}>Docsy Business+ Firm accounts</Link>.
+                </p>
 
                 {/* Note */}
                 {selectedDate && selectedTime && (
