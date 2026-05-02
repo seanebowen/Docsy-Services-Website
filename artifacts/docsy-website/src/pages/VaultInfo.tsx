@@ -144,9 +144,9 @@ export default function VaultInfo() {
             <div className="border p-8 flex items-start gap-5" style={{ borderColor: DIV, backgroundColor: "rgba(77,159,219,0.04)" }}>
               <Sparkles className="h-5 w-5 shrink-0 mt-1" style={{ color: BLUE }} />
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>Docsy+ Member Bonus</p>
+                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>Docsy Business+ Member Bonus</p>
                 <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-                  Docsy+ members get extended retention, priority support on Safe+ issues, and early access to new Safe+ features as we roll them out. See <Link href="/memberships" className="underline" style={{ color: BLUE }}>Docsy+ Memberships →</Link>
+                  Docsy Business+ members get extended retention, priority support on Safe+ issues, and early access to new Safe+ features as we roll them out. See <Link href="/business" className="underline" style={{ color: BLUE }}>Docsy Business+ →</Link>
                 </p>
               </div>
             </div>

@@ -276,7 +276,7 @@ export default function About() {
                 <a href={`tel:${PHONE.replace(/\D/g, "")}`} className="hover:opacity-80 transition-opacity">{PHONE}</a>
               </p>
               <p className="text-sm text-white/45 leading-relaxed">
-                Use for anything time-sensitive: cancellations, reschedules, same-day bookings, urgent questions, and special accommodations. Fastest response. Available 7 days, 7 AM to 11 PM.
+                Use for anything time-sensitive: cancellations, reschedules, same-day bookings, urgent questions, and special accommodations. Fastest response. Available 7 days, 9 AM to 9 PM. Firm accounts have a separate after-hours line.
               </p>
             </div>
           </FadeIn>

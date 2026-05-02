@@ -31,7 +31,7 @@ interface PlanInfo {
 
 const PLANS: Record<PlanKey, PlanInfo> = {
   starter: {
-    name: "Docsy+ Starter",
+    name: "Docsy Business+ Solo",
     price: 15,
     priceLabel: "$15/mo",
     type: "membership",
@@ -46,7 +46,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
   pro: {
-    name: "Docsy+ Pro",
+    name: "Docsy Business+ Pro",
     price: 30,
     priceLabel: "$30/mo",
     type: "membership",
@@ -62,7 +62,7 @@ const PLANS: Record<PlanKey, PlanInfo> = {
     terms: "Your membership renews automatically each month. Cancel any time before your next billing date to avoid renewal charges.",
   },
   elite: {
-    name: "Docsy+ Elite",
+    name: "Docsy Business+ Elite",
     price: 49,
     priceLabel: "$49/mo",
     type: "membership",
@@ -118,8 +118,8 @@ export default function MembershipCheckout() {
     return (
       <div className="w-full min-h-screen flex flex-col items-center justify-center px-5" style={{ backgroundColor: IVORY }}>
         <p className="text-2xl font-black text-black mb-4">Plan not found.</p>
-        <Link href="/memberships" className="text-sm font-bold underline" style={{ color: BLUE }}>
-          ← Back to Memberships
+        <Link href="/business" className="text-sm font-bold underline" style={{ color: BLUE }}>
+          ← Back to Docsy Business+
         </Link>
       </div>
     );
@@ -182,8 +182,8 @@ export default function MembershipCheckout() {
       <section className="px-5 pt-20 pb-10 sm:pt-28 sm:pb-12">
         <div className="max-w-2xl mx-auto">
           <FadeIn delay={0}>
-            <Link href="/memberships" className="text-xs font-bold uppercase tracking-widest mb-8 inline-block" style={{ color: "rgba(0,0,0,0.35)" }}>
-              ← Back to Memberships
+            <Link href="/business" className="text-xs font-bold uppercase tracking-widest mb-8 inline-block" style={{ color: "rgba(0,0,0,0.35)" }}>
+              ← Back to Docsy Business+
             </Link>
             <div className="inline-flex items-center gap-2 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border mb-6 block" style={{ borderColor: BLUE, color: BLUE }}>
               {plan.type === "membership" ? "Membership Checkout" : "Storage Checkout"}
@@ -203,7 +203,7 @@ export default function MembershipCheckout() {
             <div className="border-2 border-black overflow-hidden" style={{ backgroundColor: BG }}>
               <div className="px-8 py-5 border-b flex items-center justify-between" style={{ borderColor: DIV }}>
                 <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
-                  {plan.type === "membership" ? "Docsy+ Membership" : "Docsy Safe+ Storage"}
+                  {plan.type === "membership" ? "Docsy Business+ Membership" : "Docsy Safe+ Storage"}
                 </p>
                 <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: BLUE }}>
                   Monthly Subscription

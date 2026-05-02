@@ -83,6 +83,9 @@ export default function NotaryServices() {
               <a href="#mobile" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black">
                 Jump to Mobile / GNW →
               </a>
+              <Link href="/document-check" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-notary-doc-check">
+                Free Document Check →
+              </Link>
             </div>
           </FadeIn>
         </div>
@@ -208,7 +211,7 @@ export default function NotaryServices() {
             Same-hour. <H>Every day.</H>
           </h3>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            RON is available same-hour, <H>7 days a week,</H> from 7 AM to 11 PM. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard. In the rare event of a scheduling conflict, you'll be notified immediately and not charged.
+            RON is available same-hour, <H>7 days a week,</H> from 9 AM to 9 PM. If you need it done right now, text us and we'll make it happen. Same-hour is not a promotional promise — it's standard. In the rare event of a scheduling conflict, you'll be notified immediately and not charged. Firm accounts get 24/7 RON access — see <Link href="/business" className="underline">Docsy Business+</Link>.
           </p>
         </div>
       </section>
@@ -241,7 +244,7 @@ export default function NotaryServices() {
           <p className="text-lg font-light text-white/50 leading-relaxed">
             Home. Your office. A coffee shop. A law firm. A title company. A hospital bedside. A nursing home. An assisted living facility. Anywhere you need a document notarized — <H>we meet you there.</H>
             <br /><br />
-            Bedside notarizations for power of attorney, healthcare directives, and urgent documents are one of the most important services we provide. We don't charge extra just because it's a hospital. Docsy mobile notary serves the San Antonio metro area. <strong className="text-white">General hours 9 AM–9 PM, 7 days a week. Docsy+ members get 7 AM–11 PM priority access.</strong>
+            Bedside notarizations for power of attorney, healthcare directives, and urgent documents are one of the most important services we provide. We don't charge extra just because it's a hospital. Docsy mobile notary serves the San Antonio metro area. <strong className="text-white">Hours: 9 AM – 9 PM, 7 days a week. Firm accounts can request mobile signings 6 AM – Midnight.</strong>
           </p>
         </div>
       </section>
@@ -305,7 +308,7 @@ export default function NotaryServices() {
             <H>Every day.</H>
           </h3>
           <p className="text-lg font-light text-white/50 leading-relaxed">
-            General appointments run 9 AM–9 PM. <H>Docsy+ members</H> get access to priority hours — 7 AM–9 AM and 9 PM–11 PM — with no after-hours surcharge. After-hours bookings (9 PM–11 PM) carry a +$20 surcharge for non-members, always disclosed at booking before you confirm. Federal holidays carry an additional +$20 surcharge for all clients.
+            All appointments run 9 AM – 9 PM, 7 days a week, for every individual customer — members and non-members alike. There are no after-hours surcharges and no member-only night slots. Federal holidays carry an additional +$20 surcharge for all clients. Need 24/7 RON or mobile after 9 PM? <Link href="/business" className="underline">Docsy Business+ Firm accounts</Link> include extended priority hours.
           </p>
         </div>
       </section>
@@ -322,7 +325,7 @@ export default function NotaryServices() {
             {[
               { title: "Notarization Fees", items: [{ l: "First notarization", p: "$10" }, { l: "Additional signer (same session)", p: "$1" }, { l: "Additional seal (same session)", p: "$5" }, { l: "Each additional (same doc)", p: "$1" }] },
               { title: "Travel Fees", items: [{ l: "Tier 1 (0–10 mi)", p: "$30" }, { l: "Tier 2 (11–25 mi)", p: "$45" }, { l: "Tier 3 (26–40 mi)", p: "$65" }, { l: "Tier 4 (40+ mi)", p: "$85+" }] },
-              { title: "Timing Add-Ons", items: [{ l: "After-hours (9 PM – 11 PM)", p: "+$20" }, { l: "Federal holiday", p: "+$20" }, { l: "Docsy+ members", p: "Exempt" }] },
+              { title: "Timing Add-Ons", items: [{ l: "Federal holiday", p: "+$20" }, { l: "Standard hours", p: "9 AM – 9 PM" }, { l: "Firm accounts", p: "24/7 RON" }] },
             ].map((col) => (
               <div key={col.title} style={{ backgroundColor: BG }}>
                 <div className="px-8 py-5 border-b" style={{ borderColor: DIV }}>
@@ -379,7 +382,7 @@ export default function NotaryServices() {
             </div>
           </div>
           <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
-            <Link href="/document-check" className="block px-6 py-4 text-sm font-bold text-center border" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-notary-doc-check">
+            <Link href="/document-check" className="block px-6 py-4 text-sm font-bold text-center border" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-notary-doc-check-bottom">
               Free document check →
             </Link>
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-notary-cta">

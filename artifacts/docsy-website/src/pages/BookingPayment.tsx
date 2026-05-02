@@ -12,9 +12,9 @@ const DIV   = "#1e2a3a";
 const RED   = "#e05252";
 
 const MEMBERSHIP_LABELS: Record<string, string> = {
-  starter: "Docsy+ Starter",
-  pro:     "Docsy+ Pro",
-  elite:   "Docsy+ Elite",
+  starter: "Business+ Solo",
+  pro:     "Business+ Pro",
+  elite:   "Business+ Elite",
 };
 
 interface MemberCreditsState {

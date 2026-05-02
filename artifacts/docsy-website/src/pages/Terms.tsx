@@ -370,7 +370,7 @@ export default function Terms() {
               <SubH>Other Surcharges</SubH>
               <UL items={[
                 <><strong style={{ color: IVORY }}>Travel beyond included radius:</strong> charged per the published travel-tier table at the time of quote.</>,
-                <><strong style={{ color: IVORY }}>After-hours surcharge:</strong> in-person services scheduled between 9:00 PM and 11:00 PM carry a $20 surcharge (waived for active Docsy+ members).</>,
+                <><strong style={{ color: IVORY }}>Standard hours:</strong> all individual appointments (members and non-members) are scheduled between 9:00 AM and 9:00 PM, 7 days a week. Extended-hour bookings (24/7 RON, mobile until midnight) are available only on Docsy Business+ Firm accounts.</>,
                 <><strong style={{ color: IVORY }}>Federal holiday surcharge:</strong> $20 added to in-person services performed on federal holidays.</>,
                 <><strong style={{ color: IVORY }}>Re-trip / re-sign fee:</strong> see Section 12 for loan signing.</>,
                 <><strong style={{ color: IVORY }}>Court reporting overtime:</strong> $100 per hour beyond the booked duration.</>,
@@ -400,7 +400,7 @@ export default function Terms() {
             <Section entry={TOC[5]}>
               <SubH>What Safe+ Includes</SubH>
               <P>
-                Docsy Safe+ is an ongoing membership benefit that provides each member with: secure cloud archival of every notarized document and signing record processed through {TRADE_NAME}; on-demand re-issuance of certified copies where permitted by law; a member-only discount on covered services as published on the Memberships page; priority booking windows; waived after-hours surcharges for in-person services; and other benefits {TRADE_NAME} may add from time to time.
+                Docsy Safe+ is an ongoing membership benefit that provides each member with: secure cloud archival of every notarized document and signing record processed through {TRADE_NAME}; on-demand re-issuance of certified copies where permitted by law; a member-only discount on covered services as published on the Docsy Business+ page; and other benefits {TRADE_NAME} may add from time to time.
               </P>
               <SubH>Enrollment — Included Unless You Opt Out</SubH>
               <P>
@@ -414,7 +414,7 @@ export default function Terms() {
               ]} />
               <SubH>Billing Cycle & Renewal</SubH>
               <P>
-                Safe+ is offered on monthly and annual billing cycles at the price displayed on the Memberships page at the time you enroll. Your card on file is charged on the same calendar day each cycle. Membership renews automatically until cancelled. We will notify you by email at least seven (7) days before any price change takes effect on a renewal, and you may cancel at no charge before that change applies.
+                Safe+ is offered on monthly and annual billing cycles at the price displayed on the Docsy Business+ page at the time you enroll. Your card on file is charged on the same calendar day each cycle. Membership renews automatically until cancelled. We will notify you by email at least seven (7) days before any price change takes effect on a renewal, and you may cancel at no charge before that change applies.
               </P>
               <SubH>Cancellation of Membership</SubH>
               <P>
@@ -423,7 +423,7 @@ export default function Terms() {
               <SubH>What Happens to Benefits On Cancellation</SubH>
               <UL items={[
                 <>You will retain read-only download access to documents archived in your Safe+ for sixty (60) days after cancellation, after which the archive will be sealed and accessible only by written request and re-instatement of membership.</>,
-                <>Member-only discounts, priority booking, and waived surcharges end on the cancellation effective date.</>,
+                <>Member-only discounts on covered services end on the cancellation effective date.</>,
                 <>Documents you previously received from us (signed, notarized, apostilled, transcribed) remain yours regardless of membership status.</>,
               ]} />
             </Section>

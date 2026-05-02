@@ -181,6 +181,9 @@ export default function Apostille() {
               <Link href="/about?inquiry=apostille-precheck#apostille-precheck" className="px-8 py-4 text-base font-bold text-black text-center border-2 border-black" data-testid="btn-precheck-apostille">
                 Free Pre-Check
               </Link>
+              <Link href="/document-check" className="px-8 py-4 text-base font-bold text-center border-2" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-apostille-doc-check">
+                Free Document Check →
+              </Link>
             </div>
             <p className="text-sm text-black/45 mt-4 max-w-sm">
               The free pre-check confirms your document type, destination country, and eligibility before anything is submitted. No charge, no commitment.
@@ -516,7 +519,7 @@ export default function Apostille() {
             </div>
           </div>
           <div className="flex-shrink-0 flex flex-col sm:flex-row gap-3">
-            <Link href="/document-check" className="block px-6 py-4 text-sm font-bold text-center border" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-apostille-doc-check">
+            <Link href="/document-check" className="block px-6 py-4 text-sm font-bold text-center border" style={{ borderColor: BLUE, color: BLUE }} data-testid="btn-apostille-doc-check-bottom">
               Free document check →
             </Link>
             <Link href="/calculate" className="block px-10 py-4 text-base font-bold text-white text-center" style={{ backgroundColor: BLUE }} data-testid="btn-book-apostille-cta">

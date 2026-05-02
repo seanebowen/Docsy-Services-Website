@@ -6,9 +6,9 @@ import { HonorPassUpsell } from "@/components/ui/HonorPassUpsell";
 import { resolveIdMeVerification, isHonorPassEligible } from "@/lib/idme";
 
 const MEMBERSHIP_LABELS: Record<string, string> = {
-  starter: "Docsy+ Starter",
-  pro:     "Docsy+ Pro",
-  elite:   "Docsy+ Elite",
+  starter: "Business+ Solo",
+  pro:     "Business+ Pro",
+  elite:   "Business+ Elite",
 };
 const MEMBER_DISCOUNT_PCT: Record<string, number> = {
   starter: 0.05, // modest auto-applied discount on eligible base fees
@@ -105,17 +105,9 @@ function makeSlotLabel(h24: number): string {
   const h12 = h24 === 0 ? 12 : h24 > 12 ? h24 - 12 : h24;
   return `${h12}:00 ${h24 >= 12 && h24 < 24 ? "PM" : "AM"}`;
 }
-interface SlotInfo { label: string; priority: boolean; }
-/* General hours: 9 AM – 9 PM (last general start hour is 8 PM; 9 PM is priority) */
-const GENERAL_SLOTS: SlotInfo[] = [9,10,11,12,13,14,15,16,17,18,19,20].map(h => ({ label: makeSlotLabel(h), priority: false }));
-/* Member slots: add priority AM (7–8) and priority PM (9 PM – 11 PM, start hours 21–22) around general */
-const MEMBER_SLOTS: SlotInfo[] = [
-  { label: makeSlotLabel(7),  priority: true  },
-  { label: makeSlotLabel(8),  priority: true  },
-  ...GENERAL_SLOTS,
-  { label: makeSlotLabel(21), priority: true  },
-  { label: makeSlotLabel(22), priority: true  },
-];
+/* Standard consumer hours: 9 AM – 9 PM (last bookable start is 8 PM). Extended priority hours
+   (24/7 RON, 6 AM – Midnight mobile) are reserved for Docsy Business+ Firm accounts and handled
+   through the firm portal, not the public booking grid. */
 
 /* ── Terms modal ── */
 function BookingModal({
@@ -160,7 +152,7 @@ function BookingModal({
                 Your calculated price is final once your confirmation email is sent and received. Any variation in document count, session duration, or additional services is always disclosed before you confirm — never applied without your knowledge.
               </p>
               <p className="mb-2">
-                Travel fees (mobile only) are based on your distance tier. After-hours and federal holiday surcharges apply only if relevant and are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
+                Travel fees (mobile only) are based on your distance tier. Federal holiday surcharges, when applicable, are disclosed at booking. Statutory notary fees ($10 first signature, $1 each additional) are set by Texas law and itemized separately on every invoice.
               </p>
               <p>
                 By proceeding you agree that Docsy may contact you to confirm your appointment, discuss document requirements, and send your invoice. You may cancel or reschedule at any time before confirmation, subject to the cancellation policy in our Terms of Service.
@@ -298,16 +290,11 @@ export default function Booking() {
 
     if (isHoliday) result.push({ label: "Federal Holiday Surcharge", amount: 20 });
 
-    /* Timing surcharges — in-person services only.
-       Members see an explicit waiver line ($0) so the perk is itemized. */
-    const isInPerson = has("general notary work") || has("loan signing");
-    if (isInPerson && hour >= 21) {
-      if (isMember) {
-        result.push({ label: "After-Hours Surcharge (9 PM – 11 PM): Waived — Docsy+ Member", amount: 0 });
-      } else {
-        result.push({ label: "After-Hours Surcharge (9 PM – 11 PM)", amount: 20 });
-      }
-    }
+    /* Timing surcharges removed: standard booking is 9 AM – 9 PM
+       for every individual customer (members and non-members alike).
+       Hours after 9 PM are reserved for Firm accounts and arranged
+       through the firm portal — they don't appear in the public
+       booking grid below. */
 
     if (has("remote online") && isWeekday && hour >= 18 && hour < 21) {
       result.push({ label: "Night Shift Seal™ — $10 Off", amount: -10 });
@@ -319,7 +306,7 @@ export default function Booking() {
       if (ln) result.push({ label: "Weekend Warrior™ — 20% Off Loan Signing", amount: -(Math.round(ln.amount * 0.20 * 100) / 100) });
     }
 
-    /* ── Auto-applied Docsy+ member perk: percent off base service total ── */
+    /* ── Auto-applied Business+ member perk: percent off base service total ── */
     if (memberTier && estimate.baseTotal) {
       const pct = MEMBER_DISCOUNT_PCT[memberTier] ?? 0;
       if (pct > 0) {
@@ -558,7 +545,7 @@ export default function Booking() {
                       <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
                         Available times — {formatDate(selectedDate)}
                       </p>
-                      {/* Docsy+ member status (auto-detected from sign-in) */}
+                      {/* Business+ member status (auto-detected from sign-in) */}
                       {isMember ? (
                         <span className="inline-flex items-center gap-1.5 px-2 py-1 text-[10px] font-bold uppercase tracking-widest border" style={{ borderColor: BLUE, color: BLUE }}>
                           ◆ {memberLabel}
@@ -569,7 +556,7 @@ export default function Booking() {
                           className="text-[10px] font-bold uppercase tracking-widest underline"
                           style={{ color: "rgba(255,255,255,0.45)" }}
                         >
-                          Sign in to apply Docsy+ perks
+                          Sign in to apply Business+ perks
                         </Link>
                       )}
                     </div>
@@ -589,109 +576,47 @@ export default function Booking() {
                       <p className="text-xs py-4" style={{ color: "#e05252" }}>{slotsError}</p>
                     )}
 
-                    {/* No slots available */}
-                    {!slotsLoading && !slotsError && apiSlots.length === 0 && (
-                      <p className="text-[10px] leading-relaxed py-4" style={{ color: "rgba(255,255,255,0.28)" }}>
-                        No availability found for this date. Try a different day or{" "}
-                        <a href="tel:+12104179614" style={{ color: BLUE }}>call us</a> to discuss options.
-                      </p>
-                    )}
-
-                    {/* Priority AM block (members only, hours 7–8) */}
-                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) < 9) && (
-                      <div className="mb-3">
-                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
-                          ◆ Priority AM — Early Hours
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {apiSlots.filter(s => slotHour(s) < 9).map(slot => {
-                            const label = hhmm24to12(slot);
-                            return (
-                              <button
-                                key={slot}
-                                onClick={() => setSelectedTime(label)}
-                                className="py-2.5 text-xs font-bold border transition-colors"
-                                style={{
-                                  borderColor:     selectedTime === label ? BLUE : BLUE + "55",
-                                  color:           selectedTime === label ? "#000" : BLUE,
-                                  backgroundColor: selectedTime === label ? BLUE : "rgba(77,159,219,0.07)",
-                                }}
-                              >{label}</button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* General slots (hours 9–20, ending by 9 PM) */}
-                    {!slotsLoading && apiSlots.some(s => slotHour(s) >= 9 && slotHour(s) <= 20) && (
-                      <div className={isMember ? "mb-3" : ""}>
-                        {isMember && (
-                          <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: "rgba(255,255,255,0.3)" }}>
-                            General — Standard Hours
+                    {/* Filter API slots to standard 9 AM – 9 PM consumer window once.
+                        Anything outside is firm-only / extended priority and not bookable here. */}
+                    {(() => {
+                      const visibleSlots = apiSlots.filter(s => slotHour(s) >= 9 && slotHour(s) <= 20);
+                      if (slotsLoading || slotsError) return null;
+                      if (visibleSlots.length === 0) {
+                        return (
+                          <p className="text-[10px] leading-relaxed py-4" style={{ color: "rgba(255,255,255,0.28)" }}>
+                            No availability found for this date within standard 9 AM – 9 PM hours. Try a different day or{" "}
+                            <a href="tel:+12104179614" style={{ color: BLUE }}>call us</a> to discuss options.
                           </p>
-                        )}
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {apiSlots.filter(s => slotHour(s) >= 9 && slotHour(s) <= 20).map(slot => {
-                            const label = hhmm24to12(slot);
-                            return (
-                              <button
-                                key={slot}
-                                onClick={() => setSelectedTime(label)}
-                                className="py-2.5 text-xs font-bold border transition-colors"
-                                style={{
-                                  borderColor:     selectedTime === label ? BLUE : DIV,
-                                  color:           selectedTime === label ? BLUE : "rgba(255,255,255,0.45)",
-                                  backgroundColor: selectedTime === label ? "rgba(77,159,219,0.1)" : "transparent",
-                                }}
-                              >{label}</button>
-                            );
-                          })}
+                        );
+                      }
+                      return (
+                        <div>
+                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                            {visibleSlots.map(slot => {
+                              const label = hhmm24to12(slot);
+                              return (
+                                <button
+                                  key={slot}
+                                  onClick={() => setSelectedTime(label)}
+                                  className="py-2.5 text-xs font-bold border transition-colors"
+                                  style={{
+                                    borderColor:     selectedTime === label ? BLUE : DIV,
+                                    color:           selectedTime === label ? BLUE : "rgba(255,255,255,0.45)",
+                                    backgroundColor: selectedTime === label ? "rgba(77,159,219,0.1)" : "transparent",
+                                  }}
+                                >{label}</button>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
-                    {/* Priority PM block (members only, hours 21–22 — 9 PM & 10 PM start, ending by 11 PM) */}
-                    {!slotsLoading && isMember && apiSlots.some(s => slotHour(s) >= 21 && slotHour(s) <= 22) && (
-                      <div>
-                        <p className="text-[9px] font-black uppercase tracking-widest mb-2" style={{ color: BLUE }}>
-                          ◆ Priority PM — 9 PM – 11 PM
-                        </p>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                          {apiSlots.filter(s => slotHour(s) >= 21 && slotHour(s) <= 22).map(slot => {
-                            const label = hhmm24to12(slot);
-                            return (
-                              <button
-                                key={slot}
-                                onClick={() => setSelectedTime(label)}
-                                className="py-2.5 text-xs font-bold border transition-colors"
-                                style={{
-                                  borderColor:     selectedTime === label ? BLUE : BLUE + "55",
-                                  color:           selectedTime === label ? "#000" : BLUE,
-                                  backgroundColor: selectedTime === label ? BLUE : "rgba(77,159,219,0.07)",
-                                }}
-                              >{label}</button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Non-member outside-window note */}
-                    {!isMember && !slotsLoading && (
+                    {/* Hours notice */}
+                    {!slotsLoading && (
                       <p className="text-[10px] leading-relaxed mt-3" style={{ color: "rgba(255,255,255,0.28)" }}>
-                        Need a time before 9 AM or after 9 PM? Those slots are reserved for{" "}
-                        <Link href="/memberships" style={{ color: BLUE }}>Docsy+ members</Link>.{" "}
-                        Call or email us to discuss availability:{" "}
-                        <a href="tel:+12104179614" style={{ color: BLUE }}>210-417-9614</a> ·{" "}
-                        <a href="mailto:hello@docsynotary.com" style={{ color: BLUE }}>hello@docsynotary.com</a>
-                      </p>
-                    )}
-
-                    {/* Member surcharge exemption note */}
-                    {isMember && !slotsLoading && (
-                      <p className="text-[10px] leading-relaxed mt-3" style={{ color: BLUE + "99" }}>
-                        ✓ After-hours surcharges waived for Docsy+ members.
+                        Standard hours: 9 AM – 9 PM, 7 days a week. For 24/7 RON, mobile signings until midnight, or a dedicated after-hours line, see{" "}
+                        <Link href="/business" style={{ color: BLUE }}>Docsy Business+ Firm accounts</Link>.
                       </p>
                     )}
                   </div>

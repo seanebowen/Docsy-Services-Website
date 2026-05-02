@@ -90,7 +90,7 @@ export default function Login() {
         <div className="mb-10 text-center">
           <div className="flex justify-center gap-2 mb-6">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
-              ◎ Docsy+
+              ◎ Docsy Business+
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] border" style={{ borderColor: BLUE, color: BLUE }}>
               ◎ Safe+

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, HelpCircle, Tag, ChevronDown, Archive, LogOut, User, Info, Briefcase } from "lucide-react";
+import { Menu, X, HelpCircle, Tag, ChevronDown, Archive, LogOut, User, Info, FileSearch } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const SLATE = "#131929";
@@ -8,11 +8,12 @@ const DIV   = "#1e2a3a";
 const AMBER = "#4D9FDB";
 
 const servicesLinks = [
+  { href: "/document-check",      label: "Document Check",       badge: "FREE" as const },
+  { href: "/notary-services",     label: "Notary Services" },
+  { href: "/loan-signing",        label: "Loan Signing" },
   { href: "/apostille",           label: "Apostille" },
   { href: "/electronic-reporting",label: "Electronic Reporting" },
-  { href: "/loan-signing",        label: "Loan Signing" },
-  { href: "/memberships",         label: "Memberships" },
-  { href: "/notary-services",     label: "Notary Services" },
+  { href: "/business",            label: "Docsy Business+" },
   { href: "/vault-info",          label: "Safe+" },
 ];
 
@@ -21,6 +22,12 @@ const supportLinks = [
   { href: "/about", label: "About & Contact", icon: Info },
   { href: "/promos",label: "Promotions",      icon: Tag },
 ];
+
+const TIER_DISPLAY: Record<"starter" | "pro" | "elite", string> = {
+  starter: "Solo",
+  pro:     "Pro",
+  elite:   "Elite",
+};
 
 export function Navbar() {
   const [isOpen,        setIsOpen]        = React.useState(false);
@@ -70,25 +77,43 @@ export function Navbar() {
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-7">
 
+          {/* Document Check direct link — always one click away */}
+          <Link
+            href="/document-check"
+            className="hidden lg:flex items-center gap-1.5 text-sm font-medium transition-colors"
+            style={{ color: location === "/document-check" ? "#fff" : "rgba(255,255,255,0.40)" }}
+            data-testid="nav-document-check"
+          >
+            <FileSearch className="h-3.5 w-3.5" /> Document Check
+            <span className="text-[8px] font-black uppercase tracking-[0.15em] px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>FREE</span>
+          </Link>
+
           {/* Services dropdown */}
           <div className="relative" ref={servicesRef}>
             <button
               onClick={() => { setServicesOpen(o => !o); setMoreOpen(false); }}
               className="flex items-center gap-1 text-sm font-medium transition-colors"
               style={{ color: isService || servicesOpen ? "#fff" : "rgba(255,255,255,0.40)" }}
+              data-testid="nav-services-button"
             >
               Services <ChevronDown className={`h-3 w-3 transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
             </button>
             {servicesOpen && (
-              <div className="absolute left-0 top-full mt-2 w-52 z-50 border overflow-hidden" style={{ backgroundColor: "#0b1220", borderColor: DIV }}>
+              <div className="absolute left-0 top-full mt-2 w-60 z-50 border overflow-hidden" style={{ backgroundColor: "#0b1220", borderColor: DIV }}>
                 {servicesLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="flex items-center gap-3 px-4 py-3 text-sm transition-colors border-b last:border-b-0"
-                    style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.45)", borderColor: DIV }}
+                    className="flex items-center justify-between gap-3 px-4 py-3 text-sm transition-colors border-b last:border-b-0"
+                    style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.55)", borderColor: DIV }}
+                    data-testid={`nav-services-link-${link.href.replace(/\W+/g, "-").replace(/^-+|-+$/g, "")}`}
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    {link.badge && (
+                      <span className="text-[8px] font-black uppercase tracking-[0.15em] px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -149,8 +174,18 @@ export function Navbar() {
                   <span
                     className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5"
                     style={{ backgroundColor: "rgba(77,159,219,0.2)", color: "#4D9FDB" }}
+                    data-testid="nav-membership-badge"
                   >
-                    Docsy+ {user.membership === "starter" ? "Starter" : user.membership === "pro" ? "Pro" : "Elite"}
+                    Business+ {TIER_DISPLAY[user.membership]}
+                  </span>
+                )}
+                {(user.role === "firm_admin" || user.role === "firm_member") && (
+                  <span
+                    className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5"
+                    style={{ backgroundColor: "rgba(77,159,219,0.2)", color: "#4D9FDB" }}
+                    data-testid="nav-firm-badge"
+                  >
+                    Business+ Firm
                   </span>
                 )}
                 <ChevronDown className={`h-3 w-3 transition-transform ${accountOpen ? "rotate-180" : ""}`} />
@@ -205,10 +240,15 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="py-3 text-sm font-medium border-b"
-                style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.45)", borderColor: DIV }}
+                className="flex items-center justify-between py-3 text-sm font-medium border-b"
+                style={{ color: location === link.href ? "#fff" : "rgba(255,255,255,0.55)", borderColor: DIV }}
               >
-                {link.label}
+                <span>{link.label}</span>
+                {link.badge && (
+                  <span className="text-[8px] font-black uppercase tracking-[0.15em] px-1.5 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: AMBER }}>
+                    {link.badge}
+                  </span>
+                )}
               </Link>
             ))}
 

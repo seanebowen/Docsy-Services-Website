@@ -128,7 +128,7 @@ export default function FirmPortal() {
       <div className="min-h-screen flex items-center justify-center px-5" style={{ backgroundColor: BG }}>
         <div className="border p-10 max-w-md w-full text-center" style={{ borderColor: DIV }}>
           <p className="text-sm mb-4" style={{ color: "#e07a7a" }}>{error}</p>
-          <Link href="/firms" className="text-sm underline" style={{ color: BLUE }}>Apply for a firm account →</Link>
+          <Link href="/business#apply" className="text-sm underline" style={{ color: BLUE }}>Apply for a firm account →</Link>
         </div>
       </div>
     );

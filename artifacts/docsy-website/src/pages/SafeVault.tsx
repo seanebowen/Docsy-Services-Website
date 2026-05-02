@@ -9,9 +9,9 @@ const DIV   = "#1e2a3a";
 const IVORY = "#F5EFE6";
 
 const MEMBERSHIP_LABELS: Record<string, string> = {
-  starter: "Docsy+ Starter",
-  pro:     "Docsy+ Pro",
-  elite:   "Docsy+ Elite",
+  starter: "Business+ Solo",
+  pro:     "Business+ Pro",
+  elite:   "Business+ Elite",
 };
 const SERVICE_COLORS: Record<string, string> = {
   ron:       "#4D9FDB",
@@ -94,7 +94,7 @@ export default function SafeVault() {
                   {user.email}
                   {user.membership ? (
                     <span className="ml-3 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5" style={{ backgroundColor: "rgba(77,159,219,0.2)", color: BLUE }}>
-                      {MEMBERSHIP_LABELS[user.membership] ?? "Docsy+"}
+                      {MEMBERSHIP_LABELS[user.membership] ?? "Business+"}
                     </span>
                   ) : (
                     <span className="ml-3 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5" style={{ backgroundColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)" }}>

@@ -34,9 +34,9 @@ const Pill = ({ text, dark }: { text: string; dark?: boolean }) => (
 
 const STATS = [
   { value: "< 15 min", label: "Average RON session" },
-  { value: "7 days",   label: "Every week — 7 AM to 11 PM" },
+  { value: "7 days",   label: "Every day — 9 AM to 9 PM" },
   { value: "$0",       label: "Hidden fees, ever" },
-  { value: "11 PM",   label: "Latest available appointment" },
+  { value: "9 PM",     label: "Latest standard appointment" },
 ];
 
 const NUM_CARDS = [
@@ -53,7 +53,7 @@ const NUM_CARDS = [
   {
     num: "03",
     title: "Mobile notary across San Antonio, 7 days a week.",
-    body: "We come to you — home, office, hospital, hospice, curbside. Any day of the week. Docsy+ members get priority early-morning and late-evening slots. Same-day availability in most of the San Antonio metro area.",
+    body: "We come to you — home, office, hospital, hospice, curbside. Any day of the week, 9 AM to 9 PM. Same-day availability in most of the San Antonio metro area. Firm accounts can request mobile signings 6 AM – Midnight.",
   },
   {
     num: "04",
@@ -357,7 +357,7 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={200}>
             <p className="text-base font-light mb-10 max-w-lg mx-auto" style={{ color: "rgba(0,0,0,0.50)" }}>
-              Tell us what you need and we'll tell you exactly what it costs — no hidden fees, no surprises. Or join Docsy+ from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month</strong> for free notarizations, priority scheduling, and discounts across every service.
+              Tell us what you need and we'll tell you exactly what it costs — no hidden fees, no surprises. Or join <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>Docsy Business+</strong> from <strong className="font-bold" style={{ color: "rgba(0,0,0,0.75)" }}>$15/month</strong> for free notarizations, discounts across every service, and full firm-account features at the top tier.
             </p>
           </FadeIn>
           <FadeIn delay={300}>
@@ -374,11 +374,12 @@ export default function Home() {
                 Book Now →
               </Link>
               <Link
-                href="/memberships"
+                href="/business"
                 className="inline-block px-8 py-4 text-sm font-bold text-center border"
                 style={{ borderColor: "rgba(0,0,0,0.25)", color: "rgba(0,0,0,0.60)" }}
+                data-testid="btn-home-business"
               >
-                See Membership Plans
+                See Business+ Plans
               </Link>
             </div>
           </FadeIn>

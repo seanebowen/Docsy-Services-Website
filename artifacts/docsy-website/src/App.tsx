@@ -11,7 +11,7 @@ import NotaryServices from "@/pages/NotaryServices";
 import Apostille from "@/pages/Apostille";
 import LoanSigning from "@/pages/LoanSigning";
 import CourtReporting from "@/pages/CourtReporting";
-import Memberships from "@/pages/Memberships";
+import Business from "@/pages/Business";
 import FAQ from "@/pages/FAQ";
 import Promos from "@/pages/Promos";
 import Login from "@/pages/Login";
@@ -32,7 +32,6 @@ import Cookies from "@/pages/Cookies";
 import Accessibility from "@/pages/Accessibility";
 import Glossary from "@/pages/Glossary";
 import DocumentCheck from "@/pages/DocumentCheck";
-import Firms from "@/pages/Firms";
 import FirmPortal from "@/pages/FirmPortal";
 import InternalFirms from "@/pages/InternalFirms";
 
@@ -62,7 +61,8 @@ function Router() {
       <Route path="/apostille/wizard" component={Apostille} />
       <Route path="/loan-signing" component={LoanSigning} />
       <Route path="/court-reporting"><Redirect to="/electronic-reporting" /></Route>
-      <Route path="/memberships" component={Memberships} />
+      <Route path="/business" component={Business} />
+      <Route path="/memberships"><Redirect to="/business" /></Route>
       <Route path="/faq" component={FAQ} />
       <Route path="/faq/:id" component={FAQ} />
       <Route path="/help-center"><Redirect to="/faq" /></Route>
@@ -89,7 +89,7 @@ function Router() {
       <Route path="/glossary" component={Glossary} />
       <Route path="/glossary/:slug" component={Glossary} />
       <Route path="/document-check" component={DocumentCheck} />
-      <Route path="/firms" component={Firms} />
+      <Route path="/firms"><Redirect to="/business" /></Route>
       <Route path="/firm/portal" component={FirmPortal} />
       <Route path="/internal-firms" component={InternalFirms} />
       <Route component={NotFound} />
