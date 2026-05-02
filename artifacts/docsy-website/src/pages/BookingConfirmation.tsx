@@ -38,18 +38,9 @@ export default function BookingConfirmation() {
       if (stored) {
         const parsed = JSON.parse(stored) as BookingData;
         setBooking(parsed);
-        /* Attribution: stamp the referral record server-side if a
-           docsy_ref attribution cookie was set by a partner's tracked
-           link. Fire-and-forget; any failure is non-blocking. */
-        const bookingRef = "BK-" + Date.now();
-        const services   = parsed.estimate?.services?.map(s => s.name) ?? [];
-        const value      = parsed.discountedTotal ?? parsed.estimate?.total ?? 0;
-        fetch("/api/partners/record-booking", {
-          method:      "POST",
-          credentials: "same-origin",
-          headers:     { "Content-Type": "application/json" },
-          body:        JSON.stringify({ bookingRef, services, bookingValue: value }),
-        }).catch(() => {});
+        /* Attribution and server-side booking creation are handled in
+           BookingPayment.tsx (POST /api/bookings) before navigating here.
+           Nothing to do on the confirmation page. */
       }
     } catch {}
   }, []);

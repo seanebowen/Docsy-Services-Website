@@ -356,7 +356,7 @@ export default function BookingPayment() {
       }).catch(() => { /* non-blocking */ });
     }
 
-    /* Step 3 — persist booking + fire Zapier (fire-and-forget) */
+    /* Step 3 — persist booking + fire Zapier + create authoritative server record */
     try {
       const current = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
       const appliedCreditLines: { label: string; amount: number }[] = [];
@@ -390,6 +390,7 @@ export default function BookingPayment() {
       };
       sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
 
+      /* Fire Zapier webhook (fire-and-forget) */
       if (booking) {
         const payload = buildZapierPayload(booking, last4, displayTotal);
         fetch("/api/zapier/booking-confirmed", {
@@ -398,7 +399,32 @@ export default function BookingPayment() {
           body:    JSON.stringify(payload),
         }).catch(() => { /* webhook failure must never affect the booking UX */ });
       }
-    } catch {}
+
+      /* Create the authoritative server-side booking record.
+         This is the single path that reads the signed docsy_ref cookie
+         and stamps referral attribution atomically. */
+      const svcNames = booking?.estimate?.services?.map(s => s.name) ?? [];
+      const bkgRes = await fetch("/api/bookings", {
+        method:      "POST",
+        credentials: "same-origin",
+        headers:     { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date:         booking?.date ?? "",
+          time:         booking?.time ?? "",
+          services:     svcNames,
+          bookingValue: displayTotal,
+          clientName:   clientName.trim(),
+          clientEmail:  clientEmail.trim(),
+        }),
+      });
+      const bkgData = await bkgRes.json() as { ok: boolean; bookingRef?: string };
+      if (bkgData.ok && bkgData.bookingRef) {
+        /* Stamp the stable server-generated ref into sessionStorage for
+           the confirmation page to display */
+        const current2 = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
+        sessionStorage.setItem("docsy_booking", JSON.stringify({ ...current2, bookingRef: bkgData.bookingRef }));
+      }
+    } catch { /* non-blocking — booking UX never depends on server record */ }
 
     setTimeout(() => setLocation("/booking/confirmation"), 600);
   }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation, user, token, createAccount, signIn, applyNotarization, applyTravelWaiver, displayTotal, notarizationCreditValue]);

@@ -2,6 +2,21 @@ import app from "./app";
 import { logger } from "./lib/logger";
 import { ensureLifecyclePolicy, startBackgroundCleanup } from "./lib/objectStorage";
 
+/* SESSION_SECRET is required to sign attribution cookies securely.
+   Fail fast in production; warn loudly in development. */
+if (!process.env["SESSION_SECRET"]) {
+  if (process.env["NODE_ENV"] === "production") {
+    throw new Error(
+      "SESSION_SECRET environment variable must be set in production " +
+      "to sign attribution cookies. Set it as a Replit secret before deploying.",
+    );
+  }
+  logger.warn(
+    "SESSION_SECRET is not set — attribution cookies will use the dev fallback secret. " +
+    "Set SESSION_SECRET before deploying to production.",
+  );
+}
+
 const rawPort = process.env["PORT"];
 
 if (!rawPort) {

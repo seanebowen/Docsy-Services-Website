@@ -53,7 +53,7 @@ export const PARTNER_REFERRALS: Map<string, PartnerReferral[]>   = new Map();
 export const PARTNERS_BY_CODE:  Map<string, Partner>              = new Map();
 
 /* Set of booking refs already attributed — prevents duplicate referrals */
-const ATTRIBUTED_BOOKING_REFS: Set<string> = new Set();
+export const ATTRIBUTED_BOOKING_REFS: Set<string> = new Set();
 
 /* ─────────────────────────────────────────────────────────
    Seed: one demo approved partner with referrals
@@ -103,7 +103,66 @@ const ATTRIBUTED_BOOKING_REFS: Set<string> = new Set();
    ───────────────────────────────────────────────────────── */
 
 function newPartnerId():  string { return "p"  + crypto.randomUUID().slice(0, 8); }
-function newReferralId(): string { return "pr" + crypto.randomUUID().slice(0, 8); }
+export function newReferralId(): string { return "pr" + crypto.randomUUID().slice(0, 8); }
+
+/* ─────────────────────────────────────────────────────────
+   stampReferral — called by the bookings route when a booking
+   is created server-side and a signed docsy_ref cookie is
+   present. This is the ONLY path that creates referral records.
+   ───────────────────────────────────────────────────────── */
+
+export interface StampReferralResult {
+  attributed: boolean;
+  creditEarned: number;
+  partnerId?: string;
+}
+
+export function stampReferral({
+  bookingRef,
+  refCode,
+  services,
+  bookingValue,
+}: {
+  bookingRef:   string;
+  refCode:      string;
+  services:     string[];
+  bookingValue: number;
+}): StampReferralResult {
+  const partner = PARTNERS_BY_CODE.get(refCode);
+  if (!partner) return { attributed: false, creditEarned: 0 };
+
+  /* Idempotency: same bookingRef can only be attributed once */
+  if (ATTRIBUTED_BOOKING_REFS.has(bookingRef)) {
+    return { attributed: false, creditEarned: 0 };
+  }
+
+  const MAX_BOOKING_VALUE = 2000;
+  const value        = Math.min(Math.max(0, bookingValue), MAX_BOOKING_VALUE);
+  const creditRate   = 0.10;
+  const creditEarned = Math.round(value * creditRate * 100) / 100;
+
+  const referral: PartnerReferral = {
+    id:           newReferralId(),
+    partnerId:    partner.id,
+    refCode,
+    bookingRef,
+    services,
+    bookingValue: value,
+    creditRate,
+    creditEarned,
+    status:       "pending",
+    createdAt:    new Date().toISOString(),
+  };
+
+  /* Mark FIRST, then persist — reduces race-condition window */
+  ATTRIBUTED_BOOKING_REFS.add(bookingRef);
+  const existing = PARTNER_REFERRALS.get(partner.id) ?? [];
+  existing.push(referral);
+  PARTNER_REFERRALS.set(partner.id, existing);
+
+  logger.info({ bookingRef, refCode, partnerId: partner.id, creditEarned }, "referral stamped on booking");
+  return { attributed: true, creditEarned, partnerId: partner.id };
+}
 
 function generateRefCode(): string {
   return "REF-" + crypto.randomBytes(3).toString("hex").toUpperCase();
@@ -325,80 +384,16 @@ router.get("/me", (req: Request, res: Response): void => {
 });
 
 /* ─────────────────────────────────────────────────────────
-   POST /api/partners/record-booking  (public, reads cookie)
-   Called by BookingConfirmation to stamp a referral record when
-   a docsy_ref attribution cookie is present.
+   POST /api/partners/record-booking  — REMOVED (410 Gone)
+   Referral attribution is now stamped atomically inside
+   POST /api/bookings when the booking is created server-side.
    ───────────────────────────────────────────────────────── */
 
-router.post("/record-booking", (req: Request, res: Response): void => {
-  const { bookingRef, services, bookingValue } = req.body as {
-    bookingRef?:   string;
-    services?:     string[];
-    bookingValue?: number;
-  };
-
-  /* bookingRef is always required — validate before checking the cookie */
-  const stableRef = (bookingRef ?? "").trim();
-  if (!stableRef) {
-    res.status(400).json({ ok: false, error: "bookingRef is required." });
-    return;
-  }
-
-  /* Read the SIGNED attribution cookie — tampered/unsigned values resolve to false */
-  const signedCookies = req.signedCookies as Record<string, string | false>;
-  const refCode = (typeof signedCookies["docsy_ref"] === "string"
-    ? signedCookies["docsy_ref"]
-    : ""
-  ).toUpperCase();
-
-  if (!refCode) {
-    res.json({ ok: true, attributed: false });
-    return;
-  }
-
-  const partner = PARTNERS_BY_CODE.get(refCode);
-  if (!partner) {
-    res.json({ ok: true, attributed: false });
-    return;
-  }
-
-  /* Idempotency — reject duplicate attribution for the same booking */
-  if (ATTRIBUTED_BOOKING_REFS.has(stableRef)) {
-    req.log.info({ bookingRef: stableRef, refCode }, "duplicate record-booking ignored");
-    res.json({ ok: true, attributed: false, duplicate: true });
-    return;
-  }
-
-  /* Cap bookingValue to a reasonable ceiling to limit fraud surface */
-  const MAX_BOOKING_VALUE = 2000;
-  const rawValue = typeof bookingValue === "number" && bookingValue > 0 ? bookingValue : 0;
-  const value    = Math.min(rawValue, MAX_BOOKING_VALUE);
-
-  const creditRate   = 0.10;
-  const creditEarned = Math.round(value * creditRate * 100) / 100;
-
-  const referral: PartnerReferral = {
-    id:           newReferralId(),
-    partnerId:    partner.id,
-    refCode,
-    bookingRef:   stableRef,
-    services:     Array.isArray(services) ? services : [],
-    bookingValue: value,
-    creditRate,
-    creditEarned,
-    status:       "pending",
-    createdAt:    new Date().toISOString(),
-  };
-
-  /* Mark booking ref as attributed before persisting to prevent races */
-  ATTRIBUTED_BOOKING_REFS.add(stableRef);
-
-  const existing = PARTNER_REFERRALS.get(partner.id) ?? [];
-  existing.push(referral);
-  PARTNER_REFERRALS.set(partner.id, existing);
-
-  req.log.info({ bookingRef: stableRef, refCode, partnerId: partner.id, creditEarned }, "referral attributed");
-  res.json({ ok: true, attributed: true, partnerId: partner.id, creditEarned });
+router.post("/record-booking", (_req: Request, res: Response): void => {
+  res.status(410).json({
+    ok:    false,
+    error: "This endpoint has been removed. Referral attribution is handled server-side during booking creation via POST /api/bookings.",
+  });
 });
 
 export default router;

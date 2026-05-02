@@ -8,6 +8,7 @@ import documentCheckRouter from "./document-check.js";
 import firmsRouter    from "./firms.js";
 import chatRouter     from "./chat.js";
 import partnersRouter from "./partners.js";
+import bookingsRouter from "./bookings.js";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use("/document-check", documentCheckRouter);
 router.use("/firms",    firmsRouter);
 router.use("/chat",     chatRouter);
 router.use("/partners", partnersRouter);
+router.use("/bookings", bookingsRouter);
 
 export default router;
