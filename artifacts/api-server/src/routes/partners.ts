@@ -245,7 +245,11 @@ router.post("/apply", (req: Request, res: Response): void => {
   let refCode = generateRefCode();
   while (PARTNERS_BY_CODE.has(refCode)) refCode = generateRefCode();
 
-  /* Create or upgrade user account */
+  /* Create or upgrade user account.
+     Never clobber elevated roles (firm_admin, internal) — a firm admin
+     who also applies for the partner programme keeps their primary role
+     and gets a linked partner profile via partnerId below. */
+  const PROTECTED_ROLES: ReadonlyArray<MockUser["role"]> = ["firm_admin", "internal_admin"];
   let user = USERS.find(u => u.email === cleanEmail) ?? null;
   if (!user) {
     user = {
@@ -258,7 +262,7 @@ router.post("/apply", (req: Request, res: Response): void => {
     } as MockUser;
     USERS.push(user);
     indexUser(user);
-  } else {
+  } else if (!PROTECTED_ROLES.includes(user.role)) {
     user.role = "partner";
   }
 
@@ -284,19 +288,21 @@ router.post("/apply", (req: Request, res: Response): void => {
   PARTNER_REFERRALS.set(partnerId, []);
 
   /* ── Email dispatch stub ──────────────────────────────────
-     In production this would enqueue a transactional email via
-     SendGrid / Postmark / SES. Here we log the payload so the
-     send path is exercised and easy to hook up later.
+     TODO(production): Replace with a real transactional email
+     send via SendGrid / Postmark / SES / Resend, or enqueue to
+     a job queue. The log entry below keeps the send path wired
+     so the integration point is obvious and testable in dev.
+     Required fields: to, refCode, trackedLink, portalUrl.
   ──────────────────────────────────────────────────────────── */
   logger.info({
     event:       "partner_application_email",
     to:          cleanEmail,
-    subject:     "Welcome to the Docsy Partner Program",
+    subject:     "Welcome to the Docsy Partner Program — your referral link is ready",
     refCode,
     trackedLink: `/?ref=${refCode}`,
     portalUrl:   "/partners/portal",
-    note:        "stub — replace with real email provider call",
-  }, "partner application email queued");
+    stub:        true,
+  }, "partner application email stub — wire to email provider before production");
 
   res.json({
     ok:          true,

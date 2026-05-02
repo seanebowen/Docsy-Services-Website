@@ -424,7 +424,12 @@ export default function BookingPayment() {
         const current2 = JSON.parse(sessionStorage.getItem("docsy_booking") || "{}");
         sessionStorage.setItem("docsy_booking", JSON.stringify({ ...current2, bookingRef: bkgData.bookingRef }));
       }
-    } catch { /* non-blocking — booking UX never depends on server record */ }
+    } catch (err) {
+      /* Non-blocking: booking UX proceeds even if server record fails.
+         TODO(production): add retry / compensating job so referral
+         attribution and booking persistence are not silently lost. */
+      console.warn("[BookingPayment] /api/bookings call failed — booking confirmation will proceed without server record:", err);
+    }
 
     setTimeout(() => setLocation("/booking/confirmation"), 600);
   }, [contactOk, upfront, formOk, number, clientName, clientEmail, clientPhone, booking, setLocation, user, token, createAccount, signIn, applyNotarization, applyTravelWaiver, displayTotal, notarizationCreditValue]);
