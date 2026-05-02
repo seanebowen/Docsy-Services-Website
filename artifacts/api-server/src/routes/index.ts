@@ -6,6 +6,7 @@ import slotsRouter  from "./slots.js";
 import zapierRouter from "./zapier.js";
 import documentCheckRouter from "./document-check.js";
 import firmsRouter  from "./firms.js";
+import chatRouter   from "./chat.js";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use("/slots",  slotsRouter);
 router.use("/zapier", zapierRouter);
 router.use("/document-check", documentCheckRouter);
 router.use("/firms",  firmsRouter);
+router.use("/chat",   chatRouter);
 
 export default router;

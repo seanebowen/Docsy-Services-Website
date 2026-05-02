@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { GlobalStatusBar } from "@/components/status/GlobalStatusBar";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -22,6 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <main className="flex-1">{children}</main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
