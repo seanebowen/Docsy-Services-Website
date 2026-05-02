@@ -255,7 +255,7 @@ export default function BookingPayment() {
   const formOk   = nameOk && numOk && expOk && cvvOk;
 
   /* ── Build Zapier webhook payload from booking + form state ── */
-  function buildZapierPayload(b: BookingData, cardLast4: string | null) {
+  function buildZapierPayload(b: BookingData, cardLast4: string | null, finalTotal: number) {
     const svcNames = (b.estimate?.services ?? []).map(s => s.name.toLowerCase()).join(" ");
     const inferDivision = () => {
       if (svcNames.includes("remote online"))  return "RON";
@@ -279,7 +279,14 @@ export default function BookingPayment() {
       return "inperson_local";
     };
     const nightShift = (b.autoPromos ?? []).some(p => p.label.toLowerCase().includes("night shift"));
-    const honorPass  = (b.promoCode ?? "").toUpperCase() === "HONORPASS";
+    /* HonorPass can land on a booking three ways: a manually-entered promo
+       code, an auto-applied promo line item from ID.me verification, or as a
+       service line item that Calculator already folded in. Detect all three so
+       the webhook payload accurately reflects the discount on the receipt. */
+    const honorPass =
+      (b.promoCode ?? "").toUpperCase() === "HONORPASS" ||
+      (b.autoPromos ?? []).some(p => p.label.toLowerCase().includes("honorpass")) ||
+      (b.estimate?.services ?? []).some(s => s.name.toLowerCase().includes("honorpass"));
     const division   = inferDivision();
 
     return {
@@ -293,7 +300,7 @@ export default function BookingPayment() {
       duration_min:      inferDuration(),
       location_type:     inferLocationType(),
       location_address:  b.note ?? "",
-      amount_charged:    b.discountedTotal ?? b.estimate?.total ?? 0,
+      amount_charged:    finalTotal,
       stripe_payment_id: cardLast4 ? `mock_${cardLast4}` : "deferred_invoice",
       booking_source:    "Replit Form" as const,
       night_shift_seal:  nightShift,
@@ -384,7 +391,7 @@ export default function BookingPayment() {
       sessionStorage.setItem("docsy_booking", JSON.stringify(updated));
 
       if (booking) {
-        const payload = buildZapierPayload(booking, last4);
+        const payload = buildZapierPayload(booking, last4, displayTotal);
         fetch("/api/zapier/booking-confirmed", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },

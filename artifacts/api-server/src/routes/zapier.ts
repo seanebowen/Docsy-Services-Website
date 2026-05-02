@@ -39,7 +39,16 @@ router.post("/booking-confirmed", async (req, res): Promise<void> => {
   const zapierUrl = process.env["ZAPIER_WEBHOOK_URL"];
   if (!zapierUrl) {
     logger.warn("ZAPIER_WEBHOOK_URL is not set — booking data logged but not forwarded.");
-    logger.info({ payload }, "Booking confirmed (Zapier not configured)");
+    logger.info(
+      {
+        payload,
+        client:         payload.client_email,
+        service:        payload.service_type,
+        amount_charged: payload.amount_charged,
+        honor_pass:     payload.honor_pass,
+      },
+      "Booking confirmed (Zapier not configured)",
+    );
     res.json({ ok: true, forwarded: false, warning: "ZAPIER_WEBHOOK_URL is not set." });
     return;
   }
