@@ -9,7 +9,7 @@ import {
   type DocumentCheckRecommendation,
   type DocumentCheckSuggestedService,
 } from "@workspace/api-zod";
-import { saveBuffer, opportunisticCleanup } from "../lib/objectStorage.js";
+import { saveBuffer, opportunisticCleanup, deleteByRelativeKey } from "../lib/objectStorage.js";
 
 const router = Router();
 
@@ -181,7 +181,14 @@ async function runInspection(
     try {
       return JSON.parse(raw);
     } catch {
-      log.warn({ raw: raw.slice(0, 500) }, "document-check: failed to parse JSON");
+      /* Do NOT log `raw` itself — the model's output may include
+         extracted document text (PII). Log only non-content
+         diagnostics so we can debug without leaking what the user
+         uploaded. */
+      log.warn(
+        { rawLength: raw.length, rawPreviewSafe: raw.length > 0 ? raw[0] : "" },
+        "document-check: failed to parse model JSON",
+      );
       return null;
     }
   } catch (err) {
@@ -229,52 +236,61 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
         ? (parsed.suggestedService as DocumentCheckSuggestedService)
         : "mobile";
 
-    /* Store the original upload + the structured result in App Storage
-       under document-checks/<uuid>. Failures are non-fatal — we still
-       return the inspection to the user, just with storedObjectPath
-       set to null so the UI knows nothing was retained. */
+    /* Store the original upload AND the structured result in App
+       Storage under document-checks/<uuid>. The two writes are
+       treated as a single unit: if either fails, we attempt to
+       remove whatever was already written and report
+       storedObjectPath=null. That way the privacy footer never
+       claims an upload was retained when only half the artifact
+       made it to disk. Failures are non-fatal — the user still
+       gets their inspection back. */
     let storedObjectPath: string | null = null;
     let storedExpiresAt:  string | null = null;
-    try {
-      const id    = crypto.randomUUID();
-      const saved = await saveBuffer(
-        `document-checks/${id}/original`,
-        file.buffer,
-        file.mimetype,
-        {
-          docType:        String(parsed.documentType ?? "").slice(0, 200),
-          recommendation: recommendation,
-          source:         "document-check",
-          originalName:   file.originalname.slice(0, 200),
-        },
-      );
-      storedObjectPath = saved.objectPath;
-      storedExpiresAt  = saved.expiresAt;
+    {
+      const id          = crypto.randomUUID();
+      const originalKey = `document-checks/${id}/original`;
+      const resultKey   = `document-checks/${id}/result.json`;
+      const meta = {
+        docType:        String(parsed.documentType ?? "").slice(0, 200),
+        recommendation: recommendation,
+        source:         "document-check",
+        originalName:   file.originalname.slice(0, 200),
+      };
 
-      /* Also persist the structured findings alongside the original so a
-         future "Save to Safe+" flow can read both without re-running the
-         scan. */
-      await saveBuffer(
-        `document-checks/${id}/result.json`,
-        Buffer.from(JSON.stringify(parsed, null, 2)),
-        "application/json",
-        { docType: String(parsed.documentType ?? "").slice(0, 200), source: "document-check" },
-      );
+      try {
+        const savedOriginal = await saveBuffer(originalKey, file.buffer, file.mimetype, meta);
+        try {
+          await saveBuffer(
+            resultKey,
+            Buffer.from(JSON.stringify(parsed, null, 2)),
+            "application/json",
+            { docType: meta.docType, source: meta.source },
+          );
+          storedObjectPath = savedOriginal.objectPath;
+          storedExpiresAt  = savedOriginal.expiresAt;
+        } catch (err) {
+          req.log.warn({ err }, "document-check: result.json save failed; rolling back original");
+          await deleteByRelativeKey(originalKey).catch((e) =>
+            req.log.warn({ err: e }, "document-check: rollback delete failed"),
+          );
+        }
+      } catch (err) {
+        req.log.warn({ err }, "document-check: original save failed (non-fatal)");
+      }
 
-      /* Fire-and-forget cleanup of any document-check objects older
-         than 24 hours. We can't install a bucket-level lifecycle rule
-         (the proxy service account lacks bucket admin), so this
-         object-level sweep is what actually enforces the TTL the
-         user is promised. setImmediate so the response isn't
-         blocked. */
+      /* Fire-and-forget cleanup of any document-check objects past
+         their advertised 24-hour TTL. We can't install a
+         bucket-level lifecycle rule (the proxy account 403s on
+         bucket admin), so this object-level sweep is the actual
+         enforcement of the retention SLA. A separate periodic
+         interval (see startBackgroundCleanup) covers low-traffic
+         windows. setImmediate so the response isn't blocked. */
       setImmediate(() => {
         opportunisticCleanup("document-checks/", 24 * 60 * 60 * 1000, (msg, extra) => {
           if (extra) req.log.warn({ extra }, msg);
           else       req.log.info(msg);
         }).catch((err) => req.log.warn({ err }, "opportunisticCleanup threw"));
       });
-    } catch (err) {
-      req.log.warn({ err }, "document-check: storage failed (non-fatal)");
     }
 
     const safe: DocumentCheckResult = {

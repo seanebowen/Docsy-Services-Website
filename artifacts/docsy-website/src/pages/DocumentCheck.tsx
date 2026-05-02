@@ -157,7 +157,7 @@ export default function DocumentCheck() {
           </FadeIn>
           <FadeIn delay={220}>
             <p className="mt-6 text-sm text-black/50 max-w-xl border-l-2 pl-4" style={{ borderColor: BLUE }}>
-              <strong className="text-black">No account required.</strong> Documents are inspected by an AI vision service, kept in encrypted storage, and purged automatically after 24 hours. They're never sent to a notary or third party without your booking.
+              <strong className="text-black">No account required.</strong> Documents are inspected by an AI vision service and held in encrypted storage, scheduled for deletion roughly 24 hours later (best-effort cleanup, typically within a few hours of that window). They're never sent to a notary or third party without your booking.
             </p>
           </FadeIn>
         </div>
@@ -411,10 +411,11 @@ export default function DocumentCheck() {
                 <div className="px-6 sm:px-8 py-5 border-t text-[10px] text-white/35 leading-relaxed" style={{ borderColor: DIV }}>
                   This pre-flight scan is informational only and is not legal advice. Docsy's free Pre-Check confirms eligibility before any document is submitted. Your file is processed by an AI vision service to spot common issues.
                   {result.storedExpiresAt
-                    ? <> Anonymous uploads are kept in encrypted storage and automatically purged on{" "}
+                    ? <> Anonymous uploads are kept in encrypted storage and scheduled for deletion around{" "}
                         <strong className="text-white/55">
                           {new Date(result.storedExpiresAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
-                        </strong>.
+                        </strong>{" "}
+                        (best-effort, typically within a few hours of that time).
                       </>
                     : <> Anonymous uploads are not retained on Docsy servers after the scan completes.</>}
                 </div>

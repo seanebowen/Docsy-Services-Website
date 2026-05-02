@@ -70,7 +70,10 @@ export interface DocumentCheckResult {
    */
   storedObjectPath: string | null;
   /**
-   * ISO timestamp when the stored object will be purged.
+   * ISO timestamp at which the stored object becomes eligible for
+deletion. Cleanup is best-effort (sweeps run hourly and after
+each new upload) and may run a few hours after this time.
+
    * @nullable
    */
   storedExpiresAt: string | null;

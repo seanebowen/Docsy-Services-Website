@@ -113,7 +113,8 @@ export function useHealthCheck<
 and returns structured findings: document type, presence of notarial
 block / signature line / date field, red flags, and a one-of-five
 suggested service. Anonymous uploads are stored in App Storage and
-purged after 24 hours by the bucket lifecycle rule.
+scheduled for deletion ~24 hours later (best-effort, enforced by a
+periodic and request-driven cleanup sweep).
 
  * @summary Run AI pre-flight inspection on an uploaded document
  */

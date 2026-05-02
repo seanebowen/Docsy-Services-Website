@@ -86,6 +86,16 @@ export async function saveBuffer(
   };
 }
 
+/** Delete a single object addressed by its relative key (the same key
+ *  passed to `saveBuffer`). Used by the route to roll back a partial
+ *  save when a follow-up write fails. */
+export async function deleteByRelativeKey(relativeKey: string): Promise<void> {
+  const privateDir = getPrivateObjectDir();
+  const fullPath   = `${privateDir}/${relativeKey}`;
+  const { bucketName, objectName } = parseBucketAndObject(fullPath);
+  await storage.bucket(bucketName).file(objectName).delete({ ignoreNotFound: true });
+}
+
 /** Best-effort: list objects under `${PRIVATE_OBJECT_DIR}/<prefix>` and
  *  delete any whose `updated` timestamp is older than `maxAgeMs`. This
  *  is the fallback enforcement for the 24-hour retention promise when
@@ -128,10 +138,36 @@ export async function opportunisticCleanup(
   }
 }
 
+/** Schedule a periodic cleanup sweep so the 24-hour TTL is enforced
+ *  even on days with little or no document-check traffic (the
+ *  request-driven `opportunisticCleanup` only fires after a
+ *  successful save). Runs every `intervalMs` while the process is
+ *  alive; the timer is `unref`'d so it doesn't keep the event loop
+ *  busy. Returns the timer so callers (e.g. tests) can cancel it. */
+export function startBackgroundCleanup(
+  prefix:     string,
+  maxAgeMs:   number,
+  intervalMs: number,
+  log:        (msg: string, extra?: unknown) => void,
+): NodeJS.Timeout {
+  const tick = (): void => {
+    opportunisticCleanup(prefix, maxAgeMs, log).catch((err) =>
+      log("objectStorage: background cleanup tick threw", err),
+    );
+  };
+  /* Fire one immediately so a freshly-restarted server reaps stale
+     objects without waiting for the first interval. */
+  setImmediate(tick);
+  const timer = setInterval(tick, intervalMs);
+  timer.unref();
+  return timer;
+}
+
 /** Install a 1-day lifecycle rule on the default bucket if one isn't
  *  already present. Called once on server startup; failures are
- *  logged but do not crash the server — `opportunisticCleanup` is
- *  the actual enforcement when this is unavailable. */
+ *  logged but do not crash the server — `opportunisticCleanup` and
+ *  `startBackgroundCleanup` are the actual enforcement when bucket
+ *  admin is unavailable. */
 export async function ensureLifecyclePolicy(log: (msg: string, extra?: unknown) => void): Promise<void> {
   try {
     const privateDir = getPrivateObjectDir();
