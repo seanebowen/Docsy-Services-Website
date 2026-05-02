@@ -12,6 +12,8 @@ tags:
     description: Health operations
   - name: document-check
     description: Pre-flight document inspection (free, anonymous)
+  - name: vault
+    description: Signed-in member document vault (Safe+)
 paths:
   /healthz:
     get:
@@ -75,7 +77,67 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DocumentCheckError"
+  /document-check/save-to-vault:
+    post:
+      operationId: saveScanToVault
+      tags: [document-check, vault]
+      summary: Promote an anonymous scan into the signed-in user's Safe+ vault
+      description: |
+        Requires a Bearer session token. Takes the `scanId` returned by a
+        recent /document-check call and copies the stored original +
+        result.json out of the 24-hour anonymous-storage prefix into the
+        user's permanent vault prefix, then appends a VaultFile entry.
+        Idempotent: re-saving the same scanId replaces the existing
+        vault entry rather than duplicating it.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scanId]
+              properties:
+                scanId:
+                  type: string
+                  description: The scanId returned by a previous /document-check response.
+      responses:
+        "200":
+          description: Saved to vault
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SaveScanToVaultResponse"
+        "400":
+          description: Invalid scanId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
+        "404":
+          description: Scan no longer available (TTL expired)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
+        "500":
+          description: Save failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentCheckError"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     HealthStatus:
       type: object
@@ -150,6 +212,12 @@ components:
             ISO timestamp at which the stored object becomes eligible for
             deletion. Cleanup is best-effort (sweeps run hourly and after
             each new upload) and may run a few hours after this time.
+        scanId:
+          type: [string, "null"]
+          description: |
+            UUID identifying this scan in App Storage. Pass to
+            /document-check/save-to-vault to keep the scan permanently.
+            Null when the upload could not be persisted.
     DocumentCheckResponse:
       type: object
       required: [ok, result]
@@ -168,3 +236,24 @@ components:
           enum: [false]
         error:
           type: string
+    VaultFile:
+      type: object
+      required: [id, name, serviceType, serviceLabel, date, size]
+      properties:
+        id:           { type: string }
+        name:         { type: string }
+        serviceType:
+          type: string
+          enum: [ron, mobile, loan, apostille, court]
+        serviceLabel: { type: string }
+        date:         { type: string, description: "YYYY-MM-DD" }
+        size:         { type: string, description: "Human-readable, e.g. '247 KB'" }
+    SaveScanToVaultResponse:
+      type: object
+      required: [ok, file]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        file:
+          $ref: "#/components/schemas/VaultFile"

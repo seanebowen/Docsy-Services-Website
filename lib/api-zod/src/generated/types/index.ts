@@ -15,3 +15,7 @@ export * from "./documentCheckResponse";
 export * from "./documentCheckResult";
 export * from "./documentCheckSuggestedService";
 export * from "./healthStatus";
+export * from "./saveScanToVaultBody";
+export * from "./saveScanToVaultResponse";
+export * from "./vaultFile";
+export * from "./vaultFileServiceType";

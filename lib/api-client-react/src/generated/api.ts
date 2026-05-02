@@ -21,6 +21,8 @@ import type {
   DocumentCheckError,
   DocumentCheckResponse,
   HealthStatus,
+  SaveScanToVaultBody,
+  SaveScanToVaultResponse,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -201,4 +203,97 @@ export const useDocumentCheck = <
   TContext
 > => {
   return useMutation(getDocumentCheckMutationOptions(options));
+};
+
+/**
+ * Requires a Bearer session token. Takes the `scanId` returned by a
+recent /document-check call and copies the stored original +
+result.json out of the 24-hour anonymous-storage prefix into the
+user's permanent vault prefix, then appends a VaultFile entry.
+Idempotent: re-saving the same scanId replaces the existing
+vault entry rather than duplicating it.
+
+ * @summary Promote an anonymous scan into the signed-in user's Safe+ vault
+ */
+export const getSaveScanToVaultUrl = () => {
+  return `/api/document-check/save-to-vault`;
+};
+
+export const saveScanToVault = async (
+  saveScanToVaultBody: SaveScanToVaultBody,
+  options?: RequestInit,
+): Promise<SaveScanToVaultResponse> => {
+  return customFetch<SaveScanToVaultResponse>(getSaveScanToVaultUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(saveScanToVaultBody),
+  });
+};
+
+export const getSaveScanToVaultMutationOptions = <
+  TError = ErrorType<DocumentCheckError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof saveScanToVault>>,
+    TError,
+    { data: BodyType<SaveScanToVaultBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof saveScanToVault>>,
+  TError,
+  { data: BodyType<SaveScanToVaultBody> },
+  TContext
+> => {
+  const mutationKey = ["saveScanToVault"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof saveScanToVault>>,
+    { data: BodyType<SaveScanToVaultBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return saveScanToVault(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SaveScanToVaultMutationResult = NonNullable<
+  Awaited<ReturnType<typeof saveScanToVault>>
+>;
+export type SaveScanToVaultMutationBody = BodyType<SaveScanToVaultBody>;
+export type SaveScanToVaultMutationError = ErrorType<DocumentCheckError>;
+
+/**
+ * @summary Promote an anonymous scan into the signed-in user's Safe+ vault
+ */
+export const useSaveScanToVault = <
+  TError = ErrorType<DocumentCheckError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof saveScanToVault>>,
+    TError,
+    { data: BodyType<SaveScanToVaultBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof saveScanToVault>>,
+  TError,
+  { data: BodyType<SaveScanToVaultBody> },
+  TContext
+> => {
+  return useMutation(getSaveScanToVaultMutationOptions(options));
 };

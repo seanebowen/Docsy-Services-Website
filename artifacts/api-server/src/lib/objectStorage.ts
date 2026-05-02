@@ -9,30 +9,46 @@
  * expiry is enforced bucket-side via a lifecycle rule installed once
  * by `ensureLifecyclePolicy`.
  */
-import { Storage, type Bucket } from "@google-cloud/storage";
+import { Storage, type Bucket, type StorageOptions } from "@google-cloud/storage";
 
 const REPLIT_SIDECAR_ENDPOINT = "http://127.0.0.1:1106";
 
-/* The Replit sidecar exposes external-account credentials at a local
- * URL. The `@google-cloud/storage` types require a strict
- * StorageOptions shape; we cast the literal so TS accepts the
- * `external_account` discriminator without us having to depend on
- * `google-auth-library`'s internal types directly. */
-const storage: Storage = new Storage({
-  credentials: {
-    audience:           "replit",
-    subject_token_type: "access_token",
-    token_url:          `${REPLIT_SIDECAR_ENDPOINT}/token`,
-    type:               "external_account",
-    credential_source:  {
-      url:    `${REPLIT_SIDECAR_ENDPOINT}/credential`,
-      format: { type: "json", subject_token_field_name: "access_token" },
-    },
-    universe_domain: "googleapis.com",
+/* The Replit sidecar exposes external-account workload-identity
+ * credentials at a local URL. We model that exact shape here so the
+ * Storage constructor receives a well-typed object without
+ * resorting to `any`. The single `as unknown as StorageOptions[...]`
+ * narrowing is necessary because `@google-cloud/storage`'s public
+ * `CredentialBody` type only describes service-account shapes; the
+ * `external_account` shape comes from `google-auth-library`'s
+ * internal types which aren't re-exported. */
+interface ReplitExternalAccountCredentials {
+  type:               "external_account";
+  audience:           string;
+  subject_token_type: string;
+  token_url:          string;
+  credential_source:  {
+    url:    string;
+    format: { type: "json"; subject_token_field_name: string };
+  };
+  universe_domain:    string;
+}
+
+const replitCredentials: ReplitExternalAccountCredentials = {
+  type:               "external_account",
+  audience:           "replit",
+  subject_token_type: "access_token",
+  token_url:          `${REPLIT_SIDECAR_ENDPOINT}/token`,
+  credential_source:  {
+    url:    `${REPLIT_SIDECAR_ENDPOINT}/credential`,
+    format: { type: "json", subject_token_field_name: "access_token" },
   },
-  projectId: "",
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any);
+  universe_domain: "googleapis.com",
+};
+
+const storage: Storage = new Storage({
+  credentials: replitCredentials as unknown as StorageOptions["credentials"],
+  projectId:   "",
+});
 
 function getPrivateObjectDir(): string {
   const dir = process.env["PRIVATE_OBJECT_DIR"];
@@ -94,6 +110,33 @@ export async function deleteByRelativeKey(relativeKey: string): Promise<void> {
   const fullPath   = `${privateDir}/${relativeKey}`;
   const { bucketName, objectName } = parseBucketAndObject(fullPath);
   await storage.bucket(bucketName).file(objectName).delete({ ignoreNotFound: true });
+}
+
+/** Read an object's contents as a Buffer. Throws if the object does
+ *  not exist or the read fails — callers handle that explicitly. */
+export async function readBuffer(relativeKey: string): Promise<Buffer> {
+  const privateDir = getPrivateObjectDir();
+  const fullPath   = `${privateDir}/${relativeKey}`;
+  const { bucketName, objectName } = parseBucketAndObject(fullPath);
+  const [buf] = await storage.bucket(bucketName).file(objectName).download();
+  return buf;
+}
+
+/** Copy an object from one relative key to another within the
+ *  configured bucket. Used to promote a 24-hour anonymous scan into
+ *  a permanent vault entry by relocating it under a different
+ *  prefix (where the cleanup sweep won't touch it). Custom metadata
+ *  is preserved by GCS. */
+export async function copyObject(fromRelativeKey: string, toRelativeKey: string): Promise<void> {
+  const privateDir = getPrivateObjectDir();
+  const fromFull   = `${privateDir}/${fromRelativeKey}`;
+  const toFull     = `${privateDir}/${toRelativeKey}`;
+  const { bucketName, objectName: fromObj } = parseBucketAndObject(fromFull);
+  const { bucketName: toBucketName, objectName: toObj } = parseBucketAndObject(toFull);
+
+  const fromFile = storage.bucket(bucketName).file(fromObj);
+  const toFile   = storage.bucket(toBucketName).file(toObj);
+  await fromFile.copy(toFile);
 }
 
 /** Best-effort: list objects under `${PRIVATE_OBJECT_DIR}/<prefix>` and
@@ -174,8 +217,20 @@ export async function ensureLifecyclePolicy(log: (msg: string, extra?: unknown) 
     const { bucketName } = parseBucketAndObject(`${privateDir}/probe`);
     const bucket = storage.bucket(bucketName);
 
-    const [meta] = await bucket.getMetadata();
-    const existing = (meta.lifecycle?.rule ?? []) as Array<{ action?: { type?: string }; condition?: { age?: number } }>;
+    interface LifecycleRuleShape {
+      action?:    { type?: string };
+      condition?: { age?:  number };
+    }
+    interface LifecycleShape {
+      rule?: LifecycleRuleShape[];
+    }
+    interface BucketMetadataShape {
+      lifecycle?: LifecycleShape;
+    }
+    type SetMetadataPayload = Parameters<Bucket["setMetadata"]>[0];
+
+    const [meta] = await bucket.getMetadata() as [BucketMetadataShape, unknown];
+    const existing: LifecycleRuleShape[] = meta.lifecycle?.rule ?? [];
 
     const alreadyHasIt = existing.some(
       (r) => r.action?.type === "Delete" && r.condition?.age === 1,
@@ -186,11 +241,11 @@ export async function ensureLifecyclePolicy(log: (msg: string, extra?: unknown) 
       return;
     }
 
-    const wanted = { action: { type: "Delete" as const }, condition: { age: 1 } };
-    await bucket.setMetadata({
+    const wanted: LifecycleRuleShape = { action: { type: "Delete" }, condition: { age: 1 } };
+    const payload: BucketMetadataShape = {
       lifecycle: { rule: [...existing, wanted] },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+    };
+    await bucket.setMetadata(payload as unknown as SetMetadataPayload);
     log("objectStorage: installed 1-day delete lifecycle rule");
   } catch (err) {
     log("objectStorage: ensureLifecyclePolicy failed (non-fatal)", err);

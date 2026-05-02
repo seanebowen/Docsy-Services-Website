@@ -3,7 +3,7 @@ import { SESSION_STORE, USERS, USER_CREDITS, publicUser } from "./auth.js";
 
 const router = Router();
 
-interface VaultFile {
+export interface VaultFile {
   id:           string;
   name:         string;
   serviceType:  "ron" | "mobile" | "loan" | "apostille" | "court";
@@ -13,7 +13,7 @@ interface VaultFile {
 }
 
 /* ── Seeded demo vault files per user ───────────────────── */
-const VAULT_FILES: Record<string, VaultFile[]> = {
+export const VAULT_FILES: Record<string, VaultFile[]> = {
   u1: [
     { id: "f1", name: "Power of Attorney — 03-15-2025.pdf",     serviceType: "mobile",    serviceLabel: "General Notary Work",         date: "2025-03-15", size: "247 KB" },
     { id: "f2", name: "Affidavit of Support — 02-28-2025.pdf",  serviceType: "ron",       serviceLabel: "Remote Online Notarization",  date: "2025-02-28", size: "183 KB" },

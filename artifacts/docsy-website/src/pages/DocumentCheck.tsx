@@ -6,6 +6,7 @@ import type {
   DocumentCheckRecommendation,
   DocumentCheckSuggestedService,
 } from "@workspace/api-zod";
+import { useAuth } from "@/context/AuthContext";
 
 const IVORY = "#F5EFE6";
 const BG    = "#131929";
@@ -44,13 +45,18 @@ const H = ({ children }: { children: React.ReactNode }) => (
   <span style={{ backgroundColor: "rgba(77,159,219,0.35)", color: "#000", padding: "0 5px" }}>{children}</span>
 );
 
+type VaultSaveStatus = "idle" | "saving" | "saved" | "error";
+
 export default function DocumentCheck() {
   const [, setLocation] = useLocation();
+  const { user, token } = useAuth();
   const [file,    setFile]    = React.useState<File | null>(null);
   const [status,  setStatus]  = React.useState<"idle" | "uploading" | "done" | "error">("idle");
   const [errMsg,  setErrMsg]  = React.useState<string>("");
   const [result,  setResult]  = React.useState<DocumentCheckResult | null>(null);
   const [dragOver, setDragOver] = React.useState(false);
+  const [vaultStatus,  setVaultStatus]  = React.useState<VaultSaveStatus>("idle");
+  const [vaultError,   setVaultError]   = React.useState<string>("");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const resultRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -116,7 +122,33 @@ export default function DocumentCheck() {
     setResult(null);
     setStatus("idle");
     setErrMsg("");
+    setVaultStatus("idle");
+    setVaultError("");
     if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const saveToVault = async () => {
+    if (!result?.scanId || !token) return;
+    setVaultStatus("saving");
+    setVaultError("");
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/document-check/save-to-vault`, {
+        method:  "POST",
+        headers: {
+          "Content-Type":  "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ scanId: result.scanId }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.error || "Couldn't save to your Safe+ vault.");
+      }
+      setVaultStatus("saved");
+    } catch (e) {
+      setVaultError((e as Error).message || "Couldn't save to your Safe+ vault.");
+      setVaultStatus("error");
+    }
   };
 
   const goBook = () => {
@@ -403,6 +435,80 @@ export default function DocumentCheck() {
                           Scan another
                         </button>
                       </div>
+
+                      {/* Save to Safe+ vault — only meaningful when the scan
+                          was persisted (scanId set). Signed-in users get a
+                          one-click save; anonymous users get a sign-in
+                          prompt explaining what it would do. */}
+                      {result.scanId && (
+                        <div
+                          className="mt-5 pt-5 border-t"
+                          style={{ borderColor: DIV }}
+                          data-testid="docchk-vault-section"
+                        >
+                          <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: BLUE }}>
+                            Keep this scan in your Safe+ vault
+                          </p>
+                          {user && token ? (
+                            vaultStatus === "saved" ? (
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3" data-testid="docchk-vault-saved">
+                                <span className="text-sm font-bold" style={{ color: "#7CDB9F" }}>
+                                  ✓ Saved to your Safe+ vault.
+                                </span>
+                                <Link
+                                  href="/vault"
+                                  className="text-xs font-bold uppercase tracking-widest underline"
+                                  style={{ color: BLUE }}
+                                  data-testid="docchk-vault-open"
+                                >
+                                  Open Safe+ →
+                                </Link>
+                              </div>
+                            ) : (
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                <button
+                                  type="button"
+                                  onClick={saveToVault}
+                                  disabled={vaultStatus === "saving"}
+                                  data-testid="docchk-vault-save"
+                                  className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest border text-white hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                                  style={{ borderColor: BLUE, color: BLUE }}
+                                >
+                                  {vaultStatus === "saving"
+                                    ? "Saving…"
+                                    : `Save to ${user.name.split(" ")[0]}'s Safe+`}
+                                </button>
+                                <span className="text-xs text-white/45">
+                                  Permanent storage tied to your account — exempt from the 24-hour anonymous purge.
+                                </span>
+                              </div>
+                            )
+                          ) : (
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-3" data-testid="docchk-vault-signin-prompt">
+                              <Link
+                                href="/login?next=/document-check"
+                                className="px-5 py-2.5 text-xs font-bold uppercase tracking-widest border text-white hover:bg-white/5 transition-colors"
+                                style={{ borderColor: DIV }}
+                                data-testid="docchk-vault-signin-link"
+                              >
+                                Sign in to save this scan
+                              </Link>
+                              <span className="text-xs text-white/45">
+                                Members keep scans permanently in their Safe+ vault. Anonymous scans expire in ~24 hours.
+                              </span>
+                            </div>
+                          )}
+                          {vaultError && (
+                            <p
+                              className="mt-3 text-xs border-l-2 pl-3 py-1"
+                              style={{ borderColor: "#F59E5C", color: "#F59E5C" }}
+                              data-testid="docchk-vault-error"
+                            >
+                              {vaultError}
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

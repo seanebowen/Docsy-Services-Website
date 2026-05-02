@@ -77,6 +77,14 @@ each new upload) and may run a few hours after this time.
    * @nullable
    */
   storedExpiresAt: string | null;
+  /**
+   * UUID identifying this scan in App Storage. Pass to
+/document-check/save-to-vault to keep the scan permanently.
+Null when the upload could not be persisted.
+
+   * @nullable
+   */
+  scanId?: string | null;
 }
 
 export interface DocumentCheckResponse {
@@ -89,7 +97,39 @@ export interface DocumentCheckError {
   error: string;
 }
 
+export type VaultFileServiceType =
+  (typeof VaultFileServiceType)[keyof typeof VaultFileServiceType];
+
+export const VaultFileServiceType = {
+  ron: "ron",
+  mobile: "mobile",
+  loan: "loan",
+  apostille: "apostille",
+  court: "court",
+} as const;
+
+export interface VaultFile {
+  id: string;
+  name: string;
+  serviceType: VaultFileServiceType;
+  serviceLabel: string;
+  /** YYYY-MM-DD */
+  date: string;
+  /** Human-readable, e.g. '247 KB' */
+  size: string;
+}
+
+export interface SaveScanToVaultResponse {
+  ok: boolean;
+  file: VaultFile;
+}
+
 export type DocumentCheckBody = {
   /** The document to inspect (PDF, JPG, or PNG, ≤25 MB). */
   file: Blob;
+};
+
+export type SaveScanToVaultBody = {
+  /** The scanId returned by a previous /document-check response. */
+  scanId: string;
 };

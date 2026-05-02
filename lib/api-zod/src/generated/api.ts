@@ -67,5 +67,39 @@ export const DocumentCheckResponse = zod.object({
       .describe(
         "ISO timestamp at which the stored object becomes eligible for\ndeletion. Cleanup is best-effort (sweeps run hourly and after\neach new upload) and may run a few hours after this time.\n",
       ),
+    scanId: zod
+      .string()
+      .nullish()
+      .describe(
+        "UUID identifying this scan in App Storage. Pass to\n\/document-check\/save-to-vault to keep the scan permanently.\nNull when the upload could not be persisted.\n",
+      ),
+  }),
+});
+
+/**
+ * Requires a Bearer session token. Takes the `scanId` returned by a
+recent /document-check call and copies the stored original +
+result.json out of the 24-hour anonymous-storage prefix into the
+user's permanent vault prefix, then appends a VaultFile entry.
+Idempotent: re-saving the same scanId replaces the existing
+vault entry rather than duplicating it.
+
+ * @summary Promote an anonymous scan into the signed-in user's Safe+ vault
+ */
+export const SaveScanToVaultBody = zod.object({
+  scanId: zod
+    .string()
+    .describe("The scanId returned by a previous \/document-check response."),
+});
+
+export const SaveScanToVaultResponse = zod.object({
+  ok: zod.literal(true),
+  file: zod.object({
+    id: zod.string(),
+    name: zod.string(),
+    serviceType: zod.enum(["ron", "mobile", "loan", "apostille", "court"]),
+    serviceLabel: zod.string(),
+    date: zod.string().describe("YYYY-MM-DD"),
+    size: zod.string().describe("Human-readable, e.g. '247 KB'"),
   }),
 });

@@ -34,4 +34,12 @@ each new upload) and may run a few hours after this time.
    * @nullable
    */
   storedExpiresAt: Date | null;
+  /**
+   * UUID identifying this scan in App Storage. Pass to
+/document-check/save-to-vault to keep the scan permanently.
+Null when the upload could not be persisted.
+
+   * @nullable
+   */
+  scanId?: string | null;
 }

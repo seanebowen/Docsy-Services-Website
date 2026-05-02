@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import multer from "multer";
 import OpenAI from "openai";
+import type { ChatCompletionContentPart } from "openai/resources/chat/completions";
 import crypto from "node:crypto";
 import { pdfToPng } from "pdf-to-png-converter";
 import {
@@ -9,7 +10,14 @@ import {
   type DocumentCheckRecommendation,
   type DocumentCheckSuggestedService,
 } from "@workspace/api-zod";
-import { saveBuffer, opportunisticCleanup, deleteByRelativeKey } from "../lib/objectStorage.js";
+import {
+  saveBuffer,
+  opportunisticCleanup,
+  deleteByRelativeKey,
+  readBuffer,
+  copyObject,
+} from "../lib/objectStorage.js";
+import { VAULT_FILES, requireAuth, type VaultFile } from "./vault.js";
 
 const router = Router();
 
@@ -135,7 +143,7 @@ async function runInspection(
   const isPdf = mime === "application/pdf";
 
   try {
-    const userContent: Array<Record<string, unknown>> = [
+    const userContent: ChatCompletionContentPart[] = [
       { type: "text", text: "Inspect the attached document and respond with the JSON object only." },
     ];
 
@@ -172,8 +180,7 @@ async function runInspection(
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        { role: "user", content: userContent as any },
+        { role: "user",   content: userContent },
       ],
     });
 
@@ -246,6 +253,7 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
        gets their inspection back. */
     let storedObjectPath: string | null = null;
     let storedExpiresAt:  string | null = null;
+    let scanId:           string | null = null;
     {
       const id          = crypto.randomUUID();
       const originalKey = `document-checks/${id}/original`;
@@ -268,6 +276,7 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
           );
           storedObjectPath = savedOriginal.objectPath;
           storedExpiresAt  = savedOriginal.expiresAt;
+          scanId           = id;
         } catch (err) {
           req.log.warn({ err }, "document-check: result.json save failed; rolling back original");
           await deleteByRelativeKey(originalKey).catch((e) =>
@@ -312,6 +321,7 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
       thumbnailDataUrl: isPdf ? "" : `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
       storedObjectPath,
       storedExpiresAt:  storedExpiresAt ? new Date(storedExpiresAt) : null,
+      scanId,
     };
 
     /* Validate against the OpenAPI-generated zod schema so any drift
@@ -329,6 +339,171 @@ router.post("/", uploadSingle, async (req: Request, res: Response): Promise<void
   } catch (err) {
     req.log.error({ err }, "document-check: unhandled error");
     res.status(500).json({ ok: false, error: "Document check failed. Please try again." });
+  }
+});
+
+/* ── POST /api/document-check/save-to-vault ──────────────────────────
+   Auth-only. Promotes a 24-hour anonymous scan into a permanent entry
+   in the signed-in user's Safe+ vault.
+
+   The request body carries the `scanId` returned by the previous
+   /document-check call. We then:
+     1. Read the original + result.json from `document-checks/<id>/`.
+     2. Copy both into `vault/<userId>/<id>/` so the cleanup sweep
+        (which only walks the `document-checks/` prefix) can no
+        longer reach them.
+     3. Best-effort delete the originals from `document-checks/`.
+     4. Append a VaultFile entry to that user's vault list.
+
+   The whole flow is treated as a single transaction from the user's
+   perspective: if the copy fails, no vault entry is added and the
+   anonymous-storage objects remain in place to be cleaned up at TTL. */
+const SERVICE_TO_VAULT_TYPE: Record<DocumentCheckSuggestedService, VaultFile["serviceType"]> = {
+  "ron":          "ron",
+  "mobile":       "mobile",
+  "in-office":    "mobile",
+  "apostille":    "apostille",
+  "loan-signing": "loan",
+};
+const VAULT_TYPE_LABEL: Record<VaultFile["serviceType"], string> = {
+  ron:       "Remote Online Notarization",
+  mobile:    "General Notary Work",
+  loan:      "Loan Signing",
+  apostille: "Apostille Services",
+  court:     "Court Reporting",
+};
+
+function humanSize(bytes: number): string {
+  if (bytes < 1024)               return `${bytes} B`;
+  if (bytes < 1024 * 1024)        return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+const SCAN_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+router.post("/save-to-vault", requireAuth as never, async (req: Request, res: Response): Promise<void> => {
+  const userId       = (req as Request & { userId: string }).userId;
+  const { scanId }   = (req.body ?? {}) as { scanId?: string };
+
+  if (!scanId || typeof scanId !== "string" || !SCAN_ID_PATTERN.test(scanId)) {
+    res.status(400).json({ ok: false, error: "A valid scanId from a recent inspection is required." });
+    return;
+  }
+
+  const fromOriginal = `document-checks/${scanId}/original`;
+  const fromResult   = `document-checks/${scanId}/result.json`;
+  const toOriginal   = `vault/${userId}/${scanId}/original`;
+  const toResult     = `vault/${userId}/${scanId}/result.json`;
+
+  try {
+    /* True idempotency short-circuit: if this user already has a vault
+       entry for this scanId, return success immediately. This handles
+       the common "user clicked save twice" or "client retried after
+       a flaky network" case without us having to re-read storage —
+       and it prevents a 404 once the anonymous-prefix copy has been
+       cleaned up by the previous successful save. */
+    const existingList  = VAULT_FILES[userId] ?? [];
+    const existingEntry = existingList.find((f) => f.id === scanId);
+    if (existingEntry) {
+      res.json({ ok: true, file: existingEntry });
+      return;
+    }
+
+    /* No vault entry yet — read the source artifacts. Try the
+       anonymous prefix first (the common path for first-time saves),
+       then fall back to the user's own vault prefix in the rare case
+       where the copy succeeded but the vault-entry append got
+       interrupted (server crash mid-request). If both reads fail,
+       the scan is genuinely gone. */
+    let resultJson: Record<string, unknown>;
+    let originalSize: number;
+    let sourcePrefix: "anonymous" | "vault";
+    try {
+      const [origBuf, resultBuf] = await Promise.all([
+        readBuffer(fromOriginal),
+        readBuffer(fromResult),
+      ]);
+      originalSize = origBuf.length;
+      resultJson   = JSON.parse(resultBuf.toString("utf-8")) as Record<string, unknown>;
+      sourcePrefix = "anonymous";
+    } catch {
+      try {
+        const [origBuf, resultBuf] = await Promise.all([
+          readBuffer(toOriginal),
+          readBuffer(toResult),
+        ]);
+        originalSize = origBuf.length;
+        resultJson   = JSON.parse(resultBuf.toString("utf-8")) as Record<string, unknown>;
+        sourcePrefix = "vault";
+      } catch {
+        res.status(404).json({
+          ok:    false,
+          error: "This scan is no longer available. It may have been cleaned up — please re-run the check.",
+        });
+        return;
+      }
+    }
+
+    /* Only copy when the source is the anonymous prefix; if it's
+       already in the vault prefix we just need to (re-)create the
+       VAULT_FILES entry. Both copies must succeed before we add the
+       vault entry; if the second copy fails, undo the first so we
+       don't leak an orphan. */
+    if (sourcePrefix === "anonymous") {
+      await copyObject(fromOriginal, toOriginal);
+      try {
+        await copyObject(fromResult, toResult);
+      } catch (err) {
+        req.log.warn({ err }, "save-to-vault: result.json copy failed; rolling back original");
+        await deleteByRelativeKey(toOriginal).catch((e) =>
+          req.log.warn({ err: e }, "save-to-vault: rollback delete failed"),
+        );
+        throw err;
+      }
+
+      /* Best-effort delete from the anonymous prefix so the same
+         artifact isn't sitting in two places (and so the periodic
+         sweep doesn't waste cycles on it). */
+      await Promise.all([
+        deleteByRelativeKey(fromOriginal).catch(() => {}),
+        deleteByRelativeKey(fromResult).catch(() => {}),
+      ]);
+    }
+
+    /* Build the vault entry. The model's docType / suggestedService
+       are coerced through known enums so an unexpected value can't
+       create an undisplayable row. */
+    const docType: string = typeof resultJson["documentType"] === "string"
+      ? (resultJson["documentType"] as string).slice(0, 200)
+      : "Document";
+    const rawService = String(resultJson["suggestedService"] ?? "mobile") as DocumentCheckSuggestedService;
+    const serviceType  = SERVICE_TO_VAULT_TYPE[rawService] ?? "mobile";
+    const serviceLabel = VAULT_TYPE_LABEL[serviceType];
+    const today        = new Date().toISOString().slice(0, 10);
+
+    const entry: VaultFile = {
+      id:           scanId,
+      name:         `${docType} — Pre-Check ${today}`,
+      serviceType,
+      serviceLabel,
+      date:         today,
+      size:         humanSize(originalSize),
+    };
+
+    /* The short-circuit above already handled the
+       "entry-exists" path, so at this point we know the list does
+       not yet contain `scanId`. Prepend the new entry. */
+    const list = VAULT_FILES[userId] ?? [];
+    list.unshift(entry);
+    VAULT_FILES[userId] = list;
+
+    res.json({ ok: true, file: entry });
+  } catch (err) {
+    req.log.error({ err }, "save-to-vault: unexpected failure");
+    res.status(500).json({
+      ok:    false,
+      error: "Couldn't save this scan to your Safe+ vault. Please try again.",
+    });
   }
 });
 
